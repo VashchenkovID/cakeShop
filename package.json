@@ -1,0 +1,16 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "shop app",
+  "main": "index.js",
+  "scripts": {
+    "app-install": "cd server && npm install && cd .. && cd client && yarn && cd .."
+  },
+  "keywords": [
+    "shop",
+    "cakes",
+    "alexaCake"
+  ],
+  "author": "@vashchenkovID",
+  "license": "ISC"
+}

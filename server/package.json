@@ -1,0 +1,33 @@
+{
+  "name": "alexa-backend",
+  "version": "1.0.0",
+  "description": "Alexa stack",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "alexa",
+    "react"
+  ],
+  "author": "Ivan Vashchenkov <vashhenkov-ivan@mail.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "5.0.1",
+    "config": "3.3.7",
+    "cors": "2.8.5",
+    "dotenv": "16.0.1",
+    "express": "4.18.1",
+    "express-fileupload": "1.4.0",
+    "jsonwebtoken": "8.5.1",
+    "pg": "8.7.3",
+    "pg-hstore": "2.3.4",
+    "sequelize": "6.21.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "7.3.0",
+    "nodemon": "2.0.19"
+  }
+}
