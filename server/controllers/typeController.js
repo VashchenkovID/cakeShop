@@ -3,11 +3,13 @@ const ApiError = require("../Error/ApiError");
 
 class TypeController {
   async create(req, res) {
-    const { typeName } = req.body;
-    if (typeName) {
-      const type = await Type.create({ typeName });
-      return res.json(type);
-    }
+    try {
+      const name = req.body;
+      if (name) {
+        await Type.create({ ...name });
+      }
+      return { message: "OK" };
+    } catch (e) {}
   }
   async getAll(req, res) {
     const types = await Type.findAll();

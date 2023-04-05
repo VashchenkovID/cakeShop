@@ -11,6 +11,7 @@ import { LocalStorageKeysEnum } from 'src/utils/enum';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
+import AdministrationPage from 'src/pages/AdministrationPage/AdministrationPage';
 
 export const publicRoutes: Array<IRouteItem> = [
   {
@@ -24,7 +25,7 @@ export const publicRoutes: Array<IRouteItem> = [
 ];
 
 export const privateRoutes: Array<IRouteItem> = [
-  { path: PrivateRoutesEnum.ADMINISTRATION, element: <div></div> },
+  { path: PrivateRoutesEnum.ADMINISTRATION, element: <AdministrationPage /> },
   { path: PrivateRoutesEnum.BASKET, element: <div></div> },
   { path: PrivateRoutesEnum.CREATE_CAKE, element: <div></div> },
   { path: PrivateRoutesEnum.EDIT_CAKE, element: <div></div> },

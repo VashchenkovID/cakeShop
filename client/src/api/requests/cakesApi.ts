@@ -8,4 +8,5 @@ export default {
   createCake: (data: any) => post(EnpointsEnum.CREATE_CAKE, data),
   removeCake: (id: string) => del(`${EnpointsEnum.REMOVE_CAKE}/${id}`),
   editCake: () => get(''),
+  createCakeType: (name: any) => post(`${EnpointsEnum.CREATE_TYPE}`, name),
 };

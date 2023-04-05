@@ -12,6 +12,9 @@ export const enum PrivateRoutesEnum {
   BASKET = '/directories',
   CREATE_CAKE = '/create-cake',
   EDIT_CAKE = '/edit-cake',
+  ANALYTICS = 'analytics',
+  RECIPES = 'recipes',
+  ORDERS = 'orders',
 }
 
 export const enum PublicRoutesEnum {

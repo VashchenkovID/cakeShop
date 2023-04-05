@@ -11,6 +11,8 @@ const User = sequilize.define("User", {
 const Basket = sequilize.define("Basket", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.INTEGER },
+  status: { type: DataTypes.STRING },
+  date_completed: { type: DataTypes.STRING },
 });
 
 const BasketDevice = sequilize.define("Basket_device", {
@@ -18,14 +20,13 @@ const BasketDevice = sequilize.define("Basket_device", {
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
 });
 
-const Device = sequilize.define("Device", {
+const Device = sequilize.define("device", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
-  price: { type: DataTypes.STRING, allowNull: false },
-  typeId: { type: DataTypes.INTEGER, allowNull: false },
-  rating: { type: DataTypes.STRING, defaultValue: "0" },
-  img: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.STRING },
+  price: { type: DataTypes.INTEGER, allowNull: false },
+  rating: { type: DataTypes.INTEGER, defaultValue: 0 },
+  img: { type: DataTypes.STRING, allowNull: true },
+  description: { type: DataTypes.STRING, allowNull: true },
 });
 
 const Type = sequilize.define("Type", {

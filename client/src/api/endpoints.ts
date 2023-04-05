@@ -6,4 +6,5 @@ export const enum EnpointsEnum {
   REGISTRATION_USER = '/user/registration',
   LOGIN_USER = '/user/login',
   AUTHORIZATION_USER = '/user/auth',
+  CREATE_TYPE = '/type/create'
 }

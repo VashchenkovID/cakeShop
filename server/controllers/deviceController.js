@@ -6,32 +6,31 @@ const ApiError = require("../Error/ApiError");
 class DeviceController {
   async create(req, res, next) {
     try {
-      let { name, price, type, rating, feedback, description, info } = req.body;
-      const { img } = req.files;
-      let fileName = uuid.v4() + ".jpg";
-      await img.mv(path.resolve(__dirname, "..", "photos", fileName));
-
-      if (info) {
-        info = JSON.parse(info);
-        info.forEach((i) =>
-          DeviceInfo.create({
-            title: i.title,
-            description: i.description,
-            deviceId: device.id,
-          })
-        );
+      let { name, price, typeId, info, description } = req.body;
+      const img = req.files?.img || null;
+      let fileName;
+      if (img) {
+        fileName = uuid.v4() + ".jpg";
+        img.mv(path.resolve(__dirname, "..", "static", fileName));
       }
 
       const device = await Device.create({
         name,
         price,
-        type,
-        rating,
-        feedback,
+        TypeId: typeId,
         description,
-        img: fileName,
+        img: "fileName",
       });
-      return res.json(device);
+      info.forEach((i) =>
+        DeviceInfo.create({
+          name: i.name,
+          weight: i.weight,
+          deviceId: device.id,
+          pricePerUnit: i.pricePerUnit,
+        })
+      );
+
+      return res.json({ id: device.id });
     } catch (e) {
       next(ApiError.badRequest(e.message));
     }
@@ -63,9 +62,7 @@ class DeviceController {
     const { id } = req.params;
     const device = await Device.findOne({
       where: { id },
-      include: [
-        { model: Type, as: "typeId" },
-      ],
+      include: [{ model: Type, as: "typeId" }],
     });
     return res.json(device);
   }

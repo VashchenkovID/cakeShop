@@ -3,7 +3,6 @@ import userAPI from 'src/api/requests/userAPI';
 import { LocalStorageKeysEnum } from 'src/utils/enum';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
-import { Button, TextField } from '@mui/material';
 import style from './Auth.styl';
 import ScreenLoader from 'src/components/ScreenLoader/ScreenLoader';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
@@ -78,32 +77,21 @@ const AuthContainer: React.FC = () => {
                 ? 'Регистрация'
                 : 'Авторизация'}
             </h1>
-            <TextField
+            <input
               id="outlined-basic"
-              label="Логин"
-              size={'small'}
-              variant="outlined"
-              fullWidth
               value={login}
               onChange={(e) => {
                 setLogin(e.target.value);
               }}
             />
-            <TextField
+            <input
               id="outlined-basic"
-              label="Пароль"
-              size={'small'}
-              type={'password'}
-              variant="outlined"
-              fullWidth
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
             />
-            <Button variant="contained" onClick={enterInApp}>
-              Вход
-            </Button>
+            <button onClick={enterInApp}>Вход</button>
           </div>
         </div>
       )}
