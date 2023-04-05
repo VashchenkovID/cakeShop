@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate": "node-pg-migrate"
   },
   "keywords": [
     "alexa",
@@ -21,7 +22,8 @@
     "express": "4.18.1",
     "express-fileupload": "1.4.0",
     "jsonwebtoken": "8.5.1",
-    "pg": "8.7.3",
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.7.3",
     "pg-hstore": "2.3.4",
     "sequelize": "6.21.3",
     "uuid": "^8.3.2"

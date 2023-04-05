@@ -47,11 +47,25 @@ class DeviceController {
     return res.json(devices);
   }
 
+  async getOneForAdmin(req, res) {
+    const { id } = req.params;
+    const device = await Device.findOne({
+      where: { id },
+      include: [
+        { model: DeviceInfo, as: "info" },
+        { model: Type, as: "typeId" },
+      ],
+    });
+    return res.json(device);
+  }
+
   async getOne(req, res) {
     const { id } = req.params;
     const device = await Device.findOne({
       where: { id },
-      include: [{ model: DeviceInfo, as: "info" }],
+      include: [
+        { model: Type, as: "typeId" },
+      ],
     });
     return res.json(device);
   }
