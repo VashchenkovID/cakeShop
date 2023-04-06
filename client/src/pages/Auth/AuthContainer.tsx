@@ -52,8 +52,8 @@ const AuthContainer: React.FC = () => {
         })
         .then((r) => {
           dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.token);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.role);
+          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
           clearInputs();
           navigate(PublicRoutesEnum.SHOP);
           setLoading(false);

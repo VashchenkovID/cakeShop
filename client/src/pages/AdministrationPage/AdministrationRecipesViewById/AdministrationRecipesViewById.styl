@@ -1,0 +1,30 @@
+.FullRecipe
+  display grid
+  grid-template-columns 1fr 0.5fr
+  gap 16px
+  align-items flex-start
+  &__leftSide
+    display flex
+    flex-direction column
+    align-items flex-start
+    gap 16px
+    &__img
+      max-width 700px
+  &__rightSide
+    display flex
+    flex-direction column
+    gap 16px
+    justify-content center
+    &__header
+      display grid
+      grid-template-columns repeat(4,1fr)
+      gap 8px
+    &__list
+      display flex
+      flex-direction column
+      &__row
+        display grid
+        grid-template-columns repeat(4,1fr)
+        gap 8px
+        &__col
+          text-align left

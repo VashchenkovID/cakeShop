@@ -1,12 +1,11 @@
-export interface DeviceModel {
+export interface DeviceListModel {
   id: number;
   name: string;
   price: number;
-  typeId: number | null;
-  rating: number | null;
+  rating: number;
   img: string;
   description: string;
   createdAt: string;
   updatedAt: string;
-  info: any[];
+  TypeId: number;
 }

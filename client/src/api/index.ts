@@ -16,10 +16,11 @@ const buildParamsPost = (met: string, data?: any) => {
     return {
       method: met,
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${storageToken()}`,
       },
-      body: JSON.stringify(data),
+      formData: JSON.stringify(data),
     };
   }
   return {

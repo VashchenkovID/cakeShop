@@ -1,15 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PrivateRoutesEnum } from 'src/router';
+import styles from './AdministrationPage.styl';
 
 import { useLocation } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
-
-export enum AdminPanelType {
-  ANALYTICS = 'analytics',
-  RECIPES = 'recipes',
-  ORDERS = 'orders',
-}
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -54,16 +49,18 @@ const AdministrationPage: React.FC = () => {
     if (el) return setTab(el);
   }, [Tabs, location.pathname]);
   return (
-    <section>
-      {Tabs.map((itm, index) => (
-        <button
-          color={tab.title === itm.title ? 'primary' : 'secondary'}
-          onClick={() => onChangeTab(itm)}
-          key={index}
-        >
-          {itm.title}
-        </button>
-      ))}
+    <section className={styles.Administration}>
+      <div className={styles.Administration__nav}>
+        {Tabs.map((itm, index) => (
+          <button
+            color={tab.title === itm.title ? 'primary' : 'secondary'}
+            onClick={() => onChangeTab(itm)}
+            key={index}
+          >
+            {itm.title}
+          </button>
+        ))}
+      </div>
 
       <div>
         {tab.path === PrivateRoutesEnum.RECIPES && <AdministrationRecipes />}
