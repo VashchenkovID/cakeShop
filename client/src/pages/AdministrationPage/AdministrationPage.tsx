@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { PrivateRoutesEnum } from 'src/router';
 import styles from './AdministrationPage.styl';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
+import { Button } from 'antd';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -14,13 +15,16 @@ type TabType = {
 
 const AdministrationPage: React.FC = () => {
   const location = useLocation();
-  const history = createBrowserHistory();
+  const navigate = useNavigate();
   const onChangeTab = (value: TabType) => {
-    history.push(
+    navigate(
       `${PrivateRoutesEnum.ADMINISTRATION}/${value?.path}${location.search}`,
     );
     setTab(value);
   };
+
+  const myLoc = location.pathname.split('/')[2];
+
   const Tabs: Array<TabType> = useMemo(
     () => [
       {
@@ -41,7 +45,10 @@ const AdministrationPage: React.FC = () => {
     ],
     [],
   );
-  const [tab, setTab] = useState<TabType>(Tabs[0]);
+  const [tab, setTab] = useState<TabType>(
+    Tabs.find((tab) => tab.path === myLoc),
+  );
+
 
   // side effects
   useEffect(() => {
@@ -52,13 +59,13 @@ const AdministrationPage: React.FC = () => {
     <section className={styles.Administration}>
       <div className={styles.Administration__nav}>
         {Tabs.map((itm, index) => (
-          <button
-            color={tab.title === itm.title ? 'primary' : 'secondary'}
+          <Button
+            type={tab.title === itm.title ? 'primary' : 'default'}
             onClick={() => onChangeTab(itm)}
             key={index}
           >
             {itm.title}
-          </button>
+          </Button>
         ))}
       </div>
 

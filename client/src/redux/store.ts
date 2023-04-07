@@ -4,11 +4,13 @@ import { browserHistory } from 'src/history/history';
 import { rtkQueryErrorLogger } from './middlewares/rtkQueryErrorLogger';
 import userSlice from './features/auth/AuthSlice';
 import shopSlice from 'src/redux/features/shop/ShopSlice';
+import cakeSlice from 'src/redux/features/cake/CakeSlice';
 
 export const rootReducer = combineReducers({
   router: createRouterReducer(browserHistory),
   userSlice,
   shopSlice,
+  cakeSlice,
 });
 
 export const setupStore = () => {

@@ -7,6 +7,8 @@ import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import AdministrationRecipesList from 'src/pages/AdministrationPage/AdministrationRecipesList/AdministrationRecipesList';
 import AdministrationRecipesViewById from 'src/pages/AdministrationPage/AdministrationRecipesViewById/AdministrationRecipesViewById';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PrivateRoutesEnum } from 'src/router';
 
 const cx = cn.bind(styles);
 
@@ -17,6 +19,8 @@ export enum AdminPageMode {
 }
 
 const AdministrationRecipes = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [pageMode, setPageMode] = useState(AdminPageMode.VIEW);
   const [recipes, setRecipes] = useState<DeviceListModel[]>([]);
   const [count, setCount] = useState<number>(0);
@@ -33,13 +37,24 @@ const AdministrationRecipes = () => {
   );
 
   useEffect(() => {
+    if (location.pathname.includes('create')) {
+      setPageMode(AdminPageMode.CREATE);
+    } else if (location.pathname.includes('edit')) {
+      setPageMode(AdminPageMode.EDIT);
+    } else setPageMode(AdminPageMode.VIEW);
+  }, [location]);
+
+  useEffect(() => {
     fetchRecipes();
   }, []);
+
   return (
     <>
       <div
         onClick={() => {
-          setPageMode(AdminPageMode.CREATE);
+          navigate(
+            `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/create`,
+          );
         }}
       >
         Создать новый рецепт
@@ -51,10 +66,15 @@ const AdministrationRecipes = () => {
             activeList={activeList}
             setActiveList={setActiveList}
           />
-          <AdministrationRecipesViewById activeList={activeList} />
+          <AdministrationRecipesViewById
+            activeList={activeList}
+            pageMode={pageMode}
+            setPageMode={setPageMode}
+          />
         </section>
       )}
       {pageMode === AdminPageMode.CREATE && <AdministrationRecipesCreate />}
+      {pageMode === AdminPageMode.EDIT && <AdministrationRecipesCreate />}
     </>
   );
 };

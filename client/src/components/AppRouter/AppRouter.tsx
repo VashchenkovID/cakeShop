@@ -26,6 +26,26 @@ export const publicRoutes: Array<IRouteItem> = [
 
 export const privateRoutes: Array<IRouteItem> = [
   { path: PrivateRoutesEnum.ADMINISTRATION, element: <AdministrationPage /> },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}`,
+    element: <AdministrationPage />,
+  },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/create`,
+    element: <AdministrationPage />,
+  },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/edit`,
+    element: <AdministrationPage />,
+  },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.ANALYTICS}`,
+    element: <AdministrationPage />,
+  },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.ORDERS}`,
+    element: <AdministrationPage />,
+  },
   { path: PrivateRoutesEnum.BASKET, element: <div></div> },
   { path: PrivateRoutesEnum.CREATE_CAKE, element: <div></div> },
   { path: PrivateRoutesEnum.EDIT_CAKE, element: <div></div> },

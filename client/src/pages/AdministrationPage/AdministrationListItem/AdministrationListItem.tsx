@@ -27,7 +27,6 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
       </div>
       <div className={styles.RecipesListItem__subTitle}>{item.description}</div>
       <div className={styles.RecipesListItem__price}>{item.price},00 ₽</div>
-      <button>Редактировать</button>
     </div>
   );
 };
