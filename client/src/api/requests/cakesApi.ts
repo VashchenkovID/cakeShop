@@ -3,7 +3,7 @@ import { EnpointsEnum } from 'src/api/endpoints';
 import { $authHost, $host } from 'src/api/requests/index';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import { AxiosResponse } from 'axios';
-import {DeviceItemModel} from "src/api/models/DeviceItemModel";
+import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
 
 interface IDeviceListResponse {
   count: number;
@@ -18,7 +18,7 @@ export default {
   createCake: (data: any) => $authHost.post(EnpointsEnum.CREATE_CAKE, data),
   removeCake: (id: string) => del(`${EnpointsEnum.REMOVE_CAKE}/${id}`),
   editCake: (id: string, data: any) =>
-    putData(`${EnpointsEnum.EDIT_CAKE}/${id}`, data),
+    $authHost.put(`${EnpointsEnum.EDIT_CAKE}/${id}`, data),
   createCakeType: (name: any) => post(`${EnpointsEnum.CREATE_TYPE}`, name),
   loadRecipe: (id: string): Promise<DeviceItemModel> =>
     get(`${EnpointsEnum.GET_RECIPE}/${id}`),

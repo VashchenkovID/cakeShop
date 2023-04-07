@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cakesApi from '../../../api/requests/cakesApi';
 import styles from './AdministrationRecipesCreate.styl';
 import cn from 'classnames/bind';
+import { useAppSelector } from 'src/hooks/useAppSelector';
+import { selectCakeItem } from 'src/redux/features/cake/CakeSelectors';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button } from 'antd';
+import { PrivateRoutesEnum } from 'src/router';
 
 const cx = cn.bind(styles);
 
 const AdministrationRecipesCreate: React.FC = () => {
+  const editCake = useAppSelector(selectCakeItem);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [device, setDevice] = useState<any>({
     name: '',
     price: 0,
@@ -26,7 +35,26 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('img', file);
       formData.append('typeId', '1');
       formData.append('info', JSON.stringify(device.info));
-      await cakesApi.createCake(formData);
+      await cakesApi.createCake(formData).then(() => {
+        navigate(
+          `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}`,
+        );
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const EditDevice = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', device.name);
+      formData.append('price', `${device.price}`);
+      formData.append('description', `${device.description}`);
+      formData.append('img', file);
+      formData.append('typeId', '1');
+      formData.append('info', JSON.stringify(device.info));
+      await cakesApi.editCake(editCake.id.toString(), formData);
     } catch (e) {
       alert(e.message);
     }
@@ -34,7 +62,19 @@ const AdministrationRecipesCreate: React.FC = () => {
   const selectFile = (e: any) => {
     setFile(e.target.files[0]);
   };
-  console.log(file);
+
+  useEffect(() => {
+    if (location.pathname.includes('edit')) {
+      setDevice({
+        name: editCake.name,
+        price: editCake.price,
+        description: editCake.description,
+        info: editCake.info,
+        img: editCake.img,
+        typeId: editCake.TypeId,
+      });
+    }
+  }, [location]);
   return (
     <div className={styles.RecipeCreate}>
       <div className={styles.RecipeCreate__leftSide}>
@@ -128,6 +168,18 @@ const AdministrationRecipesCreate: React.FC = () => {
                         });
                       }}
                     />
+                    <Button
+                      onClick={() => {
+                        setDevice((prev: any) => {
+                          return {
+                            ...prev,
+                            info: prev.info.filter(
+                              (it: any, idx: number) => idx !== ind,
+                            ),
+                          };
+                        });
+                      }}
+                    />
                   </div>
                 </div>
               ))}
@@ -139,7 +191,13 @@ const AdministrationRecipesCreate: React.FC = () => {
                   ...prev,
                   info: [
                     ...prev.info,
-                    { id: null, name: '', weight: '', pricePerUnit: '0' },
+                    {
+                      id: null,
+                      name: '',
+                      weight: '',
+                      pricePerUnit: '0',
+                      device: { id: editCake ? editCake.id : null },
+                    },
                   ],
                 };
               });
@@ -148,14 +206,15 @@ const AdministrationRecipesCreate: React.FC = () => {
             Добавить строчку
           </button>
         </div>
-        <button
+        <Button
           onClick={(e) => {
-            e.stopPropagation();
-            addDevice();
+            if (location.pathname.includes('create')) {
+              addDevice();
+            } else EditDevice();
           }}
         >
-          Создать
-        </button>
+          {location.pathname.includes('create') ? 'Создать' : 'Сохранить'}
+        </Button>
       </div>
     </div>
   );

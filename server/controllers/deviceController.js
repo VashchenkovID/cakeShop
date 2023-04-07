@@ -38,7 +38,8 @@ class DeviceController {
 
   async update(req, res, next) {
     try {
-      let { id, name, price, description, typeId, info } = req.body;
+      let { name, price, description, typeId, info } = req.body;
+      let { id } = req.params;
       const img = req.files?.img || null;
       let fileName;
       if (img) {
@@ -54,30 +55,41 @@ class DeviceController {
         description: description,
         img: fileName || null,
       });
-      info?.forEach((i) => {
-        const info = DeviceInfo.findOne({ where: { id: i.id } });
-        if (info) {
-          DeviceInfo.upsert(
-            {
-              id: i.id,
-              name: i.name,
-              weight: i.weight,
-              deviceId: device.id,
-              pricePerUnit: i.pricePerUnit,
-            },
-            {
-              where: { deviceId: id },
-            }
-          );
+      if (info) {
+        let newInfo = JSON.parse(info);
+        if (newInfo.length === 0) {
+          DeviceInfo.destroy({
+            where: { deviceId: id },
+          });
+          DeviceInfo.destroy({
+            where: { deviceId: null },
+          });
         } else {
-          DeviceInfo.create({
-            name: i.name,
-            weight: i.weight,
-            deviceId: device.id,
-            pricePerUnit: i.pricePerUnit,
+          newInfo?.forEach((i) => {
+            if (i.id) {
+              DeviceInfo.upsert(
+                {
+                  id: i.id,
+                  name: i.name,
+                  weight: i.weight,
+                  deviceId: device.id,
+                  pricePerUnit: i.pricePerUnit,
+                },
+                {
+                  where: { deviceId: id },
+                }
+              );
+            } else {
+              DeviceInfo.create({
+                name: i.name,
+                weight: i.weight,
+                deviceId: id,
+                pricePerUnit: i.pricePerUnit,
+              });
+            }
           });
         }
-      });
+      }
 
       return res.json(
         Device.findOne({
@@ -119,7 +131,7 @@ class DeviceController {
   }
 
   async remove(req, res) {
-    const { id } = req.body;
+    const { id } = req.params;
     if (id) {
       await Device.destroy({ where: { id } });
       await DeviceInfo.destroy({ where: { deviceId: id } });

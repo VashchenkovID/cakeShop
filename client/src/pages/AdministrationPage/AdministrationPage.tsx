@@ -46,9 +46,8 @@ const AdministrationPage: React.FC = () => {
     [],
   );
   const [tab, setTab] = useState<TabType>(
-    Tabs.find((tab) => tab.path === myLoc),
+    Tabs.find((tab) => tab.path === myLoc) || Tabs[0],
   );
-
 
   // side effects
   useEffect(() => {
@@ -60,7 +59,7 @@ const AdministrationPage: React.FC = () => {
       <div className={styles.Administration__nav}>
         {Tabs.map((itm, index) => (
           <Button
-            type={tab.title === itm.title ? 'primary' : 'default'}
+            type={tab?.title === itm?.title ? 'primary' : 'default'}
             onClick={() => onChangeTab(itm)}
             key={index}
           >

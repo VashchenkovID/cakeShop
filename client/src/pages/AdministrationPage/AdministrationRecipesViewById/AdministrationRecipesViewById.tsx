@@ -34,6 +34,14 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
     },
   );
 
+  const removeCake = async () => {
+    if (device) {
+      await cakesApi.removeCake(device.id.toString()).then(() => {
+        setDevice(null);
+      });
+    }
+  };
+
   useEffect(() => {
     if (activeList) {
       fetchRecipe(activeList.toString());
@@ -118,7 +126,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
             >
               Редактировать
             </Button>
-            <Button>Удалить</Button>
+            <Button onClick={() => removeCake()}>Удалить</Button>
           </div>
         </div>
       )}
