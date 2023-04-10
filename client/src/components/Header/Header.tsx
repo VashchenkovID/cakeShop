@@ -11,6 +11,7 @@ import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
 
 const cx = cn.bind(styles);
 
@@ -35,7 +36,6 @@ const Header: React.FC<IHeaderProps> = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const myLoc = `/${location.pathname.split('/').slice(1, 2).join('')}`;
   const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
-
   const items: Item[] = [
     {
       label: 'Магазин',
@@ -104,7 +104,7 @@ const Header: React.FC<IHeaderProps> = () => {
         <div className={styles.Header__user}>
           <UserOutlined />
           {user}
-          <ShoppingCartOutlined />
+          <BasketWithCount />
           <Button
             onClick={() => {
               localStorage.clear();

@@ -4,6 +4,11 @@ class BasketController {
   async create(req, res, next) {
     let { name, items, user_id } = req.body;
 
+    const basket = await Basket.create({
+      name: name,
+      userId: user_id,
+    });
+
     if (items) {
       items = JSON.parse(items);
       items.forEach((item) =>
@@ -16,10 +21,7 @@ class BasketController {
         })
       );
     }
-    const basket = await Basket.create({
-      name: name,
-      userId: user_id,
-    });
+
     return res.json({ id: basket.id });
   }
   async getAll(req, res) {

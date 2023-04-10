@@ -60,6 +60,7 @@ const AuthContainer: React.FC = () => {
           localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
           localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
           localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
+          localStorage.setItem(LocalStorageKeysEnum.ID, r.data.id);
           clearInputs();
           navigate(PublicRoutesEnum.SHOP);
           setLoading(false);

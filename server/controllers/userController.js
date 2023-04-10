@@ -48,6 +48,7 @@ class UserController {
       role: user.role,
       name: user.fullName,
       phone: user.phone,
+      id: user.id,
     });
   }
   async check(req, res, next) {

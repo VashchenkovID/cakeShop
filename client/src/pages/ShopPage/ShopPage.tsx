@@ -24,12 +24,22 @@ const ShopPage: React.FC = () => {
     },
   );
 
+  const { load: fetchFillings, isLoading: fillingLoading } = useRequest(
+    cakesApi.getCakeFillings,
+    (data) => {
+      if (data) {
+        setFillings(data.data);
+      }
+    },
+  );
+
   const handleScrollToAnElement = () => {
     shopRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
     fetchRecipes();
+    fetchFillings();
   }, []);
 
   return (
@@ -60,6 +70,16 @@ const ShopPage: React.FC = () => {
       </div>
       <div className={styles.Shop__case}>
         {fillings.length} различных вкусов для начинки :
+        <div className={styles.Shop__case__fillings}>
+          {fillings.map((itm, idx) => (
+            <div key={idx}>
+              <img
+                src={`http://localhost:8081/${itm.img}`}
+                className={styles.Shop__items__item}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       <div ref={shopRef}>
         <h2>Наши десерты:</h2>
