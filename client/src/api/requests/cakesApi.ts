@@ -1,4 +1,4 @@
-import { get, post, del, put, putData } from '../../api';
+import { get, post, del } from '../../api';
 import { EnpointsEnum } from 'src/api/endpoints';
 import { $authHost, $host } from 'src/api/requests/index';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
@@ -10,6 +10,11 @@ interface IDeviceListResponse {
   rows: DeviceListModel[];
 }
 
+interface IFillingType {
+  name: string;
+  img: File;
+}
+
 export default {
   loadAllCakes: (): Promise<AxiosResponse<IDeviceListResponse, any>> =>
     $host.get(EnpointsEnum.GET_CAKES),
@@ -19,7 +24,17 @@ export default {
   removeCake: (id: string) => del(`${EnpointsEnum.REMOVE_CAKE}/${id}`),
   editCake: (id: string, data: any) =>
     $authHost.put(`${EnpointsEnum.EDIT_CAKE}/${id}`, data),
-  createCakeType: (name: any) => post(`${EnpointsEnum.CREATE_TYPE}`, name),
   loadRecipe: (id: string): Promise<DeviceItemModel> =>
     get(`${EnpointsEnum.GET_RECIPE}/${id}`),
+  //  Вспомогательные типы (начинки и тип десерта)
+  createCakeType: (name: FormData) =>
+    $authHost.post(`${EnpointsEnum.CREATE_TYPE}`, name),
+  getCakeTypes: () => $authHost.get(`${EnpointsEnum.GET_TYPES}`),
+  removeCakeType: (id: number) =>
+    $authHost.delete(`${EnpointsEnum.DELETE_TYPES}/${id}`),
+  createCakeFilling: (data: FormData) =>
+    $authHost.post(`${EnpointsEnum.CREATE_FILLING}`, data),
+  getCakeFillings: () => $authHost.get(`${EnpointsEnum.GET_FILLINGS}`),
+  removeCakeFilling: (id: number) =>
+    $authHost.delete(`${EnpointsEnum.DELETE_FILLINGS}/${id}`),
 };

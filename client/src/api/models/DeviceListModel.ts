@@ -8,4 +8,5 @@ export interface DeviceListModel {
   createdAt: string;
   updatedAt: string;
   TypeId: number;
+  FillingId: number;
 }

@@ -5,6 +5,8 @@ import { $host } from 'src/api/requests/index';
 export interface AuthorizationParams {
   email: string;
   password: string;
+  fullName?: string;
+  phone?: string;
 }
 
 export default {

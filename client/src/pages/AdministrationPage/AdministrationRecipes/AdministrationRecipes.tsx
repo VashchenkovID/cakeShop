@@ -50,15 +50,6 @@ const AdministrationRecipes = () => {
 
   return (
     <>
-      <div
-        onClick={() => {
-          navigate(
-            `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/create`,
-          );
-        }}
-      >
-        Создать новый рецепт
-      </div>
       {pageMode === AdminPageMode.VIEW && (
         <section className={styles.Recipes}>
           <AdministrationRecipesList

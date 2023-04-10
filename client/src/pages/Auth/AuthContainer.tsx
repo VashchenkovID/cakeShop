@@ -11,6 +11,8 @@ import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 const AuthContainer: React.FC = () => {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,6 +30,8 @@ const AuthContainer: React.FC = () => {
         .registrationNewUser({
           email: login,
           password: password,
+          fullName: name,
+          phone: phone,
         })
         .then((r) => {
           dispatch(setIsAuth(true));
@@ -54,6 +58,8 @@ const AuthContainer: React.FC = () => {
           dispatch(setIsAuth(true));
           localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
           localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
+          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
+          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
           clearInputs();
           navigate(PublicRoutesEnum.SHOP);
           setLoading(false);
@@ -78,6 +84,7 @@ const AuthContainer: React.FC = () => {
                 : 'Авторизация'}
             </h1>
             <input
+              placeholder={'Логин'}
               id="outlined-basic"
               value={login}
               onChange={(e) => {
@@ -85,12 +92,34 @@ const AuthContainer: React.FC = () => {
               }}
             />
             <input
+              placeholder={'Пароль'}
               id="outlined-basic"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
             />
+            {location.pathname.includes(PublicRoutesEnum.AUTH) && (
+              <div>
+                <input
+                  placeholder={'Имя'}
+                  id="outlined-basic"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+                <input
+                  id="outlined-basic"
+                  placeholder={'Телефон'}
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+
             <button onClick={enterInApp}>Вход</button>
           </div>
         </div>

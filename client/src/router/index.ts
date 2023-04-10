@@ -15,6 +15,7 @@ export const enum PrivateRoutesEnum {
   ANALYTICS = 'analytics',
   RECIPES = 'recipes',
   ORDERS = 'orders',
+  TYPES = 'types',
 }
 
 export const enum PublicRoutesEnum {

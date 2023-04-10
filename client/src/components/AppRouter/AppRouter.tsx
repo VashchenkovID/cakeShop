@@ -43,6 +43,10 @@ export const privateRoutes: Array<IRouteItem> = [
     element: <AdministrationPage />,
   },
   {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.TYPES}`,
+    element: <AdministrationPage />,
+  },
+  {
     path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.ORDERS}`,
     element: <AdministrationPage />,
   },

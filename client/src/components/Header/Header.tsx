@@ -9,6 +9,8 @@ import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
 const cx = cn.bind(styles);
 
@@ -29,7 +31,7 @@ const Header: React.FC<IHeaderProps> = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const isAuth = useAppSelector(selectIsAuth);
   const myLoc = `/${location.pathname.split('/').slice(1, 2).join('')}`;
   const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
@@ -65,7 +67,7 @@ const Header: React.FC<IHeaderProps> = () => {
   };
 
   return (
-    <div
+    <header
       className={cx(styles.Header, {
         not:
           myLoc === PublicRoutesEnum.AUTH || myLoc === PublicRoutesEnum.LOGIN,
@@ -99,14 +101,19 @@ const Header: React.FC<IHeaderProps> = () => {
               ))}
       </nav>
       {isAuth ? (
-        <button
-          onClick={() => {
-            localStorage.clear();
-            dispatch(setIsAuth(false));
-          }}
-        >
-          Выйти
-        </button>
+        <div className={styles.Header__user}>
+          <UserOutlined />
+          {user}
+          <ShoppingCartOutlined />
+          <Button
+            onClick={() => {
+              localStorage.clear();
+              dispatch(setIsAuth(false));
+            }}
+          >
+            Выйти
+          </Button>
+        </div>
       ) : (
         <div>
           <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>Вход</button>
@@ -115,7 +122,7 @@ const Header: React.FC<IHeaderProps> = () => {
           </button>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Basket, BasketDevice, Device } from "../models/models";
+const { Basket, BasketDevice, Device } = require("../models/models");
 
 class BasketController {
   async create(req, res, next) {
@@ -11,6 +11,8 @@ class BasketController {
           name: item.name,
           deviceId: item.deviceId,
           basketId: basket.id,
+          count: item.count,
+          price: item.price,
         })
       );
     }
@@ -18,7 +20,7 @@ class BasketController {
       name: name,
       userId: user_id,
     });
-    return res.json(basket);
+    return res.json({ id: basket.id });
   }
   async getAll(req, res) {
     let { limit, page, userId } = req.query;

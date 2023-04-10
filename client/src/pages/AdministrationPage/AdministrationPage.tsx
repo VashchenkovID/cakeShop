@@ -3,9 +3,9 @@ import { PrivateRoutesEnum } from 'src/router';
 import styles from './AdministrationPage.styl';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
 import { Button } from 'antd';
+import AdministrationTypes from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -42,6 +42,11 @@ const AdministrationPage: React.FC = () => {
         component: <div></div>,
         title: `Заказы`,
       },
+      {
+        path: PrivateRoutesEnum.TYPES,
+        component: <div></div>,
+        title: `Вспомогательные типы`,
+      },
     ],
     [],
   );
@@ -67,9 +72,9 @@ const AdministrationPage: React.FC = () => {
           </Button>
         ))}
       </div>
-
       <div>
         {tab.path === PrivateRoutesEnum.RECIPES && <AdministrationRecipes />}
+        {tab.path === PrivateRoutesEnum.TYPES && <AdministrationTypes />}
       </div>
     </section>
   );

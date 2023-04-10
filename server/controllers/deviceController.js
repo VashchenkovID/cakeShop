@@ -6,7 +6,7 @@ const ApiError = require("../Error/ApiError");
 class DeviceController {
   async create(req, res, next) {
     try {
-      let { name, price, typeId, info, description } = req.body;
+      let { name, price, typeId, info, description, fillingId } = req.body;
       const img = req.files?.img || null;
       let fileName;
       fileName = uuid.v4() + ".jpg";
@@ -16,6 +16,7 @@ class DeviceController {
         name,
         price: Number(price),
         TypeId: typeId,
+        FillingId: fillingId,
         description: `${description}`,
         img: fileName,
       });
@@ -38,7 +39,7 @@ class DeviceController {
 
   async update(req, res, next) {
     try {
-      let { name, price, description, typeId, info } = req.body;
+      let { name, price, description, typeId, info, fillingId } = req.body;
       let { id } = req.params;
       const img = req.files?.img || null;
       let fileName;
@@ -52,6 +53,7 @@ class DeviceController {
         name: name,
         price: price,
         TypeId: typeId,
+        FillingId: fillingId,
         description: description,
         img: fileName || null,
       });

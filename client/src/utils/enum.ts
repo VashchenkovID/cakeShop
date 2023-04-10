@@ -2,6 +2,8 @@ export enum LocalStorageKeysEnum {
   TOKEN = 'token',
   ID = 'id',
   ROLE = 'role',
+  NAME = 'name',
+  PHONE = 'phone',
 }
 
 export const enum RequestStatusEnum {
@@ -15,4 +17,3 @@ export enum HeaderIdEnum {
   SHOP = 'shop',
   ADMINISTRATION = 'administration',
 }
-
