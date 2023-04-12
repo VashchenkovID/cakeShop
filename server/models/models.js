@@ -14,14 +14,14 @@ const Basket = sequilize.define("Basket", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.INTEGER },
   status: { type: DataTypes.STRING },
-  date_completed: { type: DataTypes.STRING },
+  date_completed: { type: DataTypes.DATE },
 });
 
 const IndividualOrder = sequilize.define("IndividualOrder", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.INTEGER },
+  name: { type: DataTypes.STRING },
   status: { type: DataTypes.STRING },
-  date_completed: { type: DataTypes.STRING },
+  date_completed: { type: DataTypes.DATE },
   customer: { type: DataTypes.STRING, allowNull: false },
   customer_phone: { type: DataTypes.STRING, allowNull: false },
   customer_email: { type: DataTypes.STRING },
@@ -29,7 +29,7 @@ const IndividualOrder = sequilize.define("IndividualOrder", {
 
 const IndividualOrderItem = sequilize.define("IndividualOrder_item", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, unique: true, allowNull: false },
+  name: { type: DataTypes.STRING, allowNull: false },
   count: { type: DataTypes.INTEGER, allowNull: false },
   price: { type: DataTypes.INTEGER, allowNull: false },
 });

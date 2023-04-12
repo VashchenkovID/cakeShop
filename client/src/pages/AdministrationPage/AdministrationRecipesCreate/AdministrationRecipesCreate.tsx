@@ -38,7 +38,7 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('price', `${device.price}`);
       formData.append('description', `${device.description}`);
       formData.append('img', file);
-      formData.append('typeId', type);
+      formData.append('typeId', type.id);
       formData.append('fillingId', filling.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.createCake(formData).then(() => {
@@ -47,7 +47,7 @@ const AdministrationRecipesCreate: React.FC = () => {
         );
       });
     } catch (e) {
-      alert(e.message);
+      console.error(e.message);
     }
   };
 
@@ -58,7 +58,7 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('price', `${device.price}`);
       formData.append('description', `${device.description}`);
       formData.append('img', file);
-      formData.append('typeId', type);
+      formData.append('typeId', type.id);
       formData.append('fillingId', filling.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.editCake(editCake.id.toString(), formData).then(() => {
@@ -118,6 +118,8 @@ const AdministrationRecipesCreate: React.FC = () => {
     }
   }, [location, types, fillings]);
 
+  console.log(type, filling);
+
   return (
     <div className={styles.RecipeCreate}>
       <div className={styles.RecipeCreate__leftSide}>
@@ -134,7 +136,7 @@ const AdministrationRecipesCreate: React.FC = () => {
             items={types}
             getItemLabel={(i) => i.name}
             value={type}
-            onChange={(value) => setType(value.value.id)}
+            onChange={(value) => setType(value.value)}
           />
         )}
         {fillings.length > 0 && (
@@ -142,7 +144,7 @@ const AdministrationRecipesCreate: React.FC = () => {
             items={fillings}
             getItemLabel={(i) => i.name}
             value={filling}
-            onChange={(value) => setFilling(value.value.id)}
+            onChange={(value) => setFilling(value.value)}
           />
         )}
 

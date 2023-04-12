@@ -3,19 +3,19 @@ const { IndividualOrderItem, IndividualOrder } = require("../models/models");
 class IndividualOrderController {
   async create(req, res, next) {
     let { name, items, customer, date_completed } = req.body;
-
     const order = await IndividualOrder.create({
       name: name,
       status: "CREATED",
       customer: customer.fullName,
       customer_phone: customer.phone,
-      customer_email: customer.email,
-      date_completed: date_completed,
+      customer_email: customer.email || null,
+      date_completed: new Date(date_completed),
     });
 
+
     if (items) {
-      items = JSON.parse(items);
-      items.forEach((item) =>
+      let newItems = items
+      newItems.forEach((item) =>
         IndividualOrderItem.create({
           name: item.name,
           deviceId: item.deviceId,

@@ -74,3 +74,6 @@
 .User {
   cursor: pointer;
 }
+.Popover {
+  z-index: 100;
+}

@@ -14,4 +14,5 @@ export const enum EnpointsEnum {
   GET_FILLINGS = '/filling/getAll',
   DELETE_TYPES = '/type/remove',
   DELETE_FILLINGS = '/filling/remove',
+  CREATE_INDIVIDUAL_ORDER = '/order/create',
 }
