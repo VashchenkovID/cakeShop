@@ -3,12 +3,12 @@ import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
 import styles from './AdministrationRecipesViewById.styl';
-import { Button } from 'antd';
 import { AdminPageMode } from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setCake } from 'src/redux/features/cake/CakeSlice';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutesEnum } from 'src/router';
+import { Button } from '@consta/uikit/Button';
 
 interface IComponentProps {
   activeList: number | null;
@@ -123,10 +123,9 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                   `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/edit`,
                 );
               }}
-            >
-              Редактировать
-            </Button>
-            <Button onClick={() => removeCake()}>Удалить</Button>
+              label={'Редактировать'}
+            />
+            <Button onClick={() => removeCake()} label={'Удалить'} />
           </div>
         </div>
       )}

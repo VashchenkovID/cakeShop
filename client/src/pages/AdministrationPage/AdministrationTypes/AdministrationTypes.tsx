@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
-import { Button, Modal } from 'antd';
 import AdministrationTypesModalsType from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsType';
 import AdministrationTypesModalsFilling from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsFilling';
 import styles from './AdministrationTypes.styl';
 import AdministrationTypesItem from 'src/pages/AdministrationPage/AdministrationTypesItem/AdministrationTypesItem';
+import { Button } from '@consta/uikit/Button';
+import { Modal } from '@consta/uikit/Modal';
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',
   FILLING = 'filling',
@@ -72,9 +73,11 @@ const AdministrationTypes: React.FC = () => {
       <div className={styles.Types}>
         <div className={styles.Types__column}>
           <h2>Типы десертов</h2>
-          <Button onClick={() => setModal(AdministrationTypesModalEnum.TYPE)}>
-            Создать
-          </Button>
+          <Button
+            onClick={() => setModal(AdministrationTypesModalEnum.TYPE)}
+            label={'Создать'}
+          />
+
           <div className={styles.Types__column__rows}>
             {types.length > 0 &&
               types.map((item, index) => (
@@ -86,9 +89,8 @@ const AdministrationTypes: React.FC = () => {
           <h2>Начинки тортов</h2>
           <Button
             onClick={() => setModal(AdministrationTypesModalEnum.FILLING)}
-          >
-            Создать
-          </Button>
+            label={'Создать'}
+          />
           <div className={styles.Types__column__rows}>
             {fillings.length > 0 &&
               fillings.map((item, index) => (
@@ -99,26 +101,29 @@ const AdministrationTypes: React.FC = () => {
       </div>
 
       <Modal
-        onCancel={() => setModal(AdministrationTypesModalEnum.IDLE)}
-        open={modal === AdministrationTypesModalEnum.TYPE}
-        onOk={() => {
-          createNewType();
+        isOpen={modal === AdministrationTypesModalEnum.TYPE}
+        onClickOutside={() => {
           setModal(AdministrationTypesModalEnum.IDLE);
         }}
       >
-        <AdministrationTypesModalsType type={type} setType={setType} />
+        <AdministrationTypesModalsType
+          type={type}
+          setType={setType}
+          onClose={() => setModal(AdministrationTypesModalEnum.IDLE)}
+          onSave={createNewType}
+        />
       </Modal>
       <Modal
-        onCancel={() => setModal(AdministrationTypesModalEnum.IDLE)}
-        open={modal === AdministrationTypesModalEnum.FILLING}
-        onOk={() => {
-          createNewFilling();
+        onClickOutside={() => {
           setModal(AdministrationTypesModalEnum.IDLE);
         }}
+        isOpen={modal === AdministrationTypesModalEnum.FILLING}
       >
         <AdministrationTypesModalsFilling
           filling={filling}
           setFilling={setFilling}
+          onClose={() => setModal(AdministrationTypesModalEnum.IDLE)}
+          onSave={createNewFilling}
         />
       </Modal>
     </section>

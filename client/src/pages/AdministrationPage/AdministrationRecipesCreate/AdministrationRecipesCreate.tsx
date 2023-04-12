@@ -5,9 +5,10 @@ import cn from 'classnames/bind';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectCakeItem } from 'src/redux/features/cake/CakeSelectors';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Select } from 'antd';
 import { PrivateRoutesEnum } from 'src/router';
 import useRequest from 'src/hooks/useRequest';
+import { Select } from '@consta/uikit/Select';
+import { Button } from '@consta/uikit/Button';
 
 const cx = cn.bind(styles);
 
@@ -38,7 +39,7 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('description', `${device.description}`);
       formData.append('img', file);
       formData.append('typeId', type);
-      formData.append('fillingId', filling);
+      formData.append('fillingId', filling.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.createCake(formData).then(() => {
         navigate(
@@ -58,7 +59,7 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('description', `${device.description}`);
       formData.append('img', file);
       formData.append('typeId', type);
-      formData.append('fillingId', filling);
+      formData.append('fillingId', filling.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.editCake(editCake.id.toString(), formData).then(() => {
         navigate(
@@ -78,11 +79,7 @@ const AdministrationRecipesCreate: React.FC = () => {
     cakesApi.getCakeTypes,
     (data) => {
       if (data) {
-        setTypes(
-          data.data.map((item: any) => {
-            return { value: item.id, label: item.name };
-          }),
-        );
+        setTypes(data.data);
       }
     },
   );
@@ -91,11 +88,7 @@ const AdministrationRecipesCreate: React.FC = () => {
     cakesApi.getCakeFillings,
     (data) => {
       if (data) {
-        setFillings(
-          data.data.map((item: any) => {
-            return { value: item.id, label: item.name, ...item };
-          }),
-        );
+        setFillings(data.data);
       }
     },
   );
@@ -117,15 +110,14 @@ const AdministrationRecipesCreate: React.FC = () => {
       });
       setRenderImage(`http://localhost:8081/${editCake.img}`);
       if (types.length > 0) {
-        setType(types.find((item) => item.value === editCake.TypeId).value);
+        setType(types.find((item) => item.id === editCake.TypeId));
       }
       if (fillings.length > 0) {
-        setFilling(
-          fillings.find((item) => item.value === editCake.FillingId).value,
-        );
+        setFilling(fillings.find((item) => item.id === editCake.FillingId));
       }
     }
   }, [location, types, fillings]);
+
   return (
     <div className={styles.RecipeCreate}>
       <div className={styles.RecipeCreate__leftSide}>
@@ -138,13 +130,19 @@ const AdministrationRecipesCreate: React.FC = () => {
           />
         )}
         {types.length > 0 && (
-          <Select options={types} value={type} onChange={(e) => setType(e)} />
+          <Select
+            items={types}
+            getItemLabel={(i) => i.name}
+            value={type}
+            onChange={(value) => setType(value.value.id)}
+          />
         )}
         {fillings.length > 0 && (
           <Select
-            options={fillings}
+            items={fillings}
+            getItemLabel={(i) => i.name}
             value={filling}
-            onChange={(e) => setFilling(e)}
+            onChange={(value) => setFilling(value.value.id)}
           />
         )}
 
@@ -245,6 +243,7 @@ const AdministrationRecipesCreate: React.FC = () => {
                           };
                         });
                       }}
+                      label={'i'}
                     />
                   </div>
                 </div>
@@ -278,9 +277,8 @@ const AdministrationRecipesCreate: React.FC = () => {
               addDevice();
             } else EditDevice();
           }}
-        >
-          {location.pathname.includes('create') ? 'Создать' : 'Сохранить'}
-        </Button>
+          label={location.pathname.includes('create') ? 'Создать' : 'Сохранить'}
+        />
       </div>
     </div>
   );

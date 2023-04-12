@@ -25,4 +25,5 @@ export const enum PublicRoutesEnum {
   SHOP = '/shop',
   VIEW_CAKE = '/shop/view',
   ADMINISTRATION = '/administration',
+  VIEW_ORDER = '/view/order',
 }

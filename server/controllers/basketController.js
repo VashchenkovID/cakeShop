@@ -1,4 +1,4 @@
-const { Basket, BasketDevice, Device } = require("../models/models");
+const { Basket, BasketDevice } = require("../models/models");
 
 class BasketController {
   async create(req, res, next) {
@@ -7,6 +7,7 @@ class BasketController {
     const basket = await Basket.create({
       name: name,
       userId: user_id,
+      status: "CREATED",
     });
 
     if (items) {
@@ -15,7 +16,7 @@ class BasketController {
         BasketDevice.create({
           name: item.name,
           deviceId: item.deviceId,
-          basketId: basket.id,
+          BasketId: basket.id,
           count: item.count,
           price: item.price,
         })
@@ -24,6 +25,63 @@ class BasketController {
 
     return res.json({ id: basket.id });
   }
+  async update(req, res, next) {
+    let { status, items, date_completed } = req.body;
+    let { id } = req.params;
+    const oldOrder = Basket.findOne({
+      where: { id },
+      include: [{ model: BasketDevice, as: "items" }],
+    });
+
+    const order = await Basket.upsert({
+      id: id,
+      name: oldOrder.name,
+      status: status,
+      customer: oldOrder.customer,
+      customer_phone: oldOrder.customer_phone,
+      customer_email: oldOrder.customer_email,
+      date_completed: date_completed,
+    });
+
+    if (items) {
+      items = JSON.parse(items);
+      if (items.length === 0) {
+        await BasketDevice.destroy({
+          where: { BasketId: id },
+        });
+        await BasketDevice.destroy({
+          where: { BasketId: null },
+        });
+      } else {
+        items.forEach((item) => {
+          if (item.id) {
+            BasketDevice.upsert(
+              {
+                id: item.id,
+                name: item.name,
+                deviceId: item.deviceId,
+                BasketId: order.id,
+                count: item.count,
+                price: item.price,
+              },
+              {
+                where: { BasketId: id },
+              }
+            );
+          } else {
+            BasketDevice.create({
+              name: item.name,
+              deviceId: item.deviceId,
+              BasketId: order.id,
+              count: item.count,
+              price: item.price,
+            });
+          }
+        });
+      }
+    }
+    return res.json({ id: order.id });
+  }
   async getAll(req, res) {
     let { limit, page, userId } = req.query;
     page = page || 1;
@@ -31,8 +89,8 @@ class BasketController {
     let offset = page * limit - limit;
     let devices;
     if (userId) {
-      devices = await Device.findAndCountAll({ limit, offset, UserId: userId });
-    } else devices = await Device.findAndCountAll({ limit, offset });
+      devices = await Basket.findAndCountAll({ limit, offset, UserId: userId });
+    } else devices = await Basket.findAndCountAll({ limit, offset });
     return res.json(devices);
   }
 
@@ -43,7 +101,7 @@ class BasketController {
       include: [
         {
           model: BasketDevice,
-          as: "basketId",
+          as: "BasketId",
         },
       ],
     });

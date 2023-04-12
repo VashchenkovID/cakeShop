@@ -3,11 +3,12 @@ const router = new Router();
 const checkRole = require("../middleware/checkRoleMiddleware");
 const basketController = require("../controllers/basketController");
 
-router.post("/basket/create", basketController.create);
-router.get("/basket/getAll", basketController.getAll);
-router.get("/basket/getOne/:id", basketController.getOne);
+router.post("/create", basketController.create);
+router.put("/update/:id", checkRole("ADMIN"), basketController.update);
+router.get("/getAll", basketController.getAll);
+router.get("/getOne/:id", basketController.getOne);
 router.delete(
-  "/basket/remove/:id",
+  "/remove/:id",
   checkRole("ADMIN"),
   basketController.remove
 );

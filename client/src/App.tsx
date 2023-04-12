@@ -6,6 +6,8 @@ import { setupStore } from './redux/store';
 import { setAutoFreeze } from 'immer';
 import { AppRouter } from './components/AppRouter';
 import Header from 'src/components/Header';
+import { Theme } from '@consta/uikit/Theme';
+import { myDefaultPreset } from 'src/utils/presetConsta/constaMyStyle/myDefaultPreset';
 
 const store = setupStore();
 
@@ -15,10 +17,12 @@ const App = () => {
   }, []);
   return (
     <Provider store={store}>
-      <ReduxRouter history={browserHistory} store={store}>
-        <Header />
-        <AppRouter />
-      </ReduxRouter>
+      <Theme preset={myDefaultPreset}>
+        <ReduxRouter history={browserHistory} store={store}>
+          <Header />
+          <AppRouter />
+        </ReduxRouter>
+      </Theme>
     </Provider>
   );
 };

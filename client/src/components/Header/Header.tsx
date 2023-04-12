@@ -9,9 +9,10 @@ import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
+import { IconUser } from '@consta/uikit/IconUser';
+import { Button } from '@consta/uikit/Button';
+import {User} from "@consta/uikit/User";
 
 const cx = cn.bind(styles);
 
@@ -100,19 +101,21 @@ const Header: React.FC<IHeaderProps> = () => {
                 </li>
               ))}
       </nav>
+      <div className={styles.Header__user}>
+        <User name={user} />
+        <BasketWithCount />
+      </div>
+
       {isAuth ? (
         <div className={styles.Header__user}>
-          <UserOutlined />
-          {user}
-          <BasketWithCount />
           <Button
             onClick={() => {
               localStorage.clear();
               dispatch(setIsAuth(false));
             }}
-          >
-            Выйти
-          </Button>
+            view={'primary'}
+            label={'Выйти'}
+          />
         </div>
       ) : (
         <div>

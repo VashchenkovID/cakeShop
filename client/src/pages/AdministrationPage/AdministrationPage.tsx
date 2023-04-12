@@ -4,8 +4,8 @@ import styles from './AdministrationPage.styl';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
-import { Button } from 'antd';
 import AdministrationTypes from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
+import { Button } from '@consta/uikit/Button';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -64,12 +64,11 @@ const AdministrationPage: React.FC = () => {
       <div className={styles.Administration__nav}>
         {Tabs.map((itm, index) => (
           <Button
-            type={tab?.title === itm?.title ? 'primary' : 'default'}
+            view={tab?.title === itm?.title ? 'primary' : 'secondary'}
             onClick={() => onChangeTab(itm)}
             key={index}
-          >
-            {itm.title}
-          </Button>
+            label={itm.title}
+          />
         ))}
       </div>
       <div>

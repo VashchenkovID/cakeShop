@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
-import { Button } from 'antd';
-import { ArrowDownOutlined } from '@ant-design/icons';
 import styles from './ShopPage.styl';
 import ShopPageItem from 'src/pages/ShopPage/ShopPageItem/ShopPageItem';
+import { IconDown } from '@consta/uikit/IconDown';
+import { Button } from '@consta/uikit/Button';
 
 const ShopPage: React.FC = () => {
   const shopRef = useRef<HTMLDivElement>(null);
@@ -54,10 +54,10 @@ const ShopPage: React.FC = () => {
             onClick={() => {
               handleScrollToAnElement();
             }}
-          >
-            Выбрать десерт <ArrowDownOutlined />
-          </Button>
-          <Button>Заказать индивидуальный десерт</Button>
+            iconLeft={IconDown}
+            label={'Выбрать десерт'}
+          />
+          <Button label={'Заказать индивидуальный десерт'} />
         </div>
       </div>
       <div className={styles.Shop__case}>

@@ -12,6 +12,7 @@ import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import AdministrationPage from 'src/pages/AdministrationPage/AdministrationPage';
+import CreateOrder from 'src/pages/CreateOrder/CreateOrder';
 
 export const publicRoutes: Array<IRouteItem> = [
   {
@@ -22,6 +23,10 @@ export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
   { path: `${PublicRoutesEnum.LOGIN}`, element: <AuthContainer /> },
   { path: PublicRoutesEnum.INFO_PAGE, element: <div></div> },
+  {
+    path: `${PublicRoutesEnum.VIEW_ORDER}`,
+    element: <CreateOrder />,
+  },
 ];
 
 export const privateRoutes: Array<IRouteItem> = [

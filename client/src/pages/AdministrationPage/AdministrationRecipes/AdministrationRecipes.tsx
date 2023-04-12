@@ -8,7 +8,6 @@ import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import AdministrationRecipesList from 'src/pages/AdministrationPage/AdministrationRecipesList/AdministrationRecipesList';
 import AdministrationRecipesViewById from 'src/pages/AdministrationPage/AdministrationRecipesViewById/AdministrationRecipesViewById';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PrivateRoutesEnum } from 'src/router';
 
 const cx = cn.bind(styles);
 

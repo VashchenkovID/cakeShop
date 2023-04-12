@@ -17,6 +17,23 @@ const Basket = sequilize.define("Basket", {
   date_completed: { type: DataTypes.STRING },
 });
 
+const IndividualOrder = sequilize.define("IndividualOrder", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.INTEGER },
+  status: { type: DataTypes.STRING },
+  date_completed: { type: DataTypes.STRING },
+  customer: { type: DataTypes.STRING, allowNull: false },
+  customer_phone: { type: DataTypes.STRING, allowNull: false },
+  customer_email: { type: DataTypes.STRING },
+});
+
+const IndividualOrderItem = sequilize.define("IndividualOrder_item", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, unique: true, allowNull: false },
+  count: { type: DataTypes.INTEGER, allowNull: false },
+  price: { type: DataTypes.INTEGER, allowNull: false },
+});
+
 const BasketDevice = sequilize.define("Basket_device", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
@@ -37,7 +54,6 @@ const Type = sequilize.define("Type", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
 });
-
 
 const Filling = sequilize.define("Filling", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -67,6 +83,9 @@ Rating.belongsTo(User);
 Basket.hasMany(BasketDevice, { as: "items" });
 BasketDevice.belongsTo(Basket);
 
+IndividualOrder.hasMany(IndividualOrderItem, { as: "items" });
+IndividualOrderItem.belongsTo(IndividualOrder);
+
 Type.hasMany(Device);
 Device.belongsTo(Type);
 
@@ -91,4 +110,6 @@ module.exports = {
   Type,
   Rating,
   Filling,
+  IndividualOrder,
+  IndividualOrderItem,
 };

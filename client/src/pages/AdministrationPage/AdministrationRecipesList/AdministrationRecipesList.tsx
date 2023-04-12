@@ -4,7 +4,8 @@ import AdministrationListItem from '../AdministrationListItem/AdministrationList
 import styles from './AdministrationRecipesList.styl';
 import { PrivateRoutesEnum } from 'src/router';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import {Button} from "@consta/uikit/Button";
+
 interface IComponentProps {
   recipes: DeviceListModel[];
   activeList: number | null;
@@ -25,9 +26,9 @@ const AdministrationRecipesList: React.FC<IComponentProps> = ({
             `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/create`,
           );
         }}
-      >
-        Создать новый рецепт
-      </Button>
+        label={'Создать новый рецепт'}
+      />
+
       {recipes.length > 0 &&
         recipes.map((item, index) => (
           <AdministrationListItem
