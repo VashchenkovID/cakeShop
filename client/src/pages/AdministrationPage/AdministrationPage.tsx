@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRecipes/AdministrationRecipes';
 import AdministrationTypes from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
 import { Button } from '@consta/uikit/Button';
+import AdministrationOrdersProcessing from 'src/pages/AdministrationPage/AdministrationOrdersProcessing/AdministrationOrdersProcessing';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -74,6 +75,9 @@ const AdministrationPage: React.FC = () => {
       <div>
         {tab.path === PrivateRoutesEnum.RECIPES && <AdministrationRecipes />}
         {tab.path === PrivateRoutesEnum.TYPES && <AdministrationTypes />}
+        {tab.path === PrivateRoutesEnum.ORDERS && (
+          <AdministrationOrdersProcessing />
+        )}
       </div>
     </section>
   );

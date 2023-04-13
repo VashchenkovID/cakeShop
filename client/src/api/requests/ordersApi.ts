@@ -7,4 +7,6 @@ export default {
     $authHost.post(`${EnpointsEnum.CREATE_INDIVIDUAL_ORDER}`, data),
   createNewUserOrder: (data: any): Promise<AxiosResponse<any, any>> =>
     $authHost.post(`${EnpointsEnum.CREATE_USER_ORDER}`, data),
+  getOrderProcessing: (date: string): Promise<AxiosResponse<any, any>> =>
+    $authHost.get(`${EnpointsEnum.GET_PROCESSING}/${date}`),
 };
