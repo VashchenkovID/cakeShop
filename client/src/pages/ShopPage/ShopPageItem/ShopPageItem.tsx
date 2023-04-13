@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './ShopPageItem.styl';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
@@ -127,11 +127,144 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
       }
     }
   };
+  const removeItemInBasket = async () => {
+    if (userId) {
+      if (!basket) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Заказ пользователя ${userName}`,
+            user_id: Number(userId),
+            items: [
+              {
+                id: item.id,
+                name: item.name,
+                deviceId: item.id,
+                count: 1,
+                price: item.price,
+                basketId: null,
+              },
+            ],
+          }),
+        );
+        setIsAdded(true);
+      }
+      if (basket) {
+        if (basket.items.find((elem) => elem.id === item.id)) {
+          dispatch(
+            setBasket({
+              ...basket,
+              items: basket.items.map((i) => {
+                if (i.id === item.id) {
+                  if (i.count <= 1) {
+                    return { ...i, count: 1 };
+                  }
+                  return { ...i, count: i.count - 1 };
+                } else return { ...i };
+              }),
+            }),
+          );
+        } else {
+          dispatch(
+            setBasket({
+              ...basket,
+              items: [
+                ...basket.items,
+                {
+                  id: item.id,
+                  name: item.name,
+                  deviceId: item.id,
+                  count: 1,
+                  price: item.price,
+                  basketId: null,
+                },
+              ],
+            }),
+          );
+        }
+      }
+    } else {
+      if (!basket) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Индивидуальный заказ`,
+            user_id: null,
+            items: [
+              {
+                id: item.id,
+                name: item.name,
+                deviceId: item.id,
+                count: 1,
+                price: item.price,
+                basketId: null,
+              },
+            ],
+          }),
+        );
+        setIsAdded(true);
+      }
+      if (basket) {
+        if (basket.items.find((elem) => elem.id === item.id)) {
+          dispatch(
+            setBasket({
+              ...basket,
+              items: basket.items.map((i) => {
+                if (i.id === item.id) {
+                  if (i.count <= 1) {
+                    return { ...i, count: 1 };
+                  }
+                  return { ...i, count: i.count - 1 };
+                } else return { ...i };
+              }),
+            }),
+          );
+        } else {
+          dispatch(
+            setBasket({
+              ...basket,
+              items: [
+                ...basket.items,
+                {
+                  id: item.id,
+                  name: item.name,
+                  deviceId: item.id,
+                  count: 1,
+                  price: item.price,
+                  basketId: null,
+                },
+              ],
+            }),
+          );
+        }
+      }
+    }
+  };
+
+  const countItemBasket = useMemo(() => {
+    if (basket) {
+      if (basket.items.length > 0) {
+        const findItem: {
+          id: number;
+          name: string;
+          deviceId: number;
+          basketId: number;
+          count: number;
+          price: number;
+        } = basket.items.find((itm) => itm.id === item.id);
+        if (findItem) {
+          return findItem.count;
+        } else return 0;
+      } else return 0;
+    } else return 0;
+  }, [basket]);
+
   useEffect(() => {
     if (basket && basket.items.find((elem) => elem.id === item.id)) {
       setIsAdded(true);
     }
   }, [basket]);
+
   return (
     <div className={styles.Item}>
       <img
@@ -151,6 +284,8 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
           <Button onClick={() => addItemInBasket()} label={'Добавить'} />
         ) : (
           <div>
+            <Button label={'-'} onClick={() => removeItemInBasket()} />
+            {countItemBasket}
             <Button onClick={() => addItemInBasket()} label={'+'} />
           </div>
         )}

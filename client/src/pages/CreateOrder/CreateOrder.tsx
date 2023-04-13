@@ -8,6 +8,10 @@ import { Button } from '@consta/uikit/Button';
 import { Modal } from '@consta/uikit/Modal';
 import { DatePicker } from '@consta/uikit/DatePicker';
 import ordersApi from 'src/api/requests/ordersApi';
+import { useNavigate } from 'react-router-dom';
+import { PublicRoutesEnum } from 'src/router';
+import { useAppDispatch } from 'src/hooks/useAppDispatch';
+import { setBasket } from 'src/redux/features/basket/BasketSlice';
 
 interface UserCreateOrderType {
   name: string;
@@ -17,7 +21,10 @@ interface UserCreateOrderType {
 }
 
 const CreateOrder: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
+  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
   const [modal, setModal] = useState(false);
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
     name: '',
@@ -42,16 +49,49 @@ const CreateOrder: React.FC = () => {
   }, []);
 
   const createNewIndividualOrder = async () => {
-    await ordersApi.createNewIndividualOrder({
-      name: `Индивидуальный заказ ${notAuthUser.name}`,
-      customer: {
-        fullName: notAuthUser.name,
-        phone: notAuthUser.phone,
-        email: notAuthUser.email,
-      },
-      date_completed: notAuthUser.order_date.toISOString(),
-      items: basket.items,
-    });
+    await ordersApi
+      .createNewIndividualOrder({
+        name: `Индивидуальный заказ ${notAuthUser.name}`,
+        customer: {
+          fullName: notAuthUser.name,
+          phone: notAuthUser.phone,
+          email: notAuthUser.email,
+        },
+        date_completed: notAuthUser.order_date.toISOString(),
+        items: basket.items,
+      })
+      .then(() => {
+        setNotAuthUser({
+          name: '',
+          phone: '',
+          email: '',
+          order_date: null,
+        });
+        navigate(`${PublicRoutesEnum.SHOP}`);
+        dispatch(setBasket(null));
+      });
+  };
+
+  const createNewBasketOrder = async () => {
+    if (userId) {
+      await ordersApi
+        .createNewUserOrder({
+          name: `Заказ пользователя ${user}`,
+          date_completed: notAuthUser.order_date.toISOString(),
+          items: basket.items,
+          user_id: userId,
+        })
+        .then(() => {
+          setNotAuthUser({
+            name: '',
+            phone: '',
+            email: '',
+            order_date: null,
+          });
+          navigate(`${PublicRoutesEnum.SHOP}`);
+          dispatch(setBasket(null));
+        });
+    }
   };
 
   return (
@@ -83,7 +123,22 @@ const CreateOrder: React.FC = () => {
       )}
       <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
         {user ? (
-          <div>Авторизован</div>
+          <div>
+            <DatePicker
+              value={notAuthUser.order_date}
+              minDate={minOrderDate}
+              onChange={({ value }) =>
+                setNotAuthUser((prevState) => {
+                  return { ...prevState, order_date: value };
+                })
+              }
+            />
+            <Button
+              label={'Оформить'}
+              onClick={createNewBasketOrder}
+              disabled={!notAuthUser.order_date}
+            />
+          </div>
         ) : (
           <div>
             <h3>Оформление заказа</h3>

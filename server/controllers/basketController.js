@@ -1,17 +1,24 @@
-const { Basket, BasketDevice } = require("../models/models");
+const { Basket, BasketDevice, User } = require("../models/models");
 
 class BasketController {
   async create(req, res, next) {
-    let { name, items, user_id } = req.body;
+    let { name, items, user_id, date_completed } = req.body;
 
-    const basket = await Basket.create({
-      name: name,
-      userId: user_id,
-      status: "CREATED",
-    });
+    const user = await User.findOne({ where: { id: user_id } });
+    let basket = null;
+    if (user) {
+      basket = await Basket.create({
+        name: name,
+        UserId: user_id,
+        status: "CREATED",
+        customer: user.fullName,
+        customer_phone: user.phone,
+        customer_email: user.email || null,
+        date_completed: new Date(date_completed),
+      });
+    }
 
-    if (items) {
-      items = JSON.parse(items);
+    if (items && basket) {
       items.forEach((item) =>
         BasketDevice.create({
           name: item.name,

@@ -15,4 +15,5 @@ export const enum EnpointsEnum {
   DELETE_TYPES = '/type/remove',
   DELETE_FILLINGS = '/filling/remove',
   CREATE_INDIVIDUAL_ORDER = '/order/create',
+  CREATE_USER_ORDER = '/basket/create',
 }

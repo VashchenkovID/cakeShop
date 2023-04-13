@@ -12,7 +12,7 @@ import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
 import { IconUser } from '@consta/uikit/IconUser';
 import { Button } from '@consta/uikit/Button';
-import {User} from "@consta/uikit/User";
+import { User } from '@consta/uikit/User';
 
 const cx = cn.bind(styles);
 
@@ -102,29 +102,30 @@ const Header: React.FC<IHeaderProps> = () => {
               ))}
       </nav>
       <div className={styles.Header__user}>
-        <User name={user} />
-        <BasketWithCount />
+        {isAuth && <User name={user} />}
+        <BasketWithCount />{' '}
+        {isAuth ? (
+          <div className={styles.Header__user}>
+            <Button
+              onClick={() => {
+                localStorage.clear();
+                dispatch(setIsAuth(false));
+              }}
+              view={'primary'}
+              label={'Выйти'}
+            />
+          </div>
+        ) : (
+          <div>
+            <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>
+              Вход
+            </button>
+            <button onClick={() => navigate(PublicRoutesEnum.AUTH)}>
+              Регистрация
+            </button>
+          </div>
+        )}
       </div>
-
-      {isAuth ? (
-        <div className={styles.Header__user}>
-          <Button
-            onClick={() => {
-              localStorage.clear();
-              dispatch(setIsAuth(false));
-            }}
-            view={'primary'}
-            label={'Выйти'}
-          />
-        </div>
-      ) : (
-        <div>
-          <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>Вход</button>
-          <button onClick={() => navigate(PublicRoutesEnum.AUTH)}>
-            Регистрация
-          </button>
-        </div>
-      )}
     </header>
   );
 };
