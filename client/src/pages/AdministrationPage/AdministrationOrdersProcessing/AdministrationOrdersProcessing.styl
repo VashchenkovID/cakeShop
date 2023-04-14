@@ -2,6 +2,9 @@
   display flex
   flex-direction column
   gap 24px
+  &__datePicker
+    margin-top 24px
+    max-width 300px
   &__content
     display grid
     grid-template-columns repeat(5,1fr)
@@ -14,7 +17,13 @@
         padding 0px 10px
         background #FFFFFF
     &__cards
-      padding 16px 0px
       display flex
       flex-direction column
       gap 16px
+      height calc(100vh - 340px)
+      overflow-y auto
+.loader
+  display flex
+  justify-content center
+  align-items center
+  width 100%

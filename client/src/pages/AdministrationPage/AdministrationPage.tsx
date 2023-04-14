@@ -7,6 +7,7 @@ import AdministrationRecipes from 'src/pages/AdministrationPage/AdministrationRe
 import AdministrationTypes from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
 import { Button } from '@consta/uikit/Button';
 import AdministrationOrdersProcessing from 'src/pages/AdministrationPage/AdministrationOrdersProcessing/AdministrationOrdersProcessing';
+import { Tabs } from '@consta/uikit/Tabs';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -26,7 +27,7 @@ const AdministrationPage: React.FC = () => {
 
   const myLoc = location.pathname.split('/')[2];
 
-  const Tabs: Array<TabType> = useMemo(
+  const TabsArr: Array<TabType> = useMemo(
     () => [
       {
         path: PrivateRoutesEnum.ANALYTICS,
@@ -52,25 +53,26 @@ const AdministrationPage: React.FC = () => {
     [],
   );
   const [tab, setTab] = useState<TabType>(
-    Tabs.find((tab) => tab.path === myLoc) || Tabs[0],
+    TabsArr.find((tab) => tab.path === myLoc) || TabsArr[0],
   );
 
   // side effects
   useEffect(() => {
-    const el = Tabs.find((item) => location.pathname.startsWith(item.path));
+    const el = TabsArr.find((item) => location.pathname.startsWith(item.path));
     if (el) return setTab(el);
-  }, [Tabs, location.pathname]);
+  }, [TabsArr, location.pathname]);
   return (
     <section className={styles.Administration}>
       <div className={styles.Administration__nav}>
-        {Tabs.map((itm, index) => (
-          <Button
-            view={tab?.title === itm?.title ? 'primary' : 'secondary'}
-            onClick={() => onChangeTab(itm)}
-            key={index}
-            label={itm.title}
-          />
-        ))}
+        <Tabs
+          className={styles.tabs}
+          getItemLabel={(i) => i.title}
+          items={TabsArr}
+          value={tab}
+          onChange={(itm) => {
+            onChangeTab(itm.value);
+          }}
+        />
       </div>
       <div>
         {tab.path === PrivateRoutesEnum.RECIPES && <AdministrationRecipes />}

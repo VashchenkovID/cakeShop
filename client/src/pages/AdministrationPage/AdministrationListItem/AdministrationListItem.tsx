@@ -1,6 +1,7 @@
 import React from 'react';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './AdministrationListItem.styl';
+import { Text } from '@consta/uikit/Text';
 
 interface IComponentProps {
   activeElement: number | null;
@@ -23,10 +24,12 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
           className={styles.RecipesListItem__image}
           src={`http://localhost:8081/${item.img}`}
         />
-        <div className={styles.RecipesListItem__title}>{item.name}</div>
+        <Text className={styles.RecipesListItem__title}>{item.name}</Text>
+        <Text className={styles.RecipesListItem__subTitle}>
+          {item.description}
+        </Text>
       </div>
-      <div className={styles.RecipesListItem__subTitle}>{item.description}</div>
-      <div className={styles.RecipesListItem__price}>{item.price},00 ₽</div>
+      <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>
     </div>
   );
 };

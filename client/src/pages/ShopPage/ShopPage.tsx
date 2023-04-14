@@ -6,6 +6,7 @@ import styles from './ShopPage.styl';
 import ShopPageItem from 'src/pages/ShopPage/ShopPageItem/ShopPageItem';
 import { IconDown } from '@consta/uikit/IconDown';
 import { Button } from '@consta/uikit/Button';
+import { Text } from '@consta/uikit/Text';
 
 const ShopPage: React.FC = () => {
   const shopRef = useRef<HTMLDivElement>(null);
@@ -45,10 +46,27 @@ const ShopPage: React.FC = () => {
   return (
     <section className={styles.Shop}>
       <div className={styles.Shop__title}>
-        <h1 className={styles.Shop__title__text}>Торты и капкейки</h1>
-        <p className={styles.Shop__title__subTitle}>
+        <Text
+          size={'6xl'}
+          weight={'semibold'}
+          className={styles.Shop__title__text}
+        >
+          AlexaCake Store
+        </Text>
+        <img
+          style={{ width: 200, margin: '0 auto' }}
+          src={
+            'https://pro2-bar-s3-cdn-cf4.myportfolio.com/cacac6b6e47e6135f27164e74f70129f/fdb8086e-2ac9-484f-accf-c1c7dd0663ff_rw_1920.png?h=f139fe80413c5335535f23a6d5091b62'
+          }
+        />
+        <Text
+          size={'l'}
+          view={'primary'}
+          weight={'semibold'}
+          className={styles.Shop__subTitle}
+        >
           Готовим и оформляем десерты на дни рождения, годовщины, корпоративы
-        </p>
+        </Text>
         <div className={styles.Shop__title__actions}>
           <Button
             onClick={() => {
@@ -61,12 +79,14 @@ const ShopPage: React.FC = () => {
         </div>
       </div>
       <div className={styles.Shop__case}>
-        <h2>Воплощаем Ваши желания</h2>
-        <p>
+        <Text size={'3xl'} weight={'semibold'}>
+          Воплощаем Ваши желания
+        </Text>
+        <Text>
           Здесь рождаются торты, которые радуют своих получателей и гостей на
           мероприятиях яркостью и художественным оформлением,с помощью кремовой
           росписи, мастики, ганаша и изомальта.
-        </p>
+        </Text>
       </div>
       <div className={styles.Shop__case}>
         {fillings.length} различных вкусов для начинки :

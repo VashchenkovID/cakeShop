@@ -3,14 +3,17 @@ import cn from 'classnames/bind';
 import styles from './styles.styl';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
-
+import {
+  Header as ConstaHeader,
+  HeaderMenu,
+  HeaderModule,
+} from '@consta/uikit/Header';
 import { HeaderIdEnum, LocalStorageKeysEnum } from 'src/utils/enum';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
-import { IconUser } from '@consta/uikit/IconUser';
 import { Button } from '@consta/uikit/Button';
 import { User } from '@consta/uikit/User';
 
@@ -34,6 +37,7 @@ const Header: React.FC<IHeaderProps> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
+  const phone = localStorage.getItem(LocalStorageKeysEnum.PHONE);
   const isAuth = useAppSelector(selectIsAuth);
   const myLoc = `/${location.pathname.split('/').slice(1, 2).join('')}`;
   const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
@@ -68,65 +72,50 @@ const Header: React.FC<IHeaderProps> = () => {
   };
 
   return (
-    <header
+    <ConstaHeader
       className={cx(styles.Header, {
         not:
           myLoc === PublicRoutesEnum.AUTH || myLoc === PublicRoutesEnum.LOGIN,
       })}
-    >
-      <nav className={styles.Header__nav}>
-        {role && role === 'ADMIN'
-          ? items.map((itm, idx) => (
-              <li
-                className={cx(styles.Header__li, {
-                  active: itm.active,
-                })}
-                onClick={itm.onClick}
-                key={idx}
-              >
-                {itm.label}
-              </li>
-            ))
-          : items
-              .filter((itm) => !itm.access)
-              .map((itm, idx) => (
-                <li
-                  className={cx(styles.Header__li, {
-                    active: itm.active,
-                  })}
-                  onClick={itm.onClick}
-                  key={idx}
-                >
-                  {itm.label}
-                </li>
-              ))}
-      </nav>
-      <div className={styles.Header__user}>
-        {isAuth && <User name={user} />}
-        <BasketWithCount />{' '}
-        {isAuth ? (
-          <div className={styles.Header__user}>
-            <Button
-              onClick={() => {
-                localStorage.clear();
-                dispatch(setIsAuth(false));
-              }}
-              view={'primary'}
-              label={'Выйти'}
-            />
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>
-              Вход
-            </button>
-            <button onClick={() => navigate(PublicRoutesEnum.AUTH)}>
-              Регистрация
-            </button>
-          </div>
-        )}
-      </div>
-    </header>
+      leftSide={
+        <HeaderModule>
+          <nav className={styles.Header__nav}>
+            {role && role === 'ADMIN' ? (
+              <HeaderMenu items={items} />
+            ) : (
+              <HeaderMenu items={items.filter((itm) => !itm.access)} />
+            )}
+          </nav>
+        </HeaderModule>
+      }
+      rightSide={
+        <div className={styles.Header__user}>
+          {isAuth && <User name={user} size={'l'} info={phone} />}
+          <BasketWithCount />{' '}
+          {isAuth ? (
+            <div className={styles.Header__user}>
+              <Button
+                onClick={() => {
+                  localStorage.clear();
+                  dispatch(setIsAuth(false));
+                }}
+                view={'primary'}
+                label={'Выйти'}
+              />
+            </div>
+          ) : (
+            <div>
+              <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>
+                Вход
+              </button>
+              <button onClick={() => navigate(PublicRoutesEnum.AUTH)}>
+                Регистрация
+              </button>
+            </div>
+          )}
+        </div>
+      }
+    ></ConstaHeader>
   );
 };
 

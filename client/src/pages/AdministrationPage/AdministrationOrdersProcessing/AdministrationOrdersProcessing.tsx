@@ -5,6 +5,9 @@ import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusE
 import styles from './AdministrationOrdersProcessing.styl';
 import AdministrationOrdersProcessingCard from 'src/pages/AdministrationPage/AdministrationOrdersProcessingCard/AdministrationOrdersProcessingCard';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DatePicker } from '@consta/uikit/DatePicker';
+import useRequest from 'src/hooks/useRequest';
+import { Loader } from '@consta/uikit/Loader';
 
 const ColumnIndexes = [
   { index: 0, value: OrderProcessingStatusEnum.CREATED },
@@ -15,13 +18,14 @@ const ColumnIndexes = [
 ];
 
 const AdministrationOrdersProcessing: React.FC = () => {
-  const date = new Date().toISOString();
+  const [date, setDate] = useState(new Date());
 
   const [orders, setOrders] = useState<OrderProcessingModel[]>([]);
   const [startType, setStartType] = useState(OrderProcessingStatusEnum.IDLE);
   const [startIndex, setStartIndex] = useState(0);
-  const getOrders = async () => {
-    await ordersApi.getOrderProcessing(date).then((r) => {
+  const { load: getOrders, isLoading } = useRequest(
+    ordersApi.getOrderProcessing,
+    (r) => {
       if (r) {
         setOrders(
           r.data.items.map((order, index) => {
@@ -29,8 +33,8 @@ const AdministrationOrdersProcessing: React.FC = () => {
           }),
         );
       }
-    });
-  };
+    },
+  );
 
   const boardItems = useMemo(() => {
     return [
@@ -137,50 +141,70 @@ const AdministrationOrdersProcessing: React.FC = () => {
   };
 
   useEffect(() => {
-    getOrders();
-  }, []);
-  console.log(orders);
+    getOrders(date.toISOString());
+  }, [date]);
   return (
     <section className={styles.Processing}>
-      <h1>Обработка заказов</h1>
+      <DatePicker
+        label={'Выберите месяц'}
+        labelPosition={'left'}
+        className={styles.Processing__datePicker}
+        size={'s'}
+        form={'round'}
+        type="month"
+        value={date}
+        onChange={({ value }) => setDate(value)}
+      />
+      {isLoading && (
+        <div className={styles.loader}>
+          <Loader />
+        </div>
+      )}
       <div className={styles.Processing__content}>
-        <DragDropContext
-          onDragStart={(start) => {
-            setStartType(start.source.droppableId as OrderProcessingStatusEnum);
-            setStartIndex(start.source.index);
-            console.log(start);
-          }}
-          onDragEnd={onDragEnd}
-        >
-          {boardItems.map((board, index) => (
-            <Droppable droppableId={board.type} key={`${index}_${board.type}`}>
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={styles.Processing__content__column}
-                >
+        {!isLoading && (
+          <DragDropContext
+            onDragStart={(start) => {
+              setStartType(
+                start.source.droppableId as OrderProcessingStatusEnum,
+              );
+              setStartIndex(start.source.index);
+              console.log(start);
+            }}
+            onDragEnd={onDragEnd}
+          >
+            {boardItems.map((board, index) => (
+              <Droppable
+                droppableId={board.type}
+                key={`${index}_${board.type}`}
+              >
+                {(provided) => (
                   <div
-                    className={styles.Processing__content__column__header}
-                    style={{ borderLeft: `6px solid ${board.color}` }}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.Processing__content__column}
                   >
-                    <h1>{board.title}</h1>
-                  </div>
+                    <div
+                      className={styles.Processing__content__column__header}
+                      style={{ borderLeft: `6px solid ${board.color}` }}
+                    >
+                      <h1>{board.title}</h1>
+                    </div>
 
-                  <div className={styles.Processing__content__cards}>
-                    {board.items.map((item, idx) => (
-                      <AdministrationOrdersProcessingCard
-                        item={item}
-                        key={`${item.id}_${idx}`}
-                        index={idx}
-                      />
-                    ))}
+                    <div className={styles.Processing__content__cards}>
+                      {board.items.map((item, idx) => (
+                        <AdministrationOrdersProcessingCard
+                          item={item}
+                          key={`${item.id}_${idx}`}
+                          index={idx}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
+                )}
+              </Droppable>
+            ))}
+          </DragDropContext>
+        )}
       </div>
     </section>
   );
