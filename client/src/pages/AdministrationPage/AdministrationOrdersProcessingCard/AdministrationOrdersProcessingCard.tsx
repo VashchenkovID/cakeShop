@@ -24,7 +24,7 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
           className={styles.ProcessingCard}
         >
           <div className={styles.ProcessingCard__header}>
-            <div>{item.name}</div>
+            <Text>{item.name}</Text>
             <div>
               <OrderProcessingStatusBadge status={item.status} />
             </div>

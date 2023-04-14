@@ -185,7 +185,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
                   >
                     <div
                       className={styles.Processing__content__column__header}
-                      style={{ borderLeft: `6px solid ${board.color}` }}
+                      style={{ borderLeft: `10px solid ${board.color}` }}
                     >
                       <h1>{board.title}</h1>
                     </div>
