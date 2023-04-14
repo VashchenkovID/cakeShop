@@ -77,3 +77,19 @@
 .Popover {
   z-index: 100;
 }
+.Button_view_primary {
+  background-image: linear-gradient(to right, #003973 0%, #E5E5BE 51%, #003973 100%);
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 50px;
+}
+
+.Button_view_primary:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}

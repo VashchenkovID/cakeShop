@@ -17,4 +17,5 @@ export const enum EnpointsEnum {
   CREATE_INDIVIDUAL_ORDER = '/order/create',
   CREATE_USER_ORDER = '/basket/create',
   GET_PROCESSING = '/order_processing/getOrders',
+  UPDATE_PROCESSING_ORDER = '/order_processing/updateOrder'
 }

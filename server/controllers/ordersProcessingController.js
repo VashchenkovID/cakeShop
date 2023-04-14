@@ -29,6 +29,52 @@ class OrdersProcessingController {
 
       return res.json({
         items: [
+          ...baskets
+            .map((basket) => {
+              return {
+                ...basket.dataValues,
+                type: "custom",
+              };
+            })
+            .filter(
+              (itm) => itm.status !== "COMPLETED" || itm.status !== "REJECTED"
+            ),
+          ...individualOrders
+            .map((order) => {
+              return {
+                ...order.dataValues,
+                type: "unauthorized",
+              };
+            })
+            .filter(
+              (itm) => itm.status !== "COMPLETED" || itm.status !== "REJECTED"
+            ),
+        ],
+      });
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
+  async getHistory(req, res, next) {
+    try {
+      let { date } = req.params;
+      let fromDate;
+      let toDate;
+      if (date) {
+        fromDate = startOfMonth(new Date(date));
+        toDate = endOfMonth(new Date(date));
+      }
+      const baskets = await Basket.findAll({
+        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        include: [{ model: BasketDevice, as: "items" }],
+      });
+      const individualOrders = await IndividualOrder.findAll({
+        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        include: [{ model: IndividualOrderItem, as: "items" }],
+      });
+
+      return res.json({
+        items: [
           ...baskets.map((basket) => {
             return {
               ...basket.dataValues,
@@ -49,9 +95,8 @@ class OrdersProcessingController {
   }
   async updateOrder(req, res, next) {
     try {
-      const { type, status } = req.body;
+      const { type, status: newStatus } = req.body;
       const { id } = req.params;
-
       if (type) {
         if (type === "custom") {
           const oldOrder = await Basket.findOne({
@@ -60,8 +105,8 @@ class OrdersProcessingController {
           if (oldOrder) {
             await Basket.upsert({
               id: id,
-              status: status,
-              ...oldOrder,
+              ...oldOrder.dataValues,
+              status: newStatus.toString(),
             }).then((r) => {
               return res.json({ updateItem: r });
             });
@@ -74,8 +119,8 @@ class OrdersProcessingController {
           if (oldOrder) {
             await IndividualOrder.upsert({
               id: id,
-              status: status,
-              ...oldOrder,
+              ...oldOrder.dataValues,
+              status: newStatus.toString(),
             }).then((r) => {
               return res.json({ updateItem: r });
             });
