@@ -3,22 +3,29 @@
   grid-template-columns 1fr 0.5fr
   gap 16px
   align-items flex-start
+  height calc(100vh - 350px)
+  overflow-y auto
   &__leftSide
     display flex
     flex-direction column
     align-items flex-start
     gap 16px
     &__img
-      max-width 650px
+      max-width 450px
+      border-radius 10px
   &__rightSide
     display flex
     flex-direction column
-    gap 16px
     justify-content center
     &__header
       display grid
       grid-template-columns repeat(4,1fr)
       gap 8px
+      padding 16px
+      align-items center
+      border 1px solid #f5f7fa
+      border-top-right-radius 10px
+      border-top-left-radius 10px
     &__list
       display flex
       flex-direction column
@@ -26,8 +33,18 @@
         display grid
         grid-template-columns repeat(4,1fr)
         gap 8px
+        padding 16px
+        border 1px solid #f5f7fa
         &__col
           text-align left
+          color: #f5f7fa
+
+.footerRecipe {
+  display flex
+  gap 10px
+  justify-content space-between
+  align-items center
+}
 .Footer
   display flex
   padding 16px

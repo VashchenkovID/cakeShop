@@ -47,7 +47,10 @@ class DeviceController {
         fileName = uuid.v4() + ".jpg";
         img.mv(path.resolve(__dirname, "..", "static", fileName));
       }
-
+      let oldImg;
+      if (!img) {
+        oldImg = await Device.findOne({ where: { id: id } });
+      }
       const device = await Device.upsert({
         id,
         name: name,
@@ -55,7 +58,7 @@ class DeviceController {
         TypeId: typeId,
         FillingId: fillingId,
         description: description,
-        img: fileName || null,
+        img: fileName || oldImg?.dataValues?.img,
       });
       if (info) {
         let newInfo = JSON.parse(info);

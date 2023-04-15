@@ -45,7 +45,7 @@ const AdministrationRecipes = () => {
 
   useEffect(() => {
     fetchRecipes();
-  }, []);
+  }, [pageMode]);
 
   return (
     <>

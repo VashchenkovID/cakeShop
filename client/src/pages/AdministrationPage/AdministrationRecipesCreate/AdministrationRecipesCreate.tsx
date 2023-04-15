@@ -9,8 +9,10 @@ import { PrivateRoutesEnum } from 'src/router';
 import useRequest from 'src/hooks/useRequest';
 import { Select } from '@consta/uikit/Select';
 import { Button } from '@consta/uikit/Button';
-
-const cx = cn.bind(styles);
+import { Text } from '@consta/uikit/Text';
+import { DragNDropField } from '@consta/uikit/DragNDropField';
+import { TextField } from '@consta/uikit/TextField';
+import { IconTrash } from '@consta/uikit/IconTrash';
 
 const AdministrationRecipesCreate: React.FC = () => {
   const editCake = useAppSelector(selectCakeItem);
@@ -70,11 +72,6 @@ const AdministrationRecipesCreate: React.FC = () => {
       alert(e.message);
     }
   };
-  const selectFile = (e: any) => {
-    setFile(e.target.files[0]);
-    const src = URL.createObjectURL(e.target.files[0]);
-    setRenderImage(src.slice(5));
-  };
   const { load: fetchTypes, isLoading: typeLoading } = useRequest(
     cakesApi.getCakeTypes,
     (data) => {
@@ -118,12 +115,27 @@ const AdministrationRecipesCreate: React.FC = () => {
     }
   }, [location, types, fillings]);
 
-  console.log(type, filling);
-
   return (
     <div className={styles.RecipeCreate}>
       <div className={styles.RecipeCreate__leftSide}>
-        <input type={'file'} onChange={selectFile} />
+        <DragNDropField
+          multiple={false}
+          onDropFiles={(file) => {
+            setFile(file[0]);
+            const src = URL.createObjectURL(file[0]);
+            setRenderImage(src.slice(5));
+          }}
+        >
+          {({ openFileDialog }) => (
+            <>
+              <Text size={'l'}>Выберите или перетащите фотографию десерта</Text>
+              <Text size={'s'} view={'secondary'}>
+                Поддерживаются файлы форматов jpg,png,jpeg
+              </Text>
+              <Button onClick={openFileDialog} label="Выбрать файл" />
+            </>
+          )}
+        </DragNDropField>
         {renderImage !== '' && (
           <img
             className={styles.RecipeCreate__image}
@@ -133,6 +145,8 @@ const AdministrationRecipesCreate: React.FC = () => {
         )}
         {types.length > 0 && (
           <Select
+            label={'Десерт'}
+            placeholder={'Выберите тип десерта'}
             items={types}
             getItemLabel={(i) => i.name}
             value={type}
@@ -141,6 +155,8 @@ const AdministrationRecipesCreate: React.FC = () => {
         )}
         {fillings.length > 0 && (
           <Select
+            label={'Начинка'}
+            placeholder={'Выберите начинку'}
             items={fillings}
             getItemLabel={(i) => i.name}
             value={filling}
@@ -148,50 +164,68 @@ const AdministrationRecipesCreate: React.FC = () => {
           />
         )}
 
-        <input
+        <TextField
+          size={'s'}
+          form={'round'}
+          label={'Наименование'}
+          placeholder={'Введите наименование'}
           value={device?.name}
-          onChange={(e) => {
+          onChange={(value) => {
             setDevice((prevState: any) => {
-              return { ...prevState, name: e.target.value };
+              return { ...prevState, name: value.value };
             });
           }}
         />
-        <input
+        <TextField
+          size={'s'}
+          form={'round'}
+          label={'Цена'}
+          placeholder={'Введите цену'}
           type={'number'}
           value={device?.price}
-          onChange={(e) => {
+          onChange={(value) => {
             setDevice((prevState: any) => {
-              return { ...prevState, price: e.target.value };
+              return { ...prevState, price: value.value };
             });
           }}
         />
-        <input
+        <TextField
+          size={'s'}
+          label={'Описание'}
+          type={'textarea'}
+          rows={10}
+          cols={70}
+          placeholder={'Подробно опишите изделие'}
+          form={'round'}
           value={device.description}
-          onChange={(e) => {
+          onChange={(value) => {
             setDevice((prevState: any) => {
-              return { ...prevState, description: e.target.value };
+              return { ...prevState, description: value.value };
             });
           }}
         />
       </div>
       <div className={styles.RecipeCreate__rightSide}>
         <div>
-          <h3>Рецепт:</h3>
-          <div>
+          <Text size={'3xl'}>Рецепт:</Text>
+          <div className={styles.Recipe}>
             {device.info.length > 0 &&
               device.info.map((rec: any, ind: number) => (
-                <div key={ind}>
+                <div className={styles.Recipe__row} key={ind}>
                   <div>
-                    <input
-                      placeholder={'Наименование'}
+                    <TextField
+                      size={'s'}
+                      form={'round'}
+                      label={'Наименование'}
+                      placeholder={'Введите наименование ингредиента'}
                       value={rec.name}
-                      onChange={(e) => {
+                      onChange={(value) => {
                         setDevice((prev: any) => {
                           return {
                             ...prev,
                             info: prev.info.map((itm: any, idx: number) => {
                               if (idx === ind) {
-                                return { ...itm, name: e.target.value };
+                                return { ...itm, name: value.value };
                               } else return { ...itm };
                             }),
                           };
@@ -200,16 +234,19 @@ const AdministrationRecipesCreate: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <input
-                      placeholder={'Вес'}
+                    <TextField
+                      size={'s'}
+                      form={'round'}
+                      label={'Вес или количество'}
+                      placeholder={'Введите вес и единицу измерения'}
                       value={rec.weight}
-                      onChange={(e) => {
+                      onChange={(value) => {
                         setDevice((prev: any) => {
                           return {
                             ...prev,
                             info: prev.info.map((itm: any, idx: number) => {
                               if (idx === ind) {
-                                return { ...itm, weight: e.target.value };
+                                return { ...itm, weight: value.value };
                               } else return { ...itm };
                             }),
                           };
@@ -218,40 +255,48 @@ const AdministrationRecipesCreate: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <input
-                      placeholder={'Вес'}
+                    <TextField
+                      size={'s'}
+                      form={'round'}
+                      label={'Цена за единицу'}
+                      placeholder={'Введите цену за единицу ингредиента'}
                       value={rec.pricePerUnit}
-                      onChange={(e) => {
+                      onChange={(value) => {
                         setDevice((prev: any) => {
                           return {
                             ...prev,
                             info: prev.info.map((itm: any, idx: number) => {
                               if (idx === ind) {
-                                return { ...itm, pricePerUnit: e.target.value };
+                                return { ...itm, pricePerUnit: value.value };
                               } else return { ...itm };
                             }),
                           };
                         });
                       }}
                     />
-                    <Button
-                      onClick={() => {
-                        setDevice((prev: any) => {
-                          return {
-                            ...prev,
-                            info: prev.info.filter(
-                              (it: any, idx: number) => idx !== ind,
-                            ),
-                          };
-                        });
-                      }}
-                      label={'i'}
-                    />
                   </div>
+                  <Button
+                    onClick={() => {
+                      setDevice((prev: any) => {
+                        return {
+                          ...prev,
+                          info: prev.info.filter(
+                            (it: any, idx: number) => idx !== ind,
+                          ),
+                        };
+                      });
+                    }}
+                    className={styles.Recipe__row__button}
+                    size={'s'}
+                    iconLeft={IconTrash}
+                  />
                 </div>
               ))}
           </div>
-          <button
+          <Button
+              className={styles.Recipe__addBtn}
+            label={'Добавить строчку'}
+            size={'xs'}
             onClick={() => {
               setDevice((prev: any) => {
                 return {
@@ -269,12 +314,10 @@ const AdministrationRecipesCreate: React.FC = () => {
                 };
               });
             }}
-          >
-            Добавить строчку
-          </button>
+          />
         </div>
         <Button
-          onClick={(e) => {
+          onClick={() => {
             if (location.pathname.includes('create')) {
               addDevice();
             } else EditDevice();

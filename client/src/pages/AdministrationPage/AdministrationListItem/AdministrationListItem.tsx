@@ -2,6 +2,7 @@ import React from 'react';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './AdministrationListItem.styl';
 import { Text } from '@consta/uikit/Text';
+import CustomTextTooltip from 'src/components/CustomTextTooltip';
 
 interface IComponentProps {
   activeElement: number | null;
@@ -26,7 +27,7 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
         />
         <Text className={styles.RecipesListItem__title}>{item.name}</Text>
         <Text className={styles.RecipesListItem__subTitle}>
-          {item.description}
+          <CustomTextTooltip text={item.description} lineClamp={1} />
         </Text>
       </div>
       <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>

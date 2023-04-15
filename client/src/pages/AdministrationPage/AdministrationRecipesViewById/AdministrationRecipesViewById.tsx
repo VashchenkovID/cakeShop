@@ -9,6 +9,7 @@ import { setCake } from 'src/redux/features/cake/CakeSlice';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutesEnum } from 'src/router';
 import { Button } from '@consta/uikit/Button';
+import { Text } from '@consta/uikit/Text';
 
 interface IComponentProps {
   activeList: number | null;
@@ -20,6 +21,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
   activeList,
   setPageMode,
 }) => {
+  const numbersFinder = /\d+/;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [device, setDevice] = useState<DeviceItemModel | null>(null);
@@ -57,31 +59,47 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                 className={styles.FullRecipe__leftSide__img}
                 src={`http://localhost:8081/${device.img}`}
               />
-              <h2>{device.name}</h2>
-              <p>{device.description}</p>
-              <div>
-                Создан: ${new Date(device.createdAt).toLocaleDateString()}
-              </div>
-              <div>
-                <div>{device.rating}</div>
-                <div>{device.price}</div>
+              <Text size={'4xl'}>{device.name}</Text>
+              <Text view={'secondary'}>{device.description}</Text>
+              <Text>
+                Создан:{new Date(device.createdAt).toLocaleDateString()}
+              </Text>
+              <div className={styles.footerRecipe}>
+                <Text weight={'semibold'} size={'l'}>
+                  Рейтинг: {device.rating}
+                </Text>
+                <Text weight={'semibold'} size={'l'}>
+                  Цена: {device.price},00 ₽
+                </Text>
               </div>
             </div>
             <div className={styles.FullRecipe__rightSide}>
-              <h2>Рецепт</h2>
+              <Text size={'3xl'}>Рецепт</Text>
               <div className={styles.FullRecipe__rightSide__header}>
-                <div className={styles.FullRecipe__rightSide__list__row__col}>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
                   Наименование
-                </div>
-                <div className={styles.FullRecipe__rightSide__list__row__col}>
+                </Text>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
                   Вес
-                </div>
-                <div className={styles.FullRecipe__rightSide__list__row__col}>
+                </Text>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
                   Стоимость за единицу
-                </div>
-                <div className={styles.FullRecipe__rightSide__list__row__col}>
+                </Text>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
                   Общая стоимость
-                </div>
+                </Text>
               </div>
               <div>
                 {device.info &&
@@ -91,28 +109,53 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                       key={index}
                       className={styles.FullRecipe__rightSide__list__row}
                     >
-                      <div
+                      <Text
                         className={styles.FullRecipe__rightSide__list__row__col}
+                        weight={'semibold'}
                       >
                         {item.name}
-                      </div>
-                      <div
+                      </Text>
+                      <Text
+                        weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
                         {item.weight}
-                      </div>
-                      <div
+                      </Text>
+                      <Text
+                        weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        {item.pricePerUnit}
-                      </div>
-                      <div
+                        {item.pricePerUnit},00 ₽
+                      </Text>
+                      <Text
+                        weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        посчитать
-                      </div>
+                        {item.pricePerUnit *
+                          Number(item.weight.match(numbersFinder))}
+                        ,00 ₽
+                      </Text>
                     </div>
                   ))}
+              </div>
+              <div className={styles.FullRecipe__rightSide__list__row}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
+                  Итого:
+                  {device.info?.reduce(
+                    (accum, item) =>
+                      accum +
+                      item.pricePerUnit *
+                        Number(item.weight.match(numbersFinder)),
+                    0,
+                  )}{' '}
+                  ₽
+                </Text>
               </div>
             </div>
           </div>

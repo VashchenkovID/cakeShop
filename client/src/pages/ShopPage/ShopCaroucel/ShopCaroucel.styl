@@ -1,0 +1,44 @@
+.Caroucel
+  display flex
+  flex-direction column
+  align-items center
+  max-width 900px
+  gap 24px
+  &__img
+    max-width 700px
+    height auto
+    border-top-left-radius 100px
+    border-top-right-radius 100px
+    animation: 1s fadeIn;
+    animation-fill-mode: forwards;
+    opacity: 1;
+  &__content
+    display flex
+    flex-direction column
+    gap 16px
+    justify-content space-between
+    align-items flex-start
+  &__actions
+    display flex
+    gap 16px
+    justify-content flex-end
+    max-width 700px
+    overflow-x auto
+    cursor pointer
+    &__line
+      width 25px
+      height 4px
+      background #FFFFFF
+      opacity 0.2
+      border-radius 5px
+      &.active
+        opacity 1
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}

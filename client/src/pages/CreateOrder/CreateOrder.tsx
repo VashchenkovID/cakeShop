@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setBasket } from 'src/redux/features/basket/BasketSlice';
+import { Text } from '@consta/uikit/Text';
+import { IconTrash } from '@consta/uikit/IconTrash';
 
 interface UserCreateOrderType {
   name: string;
@@ -96,35 +98,56 @@ const CreateOrder: React.FC = () => {
 
   return (
     <section className={styles.Order}>
-      <h1>Ваш заказ</h1>
+      <Text size={'3xl'}>Ваш заказ</Text>
       {!basket ? (
         <div>Вы не выбрали ни один десерт</div>
       ) : (
-        <div>
+        <div className={styles.Order__rows}>
           <div className={styles.Order__row}>
-            <div>Наименование</div>
-            <div>Количество</div>
-            <div>Цена за единицу</div>
-            <div>Итог</div>
+            <Text size={'3xl'}>Наименование</Text>
+            <Text size={'3xl'}>Количество</Text>
+            <Text size={'3xl'}>Цена за единицу</Text>
+            <Text size={'3xl'}>Итог</Text>
           </div>
-          <div>
+          <div className={styles.Order__rows}>
             {basket.items.map((item, index) => (
               <div className={styles.Order__row} key={index}>
-                <div>{item.name}</div>
-                <div>{item.count}</div>
-                <div>{item.price}</div>
-                <div>{Number(item.count) * Number(item.price)}</div>
+                <Text size={'2xl'}>{item.name}</Text>
+                <Text size={'2xl'}>{item.count}, шт</Text>
+                <Text size={'2xl'}>{item.price},00 ₽</Text>
+                <Text className={styles.Order__actions} size={'2xl'}>
+                  {Number(item.count) * Number(item.price)},00 ₽
+                  <Button
+                    size={'s'}
+                    iconLeft={IconTrash}
+                    onClick={() => {
+                      dispatch(
+                        setBasket({
+                          ...basket,
+                          items: basket.items.filter(
+                            (elem) => elem.id !== item.id,
+                          ),
+                        }),
+                      );
+                    }}
+                  />
+                </Text>
               </div>
             ))}
-            {allCount && <div>Итого: {allCount},00 ₽</div>}
+            {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           </div>
-          <Button onClick={() => setModal(true)} label={'Оформить'} />
+          <Button
+            className={styles.button}
+            onClick={() => setModal(true)}
+            label={'Оформить'}
+          />
         </div>
       )}
       <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
         {user ? (
-          <div>
+          <div className={styles.UserModal}>
             <DatePicker
+              label={'Дата выдачи заказа'}
               value={notAuthUser.order_date}
               minDate={minOrderDate}
               onChange={({ value }) =>
@@ -140,9 +163,10 @@ const CreateOrder: React.FC = () => {
             />
           </div>
         ) : (
-          <div>
-            <h3>Оформление заказа</h3>
+          <div className={styles.NotUserModal}>
+            <h1>Оформление заказа</h1>
             <TextField
+              label={'Имя'}
               placeholder={'Введите имя'}
               value={notAuthUser.name}
               onChange={({ value }) =>
@@ -152,6 +176,7 @@ const CreateOrder: React.FC = () => {
               }
             />
             <TextField
+              label={'Номер телефона'}
               placeholder={'Введите номер телефона для связи'}
               value={notAuthUser.phone}
               onChange={({ value }) =>
@@ -161,6 +186,7 @@ const CreateOrder: React.FC = () => {
               }
             />
             <TextField
+              label={'Почта'}
               placeholder={'Введите почтовый адрес'}
               value={notAuthUser.email}
               onChange={({ value }) =>
@@ -170,6 +196,8 @@ const CreateOrder: React.FC = () => {
               }
             />
             <DatePicker
+              label={'Дата выдачи'}
+              placeholder={'Выберите дату выдачи заказа'}
               value={notAuthUser.order_date}
               minDate={minOrderDate}
               onChange={({ value }) =>

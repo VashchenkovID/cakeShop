@@ -8,6 +8,7 @@ import { LocalStorageKeysEnum } from 'src/utils/enum';
 import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { IconFavorite } from '@consta/uikit/IconFavorite';
 import { Button } from '@consta/uikit/Button';
+import { Text } from '@consta/uikit/Text';
 interface IComponentProps {
   item: DeviceListModel;
   activeItem: number | null;
@@ -271,13 +272,23 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
         className={styles.Item__image}
         src={`http://localhost:8081/${item.img}`}
       />
-      <p className={styles.Item__title}>{item.name}</p>
-      <p className={styles.Item__subtitle}>{item.description}</p>
+      <Text weight={'semibold'} className={styles.Item__title}>
+        {item.name}
+      </Text>
+      <Text size={'s'} view={'secondary'} className={styles.Item__subtitle}>
+        {item.description}
+      </Text>
       <div className={styles.Item__footer}>
-        <p>
-          {item.rating} <IconFavorite />
-        </p>
-        <p>{item.price},00 ₽</p>
+        {item.rating > 0 && (
+          <div className={styles.Item__rating}>
+            <Text className={styles.Item__rating__text}>{item.rating}</Text>
+            <IconFavorite className={styles.Item__rating__icon} />
+          </div>
+        )}
+
+        <Text weight={'bold'} size={'l'}>
+          {item.price},00 ₽
+        </Text>
       </div>
       <div className={styles.Item__button}>
         {!isAdded ? (

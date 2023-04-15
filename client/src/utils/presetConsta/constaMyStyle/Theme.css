@@ -101,3 +101,18 @@
   color: #fff;
   text-decoration: none;
 }
+.ListItem.Text {
+  color: #003973;
+}
+.DateTimeItem {
+  color: #003973;
+}
+.DateTimeItem_disabled {
+  color: #d9ddff;
+}
+.DateTimeLabel {
+  color: #003973;
+}
+.Popover {
+  color: #fef0ff;
+}

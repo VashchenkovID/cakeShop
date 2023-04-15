@@ -2,6 +2,17 @@
   margin 24px
   max-height calc(100vh - 130px)
   overflow-y auto
+  &__titleCase
+    display flex
+    gap 24px
+    margin 24px
+    justify-content space-between
+    align-items center
+    &__text
+      display flex
+      flex-direction column
+      gap 24px
+      max-width 50vw
   &__title
     display flex
     flex-direction column
@@ -26,9 +37,9 @@
     text-align center
     min-height 300px
     &__fillings
-      display flex
-      flex-direction column
-      justify-content center
+      display grid
+      grid-template-columns 1fr 1fr
+      gap 16px
       margin 0 auto
   &__items
     display flex
@@ -36,5 +47,18 @@
     flex-wrap wrap
     &__item
       display flex
-      max-width 100px
-      max-height 100px
+      width 400px
+      height 400px
+      cursor pointer
+      border-radius 10px
+  &__modalFilling
+    width 600px
+    height 600px
+    opacity 0.8
+.modalText
+  display flex
+  align-items center
+  color #a002fb
+  position absolute
+  top 0
+  opacity 1

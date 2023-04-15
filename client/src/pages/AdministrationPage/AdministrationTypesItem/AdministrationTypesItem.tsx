@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '@consta/uikit/Text';
 
 interface IComponentProps {
   item: {
@@ -9,7 +10,7 @@ interface IComponentProps {
 }
 
 const AdministrationTypesItem: React.FC<IComponentProps> = ({ item }) => {
-  return <div>{item.name}</div>;
+  return <Text size={'l'}>{item.name}</Text>;
 };
 
 export default AdministrationTypesItem;

@@ -7,6 +7,7 @@ import styles from './AdministrationTypes.styl';
 import AdministrationTypesItem from 'src/pages/AdministrationPage/AdministrationTypesItem/AdministrationTypesItem';
 import { Button } from '@consta/uikit/Button';
 import { Modal } from '@consta/uikit/Modal';
+import {Text} from "@consta/uikit/Text";
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',
   FILLING = 'filling',
@@ -69,10 +70,9 @@ const AdministrationTypes: React.FC = () => {
 
   return (
     <section>
-      <h1>Вспомогательные типы</h1>
       <div className={styles.Types}>
         <div className={styles.Types__column}>
-          <h2>Типы десертов</h2>
+          <Text size={'3xl'}>Типы десертов</Text>
           <Button
             onClick={() => setModal(AdministrationTypesModalEnum.TYPE)}
             label={'Создать'}
@@ -86,7 +86,7 @@ const AdministrationTypes: React.FC = () => {
           </div>
         </div>
         <div className={styles.Types__column}>
-          <h2>Начинки тортов</h2>
+          <Text size={'3xl'}>Начинки тортов</Text>
           <Button
             onClick={() => setModal(AdministrationTypesModalEnum.FILLING)}
             label={'Создать'}

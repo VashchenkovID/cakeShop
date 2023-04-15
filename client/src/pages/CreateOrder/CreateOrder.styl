@@ -1,6 +1,31 @@
 .Order
   margin 24px
+  &__rows
+    display flex
+    flex-direction column
+    gap 16px
   &__row
     display grid
     grid-template-columns repeat(4,1fr)
     gap 8px
+    padding 16px
+    background linear-gradient(15deg, #492489 5%,#8860D0 74%);
+    color #002033
+  &__actions
+    display flex
+    gap 24px
+    align-items center
+.button
+  max-width 200px
+.UserModal
+  display flex
+  flex-direction column
+  gap 24px
+  margin 24px
+  min-width 300px
+.NotUserModal
+  min-width 300px
+  display flex
+  flex-direction column
+  gap 24px
+  margin 24px
