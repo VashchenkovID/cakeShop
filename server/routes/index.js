@@ -7,6 +7,7 @@ const fillingRouter = require("./fillingRouter");
 const basketRouter = require("./basketRouter");
 const orderRouter = require("./individualOrderRouter");
 const processingRouter = require("./orderProcessingRouter");
+const analyticsRouter = require("./analyticsRouter");
 
 router.use("/user", userRouter);
 router.use("/device", deviceRouter);
@@ -15,5 +16,6 @@ router.use("/filling", fillingRouter);
 router.use("/basket", basketRouter);
 router.use("/order", orderRouter);
 router.use("/order_processing", processingRouter);
+router.use("/analytics", analyticsRouter);
 
 module.exports = router;

@@ -12,6 +12,7 @@ class OrdersProcessingController {
   async getOrders(req, res, next) {
     try {
       let { date } = req.params;
+      console.log(date)
       let fromDate;
       let toDate;
       if (date) {
@@ -19,11 +20,11 @@ class OrdersProcessingController {
         toDate = endOfMonth(new Date(date));
       }
       const baskets = await Basket.findAll({
-        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        where: { date_completed: { [Op.between]: [fromDate.toISOString(), toDate.toISOString()] } },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
-        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        where: { date_completed: { [Op.between]: [fromDate.toISOString(), toDate.toISOString()] } },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
 
@@ -65,11 +66,11 @@ class OrdersProcessingController {
         toDate = endOfMonth(new Date(date));
       }
       const baskets = await Basket.findAll({
-        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        where: { date_completed: { [Op.between]: [fromDate, toDate] } },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
-        where: { createdAt: { [Op.between]: [fromDate, toDate] } },
+        where: { date_completed: { [Op.between]: [fromDate, toDate] } },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
 
