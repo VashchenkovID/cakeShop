@@ -8,6 +8,11 @@ router.get(
   checkRole("ADMIN"),
   orderProcessingController.getOrders
 );
+router.get(
+  "/getHistory/:date",
+  checkRole("ADMIN"),
+  orderProcessingController.getHistory
+);
 router.put(
   "/updateOrder/:id",
   checkRole("ADMIN"),

@@ -55,6 +55,10 @@ export const privateRoutes: Array<IRouteItem> = [
     path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.ORDERS}`,
     element: <AdministrationPage />,
   },
+  {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.ORDERS_HISTORY}`,
+    element: <AdministrationPage />,
+  },
   { path: PrivateRoutesEnum.BASKET, element: <div></div> },
   { path: PrivateRoutesEnum.CREATE_CAKE, element: <div></div> },
   { path: PrivateRoutesEnum.EDIT_CAKE, element: <div></div> },

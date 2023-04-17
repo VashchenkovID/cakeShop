@@ -42,7 +42,12 @@ const AdministrationPage: React.FC = () => {
       {
         path: PrivateRoutesEnum.ORDERS,
         component: <div></div>,
-        title: `Заказы`,
+        title: `Обработка заказов`,
+      },
+      {
+        path: PrivateRoutesEnum.ORDERS_HISTORY,
+        component: <div></div>,
+        title: `История заказов`,
       },
       {
         path: PrivateRoutesEnum.TYPES,

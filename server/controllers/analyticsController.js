@@ -176,6 +176,7 @@ class AnalyticsController {
           },
         },
         include: [{ model: BasketDevice, as: "items" }],
+        status: "COMPLETED",
       });
       const individualOrders = await IndividualOrder.findAll({
         where: {
@@ -188,12 +189,7 @@ class AnalyticsController {
         ...new Set(
           individualOrders.map((bt) => bt.items.map((i) => i.deviceId)).flat()
         ),
-        ...new Set(
-          baskets
-            .filter((itm) => itm.status === "COMPLETED")
-            .map((bt) => bt.items.map((i) => i.deviceId))
-            .flat()
-        ),
+        ...new Set(baskets.map((bt) => bt.items.map((i) => i.deviceId)).flat()),
       ].filter((i) => !isNaN(i));
 
       let devices = [];
@@ -213,40 +209,52 @@ class AnalyticsController {
         });
       }
       const orders = [
-        ...baskets.map((item) => {
-          return {
-            id: item.id,
-            name: item.name,
-            allPrice: item.items.reduce((accum, elem) => accum + elem.price, 0),
-            constPrice: item.items
-              .map((it) => {
-                return {
-                  ...it.dataValues,
-                  device: devices.find((d) => d.id === it.deviceId)?.constPrice,
-                };
-              })
-              .reduce((accum, element) => accum + element.device, 0),
-            date_completed: item.date_completed,
-            type: "custom",
-          };
-        }),
-        ...individualOrders.map((item) => {
-          return {
-            id: item.id,
-            name: item.name,
-            allPrice: item.items.reduce((accum, elem) => accum + elem.price, 0),
-            constPrice: item.items
-              .map((it) => {
-                return {
-                  ...it.dataValues,
-                  device: devices.find((d) => d.id === it.deviceId)?.constPrice,
-                };
-              })
-              .reduce((accum, element) => accum + element.device, 0),
-            date_completed: item.date_completed,
-            type: "unauthorized",
-          };
-        }),
+        ...baskets
+          .filter((itm) => itm.status === "COMPLETED")
+          .map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+              allPrice: item.items.reduce(
+                (accum, elem) => accum + elem.price,
+                0
+              ),
+              constPrice: item.items
+                .map((it) => {
+                  return {
+                    ...it.dataValues,
+                    device: devices.find((d) => d.id === it.deviceId)
+                      ?.constPrice,
+                  };
+                })
+                .reduce((accum, element) => accum + element.device, 0),
+              date_completed: item.date_completed,
+              type: "custom",
+            };
+          }),
+        ...individualOrders
+          .filter((itm) => itm.status === "COMPLETED")
+          .map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+              allPrice: item.items.reduce(
+                (accum, elem) => accum + elem.price,
+                0
+              ),
+              constPrice: item.items
+                .map((it) => {
+                  return {
+                    ...it.dataValues,
+                    device: devices.find((d) => d.id === it.deviceId)
+                      ?.constPrice,
+                  };
+                })
+                .reduce((accum, element) => accum + element.device, 0),
+              date_completed: item.date_completed,
+              type: "unauthorized",
+            };
+          }),
       ];
       return res.json({
         message: "OK",
