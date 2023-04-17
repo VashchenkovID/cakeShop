@@ -216,6 +216,8 @@ class AnalyticsController {
                 };
               })
               .reduce((accum, element) => accum + element.device, 0),
+            date_completed: item.date_completed,
+            type: "custom",
           };
         }),
         ...individualOrders.map((item) => {
@@ -231,6 +233,8 @@ class AnalyticsController {
                 };
               })
               .reduce((accum, element) => accum + element.device, 0),
+            date_completed: item.date_completed,
+            type: "unauthorized",
           };
         }),
       ];
