@@ -57,7 +57,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
             <div className={styles.FullRecipe__leftSide}>
               <img
                 className={styles.FullRecipe__leftSide__img}
-                src={`http://localhost:8081/${device.img}`}
+                src={`${process.env.REACT_APP_IMAGE}${device.img}`}
               />
               <Text size={'4xl'}>{device.name}</Text>
               <Text view={'secondary'}>{device.description}</Text>

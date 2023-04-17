@@ -23,7 +23,7 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
       <div>
         <img
           className={styles.RecipesListItem__image}
-          src={`http://localhost:8081/${item.img}`}
+          src={`${process.env.REACT_APP_IMAGE}${item.img}`}
         />
         <Text className={styles.RecipesListItem__title}>{item.name}</Text>
         <Text className={styles.RecipesListItem__subTitle}>

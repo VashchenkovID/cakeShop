@@ -105,7 +105,7 @@ const AdministrationRecipesCreate: React.FC = () => {
         img: editCake.img,
         typeId: editCake.TypeId,
       });
-      setRenderImage(`http://localhost:8081/${editCake.img}`);
+      setRenderImage(`${process.env.REACT_APP_IMAGE}${editCake.img}`);
       if (types.length > 0) {
         setType(types.find((item) => item.id === editCake.TypeId));
       }

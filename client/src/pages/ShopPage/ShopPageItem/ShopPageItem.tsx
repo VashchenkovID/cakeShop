@@ -270,7 +270,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
     <div className={styles.Item}>
       <img
         className={styles.Item__image}
-        src={`http://localhost:8081/${item.img}`}
+        src={`${process.env.REACT_APP_IMAGE}${item.img}`}
       />
       <Text weight={'semibold'} className={styles.Item__title}>
         {item.name}

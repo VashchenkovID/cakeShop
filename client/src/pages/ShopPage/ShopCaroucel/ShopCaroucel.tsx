@@ -57,7 +57,7 @@ const ShopCaroucel: React.FC<IComponentProps> = ({ items, automatic }) => {
               <div className={styles.Caroucel} key={`${item.id}_${index}`}>
                 <img
                   className={styles.Caroucel__img}
-                  src={`http://localhost:8081/${item.img}`}
+                  src={`${process.env.REACT_APP_IMAGE}${item.img}`}
                 />
                 <div className={styles.Caroucel__actions}>
                   {caroucelItems.map((itm, idx) => (

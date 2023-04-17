@@ -13,13 +13,13 @@ const ShopFillingItem: React.FC<IComponentProps> = ({ className, item }) => {
   return (
     <div style={{ position: 'relative' }}>
       <img
-        src={`http://localhost:8081/${item.img}`}
+        src={`${process.env.REACT_APP_IMAGE}${item.img}`}
         className={className}
         onClick={() => setOpen(true)}
       />
       <Modal isOpen={open} onClickOutside={() => setOpen(false)}>
         <img
-          src={`http://localhost:8081/${item.img}`}
+          src={`${process.env.REACT_APP_IMAGE}${item.img}`}
           className={styles.Shop__modalFilling}
           onClick={() => {
             setOpen(false);
