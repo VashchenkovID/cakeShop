@@ -42,7 +42,6 @@ const AuthContainer: React.FC = () => {
           navigate(PublicRoutesEnum.SHOP);
         })
         .catch((r) => {
-          console.log(r.message);
           navigate(PublicRoutesEnum.AUTH);
           setLoading(false);
         });

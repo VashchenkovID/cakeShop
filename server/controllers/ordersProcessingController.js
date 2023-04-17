@@ -12,7 +12,7 @@ class OrdersProcessingController {
   async getOrders(req, res, next) {
     try {
       let { date } = req.params;
-      console.log(date)
+      console.log(date);
       let fromDate;
       let toDate;
       if (date) {
@@ -20,11 +20,19 @@ class OrdersProcessingController {
         toDate = endOfMonth(new Date(date));
       }
       const baskets = await Basket.findAll({
-        where: { date_completed: { [Op.between]: [fromDate.toISOString(), toDate.toISOString()] } },
+        where: {
+          date_completed: {
+            [Op.between]: [fromDate.toISOString(), toDate.toISOString()],
+          },
+        },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
-        where: { date_completed: { [Op.between]: [fromDate.toISOString(), toDate.toISOString()] } },
+        where: {
+          date_completed: {
+            [Op.between]: [fromDate.toISOString(), toDate.toISOString()],
+          },
+        },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
 
@@ -50,7 +58,9 @@ class OrdersProcessingController {
             .filter(
               (itm) => itm.status !== "COMPLETED" || itm.status !== "REJECTED"
             ),
-        ],
+        ].map((element, index) => {
+          return { ...element, dropId: index };
+        }),
       });
     } catch (e) {
       next(ApiError.badRequest(e.message));

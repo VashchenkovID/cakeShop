@@ -56,7 +56,6 @@ const AdministrationTypes: React.FC = () => {
       const data = new FormData();
       data.append('name', filling.name);
       data.append('img', filling.img);
-      console.log(data);
       await cakesApi.createCakeFilling(data).then(() => {
         fetchFillings();
       });

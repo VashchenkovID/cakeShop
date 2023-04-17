@@ -31,7 +31,6 @@ class AnalyticsController {
       const baskets = await Basket.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
-          status: "COMPLETED",
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
@@ -46,7 +45,6 @@ class AnalyticsController {
       const basketsBack = await Basket.findAll({
         where: {
           date_completed: { [Op.between]: [fromDateBack, toDateBack] },
-          status: "COMPLETED",
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
@@ -58,11 +56,13 @@ class AnalyticsController {
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
       const allOrder = [
-        ...baskets.map((itm) =>
-          itm.items.map((i) => {
-            return { ...i, deviceId: itm.deviceId };
-          })
-        ),
+        ...baskets
+          .filter((item) => item.status === "COMPLETED")
+          .map((itm) =>
+            itm.items.map((i) => {
+              return { ...i, deviceId: itm.deviceId };
+            })
+          ),
         ...individualOrders.map((itm) =>
           itm.items.map((i) => {
             return { ...i, deviceId: itm.deviceId };
@@ -81,11 +81,13 @@ class AnalyticsController {
           };
         });
       const allBackOrders = [
-        ...basketsBack.map((itm) =>
-          itm.items?.map((i) => {
-            return { ...i, deviceId: itm.deviceId };
-          })
-        ),
+        ...basketsBack
+          .filter((item) => item.status === "COMPLETED")
+          .map((itm) =>
+            itm.items?.map((i) => {
+              return { ...i, deviceId: itm.deviceId };
+            })
+          ),
         ...individualOrdersBack.map((itm) =>
           itm.items?.map((i) => {
             return { ...i, deviceId: itm.deviceId };
@@ -171,7 +173,6 @@ class AnalyticsController {
         where: {
           date_completed: {
             [Op.between]: [fromDate, toDate],
-            status: "COMPLETED",
           },
         },
         include: [{ model: BasketDevice, as: "items" }],
@@ -187,7 +188,12 @@ class AnalyticsController {
         ...new Set(
           individualOrders.map((bt) => bt.items.map((i) => i.deviceId)).flat()
         ),
-        ...new Set(baskets.map((bt) => bt.items.map((i) => i.deviceId)).flat()),
+        ...new Set(
+          baskets
+            .filter((itm) => itm.status === "COMPLETED")
+            .map((bt) => bt.items.map((i) => i.deviceId))
+            .flat()
+        ),
       ].filter((i) => !isNaN(i));
 
       let devices = [];
@@ -216,7 +222,7 @@ class AnalyticsController {
               .map((it) => {
                 return {
                   ...it.dataValues,
-                  device: devices.find((d) => d.id === it.deviceId).constPrice,
+                  device: devices.find((d) => d.id === it.deviceId)?.constPrice,
                 };
               })
               .reduce((accum, element) => accum + element.device, 0),

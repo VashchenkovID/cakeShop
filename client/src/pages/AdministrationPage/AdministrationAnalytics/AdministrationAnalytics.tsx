@@ -117,7 +117,6 @@ const AdministrationAnalytics: React.FC = () => {
       ];
     } else return [];
   }, [sales]);
-  console.log(lineGraphData);
   return (
     <div className={styles.Analytics}>
       <AdministrationAnalyticsSalesGraph

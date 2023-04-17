@@ -13,6 +13,7 @@ export interface OrderProcessingModel {
   updatedAt: string;
   items: OrderProcessingItemModel[];
   type: 'unauthorized' | 'custom' | 'history';
+  dropId: number;
 }
 export interface OrderProcessingItemModel {
   id: number;

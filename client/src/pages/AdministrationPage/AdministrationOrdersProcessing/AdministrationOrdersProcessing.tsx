@@ -91,6 +91,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId, source } = result;
+    console.log(draggableId, destination, source);
     if (!destination) return;
     const findColumn = ColumnIndexes.find(
       (col) => col.value === destination.droppableId,
@@ -120,7 +121,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
       setOrders([
         ...orders
           .map((item) => {
-            if (item.id === Number(draggableId)) {
+            if (item.dropId === Number(draggableId)) {
               return {
                 ...item,
                 status: destination.droppableId as OrderProcessingStatusEnum,
@@ -139,11 +140,10 @@ const AdministrationOrdersProcessing: React.FC = () => {
       }
     }
   };
-
+  console.log(orders);
   useEffect(() => {
     getOrders(date.toISOString());
   }, [date]);
-
   return (
     <section className={styles.Processing}>
       <DatePicker
@@ -169,7 +169,6 @@ const AdministrationOrdersProcessing: React.FC = () => {
                 start.source.droppableId as OrderProcessingStatusEnum,
               );
               setStartIndex(start.source.index);
-              console.log(start);
             }}
             onDragEnd={onDragEnd}
           >

@@ -63,7 +63,7 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
   };
 
   return (
-    <Draggable draggableId={`${item.id}`} index={index}>
+    <Draggable draggableId={`${item.dropId}`} index={index}>
       {(provided) => (
         <Card
           ref={provided.innerRef}
@@ -99,19 +99,18 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
           </div>
           <footer className={styles.ProcessingCard__actions}>
             <Button
-                label={'Отменить'}
-                onClick={() => {
-                  updateOrderStatus(OrderProcessingStatusEnum.REJECTED);
-                }}
+              label={'Отменить'}
+              onClick={() => {
+                updateOrderStatus(OrderProcessingStatusEnum.REJECTED);
+              }}
             />
             <Button
-                label={'Следующий шаг'}
-                onClick={() => {
-                  updateOrderStatus(newStatus());
-                }}
+              label={'Следующий шаг'}
+              onClick={() => {
+                updateOrderStatus(newStatus());
+              }}
             />
           </footer>
-
         </Card>
       )}
     </Draggable>
