@@ -91,7 +91,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId, source } = result;
-    console.log(draggableId, destination, source);
+
     if (!destination) return;
     const findColumn = ColumnIndexes.find(
       (col) => col.value === destination.droppableId,
@@ -140,7 +140,6 @@ const AdministrationOrdersProcessing: React.FC = () => {
       }
     }
   };
-  console.log(orders);
   useEffect(() => {
     getOrders(date.toISOString());
   }, [date]);

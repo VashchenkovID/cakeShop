@@ -18,4 +18,13 @@ export default {
     data: { type: string; status: OrderProcessingStatusEnum },
   ): Promise<AxiosResponse<{ message: string }, any>> =>
     $authHost.put(`${EnpointsEnum.UPDATE_PROCESSING_ORDER}/${id}`, data),
+  getHistory: (
+    date: string,
+  ): Promise<AxiosResponse<{ items: Array<OrderProcessingModel> }, any>> =>
+    $authHost.get(`${EnpointsEnum.GET_HISTORY}/${date}`),
+  getHistoryOrder: (
+    id: string,
+    type: string,
+  ): Promise<AxiosResponse<OrderProcessingModel, any>> =>
+    $authHost.get(`${EnpointsEnum.GET_HISTORY_ORDER}/${type}/${id}`),
 };

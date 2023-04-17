@@ -8,6 +8,7 @@ import AdministrationTypes from 'src/pages/AdministrationPage/AdministrationType
 import AdministrationOrdersProcessing from 'src/pages/AdministrationPage/AdministrationOrdersProcessing/AdministrationOrdersProcessing';
 import { Tabs } from '@consta/uikit/Tabs';
 import AdministrationAnalytics from 'src/pages/AdministrationPage/AdministrationAnalytics/AdministrationAnalytics';
+import AdministrationOrders from 'src/pages/AdministrationPage/AdministrationOrders/AdministrationOrders';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -87,6 +88,9 @@ const AdministrationPage: React.FC = () => {
         )}
         {tab.path === PrivateRoutesEnum.ANALYTICS && (
           <AdministrationAnalytics />
+        )}
+        {tab.path === PrivateRoutesEnum.ORDERS_HISTORY && (
+          <AdministrationOrders />
         )}
       </div>
     </section>

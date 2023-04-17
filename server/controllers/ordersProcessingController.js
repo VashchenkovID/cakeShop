@@ -12,7 +12,6 @@ class OrdersProcessingController {
   async getOrders(req, res, next) {
     try {
       let { date } = req.params;
-      console.log(date);
       let fromDate;
       let toDate;
       if (date) {
@@ -77,11 +76,9 @@ class OrdersProcessingController {
       }
       const baskets = await Basket.findAll({
         where: { date_completed: { [Op.between]: [fromDate, toDate] } },
-        include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
         where: { date_completed: { [Op.between]: [fromDate, toDate] } },
-        include: [{ model: IndividualOrderItem, as: "items" }],
       });
 
       return res.json({
@@ -98,10 +95,39 @@ class OrdersProcessingController {
               type: "unauthorized",
             };
           }),
-        ],
+        ]
+          .filter(
+            (item) => item.status === "COMPLETED" || item.status === "REJECTED"
+          )
+          .map((item, index) => {
+            return { ...item, dropId: index };
+          }),
       });
     } catch (e) {
       next(ApiError.badRequest(e.message));
+    }
+  }
+  async getHistoryOrder(req, res, next) {
+    try {
+      let { id, type } = req.params;
+      let order;
+      if (type === "custom") {
+        order = await Basket.findOne({
+          where: { id },
+          include: [{ model: BasketDevice, as: "items" }],
+        });
+      }
+      if (type === "unauthorized") {
+        order = await IndividualOrder.findOne({
+          where: {
+            id: id,
+          },
+          include: [{ model: IndividualOrderItem, as: "items" }],
+        });
+      }
+      return res.json(order);
+    } catch (e) {
+      next(ApiError(e.message));
     }
   }
   async updateOrder(req, res, next) {
