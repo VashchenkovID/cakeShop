@@ -143,6 +143,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
   useEffect(() => {
     getOrders(date.toISOString());
   }, [date]);
+
   return (
     <section className={styles.Processing}>
       <DatePicker
@@ -196,6 +197,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
                           item={item}
                           key={`${item.id}_${idx}`}
                           index={idx}
+                          setOrders={setOrders}
                         />
                       ))}
                     </div>
