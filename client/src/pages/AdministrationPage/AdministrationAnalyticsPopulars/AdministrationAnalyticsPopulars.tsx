@@ -59,7 +59,7 @@ const AdministrationAnalyticsPopulars: React.FC<IComponentProps> = ({
         </div>
       )}
       {isLoading && <Loader />}
-      {populars.length === 0 && <Text>Данные отсутствуют</Text>}
+      {populars.length === 0 && <Text align={'center'}>Данные отсутствуют</Text>}
     </div>
   );
 };

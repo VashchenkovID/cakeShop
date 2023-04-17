@@ -27,7 +27,7 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
         <Loader />
       ) : (
         <>
-          {lineGraphData.length > 0 ? (
+          {lineGraphData.some((it) => it.id !== null) ? (
             <Line
               data={lineGraphData}
               xField={'date_completed'}
@@ -46,11 +46,11 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
               }}
             />
           ) : (
-            <Text>Данные отсутствуют</Text>
+            <Text align={'center'}>Данные для графика отсутствуют</Text>
           )}
         </>
       )}
-      {!isLoading && lineGraphData.length > 0 && (
+      {!isLoading && (
         <div className={styles.Graph__rows}>
           <div className={styles.Graph__rows__row}>
             <Text weight={'semibold'}>Тип заказа</Text>
@@ -59,17 +59,23 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
             <Text weight={'semibold'}>Полная стоимость</Text>
             <Text weight={'semibold'}>Себестоимость</Text>
           </div>
-          {lineGraphData
-            .filter((itm) => itm.id !== null)
-            .map((item, index) => (
-              <div className={styles.Graph__rows__row} key={index}>
-                <Text>{item.type}</Text>
-                <Text>{item.name}</Text>
-                <Text>{item.date_completed}</Text>
-                <Text>{item.allPrice},00 ₽</Text>
-                <Text>{item.constPrice ? `${item.constPrice},00 ₽` : '-'}</Text>
-              </div>
-            ))}
+          {lineGraphData.some((it) => it.id !== null) ? (
+            lineGraphData
+              .filter((itm) => itm.id !== null)
+              .map((item, index) => (
+                <div className={styles.Graph__rows__row} key={index}>
+                  <Text>{item.type}</Text>
+                  <Text>{item.name}</Text>
+                  <Text>{item.date_completed}</Text>
+                  <Text>{item.allPrice},00 ₽</Text>
+                  <Text>
+                    {item.constPrice ? `${item.constPrice},00 ₽` : '-'}
+                  </Text>
+                </div>
+              ))
+          ) : (
+            <Text align={'center'}>Данные отсутствуют</Text>
+          )}
         </div>
       )}
     </div>

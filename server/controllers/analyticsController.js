@@ -31,14 +31,14 @@ class AnalyticsController {
       const baskets = await Basket.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
-          // status: "COMPLETED",
+          status: "COMPLETED",
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
-          // status: "COMPLETED",
+          status: "COMPLETED",
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
@@ -46,14 +46,14 @@ class AnalyticsController {
       const basketsBack = await Basket.findAll({
         where: {
           date_completed: { [Op.between]: [fromDateBack, toDateBack] },
-          // status: "COMPLETED",
+          status: "COMPLETED",
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrdersBack = await IndividualOrder.findAll({
         where: {
           date_completed: { [Op.between]: [fromDateBack, toDateBack] },
-          // status: "COMPLETED",
+          status: "COMPLETED",
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
@@ -169,13 +169,17 @@ class AnalyticsController {
       }
       const baskets = await Basket.findAll({
         where: {
-          date_completed: { [Op.between]: [fromDate, toDate] },
+          date_completed: {
+            [Op.between]: [fromDate, toDate],
+            status: "COMPLETED",
+          },
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
       const individualOrders = await IndividualOrder.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
+          status: "COMPLETED",
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
