@@ -29,6 +29,7 @@ const AdministrationAnalytics: React.FC = () => {
 
   const lineGraphData = useMemo(() => {
     if (sales) {
+      let findHistory: any[] = [];
       const startDate = startOfMonth(date);
       const datesCount = getDaysInMonth(startDate);
       const month = getMonth(date);
@@ -60,15 +61,28 @@ const AdministrationAnalytics: React.FC = () => {
           new Date(yaer, month, i + 1).toLocaleDateString(),
         );
       }
-      return [
+      const result = [
         ...datesArrCustom.map((dateArr) => {
           if (
-            salesWithDatesCustom.find((itm) => itm.date_completed === dateArr)
+            salesWithDatesCustom.filter((itm) => itm.date_completed === dateArr)
+              .length > 0
           ) {
-            const newObj = salesWithDatesCustom.find(
+            const newObj = salesWithDatesCustom.filter(
               (itm) => itm.date_completed === dateArr,
             );
-            return { ...newObj };
+            if (newObj.length > 1) {
+              findHistory.push(...newObj.flat());
+              return {
+                date_completed: dateArr,
+                id: null,
+                allPrice: 0,
+                constPrice: 0,
+                name: 'Заказ отсутствует',
+                type: 'Пользовательский',
+              };
+            } else {
+              return { ...newObj[0] };
+            }
           } else
             return {
               date_completed: dateArr,
@@ -81,14 +95,26 @@ const AdministrationAnalytics: React.FC = () => {
         }),
         ...datesArrUnauthorized.map((dateArr) => {
           if (
-            salesWithDatesUnauthorized.find(
+            salesWithDatesUnauthorized.filter(
               (itm) => itm.date_completed === dateArr,
-            )
+            ).length > 0
           ) {
-            const newObj = salesWithDatesUnauthorized.find(
+            const newObj = salesWithDatesUnauthorized.filter(
               (itm) => itm.date_completed === dateArr,
             );
-            return { ...newObj };
+            if (newObj.length > 1) {
+              findHistory.push(...newObj.flat());
+              return {
+                date_completed: dateArr,
+                id: null,
+                allPrice: 0,
+                constPrice: 0,
+                name: 'Заказ отсутствует',
+                type: 'Пользовательский',
+              };
+            } else {
+              return { ...newObj[0] };
+            }
           } else
             return {
               date_completed: dateArr,
@@ -100,9 +126,47 @@ const AdministrationAnalytics: React.FC = () => {
             };
         }),
       ];
+      const resArr: any[] = [];
+      findHistory
+        .map((item, index, arr) => {
+          if (
+            arr.filter(
+              (el) =>
+                el.name === item.name &&
+                el.date_completed === item.date_completed,
+            ).length > 1
+          ) {
+            const filteredArr = arr.filter(
+              (el) =>
+                el.name === item.name &&
+                el.date_completed === item.date_completed,
+            );
+            return {
+              ...item,
+              allPrice: filteredArr.reduce(
+                (accum, elem) => accum + elem.allPrice,
+                0,
+              ),
+              constPrice: filteredArr.reduce(
+                (accum, elem) => accum + elem.constPrice,
+                0,
+              ),
+            };
+          } else return { ...item };
+        })
+        .forEach(function (item) {
+          const i: any = resArr.findIndex((x) => x.name == item.name);
+          if (i <= -1) {
+            resArr.push({ ...item });
+          }
+        });
+      return [...resArr, ...result].sort(
+        (a, b) =>
+          new Date(a.date_completed).getTime() -
+          new Date(b.date_completed).getTime(),
+      );
     } else return [];
   }, [sales, date]);
-
   const statistic = useMemo(() => {
     if (sales) {
       return [
@@ -121,6 +185,22 @@ const AdministrationAnalytics: React.FC = () => {
     <div className={styles.Analytics}>
       <AdministrationAnalyticsSalesGraph
         lineGraphData={lineGraphData}
+        items={
+          sales
+            ? sales.items.map((item) => {
+                return {
+                  ...item,
+                  date_completed: new Date(
+                    item.date_completed,
+                  ).toLocaleDateString(),
+                  type:
+                    item.type === 'custom'
+                      ? 'Пользовательский'
+                      : 'Незарегистрированный',
+                };
+              })
+            : []
+        }
         isLoading={isSalesLoading}
       />
       <div className={styles.rightSide}>

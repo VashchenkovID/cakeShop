@@ -3,6 +3,7 @@ import { Line } from '@consta/charts/Line';
 import styles from './AdministrationAnalyticsSalesGraph.styl';
 import { Text } from '@consta/uikit/Text';
 import { Loader } from '@consta/uikit/Loader';
+import { AnalyticsSalesItemsModel } from 'src/api/models/AnalyticsSalesModel';
 
 interface IComponentProps {
   lineGraphData: {
@@ -14,11 +15,13 @@ interface IComponentProps {
     name: string;
   }[];
   isLoading: boolean;
+  items: AnalyticsSalesItemsModel[];
 }
 
 const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
   lineGraphData,
   isLoading,
+  items,
 }) => {
   return (
     <div className={styles.Graph}>
@@ -59,23 +62,15 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
             <Text weight={'semibold'}>Полная стоимость</Text>
             <Text weight={'semibold'}>Себестоимость</Text>
           </div>
-          {lineGraphData.some((it) => it.id !== null) ? (
-            lineGraphData
-              .filter((itm) => itm.id !== null)
-              .map((item, index) => (
-                <div className={styles.Graph__rows__row} key={index}>
-                  <Text>{item.type}</Text>
-                  <Text>{item.name}</Text>
-                  <Text>{item.date_completed}</Text>
-                  <Text>{item.allPrice},00 ₽</Text>
-                  <Text>
-                    {item.constPrice ? `${item.constPrice},00 ₽` : '-'}
-                  </Text>
-                </div>
-              ))
-          ) : (
-            <Text align={'center'}>Данные отсутствуют</Text>
-          )}
+          {items.map((item, index) => (
+            <div className={styles.Graph__rows__row} key={index}>
+              <Text>{item.type}</Text>
+              <Text>{item.name}</Text>
+              <Text>{item.date_completed}</Text>
+              <Text>{item.allPrice},00 ₽</Text>
+              <Text>{item.constPrice ? `${item.constPrice},00 ₽` : '-'}</Text>
+            </div>
+          ))}
         </div>
       )}
     </div>

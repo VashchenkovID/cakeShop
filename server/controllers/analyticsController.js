@@ -31,6 +31,7 @@ class AnalyticsController {
       const baskets = await Basket.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
+          status: "COMPLETED",
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
@@ -51,7 +52,6 @@ class AnalyticsController {
       const individualOrdersBack = await IndividualOrder.findAll({
         where: {
           date_completed: { [Op.between]: [fromDateBack, toDateBack] },
-          status: "COMPLETED",
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
@@ -63,11 +63,13 @@ class AnalyticsController {
               return { ...i, deviceId: itm.deviceId };
             })
           ),
-        ...individualOrders.map((itm) =>
-          itm.items.map((i) => {
-            return { ...i, deviceId: itm.deviceId };
-          })
-        ),
+        ...individualOrders
+          .filter((itm) => itm.status === "COMPLETED")
+          .map((itm) =>
+            itm.items.map((i) => {
+              return { ...i, deviceId: itm.deviceId };
+            })
+          ),
       ]
         .flat()
         .map((itm) => {
@@ -88,11 +90,13 @@ class AnalyticsController {
               return { ...i, deviceId: itm.deviceId };
             })
           ),
-        ...individualOrdersBack.map((itm) =>
-          itm.items?.map((i) => {
-            return { ...i, deviceId: itm.deviceId };
-          })
-        ),
+        ...individualOrdersBack
+          .filter((itm) => itm.status === "COMPLETED")
+          .map((itm) =>
+            itm.items?.map((i) => {
+              return { ...i, deviceId: itm.deviceId };
+            })
+          ),
       ]
         .flat()
         .map((itm) => {
@@ -176,12 +180,10 @@ class AnalyticsController {
           },
         },
         include: [{ model: BasketDevice, as: "items" }],
-        status: "COMPLETED",
       });
       const individualOrders = await IndividualOrder.findAll({
         where: {
           date_completed: { [Op.between]: [fromDate, toDate] },
-          status: "COMPLETED",
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
