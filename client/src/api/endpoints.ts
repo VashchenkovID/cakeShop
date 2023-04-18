@@ -22,4 +22,5 @@ export const enum EnpointsEnum {
   UPDATE_PROCESSING_ORDER = '/order_processing/updateOrder',
   GET_POPULAR = '/analytics/getPopularity',
   GET_SALES = '/analytics/getSales',
+  GET_CALENDAR = '/calendar/dates',
 }

@@ -6,7 +6,6 @@ import styles from './MainPage.styl';
 import { Text } from '@consta/uikit/Text';
 import ShopCaroucel from 'src/pages/ShopPage/ShopCaroucel/ShopCaroucel';
 import { Button } from '@consta/uikit/Button';
-import { IconDown } from '@consta/uikit/IconDown';
 import ShopFillingItem from 'src/pages/ShopPage/ShopFillingItem/ShopFillingItem';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';

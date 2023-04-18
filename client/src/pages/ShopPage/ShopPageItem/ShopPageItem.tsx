@@ -311,16 +311,21 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
           </div>
         )}
       </div>
-      <Modal isOpen={isOpen} onClickOutside={() => setIsOpen(false)}>
+      <Modal
+        isOpen={isOpen}
+        onClickOutside={() => setIsOpen(false)}
+        onEsc={() => setIsOpen(false)}
+      >
         <div
           className={cx(styles.Item, {
             modal: isOpen,
           })}
         >
-          <div className={styles.Item__header} onClick={() => setIsOpen(true)}>
+          <div className={styles.Item__header}>
             <img
               className={styles.Item__image}
               src={`${process.env.REACT_APP_IMAGE}${item.img}`}
+              onClick={() => setIsOpen(false)}
             />
             <Text weight={'semibold'} className={styles.Item__title}>
               {item.name}

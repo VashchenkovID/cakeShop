@@ -131,7 +131,9 @@ const AdministrationOrdersProcessing: React.FC = () => {
           })
           .sort((a, b) => a.order - b.order),
       ]);
-      const reqItem = orders.find((item) => item.id === Number(draggableId));
+      const reqItem = orders.find(
+        (item) => item.dropId === Number(draggableId),
+      );
       if (reqItem) {
         await ordersApi.updateOrderProcessing(reqItem.id.toString(), {
           type: reqItem.type,

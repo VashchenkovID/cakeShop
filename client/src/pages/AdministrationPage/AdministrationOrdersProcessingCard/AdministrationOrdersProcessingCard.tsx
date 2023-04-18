@@ -72,7 +72,14 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
           className={styles.ProcessingCard}
         >
           <div className={styles.ProcessingCard__header}>
-            <Text>{item.name}</Text>
+            <Text>
+              {item.name}
+
+              <Text size={'s'} view={'secondary'}>
+                Дата выдачи: &nbsp;
+                {new Date(item.date_completed).toLocaleDateString()}
+              </Text>
+            </Text>
             <div>
               <OrderProcessingStatusBadge status={item.status} />
             </div>

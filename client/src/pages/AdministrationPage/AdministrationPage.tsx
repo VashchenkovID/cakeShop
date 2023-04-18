@@ -9,6 +9,7 @@ import AdministrationOrdersProcessing from 'src/pages/AdministrationPage/Adminis
 import { Tabs } from '@consta/uikit/Tabs';
 import AdministrationAnalytics from 'src/pages/AdministrationPage/AdministrationAnalytics/AdministrationAnalytics';
 import AdministrationOrders from 'src/pages/AdministrationPage/AdministrationOrders/AdministrationOrders';
+import AdministrationCalendar from 'src/pages/AdministrationPage/AdministrationCalendar/AdministrationCalendar';
 
 type TabType = {
   path: PrivateRoutesEnum;
@@ -30,6 +31,11 @@ const AdministrationPage: React.FC = () => {
 
   const TabsArr: Array<TabType> = useMemo(
     () => [
+      {
+        path: PrivateRoutesEnum.CALENDAR,
+        component: <div></div>,
+        title: 'Календарь заказов',
+      },
       {
         path: PrivateRoutesEnum.ANALYTICS,
         component: <div></div>,
@@ -91,6 +97,9 @@ const AdministrationPage: React.FC = () => {
         )}
         {tab.path === PrivateRoutesEnum.ORDERS_HISTORY && (
           <AdministrationOrders />
+        )}
+        {tab.path === PrivateRoutesEnum.CALENDAR && (
+          <AdministrationCalendar />
         )}
       </div>
     </section>
