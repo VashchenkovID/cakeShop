@@ -5,14 +5,21 @@ p {
 .Item
   display flex
   flex-direction column
+  justify-content space-between
   gap 8px
   padding 16px
   border-radius 10px
   background-image linear-gradient(315deg, #492489 5%,#8860D0 74%);
   border 1px solid rgba(98, 51, 179, 0.6)
-  width 500px
+  width 300px
+  &.modal
+    width 600px
+  &__header
+    display flex
+    flex-direction column
+    gap 8px
   &__image
-    max-width 200px
+    border-radius 10px
   &__title
     font-size 20px
     font-weight 600
@@ -24,6 +31,10 @@ p {
     display flex
     justify-content space-between
     flex-wrap nowrap
+  &__addActions
+    display: flex;
+    gap 16px
+    align-items center
   &__rating
     display flex
     align-items center
@@ -34,4 +45,7 @@ p {
       color #fbc102
   &__button
     display flex
-    justify-content flex-end
+    justify-content space-between
+    align-items center
+    gap 16px
+

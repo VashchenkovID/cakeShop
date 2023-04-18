@@ -1,21 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './ShopPage.styl';
+import cn from 'classnames/bind';
 import ShopPageItem from 'src/pages/ShopPage/ShopPageItem/ShopPageItem';
-import { IconDown } from '@consta/uikit/IconDown';
-import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
-import ShopCaroucel from 'src/pages/ShopPage/ShopCaroucel/ShopCaroucel';
-import ShopFillingItem from 'src/pages/ShopPage/ShopFillingItem/ShopFillingItem';
+import { TypeModel } from 'src/api/models/TypeModel';
+import { Loader } from '@consta/uikit/Loader';
+import PaginationCustom, {
+  PaginationStateType,
+} from 'src/components/PaginationCustom/PaginationCustom';
+
+const cx = cn.bind(styles);
 
 const ShopPage: React.FC = () => {
-  const shopRef = useRef<HTMLDivElement>(null);
-  const [fillings, setFillings] = useState([]);
+  const [types, setTypes] = useState<TypeModel[]>([]);
+  const [type, setType] = useState<TypeModel | undefined>(undefined);
   const [items, setItems] = useState<DeviceListModel[]>([]);
-  const [count, setCount] = useState<number>(0);
-
+  const [pagination, setPagination] = useState<PaginationStateType>({
+    page: 1,
+    perPage: 10,
+  });
+  const [count, setCount] = useState(0);
   const { load: fetchRecipes, isLoading } = useRequest(
     cakesApi.loadAllCakes,
     (data) => {
@@ -25,97 +32,75 @@ const ShopPage: React.FC = () => {
       }
     },
   );
-
-  const { load: fetchFillings, isLoading: fillingLoading } = useRequest(
-    cakesApi.getCakeFillings,
+  const { load: fetchTypes, isLoading: typeLoading } = useRequest(
+    cakesApi.getCakeTypes,
     (data) => {
       if (data) {
-        setFillings(data.data);
+        setTypes([
+          ...data.data,
+          {
+            id: undefined,
+            name: 'Все',
+            createdAt: '',
+            updatedAt: '',
+          },
+        ]);
       }
     },
   );
 
-  const handleScrollToAnElement = () => {
-    shopRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    fetchTypes();
+  }, []);
 
   useEffect(() => {
-    fetchRecipes();
-    fetchFillings();
-  }, []);
+    if (type) {
+      fetchRecipes({
+        typeId: type.id,
+        page: pagination.page,
+        limit: pagination.perPage,
+      });
+    } else {
+      fetchRecipes({
+        typeId: undefined,
+        page: pagination.page,
+        limit: pagination.perPage,
+      });
+    }
+  }, [pagination, type]);
 
   return (
     <section className={styles.Shop}>
-      <div className={styles.Shop__title}>
-        <div className={styles.Shop__titleCase}>
-          <div className={styles.Shop__titleCase__text}>
-            <Text
-              size={'6xl'}
-              weight={'semibold'}
-              className={styles.Shop__title__text}
-            >
-              AlexaCake Store
-            </Text>
-            <Text
-              size={'4xl'}
-              view={'primary'}
-              weight={'semibold'}
-              className={styles.Shop__subTitle}
-            >
-              Авторский торт и десерты для Вашего праздника
-            </Text>
-            <Text size={'l'}>Выполним заказ любой сложности и дизайна</Text>
-          </div>
-
-          <ShopCaroucel items={items} automatic />
-        </div>
-
-        <div className={styles.Shop__title__actions}>
-          <Button
-            onClick={() => {
-              handleScrollToAnElement();
-            }}
-            iconLeft={IconDown}
-            label={'Выбрать десерт'}
-          />
-          <Button label={'Заказать индивидуальный десерт'} />
-        </div>
+      <Text size={'3xl'}>Каталог десертов</Text>
+      <div className={styles.Shop__header}>
+        {types.map((t, index) => (
+          <Text
+            className={cx(styles.Shop__header__type, {
+              active: type && type.id === t.id,
+            })}
+            onClick={() => setType(t)}
+            key={index}
+          >
+            {t.name}
+          </Text>
+        ))}
       </div>
-      <div className={styles.Shop__case}>
-        <Text size={'3xl'} weight={'semibold'}>
-          Воплощаем Ваши желания
-        </Text>
-        <Text size={'xl'}>
-          Здесь рождаются торты, которые радуют своих получателей и гостей на
-          мероприятиях яркостью и художественным оформлением,с помощью кремовой
-          росписи, мастики, ганаша и изомальта.
-        </Text>
-      </div>
-      <div className={styles.Shop__case}>
-        <Text size={'3xl'}>
-          {fillings.length} различных вкусов для начинки :
-        </Text>
-        <div className={styles.Shop__case__fillings}>
-          {fillings.map((itm, idx) => (
-            <div key={idx}>
-              <ShopFillingItem
-                item={itm}
-                className={styles.Shop__items__item}
-              />
-            </div>
+      <div className={styles.Shop__items}>
+        {isLoading && <Loader />}
+        {!isLoading &&
+          items &&
+          items.length > 0 &&
+          items.map((item, index) => (
+            <ShopPageItem item={item} key={index} activeItem={null} />
           ))}
-        </div>
       </div>
-      <div ref={shopRef}>
-        <h2>Наши десерты:</h2>
-        <div className={styles.Shop__items}>
-          {items &&
-            items.length > 0 &&
-            items.map((item, index) => (
-              <ShopPageItem item={item} key={index} activeItem={null} />
-            ))}
-        </div>
-      </div>
+      <footer className={styles.Shop__active}>
+        <PaginationCustom
+          total={count}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
+      </footer>
     </section>
   );
 };

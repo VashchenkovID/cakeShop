@@ -2,13 +2,15 @@ import React from 'react';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './AdministrationListItem.styl';
 import { Text } from '@consta/uikit/Text';
-import CustomTextTooltip from 'src/components/CustomTextTooltip';
+import cn from 'classnames/bind';
 
 interface IComponentProps {
   activeElement: number | null;
   item: DeviceListModel;
   setActiveList: React.Dispatch<React.SetStateAction<number | null>>;
 }
+
+const cx = cn.bind(styles);
 
 const AdministrationListItem: React.FC<IComponentProps> = ({
   activeElement,
@@ -25,9 +27,12 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
           className={styles.RecipesListItem__image}
           src={`${process.env.REACT_APP_IMAGE}${item.img}`}
         />
-        <Text className={styles.RecipesListItem__title}>{item.name}</Text>
-        <Text className={styles.RecipesListItem__subTitle}>
-          <CustomTextTooltip text={item.description} lineClamp={1} />
+        <Text
+          className={cx(styles.RecipesListItem__title, {
+            active: activeElement === item.id,
+          })}
+        >
+          {item.name}
         </Text>
       </div>
       <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>

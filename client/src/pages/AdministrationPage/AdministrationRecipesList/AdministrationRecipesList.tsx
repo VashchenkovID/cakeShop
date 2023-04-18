@@ -4,18 +4,27 @@ import AdministrationListItem from '../AdministrationListItem/AdministrationList
 import styles from './AdministrationRecipesList.styl';
 import { PrivateRoutesEnum } from 'src/router';
 import { useNavigate } from 'react-router-dom';
-import {Button} from "@consta/uikit/Button";
+import { Button } from '@consta/uikit/Button';
+import PaginationCustom, {
+  PaginationStateType,
+} from 'src/components/PaginationCustom/PaginationCustom';
 
 interface IComponentProps {
   recipes: DeviceListModel[];
   activeList: number | null;
   setActiveList: React.Dispatch<React.SetStateAction<number | null>>;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationStateType>>;
+  pagination: PaginationStateType;
+  count: number;
 }
 
 const AdministrationRecipesList: React.FC<IComponentProps> = ({
   recipes,
   activeList,
   setActiveList,
+  count,
+  pagination,
+  setPagination,
 }) => {
   const navigate = useNavigate();
   return (
@@ -28,16 +37,22 @@ const AdministrationRecipesList: React.FC<IComponentProps> = ({
         }}
         label={'Создать новый рецепт'}
       />
-
-      {recipes.length > 0 &&
-        recipes.map((item, index) => (
-          <AdministrationListItem
-            key={index}
-            activeElement={activeList}
-            item={item}
-            setActiveList={setActiveList}
-          />
-        ))}
+      <div className={styles.RecipesList__items}>
+        {recipes.length > 0 &&
+          recipes.map((item, index) => (
+            <AdministrationListItem
+              key={index}
+              activeElement={activeList}
+              item={item}
+              setActiveList={setActiveList}
+            />
+          ))}
+      </div>
+      <PaginationCustom
+        total={count}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
     </div>
   );
 };

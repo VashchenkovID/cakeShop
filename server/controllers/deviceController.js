@@ -2,6 +2,7 @@ const { Device, DeviceInfo, Type } = require("../models/models");
 const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
+const { where } = require("sequelize");
 
 class DeviceController {
   async create(req, res, next) {
@@ -108,12 +109,25 @@ class DeviceController {
   }
 
   async getAll(req, res) {
-    let { limit, page } = req.query;
+    let { limit, page, typeId } = req.query;
     page = page || 1;
     limit = limit || 9;
     let offset = page * limit - limit;
     let devices;
-    devices = await Device.findAndCountAll({ limit, offset });
+    if (typeId){
+      devices = await Device.findAndCountAll({
+        limit,
+        offset,
+        where: {
+          TypeId: typeId,
+        },
+      });
+    } else {
+      devices = await Device.findAndCountAll({
+        limit,
+        offset,
+      });
+    }
 
     return res.json(devices);
   }

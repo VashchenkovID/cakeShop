@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames/bind';
 import styles from './styles.styl';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PublicRoutesEnum } from 'src/router';
+import {PrivateRoutesEnum, PublicRoutesEnum} from 'src/router';
 import {
   Header as ConstaHeader,
   HeaderMenu,
@@ -43,7 +43,18 @@ const Header: React.FC<IHeaderProps> = () => {
   const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
   const items: Item[] = [
     {
-      label: 'Магазин',
+      label: 'Главная',
+      id: HeaderIdEnum.GENERAL,
+      href: PublicRoutesEnum.GENERAL,
+      active: myLoc === PublicRoutesEnum.GENERAL,
+      onClick: (e) => {
+        headerTransition(e, PublicRoutesEnum.GENERAL);
+      },
+      permission: [],
+      access: false,
+    },
+    {
+      label: 'Каталог',
       id: HeaderIdEnum.SHOP,
       href: PublicRoutesEnum.SHOP,
       active: myLoc === PublicRoutesEnum.SHOP,
@@ -56,10 +67,10 @@ const Header: React.FC<IHeaderProps> = () => {
     {
       label: 'Администрирование',
       id: HeaderIdEnum.ADMINISTRATION,
-      href: PublicRoutesEnum.ADMINISTRATION,
-      active: myLoc === PublicRoutesEnum.ADMINISTRATION,
+      href: PrivateRoutesEnum.ADMINISTRATION,
+      active: myLoc === PrivateRoutesEnum.ADMINISTRATION,
       onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.ADMINISTRATION);
+        headerTransition(e, PrivateRoutesEnum.ADMINISTRATION);
       },
       permission: [],
       access: true,

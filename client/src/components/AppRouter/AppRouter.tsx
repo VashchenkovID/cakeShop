@@ -13,8 +13,13 @@ import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import AdministrationPage from 'src/pages/AdministrationPage/AdministrationPage';
 import CreateOrder from 'src/pages/CreateOrder/CreateOrder';
+import MainPage from 'src/pages/MainPage/MainPage';
 
 export const publicRoutes: Array<IRouteItem> = [
+  {
+    path: PublicRoutesEnum.GENERAL,
+    element: <MainPage />,
+  },
   {
     path: PublicRoutesEnum.SHOP,
     element: <ShopPage />,
@@ -82,7 +87,7 @@ const AppRouter = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to={PublicRoutesEnum.SHOP} />} />
+        <Route path="/" element={<Navigate to={PublicRoutesEnum.GENERAL} />} />
 
         {[...publicRoutes, ...(isAuth ? privateRoutes : [])].map((route) => (
           <Route path={route.path} element={route.element} key={route.path} />

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './ShopPageItem.styl';
+import cn from 'classnames/bind';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
@@ -9,10 +10,12 @@ import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { IconFavorite } from '@consta/uikit/IconFavorite';
 import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
+import { Modal } from '@consta/uikit/Modal';
 interface IComponentProps {
   item: DeviceListModel;
   activeItem: number | null;
 }
+const cx = cn.bind(styles);
 
 const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
   const dispatch = useAppDispatch();
@@ -20,7 +23,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
   const [isAdded, setIsAdded] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
   const addItemInBasket = async () => {
     if (userId) {
       if (!basket) {
@@ -268,16 +271,16 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
 
   return (
     <div className={styles.Item}>
-      <img
-        className={styles.Item__image}
-        src={`${process.env.REACT_APP_IMAGE}${item.img}`}
-      />
-      <Text weight={'semibold'} className={styles.Item__title}>
-        {item.name}
-      </Text>
-      <Text size={'s'} view={'secondary'} className={styles.Item__subtitle}>
-        {item.description}
-      </Text>
+      <div className={styles.Item__header} onClick={() => setIsOpen(true)}>
+        <img
+          className={styles.Item__image}
+          src={`${process.env.REACT_APP_IMAGE}${item.img}`}
+        />
+        <Text weight={'semibold'} className={styles.Item__title}>
+          {item.name}
+        </Text>
+      </div>
+
       <div className={styles.Item__footer}>
         {item.rating > 0 && (
           <div className={styles.Item__rating}>
@@ -285,22 +288,81 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
             <IconFavorite className={styles.Item__rating__icon} />
           </div>
         )}
-
-        <Text weight={'bold'} size={'l'}>
-          {item.price},00 ₽
-        </Text>
       </div>
       <div className={styles.Item__button}>
+        <Text weight={'bold'} size={'l'}>
+          Цена: {item.price},00 ₽
+        </Text>
         {!isAdded ? (
-          <Button onClick={() => addItemInBasket()} label={'Добавить'} />
+          <Button
+            size={'s'}
+            onClick={() => addItemInBasket()}
+            label={'Добавить'}
+          />
         ) : (
-          <div>
-            <Button label={'-'} onClick={() => removeItemInBasket()} />
-            {countItemBasket}
-            <Button onClick={() => addItemInBasket()} label={'+'} />
+          <div className={styles.Item__addActions}>
+            <Button
+              size={'s'}
+              label={'-'}
+              onClick={() => removeItemInBasket()}
+            />
+            <Text>{countItemBasket}</Text>
+            <Button size={'s'} onClick={() => addItemInBasket()} label={'+'} />
           </div>
         )}
       </div>
+      <Modal isOpen={isOpen} onClickOutside={() => setIsOpen(false)}>
+        <div
+          className={cx(styles.Item, {
+            modal: isOpen,
+          })}
+        >
+          <div className={styles.Item__header} onClick={() => setIsOpen(true)}>
+            <img
+              className={styles.Item__image}
+              src={`${process.env.REACT_APP_IMAGE}${item.img}`}
+            />
+            <Text weight={'semibold'} className={styles.Item__title}>
+              {item.name}
+            </Text>
+          </div>
+          <Text view={'secondary'}>{item.description}</Text>
+          <div className={styles.Item__footer}>
+            {item.rating > 0 && (
+              <div className={styles.Item__rating}>
+                <Text className={styles.Item__rating__text}>{item.rating}</Text>
+                <IconFavorite className={styles.Item__rating__icon} />
+              </div>
+            )}
+          </div>
+          <div className={styles.Item__button}>
+            <Text weight={'bold'} size={'l'}>
+              Цена: {item.price},00 ₽
+            </Text>
+            {!isAdded ? (
+              <Button
+                size={'s'}
+                onClick={() => addItemInBasket()}
+                label={'Добавить'}
+              />
+            ) : (
+              <div className={styles.Item__addActions}>
+                <Button
+                  size={'s'}
+                  label={'-'}
+                  onClick={() => removeItemInBasket()}
+                />
+                <Text>{countItemBasket}</Text>
+                <Button
+                  size={'s'}
+                  onClick={() => addItemInBasket()}
+                  label={'+'}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

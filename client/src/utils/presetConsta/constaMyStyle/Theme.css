@@ -82,6 +82,14 @@
 .Popover {
   z-index: 100;
 }
+.Button_disabled {
+  background-color: rgba( 0, 66, 105, 0.3 );
+  color: rgba(255, 255, 255, 0.2);
+}
+.Text_view_ghost {
+  color: rgba(255, 255, 255, 0.2);
+}
+
 .Button_view_primary {
   background-image: linear-gradient(
     to right,
@@ -101,6 +109,7 @@
   color: #fff;
   text-decoration: none;
 }
+
 .ListItem.Text {
   color: #003973;
 }

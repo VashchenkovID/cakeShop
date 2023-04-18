@@ -66,9 +66,9 @@ const ShopCaroucel: React.FC<IComponentProps> = ({ items, automatic }) => {
                         active: itm.active,
                       })}
                       key={idx}
-                      onClick={() => {
-                        setCurrentIndex(itm.index);
-                      }}
+                      // onClick={() => {
+                      //   setCurrentIndex(itm.index);
+                      // }}
                     />
                   ))}
                 </div>

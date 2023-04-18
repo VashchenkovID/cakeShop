@@ -8,6 +8,7 @@ import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import AdministrationRecipesList from 'src/pages/AdministrationPage/AdministrationRecipesList/AdministrationRecipesList';
 import AdministrationRecipesViewById from 'src/pages/AdministrationPage/AdministrationRecipesViewById/AdministrationRecipesViewById';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { PaginationStateType } from 'src/components/PaginationCustom/PaginationCustom';
 
 const cx = cn.bind(styles);
 
@@ -24,7 +25,10 @@ const AdministrationRecipes = () => {
   const [recipes, setRecipes] = useState<DeviceListModel[]>([]);
   const [count, setCount] = useState<number>(0);
   const [activeList, setActiveList] = useState<number | null>(null);
-
+  const [pagination, setPagination] = useState<PaginationStateType>({
+    page: 1,
+    perPage: 10,
+  });
   const { load: fetchRecipes, isLoading } = useRequest(
     cakesApi.loadAllCakes,
     (data) => {
@@ -44,8 +48,11 @@ const AdministrationRecipes = () => {
   }, [location]);
 
   useEffect(() => {
-    fetchRecipes();
-  }, [pageMode]);
+    fetchRecipes({
+      page: pagination.page,
+      limit: pagination.perPage,
+    });
+  }, [pageMode, pagination]);
 
   return (
     <>
@@ -55,6 +62,9 @@ const AdministrationRecipes = () => {
             recipes={recipes}
             activeList={activeList}
             setActiveList={setActiveList}
+            count={count}
+            pagination={pagination}
+            setPagination={setPagination}
           />
           <AdministrationRecipesViewById
             activeList={activeList}

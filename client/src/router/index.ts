@@ -20,6 +20,7 @@ export const enum PrivateRoutesEnum {
 }
 
 export const enum PublicRoutesEnum {
+  GENERAL = '/general',
   AUTH = '/auth',
   LOGIN = '/login',
   INFO_PAGE = '/info',

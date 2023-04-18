@@ -14,6 +14,7 @@ export const enum RequestStatusEnum {
 }
 
 export enum HeaderIdEnum {
+  GENERAL = 'general',
   SHOP = 'shop',
   ADMINISTRATION = 'administration',
 }

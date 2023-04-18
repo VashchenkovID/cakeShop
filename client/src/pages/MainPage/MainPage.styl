@@ -1,0 +1,66 @@
+.Shop
+  margin 24px
+  max-height calc(100vh - 130px)
+  overflow-y auto
+  &__titleCase
+    display flex
+    gap 24px
+    margin 24px
+    justify-content space-between
+    align-items center
+    &__text
+      display flex
+      flex-direction column
+      gap 24px
+      max-width 50vw
+  &__title
+    display flex
+    flex-direction column
+    gap 24px
+    justify-content center
+    text-align center
+    min-height 500px
+    &__text
+      font-size 55px
+      font-weight 700
+      line-height 65px
+    &__actions
+      display flex
+      gap 16px
+      justify-content center
+  &__case
+    display flex
+    flex-direction column
+    gap 16px
+    margin 0 auto
+    justify-content center
+    text-align center
+    min-height 300px
+    margin-bottom 24px
+    &__fillings
+      display grid
+      grid-template-columns 1fr 1fr
+      gap 16px
+      margin 0 auto
+  &__items
+    display flex
+    gap 16px
+    flex-wrap wrap
+    margin-top 24px
+    &__item
+      display flex
+      width 400px
+      height 400px
+      cursor pointer
+      border-radius 10px
+  &__modalFilling
+    width 600px
+    height 600px
+    opacity 0.8
+.modalText
+  display flex
+  align-items center
+  color #a002fb
+  position absolute
+  top 0
+  opacity 1

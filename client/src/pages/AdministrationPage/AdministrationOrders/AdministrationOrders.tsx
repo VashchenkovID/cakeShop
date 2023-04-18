@@ -6,6 +6,7 @@ import styles from './AdministrationOrders.styl';
 import AdministrationOrdersSideMenu from 'src/pages/AdministrationPage/AdministrationOrdersSideMenu/AdministrationOrdersSideMenu';
 import CustomMonthPicker from 'src/components/CustomMonthPicker/CustomMonthPicker';
 import { Loader } from '@consta/uikit/Loader';
+import AdministrationOrdersViewById from 'src/pages/AdministrationPage/AdministrationOrdersViewById/AdministrationOrdersViewById';
 
 const AdministrationOrders: React.FC = () => {
   const [date, setDate] = useState(new Date());
@@ -69,6 +70,14 @@ const AdministrationOrders: React.FC = () => {
           />
         )}
       </div>
+      <AdministrationOrdersViewById
+        order={order}
+        isFullLoading={isFullLoading}
+        setNull={setNull}
+        activeOrder={activeOrder}
+        getOrders={getOrders}
+        date={date}
+      />
     </section>
   );
 };
