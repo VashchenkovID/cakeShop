@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames/bind';
 import styles from './styles.styl';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {PrivateRoutesEnum, PublicRoutesEnum} from 'src/router';
+import { PrivateRoutesEnum, PublicRoutesEnum } from 'src/router';
 import {
   Header as ConstaHeader,
   HeaderMenu,
@@ -110,18 +110,23 @@ const Header: React.FC<IHeaderProps> = () => {
                   localStorage.clear();
                   dispatch(setIsAuth(false));
                 }}
+                size={'s'}
                 view={'primary'}
                 label={'Выйти'}
               />
             </div>
           ) : (
-            <div>
-              <button onClick={() => navigate(PublicRoutesEnum.LOGIN)}>
-                Вход
-              </button>
-              <button onClick={() => navigate(PublicRoutesEnum.AUTH)}>
-                Регистрация
-              </button>
+            <div className={styles.buttons}>
+              <Button
+                onClick={() => navigate(PublicRoutesEnum.LOGIN)}
+                label={'Вход'}
+                size={'s'}
+              />
+              <Button
+                onClick={() => navigate(PublicRoutesEnum.AUTH)}
+                label={'Регистрация'}
+                size={'s'}
+              />
             </div>
           )}
         </div>

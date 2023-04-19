@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
@@ -11,10 +11,17 @@ import { Loader } from '@consta/uikit/Loader';
 import PaginationCustom, {
   PaginationStateType,
 } from 'src/components/PaginationCustom/PaginationCustom';
+import { useAppSelector } from 'src/hooks/useAppSelector';
+import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
+import IconBasket from 'src/components/IconBasket/IconBasket';
+import { useNavigate } from 'react-router-dom';
+import { PublicRoutesEnum } from 'src/router';
 
 const cx = cn.bind(styles);
 
 const ShopPage: React.FC = () => {
+  const basket = useAppSelector(selectBasket);
+  const navigate = useNavigate();
   const [types, setTypes] = useState<TypeModel[]>([]);
   const [type, setType] = useState<TypeModel | undefined>(undefined);
   const [items, setItems] = useState<DeviceListModel[]>([]);
@@ -48,6 +55,10 @@ const ShopPage: React.FC = () => {
       }
     },
   );
+
+  const isBasketVisible = useMemo(() => {
+    return basket && basket.items.length > 0;
+  }, [basket]);
 
   useEffect(() => {
     fetchTypes();
@@ -94,6 +105,16 @@ const ShopPage: React.FC = () => {
             <ShopPageItem item={item} key={index} activeItem={null} />
           ))}
       </div>
+
+      <div
+        className={cx(styles.IconBasket, {
+          visible: isBasketVisible,
+        })}
+        onClick={() => navigate(`${PublicRoutesEnum.VIEW_ORDER}`)}
+      >
+        <IconBasket className={styles.IconBasket__icon} />
+      </div>
+
       <footer className={styles.Shop__active}>
         <PaginationCustom
           total={count}

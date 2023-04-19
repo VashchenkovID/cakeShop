@@ -100,7 +100,7 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
           </div>
           <div className={styles.ProcessingCard__footer}>
             <Text size={'s'} weight={'semibold'}>
-              Итого: {item.items.reduce((accum, elem) => accum + elem.price, 0)}
+              Итого: {item.items.reduce((accum, elem) => accum + (elem.price * elem.count), 0)}
               ,00 ₽
             </Text>
           </div>

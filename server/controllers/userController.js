@@ -30,7 +30,13 @@ class UserController {
       phone: phone,
     });
     const token = generateJwt(user.id, user.email, user.role);
-    return res.json({ token, role });
+    return res.json({
+      token,
+      role: user.role,
+      name: user.fullName,
+      phone: user.phone,
+      id: user.id,
+    });
   }
   async login(req, res, next) {
     const { email, password } = req.body;

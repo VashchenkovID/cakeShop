@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import userAPI from 'src/api/requests/userAPI';
 import { LocalStorageKeysEnum } from 'src/utils/enum';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -7,6 +7,10 @@ import style from './Auth.styl';
 import ScreenLoader from 'src/components/ScreenLoader/ScreenLoader';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
+import { Text } from '@consta/uikit/Text';
+import { TextField } from '@consta/uikit/TextField';
+import PhoneInput from 'react-phone-input-2';
+import { Button } from '@consta/uikit/Button';
 
 const AuthContainer: React.FC = () => {
   const [login, setLogin] = useState<string>('');
@@ -35,13 +39,16 @@ const AuthContainer: React.FC = () => {
         })
         .then((r) => {
           dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.token);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.role);
+          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
+          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
+          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
+          localStorage.setItem(LocalStorageKeysEnum.ID, r.data.id);
           clearInputs();
           setLoading(false);
           navigate(PublicRoutesEnum.SHOP);
         })
-        .catch((r) => {
+        .catch(() => {
           navigate(PublicRoutesEnum.AUTH);
           setLoading(false);
         });
@@ -71,6 +78,22 @@ const AuthContainer: React.FC = () => {
         });
     }
   };
+
+  const disabled = useMemo(() => {
+    if (location.pathname.includes(PublicRoutesEnum.AUTH)) {
+      return (
+        login === '' ||
+        password === '' ||
+        name === '' ||
+        phone === '' ||
+        !login ||
+        !password ||
+        !name ||
+        !phone
+      );
+    } else return login === '' || password === '' || !login || !password;
+  }, [location.pathname, login, name, password, phone]);
+
   return (
     <>
       {loading ? (
@@ -78,49 +101,72 @@ const AuthContainer: React.FC = () => {
       ) : (
         <div className={style.Container}>
           <div className={style.Container__body}>
-            <h1 className={style.Container__title}>
+            <Text size={'3xl'} className={style.Container__title}>
               {location.pathname.includes(PublicRoutesEnum.AUTH)
                 ? 'Регистрация'
                 : 'Авторизация'}
-            </h1>
-            <input
+            </Text>
+            <TextField
+              size={'s'}
+              label={'Логин'}
               placeholder={'Логин'}
+              width={'full'}
               id="outlined-basic"
               value={login}
-              onChange={(e) => {
-                setLogin(e.target.value);
+              onChange={({ value }) => {
+                setLogin(value);
               }}
             />
-            <input
+            <TextField
+              type={'password'}
               placeholder={'Пароль'}
+              label={'Пароль'}
+              size={'s'}
+              width={'full'}
               id="outlined-basic"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
+              onChange={({ value }) => {
+                setPassword(value);
               }}
             />
             {location.pathname.includes(PublicRoutesEnum.AUTH) && (
-              <div>
-                <input
-                  placeholder={'Имя'}
-                  id="outlined-basic"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
-                <input
-                  id="outlined-basic"
-                  placeholder={'Телефон'}
-                  value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                  }}
-                />
-              </div>
+              <TextField
+                size={'s'}
+                width={'full'}
+                placeholder={'Введите имя'}
+                label={'Имя'}
+                value={name}
+                onChange={({ value }) => {
+                  setName(value);
+                }}
+              />
             )}
-
-            <button onClick={enterInApp}>Вход</button>
+            {location.pathname.includes(PublicRoutesEnum.AUTH) && (
+              <PhoneInput
+                specialLabel={'Номер телефона'}
+                containerClass={style.Container__phoneContainer}
+                inputClass={style.Container__phoneInput}
+                placeholder={'Введите номер телефона'}
+                country={'ru'}
+                value={phone}
+                onChange={(value) =>
+                  setPhone(
+                    value
+                      .split('')
+                      .map((elem, index) => (index === 0 ? '7' : elem))
+                      .join(''),
+                  )
+                }
+              />
+            )}
+            <Button
+              size={'s'}
+              width={'full'}
+              onClick={enterInApp}
+              label={'Вход'}
+              view={disabled ? 'ghost' : 'primary'}
+              disabled={disabled}
+            />
           </div>
         </div>
       )}

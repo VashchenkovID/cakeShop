@@ -138,7 +138,10 @@ class AnalyticsController {
           return {
             id: item.deviceId,
             name: item.name,
-            price: item.rows.reduce((accum, item) => accum + item.price, 0),
+            price: item.rows.reduce(
+              (accum, item) => accum + item.price * item.count,
+              0
+            ),
             count: item.rows.reduce((accum, item) => accum + item.count, 0),
           };
         });
@@ -218,7 +221,7 @@ class AnalyticsController {
               id: item.id,
               name: item.name,
               allPrice: item.items.reduce(
-                (accum, elem) => accum + elem.price,
+                (accum, elem) => accum + elem.price * elem.count,
                 0
               ),
               constPrice: item.items
@@ -229,7 +232,10 @@ class AnalyticsController {
                       ?.constPrice,
                   };
                 })
-                .reduce((accum, element) => accum + element.device, 0),
+                .reduce(
+                  (accum, element) => accum + element.device * element.count,
+                  0
+                ),
               date_completed: item.date_completed,
               type: "custom",
             };
@@ -241,7 +247,7 @@ class AnalyticsController {
               id: item.id,
               name: item.name,
               allPrice: item.items.reduce(
-                (accum, elem) => accum + elem.price,
+                (accum, elem) => accum + elem.price * elem.count,
                 0
               ),
               constPrice: item.items
@@ -252,7 +258,10 @@ class AnalyticsController {
                       ?.constPrice,
                   };
                 })
-                .reduce((accum, element) => accum + element.device, 0),
+                .reduce(
+                  (accum, element) => accum + element.device * element.count,
+                  0
+                ),
               date_completed: item.date_completed,
               type: "unauthorized",
             };
