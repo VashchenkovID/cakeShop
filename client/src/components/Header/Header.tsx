@@ -99,6 +99,7 @@ const Header: React.FC<IHeaderProps> = () => {
           </nav>
         </HeaderModule>
       }
+
       rightSide={
         <div className={styles.Header__user}>
           {isAuth && <User name={user} size={'l'} info={phone} />}
