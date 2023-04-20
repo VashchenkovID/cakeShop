@@ -5,6 +5,7 @@ export interface DeviceItemModel extends DeviceListModel {
     id: number;
     name: string;
     weight: string;
+    weightType: string;
     pricePerUnit: number;
     createdAt: string;
     updatedAt: string;

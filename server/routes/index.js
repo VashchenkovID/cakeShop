@@ -9,6 +9,8 @@ const orderRouter = require("./individualOrderRouter");
 const processingRouter = require("./orderProcessingRouter");
 const analyticsRouter = require("./analyticsRouter");
 const calendarRouter = require("./calendarRouter");
+const decorRouter = require("./decorRouter");
+const biscuitRouter = require("./biscuitRouter");
 
 router.use("/user", userRouter);
 router.use("/device", deviceRouter);
@@ -19,4 +21,7 @@ router.use("/order", orderRouter);
 router.use("/order_processing", processingRouter);
 router.use("/analytics", analyticsRouter);
 router.use("/calendar", calendarRouter);
+router.use("/biscuit", biscuitRouter);
+router.use("/decor", decorRouter);
+
 module.exports = router;

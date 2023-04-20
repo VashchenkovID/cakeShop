@@ -16,6 +16,7 @@ import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { Text } from '@consta/uikit/Text';
 import { IconTrash } from '@consta/uikit/IconTrash';
 import PhoneInput from 'react-phone-input-2';
+import CreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/CreateOrderCakeItem';
 
 interface UserCreateOrderType {
   name: string;
@@ -43,7 +44,7 @@ const CreateOrder: React.FC = () => {
   const allCount = useMemo(() => {
     if (basket && basket.items.length > 0) {
       return basket.items.reduce(
-        (accum, item) => accum + item.price * item.count,
+        (accum, item) => accum + item.price * item.count * item.countWeightType,
         0,
       );
     } else return null;
@@ -64,7 +65,9 @@ const CreateOrder: React.FC = () => {
           email: notAuthUser.email,
         },
         date_completed: notAuthUser.order_date.toISOString(),
-        items: basket.items,
+        items: basket.items.map((item) => {
+          return { ...item, price: item.price * item.countWeightType };
+        }),
       })
       .then(() => {
         setNotAuthUser({
@@ -84,7 +87,9 @@ const CreateOrder: React.FC = () => {
         .createNewUserOrder({
           name: `Заказ пользователя ${user}`,
           date_completed: notAuthUser.order_date.toISOString(),
-          items: basket.items,
+          items: basket.items.map((item) => {
+            return { ...item, price: item.price * item.countWeightType };
+          }),
           user_id: userId,
         })
         .then(() => {
@@ -100,180 +105,6 @@ const CreateOrder: React.FC = () => {
     }
   };
 
-  const addItemInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-  const removeItemInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (!basket) {
-        dispatch(
-          setBasket({
-            id: null,
-            name: `Индивидуальный заказ`,
-            user_id: null,
-            items: [
-              {
-                id: item.id,
-                name: item.name,
-                deviceId: item.id,
-                count: 1,
-                price: item.price,
-                basketId: null,
-              },
-            ],
-          }),
-        );
-      }
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-
   return (
     <section className={styles.Order}>
       <Text size={'3xl'}>Ваш заказ</Text>
@@ -284,46 +115,13 @@ const CreateOrder: React.FC = () => {
           <div className={styles.Order__row}>
             <Text size={'3xl'}>Наименование</Text>
             <Text size={'3xl'}>Количество</Text>
+            <Text size={'3xl'}>Вес/Кол-во в коробке</Text>
             <Text size={'3xl'}>Цена за единицу</Text>
             <Text size={'3xl'}>Итог</Text>
           </div>
           <div className={styles.Order__rows}>
             {basket.items.map((item, index) => (
-              <div className={styles.Order__row} key={index}>
-                <Text size={'xl'}>{item.name}</Text>
-
-                <Text className={styles.Order__basketActions}>
-                  <Button
-                    size={'s'}
-                    label={'-'}
-                    onClick={() => removeItemInBasket(item)}
-                  />
-                  <Text size={'xl'}>{item.count}</Text>
-                  <Button
-                    size={'s'}
-                    onClick={() => addItemInBasket(item)}
-                    label={'+'}
-                  />
-                </Text>
-                <Text size={'xl'}>{item.price},00 ₽</Text>
-                <Text className={styles.Order__actions} size={'2xl'}>
-                  {Number(item.count) * Number(item.price)},00 ₽
-                  <Button
-                    size={'s'}
-                    iconLeft={IconTrash}
-                    onClick={() => {
-                      dispatch(
-                        setBasket({
-                          ...basket,
-                          items: basket.items.filter(
-                            (elem) => elem.id !== item.id,
-                          ),
-                        }),
-                      );
-                    }}
-                  />
-                </Text>
-              </div>
+              <CreateOrderCakeItem item={item} key={index} />
             ))}
             {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           </div>

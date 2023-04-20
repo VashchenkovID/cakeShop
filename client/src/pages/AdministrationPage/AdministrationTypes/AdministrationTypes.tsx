@@ -4,24 +4,40 @@ import cakesApi from 'src/api/requests/cakesApi';
 import AdministrationTypesModalsType from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsType';
 import AdministrationTypesModalsFilling from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsFilling';
 import styles from './AdministrationTypes.styl';
-import AdministrationTypesItem from 'src/pages/AdministrationPage/AdministrationTypesItem/AdministrationTypesItem';
-import { Button } from '@consta/uikit/Button';
 import { Modal } from '@consta/uikit/Modal';
-import {Text} from "@consta/uikit/Text";
+import AdministrationTypesSection from 'src/pages/AdministrationPage/AdministrationTypesSection/AdministrationTypesSection';
+import AdministrationTypesModalsBiscuit from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsBiscuit';
+import AdministrationTypesModalsDecor from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsDecor';
+
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',
   FILLING = 'filling',
   TYPE = 'type',
+  BISCUIT = 'biscuit',
+  DECOR = 'decor',
 }
 
 const AdministrationTypes: React.FC = () => {
   const [types, setTypes] = useState([]);
   const [fillings, setFillings] = useState([]);
+  const [biscuits, setBiscuits] = useState([]);
+  const [decors, setDecors] = useState([]);
   const [modal, setModal] = useState(AdministrationTypesModalEnum.IDLE);
   const [type, setType] = useState({ name: '' });
   const [filling, setFilling] = useState({
     name: '',
     img: null,
+  });
+  const [biscuit, setBiscuit] = useState({
+    name: '',
+    img: null,
+  });
+  const [decor, setDecor] = useState({
+    name: '',
+    count: 0,
+    countType: '',
+    pricePerUnit: 0,
+    constPrice: 0,
   });
   const { load: fetchTypes, isLoading: typeLoading } = useRequest(
     cakesApi.getCakeTypes,
@@ -37,6 +53,24 @@ const AdministrationTypes: React.FC = () => {
     (data) => {
       if (data) {
         setFillings(data.data);
+      }
+    },
+  );
+
+  const { load: fetchBiscuits, isLoading: biscuitLoading } = useRequest(
+    cakesApi.getBiscuits,
+    (data) => {
+      if (data) {
+        setBiscuits(data.data);
+      }
+    },
+  );
+
+  const { load: fetchDecors, isLoading: decorLoading } = useRequest(
+    cakesApi.getDecorAdmin,
+    (data) => {
+      if (data) {
+        setDecors(data.data);
       }
     },
   );
@@ -61,41 +95,78 @@ const AdministrationTypes: React.FC = () => {
       });
     }
   };
+  const createNewBiscuit = async () => {
+    if (biscuit.name !== '') {
+      const data = new FormData();
+      data.append('name', biscuit.name);
+      data.append('img', biscuit.img);
+      await cakesApi.createBiscuit(data).then(() => {
+        fetchBiscuits();
+      });
+    }
+  };
+
+  const createNewDecor = async () => {
+    if (
+      decor.name !== '' &&
+      decor.countType !== '' &&
+      decor.count !== 0 &&
+      decor.pricePerUnit !== 0 &&
+      decor.constPrice !== 0
+    ) {
+      const data = new FormData();
+      data.append('name', decor.name);
+      data.append('countType', decor.countType);
+      data.append('count', decor.count.toString());
+      data.append('pricePerUnit', decor.pricePerUnit.toString());
+      data.append('constPrice', decor.constPrice.toString());
+      await cakesApi.createDecor(data).then(() => {
+        fetchDecors();
+      });
+    }
+  };
 
   useEffect(() => {
     fetchTypes();
     fetchFillings();
+    fetchBiscuits();
+    fetchDecors();
   }, []);
 
   return (
     <section>
       <div className={styles.Types}>
         <div className={styles.Types__column}>
-          <Text size={'3xl'}>Типы десертов</Text>
-          <Button
-            onClick={() => setModal(AdministrationTypesModalEnum.TYPE)}
-            label={'Создать'}
+          <AdministrationTypesSection
+            title={'Типы десертов'}
+            items={types}
+            isDecor={false}
+            onCreate={() => setModal(AdministrationTypesModalEnum.TYPE)}
           />
-
-          <div className={styles.Types__column__rows}>
-            {types.length > 0 &&
-              types.map((item, index) => (
-                <AdministrationTypesItem item={item} key={index} />
-              ))}
-          </div>
         </div>
         <div className={styles.Types__column}>
-          <Text size={'3xl'}>Начинки тортов</Text>
-          <Button
-            onClick={() => setModal(AdministrationTypesModalEnum.FILLING)}
-            label={'Создать'}
+          <AdministrationTypesSection
+            title={'Типы начинки'}
+            items={fillings}
+            isDecor={false}
+            onCreate={() => setModal(AdministrationTypesModalEnum.FILLING)}
           />
-          <div className={styles.Types__column__rows}>
-            {fillings.length > 0 &&
-              fillings.map((item, index) => (
-                <AdministrationTypesItem item={item} key={index} />
-              ))}
-          </div>
+        </div>
+        <div className={styles.Types__column}>
+          <AdministrationTypesSection
+            title={'Типы бисквита'}
+            items={biscuits}
+            isDecor={false}
+            onCreate={() => setModal(AdministrationTypesModalEnum.BISCUIT)}
+          />
+        </div>
+        <div className={styles.Types__column}>
+          <AdministrationTypesSection
+            onCreate={() => setModal(AdministrationTypesModalEnum.DECOR)}
+            title={'Декор'}
+            items={decors}
+            isDecor
+          />
         </div>
       </div>
 
@@ -123,6 +194,31 @@ const AdministrationTypes: React.FC = () => {
           setFilling={setFilling}
           onClose={() => setModal(AdministrationTypesModalEnum.IDLE)}
           onSave={createNewFilling}
+        />
+      </Modal>
+      <Modal
+        onClickOutside={() => {
+          setModal(AdministrationTypesModalEnum.IDLE);
+        }}
+        isOpen={modal === AdministrationTypesModalEnum.BISCUIT}
+      >
+        <AdministrationTypesModalsBiscuit
+          biscuit={biscuit}
+          setBiscuit={setBiscuit}
+          onClose={() => setModal(AdministrationTypesModalEnum.IDLE)}
+          onSave={createNewBiscuit}
+        />
+      </Modal>
+      <Modal
+        onClickOutside={() => {
+          setModal(AdministrationTypesModalEnum.IDLE);
+        }}
+        isOpen={modal === AdministrationTypesModalEnum.DECOR}
+      >
+        <AdministrationTypesModalsDecor
+          decor={decor}
+          setDecor={setDecor}
+          createNewDecor={createNewDecor}
         />
       </Modal>
     </section>

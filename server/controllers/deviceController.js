@@ -7,19 +7,33 @@ const { where } = require("sequelize");
 class DeviceController {
   async create(req, res, next) {
     try {
-      let { name, price, typeId, info, description, fillingId } = req.body;
+      let {
+        name,
+        price,
+        typeId,
+        info,
+        description,
+        fillingId,
+        biscuitId,
+        weightType,
+        countWeightType,
+        discount,
+      } = req.body;
       const img = req.files?.img || null;
       let fileName;
       fileName = uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
-
       const device = await Device.create({
         name,
         price: Number(price),
         TypeId: typeId,
+        BiscuitId: biscuitId,
         FillingId: fillingId,
         description: `${description}`,
         img: fileName,
+        weightType: weightType,
+        countWeightType:countWeightType,
+        discount: discount,
       });
       if (info && info.length > 0) {
         let newInfo = JSON.parse(info);
@@ -27,6 +41,7 @@ class DeviceController {
           DeviceInfo.create({
             name: i.name,
             weight: i.weight,
+            weightType: i.weightType,
             deviceId: device.id,
             pricePerUnit: i.pricePerUnit,
           })
@@ -40,7 +55,18 @@ class DeviceController {
 
   async update(req, res, next) {
     try {
-      let { name, price, description, typeId, info, fillingId } = req.body;
+      let {
+        name,
+        price,
+        description,
+        typeId,
+        info,
+        fillingId,
+        biscuitId,
+        weightType,
+        countWeightType,
+        discount,
+      } = req.body;
       let { id } = req.params;
       const img = req.files?.img || null;
       let fileName;
@@ -58,7 +84,11 @@ class DeviceController {
         price: price,
         TypeId: typeId,
         FillingId: fillingId,
+        BiscuitId: biscuitId,
         description: description,
+        weightType: weightType,
+        countWeightType:countWeightType,
+        discount: discount,
         img: fileName || oldImg?.dataValues?.img,
       });
       if (info) {
@@ -78,6 +108,7 @@ class DeviceController {
                   id: i.id,
                   name: i.name,
                   weight: i.weight,
+                  weightType: i.weightType,
                   deviceId: device.id,
                   pricePerUnit: i.pricePerUnit,
                 },
@@ -89,6 +120,7 @@ class DeviceController {
               DeviceInfo.create({
                 name: i.name,
                 weight: i.weight,
+                weightType: i.weightType,
                 deviceId: id,
                 pricePerUnit: i.pricePerUnit,
               });
@@ -114,7 +146,7 @@ class DeviceController {
     limit = limit || 9;
     let offset = page * limit - limit;
     let devices;
-    if (typeId){
+    if (typeId) {
       devices = await Device.findAndCountAll({
         limit,
         offset,

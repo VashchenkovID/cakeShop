@@ -40,6 +40,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                 count: 1,
                 price: item.price,
                 basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [] as any,
               },
             ],
           }),
@@ -71,6 +74,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   count: 1,
                   price: item.price,
                   basketId: null,
+                  countWeightType: item.countWeightType,
+                  weightType: item.weightType,
+                  decors: [],
                 },
               ],
             }),
@@ -92,6 +98,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                 count: 1,
                 price: item.price,
                 basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
               },
             ],
           }),
@@ -123,6 +132,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   count: 1,
                   price: item.price,
                   basketId: null,
+                  countWeightType: item.countWeightType,
+                  weightType: item.weightType,
+                  decors: [],
                 },
               ],
             }),
@@ -147,6 +159,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                 count: 1,
                 price: item.price,
                 basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
               },
             ],
           }),
@@ -181,6 +196,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   count: 1,
                   price: item.price,
                   basketId: null,
+                  countWeightType: item.countWeightType,
+                  weightType: item.weightType,
+                  decors: [],
                 },
               ],
             }),
@@ -202,6 +220,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                 count: 1,
                 price: item.price,
                 basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
               },
             ],
           }),
@@ -236,6 +257,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   count: 1,
                   price: item.price,
                   basketId: null,
+                  countWeightType: item.countWeightType,
+                  weightType: item.weightType,
+                  decors: [],
                 },
               ],
             }),
@@ -291,7 +315,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
       </div>
       <div className={styles.Item__button}>
         <Text weight={'bold'} size={'l'}>
-          Цена: {item.price},00 ₽
+          Цена: {item.price * item.countWeightType},00 ₽
         </Text>
         {!isAdded ? (
           <Button

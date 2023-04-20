@@ -1,8 +1,14 @@
-const { IndividualOrderItem, IndividualOrder } = require("../models/models");
+const {
+  IndividualOrderItem,
+  IndividualOrder,
+  OrderDecor,
+  OrderDecorItem,
+  Decor,
+} = require("../models/models");
 
 class IndividualOrderController {
   async create(req, res, next) {
-    let { name, items, customer, date_completed } = req.body;
+    let { name, items, customer, date_completed, decors } = req.body;
     const order = await IndividualOrder.create({
       name: name,
       status: "CREATED",
@@ -12,9 +18,8 @@ class IndividualOrderController {
       date_completed: new Date(date_completed),
     });
 
-
     if (items) {
-      let newItems = items
+      let newItems = items;
       newItems.forEach((item) =>
         IndividualOrderItem.create({
           name: item.name,
@@ -22,10 +27,33 @@ class IndividualOrderController {
           IndividualOrderId: order.id,
           count: item.count,
           price: item.price,
+          countWeightType:item.countWeightType
         })
       );
     }
-
+    if (decors && order) {
+      let newDecors = decors;
+      const baseDecors = await Decor.findAll();
+      newDecors.forEach((item) => {
+        OrderDecor.create({
+          name: item.name,
+        }).then((ord) => {
+          if (ord && item.items) {
+            item.items.forEach((itm) => {
+              const findedDecor = baseDecors.find((i) => i === itm.id);
+              OrderDecorItem.create({
+                name: itm.name,
+                count: itm.count,
+                countType: itm.countType,
+                pricePerUnit: itm.pricePerUnit,
+                constPrice: findedDecor.constPrice,
+                OrderDecorId: ord.id,
+              });
+            });
+          }
+        });
+      });
+    }
     return res.json({ id: order.id });
   }
   async update(req, res, next) {

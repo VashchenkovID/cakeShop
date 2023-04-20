@@ -1,8 +1,15 @@
-const { Basket, BasketDevice, User } = require("../models/models");
+const {
+  Basket,
+  BasketDevice,
+  User,
+  OrderDecor,
+  OrderDecorItem,
+  Decor,
+} = require("../models/models");
 
 class BasketController {
   async create(req, res, next) {
-    let { name, items, user_id, date_completed } = req.body;
+    let { name, items, user_id, date_completed, decors } = req.body;
 
     const user = await User.findOne({ where: { id: user_id } });
     let basket = null;
@@ -17,7 +24,6 @@ class BasketController {
         date_completed: new Date(date_completed),
       });
     }
-
     if (items && basket) {
       items.forEach((item) =>
         BasketDevice.create({
@@ -26,10 +32,32 @@ class BasketController {
           BasketId: basket.id,
           count: item.count,
           price: item.price,
+          countWeightType:item.countWeightType
         })
       );
     }
-
+    if (decors && basket) {
+      const baseDecors = await Decor.findAll();
+      decors.forEach((item) => {
+        OrderDecor.create({
+          name: item.name,
+        }).then((ord) => {
+          if (ord && item.items) {
+            item.items.forEach((itm) => {
+              const findedDecor = baseDecors.find((i) => i === itm.id);
+              OrderDecorItem.create({
+                name: itm.name,
+                count: itm.count,
+                countType: itm.countType,
+                pricePerUnit: itm.pricePerUnit,
+                constPrice: findedDecor.constPrice,
+                OrderDecorId: ord.id,
+              });
+            });
+          }
+        });
+      });
+    }
     return res.json({ id: basket.id });
   }
   async update(req, res, next) {

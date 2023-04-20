@@ -1,4 +1,4 @@
-import { get, post, del } from '../../api';
+import { get, del } from '../../api';
 import { EnpointsEnum } from 'src/api/endpoints';
 import { $authHost, $host } from 'src/api/requests/index';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
@@ -12,10 +12,6 @@ interface IDeviceListResponse {
   rows: DeviceListModel[];
 }
 
-interface IFillingType {
-  name: string;
-  img: File;
-}
 export interface CakesReqType {
   limit?: number;
   page?: number;
@@ -39,7 +35,7 @@ export default {
     $authHost.put(`${EnpointsEnum.EDIT_CAKE}/${id}`, data),
   loadRecipe: (id: string): Promise<DeviceItemModel> =>
     get(`${EnpointsEnum.GET_RECIPE}/${id}`),
-  //  Вспомогательные типы (начинки и тип десерта)
+  //  Вспомогательные типы (начинки и тип десерта, бисквит и декор)
   createCakeType: (name: FormData) =>
     $authHost.post(`${EnpointsEnum.CREATE_TYPE}`, name),
   getCakeTypes: (): Promise<AxiosResponse<TypeModel[], any>> =>
@@ -51,4 +47,19 @@ export default {
   getCakeFillings: () => $authHost.get(`${EnpointsEnum.GET_FILLINGS}`),
   removeCakeFilling: (id: number) =>
     $authHost.delete(`${EnpointsEnum.DELETE_FILLINGS}/${id}`),
+  getBiscuits: () => $authHost.get(`${EnpointsEnum.GET_BISCUITS}`),
+  createBiscuit: (data: any) =>
+    $authHost.post(`${EnpointsEnum.CREATE_BISCUIT}`, data),
+  updateBiscuit: (id: string, data: any) =>
+    $authHost.post(`${EnpointsEnum.CREATE_BISCUIT}/${id}`, data),
+  removeBiscuit: (id: string) =>
+    $authHost.delete(`${EnpointsEnum.DELETE_BISCUIT}/${id}`),
+  getDecorAdmin: () => $authHost.get(`${EnpointsEnum.GET_DECOR_ADMIN}`),
+  getDecor: () => $authHost.get(`${EnpointsEnum.GET_DECOR}`),
+  createDecor: (data: any) =>
+    $authHost.post(`${EnpointsEnum.CREATE_DECOR}`, data),
+  updateDecor: (id: string, data: any) =>
+    $authHost.post(`${EnpointsEnum.UPDATE_DECOR}/${id}`, data),
+  removeDecor: (id: string) =>
+    $authHost.delete(`${EnpointsEnum.DELETE_DECOR}/${id}`),
 };

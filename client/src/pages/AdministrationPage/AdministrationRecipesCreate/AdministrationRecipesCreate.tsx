@@ -20,16 +20,20 @@ const AdministrationRecipesCreate: React.FC = () => {
   const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [fillings, setFillings] = useState([]);
+  const [biscuits, setBiscuits] = useState([]);
   const [device, setDevice] = useState<any>({
     name: '',
     price: 0,
     description: '',
     info: [],
     img: '',
-    typeId: null,
+    discount: 0,
+    weightType: '',
+    countWeightType: 0,
   });
   const [type, setType] = useState(null);
   const [filling, setFilling] = useState(null);
+  const [biscuit, setBiscuit] = useState(null);
   const [file, setFile] = useState(null);
   const [renderImage, setRenderImage] = useState('');
 
@@ -39,9 +43,13 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('name', device.name);
       formData.append('price', `${device.price}`);
       formData.append('description', `${device.description}`);
+      formData.append('weightType', `${device.weightType}`);
+      formData.append('countWeightType', `${device.countWeightType}`);
       formData.append('img', file);
       formData.append('typeId', type.id);
       formData.append('fillingId', filling.id);
+      formData.append('discount', device.discount);
+      formData.append('biscuitId', biscuit.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.createCake(formData).then(() => {
         navigate(
@@ -59,9 +67,13 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('name', device.name);
       formData.append('price', `${device.price}`);
       formData.append('description', `${device.description}`);
+      formData.append('weightType', `${device.weightType}`);
+      formData.append('countWeightType', `${device.countWeightType}`);
       formData.append('img', file);
       formData.append('typeId', type.id);
       formData.append('fillingId', filling.id);
+      formData.append('discount', device.discount);
+      formData.append('biscuitId', biscuit.id);
       formData.append('info', JSON.stringify(device.info));
       await cakesApi.editCake(editCake.id.toString(), formData).then(() => {
         navigate(
@@ -72,16 +84,13 @@ const AdministrationRecipesCreate: React.FC = () => {
       alert(e.message);
     }
   };
-  const { load: fetchTypes, isLoading: typeLoading } = useRequest(
-    cakesApi.getCakeTypes,
-    (data) => {
-      if (data) {
-        setTypes(data.data);
-      }
-    },
-  );
+  const { load: fetchTypes } = useRequest(cakesApi.getCakeTypes, (data) => {
+    if (data) {
+      setTypes(data.data);
+    }
+  });
 
-  const { load: fetchFillings, isLoading: fillingLoading } = useRequest(
+  const { load: fetchFillings } = useRequest(
     cakesApi.getCakeFillings,
     (data) => {
       if (data) {
@@ -90,9 +99,15 @@ const AdministrationRecipesCreate: React.FC = () => {
     },
   );
 
+  const { load: fetchBiscuits } = useRequest(cakesApi.getBiscuits, (data) => {
+    if (data) {
+      setBiscuits(data.data);
+    }
+  });
   useEffect(() => {
     fetchTypes();
     fetchFillings();
+    fetchBiscuits();
   }, []);
 
   useEffect(() => {
@@ -103,7 +118,9 @@ const AdministrationRecipesCreate: React.FC = () => {
         description: editCake.description,
         info: editCake.info,
         img: editCake.img,
-        typeId: editCake.TypeId,
+        discount: editCake.discount,
+        weightType: editCake.weightType,
+        countWeightType: editCake.countWeightType,
       });
       setRenderImage(`${process.env.REACT_APP_IMAGE}${editCake.img}`);
       if (types.length > 0) {
@@ -111,6 +128,9 @@ const AdministrationRecipesCreate: React.FC = () => {
       }
       if (fillings.length > 0) {
         setFilling(fillings.find((item) => item.id === editCake.FillingId));
+      }
+      if (biscuits.length > 0) {
+        setBiscuit(biscuits.find((item) => item.id === editCake.BiscuitId));
       }
     }
   }, [location, types, fillings]);
@@ -143,27 +163,116 @@ const AdministrationRecipesCreate: React.FC = () => {
             alt="Ошибка"
           />
         )}
-        {types.length > 0 && (
-          <Select
-            label={'Десерт'}
-            placeholder={'Выберите тип десерта'}
-            items={types}
-            getItemLabel={(i) => i.name}
-            value={type}
-            onChange={(value) => setType(value.value)}
+        <div className={styles.Recipe__compound}>
+          <Text>Состав:</Text>
+          <div className={styles.RecipeCreate__compound__selects}>
+            {types.length > 0 && (
+              <Select
+                size={'s'}
+                form={'round'}
+                label={'Десерт'}
+                placeholder={'Выберите тип десерта'}
+                items={types}
+                getItemLabel={(i) => i.name}
+                value={type}
+                onChange={(value) => setType(value.value)}
+              />
+            )}
+            {fillings.length > 0 && (
+              <Select
+                size={'s'}
+                form={'round'}
+                label={'Начинка'}
+                placeholder={'Выберите начинку'}
+                items={fillings}
+                getItemLabel={(i) => i.name}
+                value={filling}
+                onChange={(value) => setFilling(value.value)}
+              />
+            )}
+            {biscuits.length > 0 && (
+              <Select
+                size={'s'}
+                form={'round'}
+                label={'Бисквит'}
+                placeholder={'Выберите бисквит'}
+                items={biscuits}
+                getItemLabel={(i) => i.name}
+                value={biscuit}
+                onChange={(value) => setBiscuit(value.value)}
+              />
+            )}
+          </div>
+        </div>
+        <div className={styles.RecipeCreate__compound__selects}>
+          <TextField
+            size={'s'}
+            form={'round'}
+            label={'Стартовая единица измерения'}
+            placeholder={'Введите стартовое кол-во'}
+            value={device?.weightType}
+            onChange={({ value }) => {
+              setDevice((prevState: any) => {
+                return { ...prevState, weightType: value };
+              });
+            }}
           />
-        )}
-        {fillings.length > 0 && (
-          <Select
-            label={'Начинка'}
-            placeholder={'Выберите начинку'}
-            items={fillings}
-            getItemLabel={(i) => i.name}
-            value={filling}
-            onChange={(value) => setFilling(value.value)}
+          <TextField
+            size={'s'}
+            form={'round'}
+            type={'number'}
+            label={'Стартовое кол-во для заказа'}
+            placeholder={'Введите стартовое кол-во'}
+            value={device?.countWeightType}
+            onChange={({ value }) => {
+              setDevice((prevState: any) => {
+                return { ...prevState, countWeightType: value };
+              });
+            }}
           />
-        )}
-
+          <TextField
+            size={'s'}
+            form={'round'}
+            label={'Цена'}
+            placeholder={'Введите цену'}
+            type={'number'}
+            value={device?.price}
+            onChange={(value) => {
+              setDevice((prevState: any) => {
+                return { ...prevState, price: value.value };
+              });
+            }}
+          />
+          <TextField
+            size={'s'}
+            form={'round'}
+            min={0}
+            max={100}
+            label={'Скидка'}
+            placeholder={'Введите скидку если есть'}
+            type={'number'}
+            value={device?.discount}
+            onChange={({ value }) => {
+              if (value) {
+                if (Number(value) > 99) {
+                  setDevice((prevState: any) => {
+                    return { ...prevState, discount: '100' };
+                  });
+                } else if (value.includes('-')) {
+                  setDevice((prevState: any) => {
+                    return { ...prevState, discount: '0' };
+                  });
+                } else
+                  setDevice((prevState: any) => {
+                    return { ...prevState, discount: value };
+                  });
+              } else
+                setDevice((prevState: any) => {
+                  return { ...prevState, discount: '' };
+                });
+            }}
+          />
+        </div>
         <TextField
           size={'s'}
           form={'round'}
@@ -176,19 +285,7 @@ const AdministrationRecipesCreate: React.FC = () => {
             });
           }}
         />
-        <TextField
-          size={'s'}
-          form={'round'}
-          label={'Цена'}
-          placeholder={'Введите цену'}
-          type={'number'}
-          value={device?.price}
-          onChange={(value) => {
-            setDevice((prevState: any) => {
-              return { ...prevState, price: value.value };
-            });
-          }}
-        />
+
         <TextField
           size={'s'}
           label={'Описание'}
@@ -212,69 +309,85 @@ const AdministrationRecipesCreate: React.FC = () => {
             {device.info.length > 0 &&
               device.info.map((rec: any, ind: number) => (
                 <div className={styles.Recipe__row} key={ind}>
-                  <div>
-                    <TextField
-                      size={'s'}
-                      form={'round'}
-                      label={'Наименование'}
-                      placeholder={'Введите наименование ингредиента'}
-                      value={rec.name}
-                      onChange={(value) => {
-                        setDevice((prev: any) => {
-                          return {
-                            ...prev,
-                            info: prev.info.map((itm: any, idx: number) => {
-                              if (idx === ind) {
-                                return { ...itm, name: value.value };
-                              } else return { ...itm };
-                            }),
-                          };
-                        });
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <TextField
-                      size={'s'}
-                      form={'round'}
-                      label={'Вес или количество'}
-                      placeholder={'Введите вес и единицу измерения'}
-                      value={rec.weight}
-                      onChange={(value) => {
-                        setDevice((prev: any) => {
-                          return {
-                            ...prev,
-                            info: prev.info.map((itm: any, idx: number) => {
-                              if (idx === ind) {
-                                return { ...itm, weight: value.value };
-                              } else return { ...itm };
-                            }),
-                          };
-                        });
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <TextField
-                      size={'s'}
-                      form={'round'}
-                      label={'Цена за единицу'}
-                      placeholder={'Введите цену за единицу ингредиента'}
-                      value={rec.pricePerUnit}
-                      onChange={(value) => {
-                        setDevice((prev: any) => {
-                          return {
-                            ...prev,
-                            info: prev.info.map((itm: any, idx: number) => {
-                              if (idx === ind) {
-                                return { ...itm, pricePerUnit: value.value };
-                              } else return { ...itm };
-                            }),
-                          };
-                        });
-                      }}
-                    />
-                  </div>
+                  <TextField
+                    size={'s'}
+                    form={'round'}
+                    label={'Наименование'}
+                    placeholder={'Введите наименование ингредиента'}
+                    value={rec.name}
+                    onChange={(value) => {
+                      setDevice((prev: any) => {
+                        return {
+                          ...prev,
+                          info: prev.info.map((itm: any, idx: number) => {
+                            if (idx === ind) {
+                              return { ...itm, name: value.value };
+                            } else return { ...itm };
+                          }),
+                        };
+                      });
+                    }}
+                  />
+
+                  <TextField
+                    size={'s'}
+                    form={'round'}
+                    label={'Вес или количество'}
+                    placeholder={'Введите вес и единицу измерения'}
+                    value={rec.weight}
+                    onChange={(value) => {
+                      setDevice((prev: any) => {
+                        return {
+                          ...prev,
+                          info: prev.info.map((itm: any, idx: number) => {
+                            if (idx === ind) {
+                              return { ...itm, weight: value.value };
+                            } else return { ...itm };
+                          }),
+                        };
+                      });
+                    }}
+                  />
+                  <TextField
+                    size={'s'}
+                    form={'round'}
+                    label={'Единица измерения'}
+                    placeholder={'Введите единицу измерения'}
+                    value={rec.weightType}
+                    onChange={(value) => {
+                      setDevice((prev: any) => {
+                        return {
+                          ...prev,
+                          info: prev.info.map((itm: any, idx: number) => {
+                            if (idx === ind) {
+                              return { ...itm, weightType: value.value };
+                            } else return { ...itm };
+                          }),
+                        };
+                      });
+                    }}
+                  />
+
+                  <TextField
+                    size={'s'}
+                    form={'round'}
+                    label={'Цена за единицу'}
+                    placeholder={'Введите цену за единицу ингредиента'}
+                    value={rec.pricePerUnit}
+                    onChange={(value) => {
+                      setDevice((prev: any) => {
+                        return {
+                          ...prev,
+                          info: prev.info.map((itm: any, idx: number) => {
+                            if (idx === ind) {
+                              return { ...itm, pricePerUnit: value.value };
+                            } else return { ...itm };
+                          }),
+                        };
+                      });
+                    }}
+                  />
+
                   <Button
                     onClick={() => {
                       setDevice((prev: any) => {
@@ -294,7 +407,7 @@ const AdministrationRecipesCreate: React.FC = () => {
               ))}
           </div>
           <Button
-              className={styles.Recipe__addBtn}
+            className={styles.Recipe__addBtn}
             label={'Добавить строчку'}
             size={'xs'}
             onClick={() => {
@@ -307,7 +420,8 @@ const AdministrationRecipesCreate: React.FC = () => {
                       id: null,
                       name: '',
                       weight: '',
-                      pricePerUnit: '0',
+                      weightType: '',
+                      pricePerUnit: '',
                       device: { id: editCake ? editCake.id : null },
                     },
                   ],

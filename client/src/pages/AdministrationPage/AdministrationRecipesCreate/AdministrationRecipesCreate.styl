@@ -1,10 +1,17 @@
 .RecipeCreate
   display grid
-  grid-template-columns 1fr 0.5fr
+  grid-template-columns 1fr 0.8fr
   gap 24px
   height calc(100vh - 150px)
   overflow-y auto
   margin-top 24px
+  &__compound
+    display flex
+    flex-direction column
+    gap 16px
+    &__selects
+      display flex
+      gap 16px
   &__leftSide
     display flex
     flex-direction column
@@ -24,7 +31,7 @@
     margin-top 16px
   &__row
     display grid
-    grid-template-columns repeat(4, 1fr)
+    grid-template-columns repeat(5, 1fr)
     align-items center
     gap 16px
     &__button

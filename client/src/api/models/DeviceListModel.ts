@@ -9,4 +9,8 @@ export interface DeviceListModel {
   updatedAt: string;
   TypeId: number;
   FillingId: number;
+  BiscuitId: number;
+  discount: number;
+  weightType: string;
+  countWeightType: number;
 }

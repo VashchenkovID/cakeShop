@@ -21,7 +21,6 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
   activeList,
   setPageMode,
 }) => {
-  const numbersFinder = /\d+/;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [device, setDevice] = useState<DeviceItemModel | null>(null);
@@ -66,6 +65,9 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
               </Text>
               <div className={styles.footerRecipe}>
                 <Text weight={'semibold'} size={'l'}>
+                  {`Продажа от: ${device.countWeightType} ${device.weightType}`}
+                </Text>
+                <Text weight={'semibold'} size={'l'}>
                   Рейтинг: {device.rating}
                 </Text>
                 <Text weight={'semibold'} size={'l'}>
@@ -74,7 +76,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
               </div>
             </div>
             <div className={styles.FullRecipe__rightSide}>
-              <Text size={'3xl'}>Рецепт</Text>
+              <Text size={'3xl'}>Рецепт на 1 единицу</Text>
               <div className={styles.FullRecipe__rightSide__header}>
                 <Text
                   weight={'semibold'}
@@ -86,7 +88,13 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                   weight={'semibold'}
                   className={styles.FullRecipe__rightSide__list__row__col}
                 >
-                  Вес
+                  Кол-во
+                </Text>
+                <Text
+                  weight={'semibold'}
+                  className={styles.FullRecipe__rightSide__list__row__col}
+                >
+                  Единица измерения
                 </Text>
                 <Text
                   weight={'semibold'}
@@ -125,20 +133,26 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                         weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
+                        {item.weightType}
+                      </Text>
+                      <Text
+                        weight={'semibold'}
+                        className={styles.FullRecipe__rightSide__list__row__col}
+                      >
                         {item.pricePerUnit},00 ₽
                       </Text>
                       <Text
                         weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        {item.pricePerUnit *
-                          Number(item.weight.match(numbersFinder))}
+                        {item.pricePerUnit * Number(item.weight)}
                         ,00 ₽
                       </Text>
                     </div>
                   ))}
               </div>
               <div className={styles.FullRecipe__rightSide__list__row}>
+                <div></div>
                 <div></div>
                 <div></div>
                 <div></div>
@@ -149,9 +163,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                   Итого:
                   {device.info?.reduce(
                     (accum, item) =>
-                      accum +
-                      item.pricePerUnit *
-                        Number(item.weight.match(numbersFinder)),
+                      accum + item.pricePerUnit * Number(item.weight),
                     0,
                   )}{' '}
                   ₽

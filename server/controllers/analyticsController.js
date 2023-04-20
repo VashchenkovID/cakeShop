@@ -169,7 +169,7 @@ class AnalyticsController {
   async getMonthGraphicsSales(req, res, next) {
     try {
       const { date } = req.params;
-      const numbersFinder = /\d+/;
+
       let fromDate;
       let toDate;
       if (date) {
@@ -207,7 +207,7 @@ class AnalyticsController {
           id: d.id,
           constPrice: d.info.reduce((accum, elem) => {
             const oneConst = Number(
-              elem.pricePerUnit * Number(elem.weight.match(numbersFinder))
+              elem.pricePerUnit * Number(elem.weight)
             );
             return accum + oneConst;
           }, 0),
@@ -233,7 +233,7 @@ class AnalyticsController {
                   };
                 })
                 .reduce(
-                  (accum, element) => accum + element.device * element.count,
+                  (accum, element) => accum + element.device * element.count * element.countWeightType,
                   0
                 ),
               date_completed: item.date_completed,
@@ -258,10 +258,10 @@ class AnalyticsController {
                       ?.constPrice,
                   };
                 })
-                .reduce(
-                  (accum, element) => accum + element.device * element.count,
-                  0
-                ),
+                  .reduce(
+                      (accum, element) => accum + element.device * element.count * element.countWeightType,
+                      0
+                  ),
               date_completed: item.date_completed,
               type: "unauthorized",
             };

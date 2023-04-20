@@ -35,6 +35,7 @@ const IndividualOrderItem = sequilize.define("IndividualOrder_item", {
   name: { type: DataTypes.STRING, allowNull: false },
   count: { type: DataTypes.INTEGER, allowNull: false },
   price: { type: DataTypes.INTEGER, allowNull: false },
+  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 const BasketDevice = sequilize.define("Basket_device", {
@@ -42,15 +43,19 @@ const BasketDevice = sequilize.define("Basket_device", {
   name: { type: DataTypes.STRING, allowNull: false },
   count: { type: DataTypes.INTEGER, allowNull: false },
   price: { type: DataTypes.INTEGER, allowNull: false },
+  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 const Device = sequilize.define("device", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
   price: { type: DataTypes.INTEGER, allowNull: false },
+  discount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   rating: { type: DataTypes.INTEGER, defaultValue: 0 },
   img: { type: DataTypes.STRING, allowNull: true },
   description: { type: DataTypes.STRING, allowNull: true },
+  weightType: { type: DataTypes.STRING, allowNull: false },
+  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 const Type = sequilize.define("Type", {
@@ -64,11 +69,41 @@ const Filling = sequilize.define("Filling", {
   img: { type: DataTypes.STRING, allowNull: true },
 });
 
+const Biscuit = sequilize.define("Biscuit", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, unique: true, allowNull: false },
+  img: { type: DataTypes.STRING, allowNull: true },
+});
+
 const DeviceInfo = sequilize.define("Device_info", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING },
-  weight: { type: DataTypes.STRING },
+  weight: { type: DataTypes.INTEGER },
+  weightType: { type: DataTypes.STRING },
   pricePerUnit: { type: DataTypes.INTEGER },
+});
+
+const Decor = sequilize.define("Decor", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, allowNull: false },
+  count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+  countType: { type: DataTypes.STRING, allowNull: false },
+  pricePerUnit: { type: DataTypes.INTEGER, allowNull: false },
+  constPrice: { type: DataTypes.INTEGER, allowNull: false },
+});
+
+const OrderDecor = sequilize.define("Order_decor", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, allowNull: false },
+});
+
+const OrderDecorItem = sequilize.define("Order_decor_item", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, allowNull: false },
+  count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+  countType: { type: DataTypes.STRING, allowNull: false },
+  pricePerUnit: { type: DataTypes.INTEGER, allowNull: false },
+  constPrice: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 const Rating = sequilize.define("Rating", {
@@ -95,6 +130,9 @@ Device.belongsTo(Type);
 Filling.hasMany(Device);
 Device.belongsTo(Filling);
 
+Biscuit.hasMany(Device);
+Device.belongsTo(Biscuit);
+
 Device.hasMany(Rating);
 Rating.belongsTo(Device);
 
@@ -103,6 +141,15 @@ BasketDevice.belongsTo(Device);
 
 Device.hasMany(DeviceInfo, { as: "info" });
 DeviceInfo.belongsTo(Device);
+
+Basket.hasMany(OrderDecor, { as: "decors" });
+OrderDecor.belongsTo(Basket);
+
+IndividualOrder.hasMany(OrderDecor, { as: "decors" });
+OrderDecor.belongsTo(IndividualOrder);
+
+OrderDecor.hasMany(OrderDecorItem, { as: "items" });
+OrderDecorItem.belongsTo(OrderDecor);
 
 module.exports = {
   User,
@@ -115,4 +162,8 @@ module.exports = {
   Filling,
   IndividualOrder,
   IndividualOrderItem,
+  Decor,
+  OrderDecor,
+  OrderDecorItem,
+  Biscuit,
 };
