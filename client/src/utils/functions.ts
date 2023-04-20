@@ -1,5 +1,4 @@
 export const converterUrl = (url: string, data: any) => {
-    console.log(data)
   // Метод для передачи параметров GET запросом
   const params = Object.entries(data)
     .map((arr) => {

@@ -17,10 +17,9 @@ export interface BasketModel {
       items: {
         id: number | null;
         name: string;
-        count: string;
+        count: number;
         countType: string;
-        price: number;
-        constPrice: number;
+        pricePerUnit: number;
       }[];
     }[];
   }[];

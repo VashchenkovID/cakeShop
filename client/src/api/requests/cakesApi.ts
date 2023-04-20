@@ -6,6 +6,7 @@ import { AxiosResponse } from 'axios';
 import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
 import { TypeModel } from 'src/api/models/TypeModel';
 import { converterUrl } from 'src/utils/functions';
+import { DecorUserModel } from 'src/api/models/DecorUserModel';
 
 interface IDeviceListResponse {
   count: number;
@@ -55,7 +56,8 @@ export default {
   removeBiscuit: (id: string) =>
     $authHost.delete(`${EnpointsEnum.DELETE_BISCUIT}/${id}`),
   getDecorAdmin: () => $authHost.get(`${EnpointsEnum.GET_DECOR_ADMIN}`),
-  getDecor: () => $authHost.get(`${EnpointsEnum.GET_DECOR}`),
+  getDecor: (): Promise<AxiosResponse<DecorUserModel[], any>> =>
+    $authHost.get(`${EnpointsEnum.GET_DECOR}`),
   createDecor: (data: any) =>
     $authHost.post(`${EnpointsEnum.CREATE_DECOR}`, data),
   updateDecor: (id: string, data: any) =>

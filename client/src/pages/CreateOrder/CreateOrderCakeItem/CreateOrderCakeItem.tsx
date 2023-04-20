@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './CreateOrderCakeItem.styl';
 import { Text } from '@consta/uikit/Text';
 import { Button } from '@consta/uikit/Button';
@@ -7,7 +7,14 @@ import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
-import { LocalStorageKeysEnum } from 'src/utils/enum';
+import useCreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/useCreateOrderCakeItem';
+import { Collapse } from '@consta/uikit/Collapse';
+import { DecorUserModel } from 'src/api/models/DecorUserModel';
+import CreateOrderDecorItem from 'src/pages/CreateOrder/CreateOrderDecorItem/CreateOrderDecorItem';
+
+export interface OrderBasketChangeDecors extends DecorUserModel {
+  isChecked: boolean;
+}
 
 interface IComponentProps {
   item: {
@@ -17,459 +24,169 @@ interface IComponentProps {
     basketId: number;
     count: number;
     price: number;
-    weightType: string;
     countWeightType: number;
+    weightType: string;
     decors: {
       id: number;
       name: string;
       items: {
         id: number;
         name: string;
-        count: string;
+        count: number;
         countType: string;
-        price: number;
-        constPrice: number;
+        pricePerUnit: number;
       }[];
     }[];
   };
+  decors: DecorUserModel[];
 }
 
-const CreateOrderCakeItem: React.FC<IComponentProps> = ({ item }) => {
+const CreateOrderCakeItem: React.FC<IComponentProps> = ({ item, decors }) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
   const ref = useRef(item.countWeightType);
-  console.log(ref);
-  const addWeightCountInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, countWeightType: i.countWeightType + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, countWeightType: i.countWeightType + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-  const addItemInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-  const removeItemInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (!basket) {
-        dispatch(
-          setBasket({
-            id: null,
-            name: `Индивидуальный заказ`,
-            user_id: null,
-            items: [
-              {
-                id: item.id,
-                name: item.name,
-                deviceId: item.id,
-                count: 1,
-                price: item.price,
-                basketId: null,
-                decors: [],
-                weightType: item.weightType,
-                countWeightType: item.countWeightType,
-              },
-            ],
-          }),
-        );
-      }
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-  const removeWeightCountInBasket = async (item: {
-    id: number | null;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-  }) => {
-    if (userId) {
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.countWeightType <= ref.current) {
-                    return { ...i, countWeightType: ref.current };
-                  }
-                  return { ...i, countWeightType: i.countWeightType - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: ref.current,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    } else {
-      if (!basket) {
-        dispatch(
-          setBasket({
-            id: null,
-            name: `Индивидуальный заказ`,
-            user_id: null,
-            items: [
-              {
-                id: item.id,
-                name: item.name,
-                deviceId: item.id,
-                count: 1,
-                price: item.price,
-                basketId: null,
-                decors: [],
-                weightType: item.weightType,
-                countWeightType: item.countWeightType,
-              },
-            ],
-          }),
-        );
-      }
-      if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.countWeightType <= ref.current) {
-                    return { ...i, countWeightType: ref.current };
-                  }
-                  return { ...i, countWeightType: i.countWeightType - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: ref.current,
-                  price: item.price,
-                  basketId: null,
-                  decors: [],
-                  weightType: item.weightType,
-                  countWeightType: item.countWeightType,
-                },
-              ],
-            }),
-          );
-        }
-      }
-    }
-  };
-  return (
-    <div className={styles.CakeItem}>
-      <Text size={'xl'}>{item.name}</Text>
+  const [isOpen, setIsOpen] = useState(false);
+  const [orderDecors, setOrderDecors] = useState<OrderBasketChangeDecors[]>([]);
+  const {
+    removeItemInBasket,
+    removeWeightCountInBasket,
+    addItemInBasket,
+    addWeightCountInBasket,
+  } = useCreateOrderCakeItem(item, ref);
 
-      <Text className={styles.CakeItem__basketActions}>
-        <Button
-          size={'s'}
-          label={'-'}
-          onClick={() => removeItemInBasket(item)}
-        />
-        <Text size={'xl'}>{item.count}</Text>
-        <Button size={'s'} onClick={() => addItemInBasket(item)} label={'+'} />
-      </Text>
-      <Text className={styles.CakeItem__basketActions} size={'xl'}>
-        <Button
-          size={'s'}
-          label={'-'}
-          onClick={() => removeWeightCountInBasket(item)}
-        />
-        <Text size={'xl'}>
-          {item.countWeightType} {item.weightType}
-        </Text>
-        <Button
-          size={'s'}
-          onClick={() => addWeightCountInBasket(item)}
-          label={'+'}
-        />
-      </Text>
-      <Text size={'xl'}>{item.price},00 ₽</Text>
-      <Text className={styles.CakeItem__actions} size={'2xl'}>
-        {Number(item.count) * Number(item.price) * Number(item.countWeightType)}
-        ,00 ₽
-        <Button
-          size={'s'}
-          iconLeft={IconTrash}
-          onClick={() => {
-            dispatch(
-              setBasket({
-                ...basket,
-                items: basket.items.filter((elem) => elem.id !== item.id),
+  const addNewDecor = () => {
+    dispatch(
+      setBasket({
+        ...basket,
+        items: basket.items.map((i) => {
+          if (i.name === item.name) {
+            return {
+              ...i,
+              decors: [
+                ...i.decors,
+                { id: null, name: `Декор для ${i.name}`, items: [] as any },
+              ],
+            };
+          } else return { ...i };
+        }),
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (decors) {
+      setOrderDecors(
+        decors.map((d) => {
+          return { ...d, isChecked: false };
+        }),
+      );
+    }
+  }, [decors]);
+
+  useEffect(() => {
+    if (orderDecors.some((or) => or.isChecked)) {
+      dispatch(
+        setBasket({
+          ...basket,
+          items: basket.items.map((oldItem) => {
+            return {
+              ...oldItem,
+              decors: oldItem.decors.map((decor) => {
+                if (decor.name === `Декор для ${item.name}`) {
+                  return {
+                    ...decor,
+                    items: orderDecors.filter((od) => od.isChecked),
+                  };
+                } else return { ...decor };
               }),
-            );
-          }}
+            };
+          }),
+        }),
+      );
+    }
+  }, [orderDecors]);
+  return (
+    <Collapse
+      isOpen={isOpen}
+      className={styles.Collapse}
+      label={
+        <div className={styles.CakeItem}>
+          <div>
+            <Text size={'xl'}> {item.name}</Text>
+            <Button
+              label={'Показать декор'}
+              onClick={() => setIsOpen((prev) => !prev)}
+              size={'xs'}
+            />
+          </div>
+          <Text className={styles.CakeItem__basketActions}>
+            <Button
+              size={'s'}
+              label={'-'}
+              onClick={() => removeItemInBasket(item)}
+            />
+            <Text size={'xl'}>{item.count} шт</Text>
+            <Button
+              size={'s'}
+              onClick={() => addItemInBasket(item)}
+              label={'+'}
+            />
+          </Text>
+          <Text className={styles.CakeItem__basketActions} size={'xl'}>
+            <Button
+              size={'s'}
+              label={'-'}
+              onClick={() => removeWeightCountInBasket(item)}
+            />
+            <Text size={'xl'}>
+              {item.countWeightType} {item.weightType}
+            </Text>
+            <Button
+              size={'s'}
+              onClick={() => addWeightCountInBasket(item)}
+              label={'+'}
+            />
+          </Text>
+          <Text size={'xl'}>{item.price},00 ₽</Text>
+          <Text className={styles.CakeItem__actions} size={'2xl'}>
+            {Number(item.count) *
+              Number(item.price) *
+              Number(item.countWeightType)}
+            ,00 ₽
+            <Button
+              size={'s'}
+              iconLeft={IconTrash}
+              onClick={() => {
+                dispatch(
+                  setBasket({
+                    ...basket,
+                    items: basket.items.filter((elem) => elem.id !== item.id),
+                  }),
+                );
+              }}
+            />
+          </Text>
+        </div>
+      }
+    >
+      {item.decors.length === 0 && (
+        <Button
+          label={'Добавить декор к десерту'}
+          size={'s'}
+          onClick={addNewDecor}
         />
-      </Text>
-    </div>
+      )}
+      {item.decors.length > 0 &&
+        orderDecors.map((decor, index) => (
+          <CreateOrderDecorItem
+            item={decor}
+            key={index}
+            index={index}
+            setOrderDecors={setOrderDecors}
+          />
+        ))}
+      {item.decors.length > 0 && <Button label={'Сохранить'} />}
+    </Collapse>
   );
 };
 

@@ -9,7 +9,7 @@ const {
 
 class BasketController {
   async create(req, res, next) {
-    let { name, items, user_id, date_completed, decors } = req.body;
+    let { name, items, user_id, date_completed } = req.body;
 
     const user = await User.findOne({ where: { id: user_id } });
     let basket = null;
@@ -24,40 +24,41 @@ class BasketController {
         date_completed: new Date(date_completed),
       });
     }
+    const baseDecors = await Decor.findAll();
     if (items && basket) {
-      items.forEach((item) =>
-        BasketDevice.create({
+      for (const item of items) {
+        await BasketDevice.create({
           name: item.name,
           deviceId: item.deviceId,
           BasketId: basket.id,
           count: item.count,
           price: item.price,
-          countWeightType:item.countWeightType
-        })
-      );
-    }
-    if (decors && basket) {
-      const baseDecors = await Decor.findAll();
-      decors.forEach((item) => {
-        OrderDecor.create({
-          name: item.name,
-        }).then((ord) => {
-          if (ord && item.items) {
-            item.items.forEach((itm) => {
-              const findedDecor = baseDecors.find((i) => i === itm.id);
-              OrderDecorItem.create({
-                name: itm.name,
-                count: itm.count,
-                countType: itm.countType,
-                pricePerUnit: itm.pricePerUnit,
-                constPrice: findedDecor.constPrice,
-                OrderDecorId: ord.id,
-              });
-            });
-          }
+          countWeightType: item.countWeightType,
         });
-      });
+        if (item.decors) {
+          for (const decor of item.decors) {
+            const newOrder = await OrderDecor.create({
+              name: decor.name,
+              BasketId: basket.id,
+            });
+            if (newOrder && decor.items) {
+              for (const itm of decor.items) {
+                const findedDecor = baseDecors.find((i) => i.name === itm.name);
+                await OrderDecorItem.create({
+                  name: itm.name,
+                  count: itm.count,
+                  countType: itm.countType,
+                  pricePerUnit: itm.pricePerUnit,
+                  constPrice: findedDecor.constPrice,
+                  OrderDecorId: newOrder.id,
+                });
+              }
+            }
+          }
+        }
+      }
     }
+
     return res.json({ id: basket.id });
   }
   async update(req, res, next) {

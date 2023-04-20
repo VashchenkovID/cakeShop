@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
 import styles from './CreateOrder.styl';
@@ -17,6 +17,9 @@ import { Text } from '@consta/uikit/Text';
 import { IconTrash } from '@consta/uikit/IconTrash';
 import PhoneInput from 'react-phone-input-2';
 import CreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/CreateOrderCakeItem';
+import useRequest from 'src/hooks/useRequest';
+import cakesApi from 'src/api/requests/cakesApi';
+import { DecorUserModel } from 'src/api/models/DecorUserModel';
 
 interface UserCreateOrderType {
   name: string;
@@ -38,6 +41,10 @@ const CreateOrder: React.FC = () => {
     phone: '',
     email: '',
     order_date: null,
+  });
+  const [decors, setDecors] = useState<DecorUserModel[]>([]);
+  const { load: fetchDecors } = useRequest(cakesApi.getDecor, (data) => {
+    if (data) setDecors(data.data);
   });
 
   const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
@@ -105,6 +112,10 @@ const CreateOrder: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    fetchDecors();
+  }, []);
+
   return (
     <section className={styles.Order}>
       <Text size={'3xl'}>Ваш заказ</Text>
@@ -121,7 +132,7 @@ const CreateOrder: React.FC = () => {
           </div>
           <div className={styles.Order__rows}>
             {basket.items.map((item, index) => (
-              <CreateOrderCakeItem item={item} key={index} />
+              <CreateOrderCakeItem item={item} key={index} decors={decors} />
             ))}
             {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           </div>

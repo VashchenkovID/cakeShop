@@ -4,57 +4,62 @@ const {
   OrderDecor,
   OrderDecorItem,
   Decor,
+  User,
 } = require("../models/models");
 
 class IndividualOrderController {
   async create(req, res, next) {
-    let { name, items, customer, date_completed, decors } = req.body;
-    const order = await IndividualOrder.create({
-      name: name,
-      status: "CREATED",
-      customer: customer.fullName,
-      customer_phone: customer.phone,
-      customer_email: customer.email || null,
-      date_completed: new Date(date_completed),
-    });
+    let { name, items, user_id, date_completed } = req.body;
 
-    if (items) {
-      let newItems = items;
-      newItems.forEach((item) =>
-        IndividualOrderItem.create({
-          name: item.name,
-          deviceId: item.deviceId,
-          IndividualOrderId: order.id,
-          count: item.count,
-          price: item.price,
-          countWeightType:item.countWeightType
-        })
-      );
-    }
-    if (decors && order) {
-      let newDecors = decors;
-      const baseDecors = await Decor.findAll();
-      newDecors.forEach((item) => {
-        OrderDecor.create({
-          name: item.name,
-        }).then((ord) => {
-          if (ord && item.items) {
-            item.items.forEach((itm) => {
-              const findedDecor = baseDecors.find((i) => i === itm.id);
-              OrderDecorItem.create({
-                name: itm.name,
-                count: itm.count,
-                countType: itm.countType,
-                pricePerUnit: itm.pricePerUnit,
-                constPrice: findedDecor.constPrice,
-                OrderDecorId: ord.id,
-              });
-            });
-          }
-        });
+    const user = await User.findOne({ where: { id: user_id } });
+    let basket = null;
+    if (user) {
+      basket = await IndividualOrder.create({
+        name: name,
+        UserId: user_id,
+        status: "CREATED",
+        customer: user.fullName,
+        customer_phone: user.phone,
+        customer_email: user.email || null,
+        date_completed: new Date(date_completed),
       });
     }
-    return res.json({ id: order.id });
+    const baseDecors = await Decor.findAll();
+    if (items && basket) {
+      for (const item of items) {
+        await IndividualOrderItem.create({
+          name: item.name,
+          deviceId: item.deviceId,
+          BasketId: basket.id,
+          count: item.count,
+          price: item.price,
+          countWeightType: item.countWeightType,
+        });
+        if (item.decors) {
+          for (const decor of item.decors) {
+            const newOrder = await OrderDecor.create({
+              name: decor.name,
+              BasketId: basket.id,
+            });
+            if (newOrder && decor.items) {
+              for (const itm of decor.items) {
+                const findedDecor = baseDecors.find((i) => i.name === itm.name);
+                await OrderDecorItem.create({
+                  name: itm.name,
+                  count: itm.count,
+                  countType: itm.countType,
+                  pricePerUnit: itm.pricePerUnit,
+                  constPrice: findedDecor.constPrice,
+                  OrderDecorId: newOrder.id,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return res.json({ id: basket.id });
   }
   async update(req, res, next) {
     let { status, items, date_completed } = req.body;
