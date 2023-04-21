@@ -8,6 +8,8 @@ const {
   IndividualOrderItem,
   Device,
   DeviceInfo,
+  OrderDecor,
+  OrderDecorItem,
 } = require("../models/models");
 const ApiError = require("../Error/ApiError");
 
@@ -190,6 +192,11 @@ class AnalyticsController {
         },
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
+
+      const orderDecors = await OrderDecor.findAll({
+        include: [{ model: OrderDecorItem, as: "items" }],
+      });
+
       const deviceIds = [
         ...new Set(
           individualOrders.map((bt) => bt.items.map((i) => i.deviceId)).flat()
@@ -206,62 +213,147 @@ class AnalyticsController {
         devices.push({
           id: d.id,
           constPrice: d.info.reduce((accum, elem) => {
-            const oneConst = Number(
-              elem.pricePerUnit * Number(elem.weight)
-            );
+            const oneConst = Number(elem.pricePerUnit * Number(elem.weight));
             return accum + oneConst;
           }, 0),
         });
       }
+
       const orders = [
         ...baskets
           .filter((itm) => itm.status === "COMPLETED")
+          .map((basket) => {
+            return {
+              ...basket.dataValues,
+              type: "custom",
+              items: basket.dataValues.items.map((itm) => {
+                return {
+                  ...itm.dataValues,
+                  decors: orderDecors.filter(
+                    (dec) => itm.BasketId === dec.BasketId
+                  ),
+                };
+              }),
+            };
+          })
           .map((item) => {
             return {
               id: item.id,
               name: item.name,
-              allPrice: item.items.reduce(
-                (accum, elem) => accum + elem.price * elem.count,
-                0
-              ),
-              constPrice: item.items
-                .map((it) => {
-                  return {
-                    ...it.dataValues,
-                    device: devices.find((d) => d.id === it.deviceId)
-                      ?.constPrice,
-                  };
-                })
-                .reduce(
-                  (accum, element) => accum + element.device * element.count * element.countWeightType,
+              allPrice:
+                item.items.reduce(
+                  (accum, elem) => accum + elem.price * elem.count,
                   0
-                ),
+                ) +
+                item.items
+                  .map((it) =>
+                    it.decors
+                      .map((dec) =>
+                        dec.items.reduce(
+                          (accum, elem) =>
+                            accum + elem.count * elem.pricePerUnit,
+                          0
+                        )
+                      )
+                      .reduce((acc, el) => acc + el, 0)
+                  )
+                  .reduce((acc, el) => acc + el, 0),
+              constPrice:
+                item.items
+                  .map((it) => {
+                    return {
+                      ...it,
+                      device: devices.find((d) => d.id === it.deviceId)
+                        ?.constPrice,
+                    };
+                  })
+                  .reduce((accum, element) => {
+                    return (
+                      accum +
+                      element.device * element.count * element.countWeightType
+                    );
+                  }, 0) +
+                item.items
+                  .map((i) =>
+                    i.decors
+                      .map((decor) =>
+                        decor.items.reduce(
+                          (acc, el) => acc + el.count * el.constPrice,
+                          0
+                        )
+                      )
+                      .reduce((acc, el) => acc + el, 0)
+                  )
+                  .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,
               type: "custom",
             };
           }),
         ...individualOrders
           .filter((itm) => itm.status === "COMPLETED")
+          .map((basket) => {
+            return {
+              ...basket.dataValues,
+              type: "unauthorized",
+              items: basket.dataValues.items.map((itm) => {
+                return {
+                  ...itm.dataValues,
+                  decors: orderDecors.filter(
+                    (dec) => itm.IndividualOrderId === dec.IndividualOrderId
+                  ),
+                };
+              }),
+            };
+          })
           .map((item) => {
             return {
               id: item.id,
               name: item.name,
-              allPrice: item.items.reduce(
-                (accum, elem) => accum + elem.price * elem.count,
-                0
-              ),
-              constPrice: item.items
-                .map((it) => {
-                  return {
-                    ...it.dataValues,
-                    device: devices.find((d) => d.id === it.deviceId)
-                      ?.constPrice,
-                  };
-                })
-                  .reduce(
-                      (accum, element) => accum + element.device * element.count * element.countWeightType,
-                      0
-                  ),
+              allPrice:
+                item.items.reduce((accum, elem) => {
+                  return accum + elem.price * elem.count;
+                }, 0) +
+                item.items
+                  .map((it) => {
+                    return it.decors
+                      .map((dec) => {
+                        return dec.dataValues.items.reduce((accum, elem) => {
+                          return (
+                            accum +
+                            elem.dataValues.count * elem.dataValues.pricePerUnit
+                          );
+                        }, 0);
+                      })
+                      .reduce((acc, el) => acc + el, 0);
+                  })
+                  .reduce((acc, el) => acc + el, 0),
+              constPrice:
+                item.items
+                  .map((it) => {
+                    return {
+                      ...it,
+                      device: devices.find((d) => d.id === it.deviceId)
+                        ?.constPrice,
+                    };
+                  })
+                  .reduce((accum, element) => {
+                    return (
+                      accum +
+                      element.device * element.count * element.countWeightType
+                    );
+                  }, 0) +
+                item.items
+                  .map((i) =>
+                    i.decors
+                      .map((decor) =>
+                        decor.items.reduce(
+                          (acc, el) => acc + el.count * el.constPrice,
+                          0
+                        )
+                      )
+                      .reduce((acc, el) => acc + el, 0)
+                  )
+                  .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,
               type: "unauthorized",
             };

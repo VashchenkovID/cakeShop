@@ -16,7 +16,9 @@ import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { Text } from '@consta/uikit/Text';
 import { IconTrash } from '@consta/uikit/IconTrash';
 import PhoneInput from 'react-phone-input-2';
-import CreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/CreateOrderCakeItem';
+import CreateOrderCakeItem, {
+  OrderBasketChangeDecors,
+} from 'src/pages/CreateOrder/CreateOrderCakeItem/CreateOrderCakeItem';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DecorUserModel } from 'src/api/models/DecorUserModel';
@@ -36,6 +38,7 @@ const CreateOrder: React.FC = () => {
   const basket = useAppSelector(selectBasket);
   const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
   const [modal, setModal] = useState(false);
+  const [orderDecors, setOrderDecors] = useState<OrderBasketChangeDecors[]>([]);
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
     name: '',
     phone: '',
@@ -50,12 +53,19 @@ const CreateOrder: React.FC = () => {
   const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const allCount = useMemo(() => {
     if (basket && basket.items.length > 0) {
-      return basket.items.reduce(
-        (accum, item) => accum + item.price * item.count * item.countWeightType,
-        0,
+      return (
+        basket.items.reduce(
+          (accum, item) =>
+            accum + item.price * item.count * item.countWeightType,
+          0,
+        ) +
+        orderDecors
+          .filter((itm) => itm.isChecked)
+          .reduce((accum, item) => accum + item.count * item.pricePerUnit, 0)
       );
     } else return null;
   }, [basket]);
+
   const minOrderDate = useMemo(() => {
     const date = new Date();
     date.setDate(new Date().getDate() + 3);
@@ -116,6 +126,16 @@ const CreateOrder: React.FC = () => {
     fetchDecors();
   }, []);
 
+  useEffect(() => {
+    if (decors) {
+      setOrderDecors(
+        decors.map((d) => {
+          return { ...d, isChecked: false };
+        }),
+      );
+    }
+  }, [decors]);
+
   return (
     <section className={styles.Order}>
       <Text size={'3xl'}>Ваш заказ</Text>
@@ -132,7 +152,13 @@ const CreateOrder: React.FC = () => {
           </div>
           <div className={styles.Order__rows}>
             {basket.items.map((item, index) => (
-              <CreateOrderCakeItem item={item} key={index} decors={decors} />
+              <CreateOrderCakeItem
+                orderDecors={orderDecors}
+                setOrderDecors={setOrderDecors}
+                item={item}
+                key={index}
+                decors={decors}
+              />
             ))}
             {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           </div>

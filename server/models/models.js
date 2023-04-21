@@ -85,7 +85,7 @@ const DeviceInfo = sequilize.define("Device_info", {
 
 const Decor = sequilize.define("Decor", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
+  name: { type: DataTypes.STRING, allowNull: false, unique: true },
   count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
   countType: { type: DataTypes.STRING, allowNull: false },
   pricePerUnit: { type: DataTypes.INTEGER, allowNull: false },
@@ -138,6 +138,12 @@ Rating.belongsTo(Device);
 
 Device.hasMany(BasketDevice);
 BasketDevice.belongsTo(Device);
+
+Device.hasMany(IndividualOrderItem);
+IndividualOrderItem.belongsTo(Device);
+
+Decor.hasMany(OrderDecorItem);
+OrderDecorItem.belongsTo(Decor);
 
 Device.hasMany(DeviceInfo, { as: "info" });
 DeviceInfo.belongsTo(Device);

@@ -9,28 +9,23 @@ const {
 
 class IndividualOrderController {
   async create(req, res, next) {
-    let { name, items, user_id, date_completed } = req.body;
+    let { name, items, customer, date_completed } = req.body;
 
-    const user = await User.findOne({ where: { id: user_id } });
-    let basket = null;
-    if (user) {
-      basket = await IndividualOrder.create({
-        name: name,
-        UserId: user_id,
-        status: "CREATED",
-        customer: user.fullName,
-        customer_phone: user.phone,
-        customer_email: user.email || null,
-        date_completed: new Date(date_completed),
-      });
-    }
+    const order = await IndividualOrder.create({
+      name: name,
+      status: "CREATED",
+      customer: customer.fullName,
+      customer_phone: customer.phone,
+      customer_email: customer.email || null,
+      date_completed: new Date(date_completed),
+    });
     const baseDecors = await Decor.findAll();
-    if (items && basket) {
+    if (items && order) {
       for (const item of items) {
         await IndividualOrderItem.create({
           name: item.name,
           deviceId: item.deviceId,
-          BasketId: basket.id,
+          IndividualOrderId: order.id,
           count: item.count,
           price: item.price,
           countWeightType: item.countWeightType,
@@ -39,7 +34,7 @@ class IndividualOrderController {
           for (const decor of item.decors) {
             const newOrder = await OrderDecor.create({
               name: decor.name,
-              BasketId: basket.id,
+              IndividualOrderId: order.id,
             });
             if (newOrder && decor.items) {
               for (const itm of decor.items) {
@@ -59,7 +54,7 @@ class IndividualOrderController {
       }
     }
 
-    return res.json({ id: basket.id });
+    return res.json({ id: order.id });
   }
   async update(req, res, next) {
     let { status, items, date_completed } = req.body;

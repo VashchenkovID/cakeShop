@@ -1,0 +1,24 @@
+.Decor
+  display grid
+  grid-template-columns repeat(4,1fr)
+  gap 16px
+  align-items center
+  &__name
+    display flex
+    gap 8px
+    align-items center
+.Checkbox :global(.Checkbox-Input) {
+  border 1px solid #fbc102
+}
+
+.Checkbox :global(.Checkbox-Input:hover) {
+  border 1px solid #fbc102
+}
+
+.Checkbox :global(.Checkbox-Input:checked) {
+  background #fbc102
+  color #FFFFFF
+}
+.Checkbox :global(.MixFocus) {
+  color #97B2C4
+}

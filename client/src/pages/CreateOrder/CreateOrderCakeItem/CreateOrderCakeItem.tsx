@@ -39,14 +39,22 @@ interface IComponentProps {
     }[];
   };
   decors: DecorUserModel[];
+  orderDecors: OrderBasketChangeDecors[];
+  setOrderDecors: React.Dispatch<
+    React.SetStateAction<OrderBasketChangeDecors[]>
+  >;
 }
 
-const CreateOrderCakeItem: React.FC<IComponentProps> = ({ item, decors }) => {
+const CreateOrderCakeItem: React.FC<IComponentProps> = ({
+  item,
+  orderDecors,
+  setOrderDecors,
+}) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
   const ref = useRef(item.countWeightType);
   const [isOpen, setIsOpen] = useState(false);
-  const [orderDecors, setOrderDecors] = useState<OrderBasketChangeDecors[]>([]);
+
   const {
     removeItemInBasket,
     removeWeightCountInBasket,
@@ -72,16 +80,6 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({ item, decors }) => {
       }),
     );
   };
-
-  useEffect(() => {
-    if (decors) {
-      setOrderDecors(
-        decors.map((d) => {
-          return { ...d, isChecked: false };
-        }),
-      );
-    }
-  }, [decors]);
 
   useEffect(() => {
     if (orderDecors.some((or) => or.isChecked)) {
@@ -176,16 +174,26 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({ item, decors }) => {
           onClick={addNewDecor}
         />
       )}
-      {item.decors.length > 0 &&
-        orderDecors.map((decor, index) => (
-          <CreateOrderDecorItem
-            item={decor}
-            key={index}
-            index={index}
-            setOrderDecors={setOrderDecors}
-          />
-        ))}
-      {item.decors.length > 0 && <Button label={'Сохранить'} />}
+      <div className={styles.Decor__rows}>
+        {item.decors.length > 0 && (
+          <div className={styles.Decor}>
+            <Text size={'s'}>Наименование</Text>
+            <Text size={'s'}>Количество</Text>
+            <Text size={'s'}>Цена за 1шт</Text>
+            <Text size={'s'}>Итог</Text>
+          </div>
+        )}
+
+        {item.decors.length > 0 &&
+          orderDecors.map((decor, index) => (
+            <CreateOrderDecorItem
+              item={decor}
+              key={index}
+              index={index}
+              setOrderDecors={setOrderDecors}
+            />
+          ))}
+      </div>
     </Collapse>
   );
 };

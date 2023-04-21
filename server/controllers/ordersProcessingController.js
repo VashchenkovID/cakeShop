@@ -5,6 +5,7 @@ const {
   IndividualOrder,
   BasketDevice,
   IndividualOrderItem,
+  OrderDecor, OrderDecorItem,
 } = require("../models/models");
 const ApiError = require("../Error/ApiError");
 
@@ -35,6 +36,10 @@ class OrdersProcessingController {
         include: [{ model: IndividualOrderItem, as: "items" }],
       });
 
+      const orderDecors = await OrderDecor.findAll({
+        include: [{ model: OrderDecorItem, as: "items" }],
+      });
+
       return res.json({
         items: [
           ...baskets
@@ -42,6 +47,14 @@ class OrdersProcessingController {
               return {
                 ...basket.dataValues,
                 type: "custom",
+                items: basket.dataValues.items.map((itm) => {
+                  return {
+                    ...itm.dataValues,
+                    decors: orderDecors.filter(
+                      (dec) => itm.BasketId === dec.BasketId
+                    ),
+                  };
+                }),
               };
             })
             .filter(
@@ -52,6 +65,14 @@ class OrdersProcessingController {
               return {
                 ...order.dataValues,
                 type: "unauthorized",
+                items: order.dataValues.items.map((itm) => {
+                  return {
+                    ...itm.dataValues,
+                    decors: orderDecors.filter(
+                      (dec) => itm.IndividualOrderId === dec.IndividualOrderId
+                    ),
+                  };
+                }),
               };
             })
             .filter(

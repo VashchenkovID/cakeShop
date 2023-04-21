@@ -8,7 +8,7 @@ import AdministrationAnalyticsPopulars from 'src/pages/AdministrationPage/Admini
 import { Text } from '@consta/uikit/Text';
 import AdministrationAnalyticsDateChange from 'src/pages/AdministrationPage/AdministrationAnalyticsDateChange/AdministrationAnalyticsDateChange';
 import { Loader } from '@consta/uikit/Loader';
-import { startOfMonth, getDaysInMonth, getMonth, add } from 'date-fns';
+import { startOfMonth, getDaysInMonth, getMonth } from 'date-fns';
 
 const AdministrationAnalytics: React.FC = () => {
   const [date, setDate] = useState(new Date());
@@ -41,7 +41,7 @@ const AdministrationAnalytics: React.FC = () => {
         .map((sale) => {
           return {
             ...sale,
-            date_completed: new Date(sale.date_completed).toLocaleDateString(),
+            date_completed: new Date(sale.date_completed),
             type: 'Пользовательский',
           };
         });
@@ -50,25 +50,24 @@ const AdministrationAnalytics: React.FC = () => {
         .map((sale) => {
           return {
             ...sale,
-            date_completed: new Date(sale.date_completed).toLocaleDateString(),
+            date_completed: new Date(sale.date_completed),
             type: 'Незарегистрированный',
           };
         });
-
+      console.log(salesWithDatesCustom, salesWithDatesUnauthorized);
       for (let i = 0; i <= datesCount; i++) {
-        datesArrCustom.push(new Date(yaer, month, i + 1).toLocaleDateString());
-        datesArrUnauthorized.push(
-          new Date(yaer, month, i + 1).toLocaleDateString(),
-        );
+        datesArrCustom.push(new Date(yaer, month, i + 1));
+        datesArrUnauthorized.push(new Date(yaer, month, i + 1));
       }
       const result = [
         ...datesArrCustom.map((dateArr) => {
           if (
-            salesWithDatesCustom.filter((itm) => itm.date_completed === dateArr)
-              .length > 0
+            salesWithDatesCustom.filter(
+              (itm) => itm.date_completed.getTime() === dateArr.getTime(),
+            ).length > 0
           ) {
             const newObj = salesWithDatesCustom.filter(
-              (itm) => itm.date_completed === dateArr,
+              (itm) => itm.date_completed.getTime() === dateArr.getTime(),
             );
             if (newObj.length > 1) {
               findHistory.push(...newObj.flat());
@@ -96,11 +95,11 @@ const AdministrationAnalytics: React.FC = () => {
         ...datesArrUnauthorized.map((dateArr) => {
           if (
             salesWithDatesUnauthorized.filter(
-              (itm) => itm.date_completed === dateArr,
+              (itm) => itm.date_completed.getTime() === dateArr.getTime(),
             ).length > 0
           ) {
             const newObj = salesWithDatesUnauthorized.filter(
-              (itm) => itm.date_completed === dateArr,
+              (itm) => itm.date_completed.getTime() === dateArr.getTime(),
             );
             if (newObj.length > 1) {
               findHistory.push(...newObj.flat());
@@ -133,13 +132,13 @@ const AdministrationAnalytics: React.FC = () => {
             arr.filter(
               (el) =>
                 el.name === item.name &&
-                el.date_completed === item.date_completed,
+                el.date_completed.getTime() === item.date_completed.getTime(),
             ).length > 1
           ) {
             const filteredArr = arr.filter(
               (el) =>
                 el.name === item.name &&
-                el.date_completed === item.date_completed,
+                el.date_completed.getTime() === item.date_completed.getTime(),
             );
             return {
               ...item,
@@ -157,14 +156,24 @@ const AdministrationAnalytics: React.FC = () => {
         .forEach(function (item) {
           const i: any = resArr.findIndex((x) => x.name == item.name);
           if (i <= -1) {
-            resArr.push({ ...item });
+            resArr.unshift({ ...item });
           }
         });
-      return [...resArr, ...result].sort(
-        (a, b) =>
-          new Date(a.date_completed).getTime() -
-          new Date(b.date_completed).getTime(),
-      );
+      const returnedElement = [...resArr, ...result];
+
+      return returnedElement
+        .sort((a, b) => {
+          return (
+            new Date(a.date_completed).getTime() -
+            new Date(b.date_completed).getTime()
+          );
+        })
+        .map((itm) => {
+          return {
+            ...itm,
+            date_completed: itm.date_completed.toLocaleDateString(),
+          };
+        });
     } else return [];
   }, [sales, date]);
   const statistic = useMemo(() => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { OrderProcessingModel } from 'src/api/models/OrderProcessingModel';
 import styles from './AdministrationOrdersProcessingCard.styl';
 import { Draggable } from 'react-beautiful-dnd';
@@ -61,7 +61,23 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
         });
     }
   };
-
+  const allPrice = useMemo(() => {
+    return (
+      item.items.reduce((accum, elem) => accum + elem.price * elem.count, 0) +
+      item.items
+        .map((item) =>
+          item.decors
+            .map((decor) =>
+              decor.items.reduce(
+                (accum, elem) => accum + elem.count * elem.pricePerUnit,
+                0,
+              ),
+            )
+            .reduce((acc, el) => acc + el, 0),
+        )
+        .reduce((acc, elem) => acc + elem, 0)
+    );
+  }, [item]);
   return (
     <Draggable draggableId={`${item.dropId}`} index={index}>
       {(provided) => (
@@ -92,7 +108,9 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
             </div>
             {item.items.map((itm, idx) => (
               <div className={styles.ProcessingCard__content__row} key={idx}>
-                <div>{itm.name}</div>
+                <div>
+                  {itm.name} {itm.decors.length > 0 && `(С декором)`}
+                </div>
                 <div>{itm.price},00 ₽</div>
                 <div>{itm.count} шт</div>
               </div>
@@ -100,8 +118,11 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
           </div>
           <div className={styles.ProcessingCard__footer}>
             <Text size={'s'} weight={'semibold'}>
-              Итого: {item.items.reduce((accum, elem) => accum + (elem.price * elem.count), 0)}
+              Итого: {allPrice}
               ,00 ₽
+            </Text>
+            <Text size={'xs'} view={'link'}>
+              Посмотреть полную информацию
             </Text>
           </div>
           <footer className={styles.ProcessingCard__actions}>
