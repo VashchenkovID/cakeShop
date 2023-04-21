@@ -1,7 +1,8 @@
 import React from 'react';
 import { TextField } from '@consta/uikit/TextField';
 import { Button } from '@consta/uikit/Button';
-
+import styles from './AdministrationTypeModals.styl';
+import { Text } from '@consta/uikit/Text';
 interface IComponentProps {
   type: {
     name: string;
@@ -18,9 +19,12 @@ const AdministrationTypesModalsType: React.FC<IComponentProps> = ({
   onSave,
 }) => {
   return (
-    <div>
-      <h4>Введите название</h4>
+    <div className={styles.Container}>
+      <Text size={'2xl'}>Создание типа</Text>
       <TextField
+        size={'s'}
+        form={'round'}
+        label={'Название'}
         placeholder={'Название'}
         value={type.name}
         onChange={(e) => {
@@ -29,9 +33,10 @@ const AdministrationTypesModalsType: React.FC<IComponentProps> = ({
           });
         }}
       />
-      <div>
-        <Button label={'Отмена'} onClick={onClose} />
+      <div className={styles.Container__actions}>
+        <Button size={'s'} label={'Отмена'} onClick={onClose} />
         <Button
+          size={'s'}
           label={'Создать'}
           onClick={() => {
             onSave().then(() => onClose());

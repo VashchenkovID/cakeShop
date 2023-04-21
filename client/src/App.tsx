@@ -8,10 +8,26 @@ import { AppRouter } from './components/AppRouter';
 import Header from 'src/components/Header';
 import { Theme } from '@consta/uikit/Theme';
 import { myDefaultPreset } from 'src/utils/presetConsta/constaMyStyle/myDefaultPreset';
+import userAPI from 'src/api/requests/userAPI';
+import { LocalStorageKeysEnum } from 'src/utils/enum';
 
 const store = setupStore();
 
 const App = () => {
+  const checkCurrentUser = async () => {
+    try {
+      await userAPI.checkCurrentUser().then((r) => {
+        localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+      });
+    } catch (e) {
+      localStorage.clear();
+    }
+  };
+
+  useEffect(() => {
+    checkCurrentUser();
+  }, []);
+
   useEffect(() => {
     setAutoFreeze(false);
   }, []);

@@ -1,12 +1,28 @@
 import React from 'react';
 import { Text } from '@consta/uikit/Text';
 import styles from './AdministrationTypesDecorItem.styl';
+import {
+  AdministrationTypesItemsEnum,
+  AdministrationTypesModalEnum,
+} from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
 
 interface IComponentProps {
-  item: any;
+  item: {
+    name: string;
+    count: number;
+    countType: string;
+    pricePerUnit: number;
+    constPrice: number;
+  };
+  setEdit(type: AdministrationTypesItemsEnum, item: any): void;
+  setModal: React.Dispatch<React.SetStateAction<AdministrationTypesModalEnum>>;
 }
 
-const AdministrationTypesDecorItem: React.FC<IComponentProps> = ({ item }) => {
+const AdministrationTypesDecorItem: React.FC<IComponentProps> = ({
+  item,
+  setEdit,
+  setModal,
+}) => {
   return (
     <div className={styles.DecorItem}>
       <Text>{item.name}</Text>

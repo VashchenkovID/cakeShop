@@ -1,6 +1,6 @@
 import { get, post, postNew } from '../../api';
 import { UserInitResponseType } from '../models/UserInitService';
-import { $host } from 'src/api/requests/index';
+import { $authHost, $host } from 'src/api/requests/index';
 
 export interface AuthorizationParams {
   email: string;
@@ -16,4 +16,5 @@ export default {
     postNew('/user/registration', { ...authParams, role: 'USER' }),
   loginUser: (authParams: AuthorizationParams) =>
     $host.post('/user/login', { ...authParams }),
+  checkCurrentUser: () => $authHost.get('/user/auth'),
 };

@@ -4,11 +4,18 @@ import styles from './AdministrationTypesSection.styl';
 import AdministrationTypesDecorItem from 'src/pages/AdministrationPage/AdministrationTypesDecorItem/AdministrationTypesDecorItem';
 import AdministrationTypesItem from 'src/pages/AdministrationPage/AdministrationTypesItem/AdministrationTypesItem';
 import { Button } from '@consta/uikit/Button';
+import {
+  AdministrationTypesItemsEnum,
+  AdministrationTypesModalEnum,
+} from 'src/pages/AdministrationPage/AdministrationTypes/AdministrationTypes';
 interface IComponentProps {
   title: string;
   items: any[];
   isDecor: boolean;
   onCreate(): void;
+  type: AdministrationTypesItemsEnum;
+  setEdit(type: AdministrationTypesItemsEnum, item: any): void;
+  setModal: React.Dispatch<React.SetStateAction<AdministrationTypesModalEnum>>;
 }
 
 const AdministrationTypesSection: React.FC<IComponentProps> = ({
@@ -16,6 +23,9 @@ const AdministrationTypesSection: React.FC<IComponentProps> = ({
   items,
   isDecor,
   onCreate,
+  type,
+  setEdit,
+  setModal,
 }) => {
   return (
     <div className={styles.Section}>
@@ -33,10 +43,21 @@ const AdministrationTypesSection: React.FC<IComponentProps> = ({
         )}
         {isDecor
           ? items.map((item, index) => (
-              <AdministrationTypesDecorItem key={index} item={item} />
+              <AdministrationTypesDecorItem
+                setEdit={setEdit}
+                setModal={setModal}
+                key={index}
+                item={item}
+              />
             ))
           : items.map((item, index) => (
-              <AdministrationTypesItem item={item} key={index} />
+              <AdministrationTypesItem
+                setEdit={setEdit}
+                setModal={setModal}
+                item={item}
+                key={index}
+                type={type}
+              />
             ))}
       </div>
     </div>

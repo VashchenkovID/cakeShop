@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
-import AdministrationTypesModalsType from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsType';
-import AdministrationTypesModalsFilling from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsFilling';
+import AdministrationTypesModalsType from 'src/pages/AdministrationPage/AdministrationTypeModals/AdministrationTypesModalsType';
+import AdministrationTypesModalsFilling from 'src/pages/AdministrationPage/AdministrationTypeModals/AdministrationTypesModalsFilling';
 import styles from './AdministrationTypes.styl';
 import { Modal } from '@consta/uikit/Modal';
 import AdministrationTypesSection from 'src/pages/AdministrationPage/AdministrationTypesSection/AdministrationTypesSection';
-import AdministrationTypesModalsBiscuit from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsBiscuit';
-import AdministrationTypesModalsDecor from 'src/pages/AdministrationPage/AdministrationTypesModals/AdministrationTypesModalsDecor';
+import AdministrationTypesModalsBiscuit from 'src/pages/AdministrationPage/AdministrationTypeModals/AdministrationTypesModalsBiscuit';
+import AdministrationTypesModalsDecor from 'src/pages/AdministrationPage/AdministrationTypeModals/AdministrationTypesModalsDecor';
 
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',
   FILLING = 'filling',
   TYPE = 'type',
+  BISCUIT = 'biscuit',
+  DECOR = 'decor',
+  TYPE_EDIT = 'typeEdit',
+  FILLING_EDIT = 'fillingEdit',
+  BISCUIT_EDIT = 'biscuitEdit',
+  DECOR_EDIT = 'decorEdit',
+  TYPE_REMOVE = 'typeRemove',
+  FILLING_REMOVE = 'fillingRemove',
+  BISCUIT_REMOVE = 'biscuitRemove',
+  DECOR_REMOVE = 'decorRemove',
+}
+
+export enum AdministrationTypesItemsEnum {
+  TYPE = 'type',
+  FILLING = 'filling',
   BISCUIT = 'biscuit',
   DECOR = 'decor',
 }
@@ -39,16 +54,32 @@ const AdministrationTypes: React.FC = () => {
     pricePerUnit: 0,
     constPrice: 0,
   });
-  const { load: fetchTypes, isLoading: typeLoading } = useRequest(
-    cakesApi.getCakeTypes,
-    (data) => {
-      if (data) {
-        setTypes(data.data);
-      }
-    },
-  );
+  const clear = () => {
+    setType({ name: '' });
+    setFilling({
+      name: '',
+      img: null,
+    });
+    setBiscuit({
+      name: '',
+      img: null,
+    });
+    setDecor({
+      name: '',
+      count: 0,
+      countType: '',
+      pricePerUnit: 0,
+      constPrice: 0,
+    });
+  };
 
-  const { load: fetchFillings, isLoading: fillingLoading } = useRequest(
+  const { load: fetchTypes } = useRequest(cakesApi.getCakeTypes, (data) => {
+    if (data) {
+      setTypes(data.data);
+    }
+  });
+
+  const { load: fetchFillings } = useRequest(
     cakesApi.getCakeFillings,
     (data) => {
       if (data) {
@@ -57,31 +88,28 @@ const AdministrationTypes: React.FC = () => {
     },
   );
 
-  const { load: fetchBiscuits, isLoading: biscuitLoading } = useRequest(
-    cakesApi.getBiscuits,
-    (data) => {
-      if (data) {
-        setBiscuits(data.data);
-      }
-    },
-  );
+  const { load: fetchBiscuits } = useRequest(cakesApi.getBiscuits, (data) => {
+    if (data) {
+      setBiscuits(data.data);
+    }
+  });
 
-  const { load: fetchDecors, isLoading: decorLoading } = useRequest(
-    cakesApi.getDecorAdmin,
-    (data) => {
-      if (data) {
-        setDecors(data.data);
-      }
-    },
-  );
+  const { load: fetchDecors } = useRequest(cakesApi.getDecorAdmin, (data) => {
+    if (data) {
+      setDecors(data.data);
+    }
+  });
 
   const createNewType = async () => {
     if (type.name !== '') {
       const data = new FormData();
       data.append('name', type.name);
-      await cakesApi.createCakeType(data).then(() => {
-        fetchTypes();
-      });
+      await cakesApi
+        .createCakeType(data)
+        .then(() => {
+          fetchTypes();
+        })
+        .then(() => clear());
     }
   };
 
@@ -92,6 +120,7 @@ const AdministrationTypes: React.FC = () => {
       data.append('img', filling.img);
       await cakesApi.createCakeFilling(data).then(() => {
         fetchFillings();
+        clear();
       });
     }
   };
@@ -102,6 +131,7 @@ const AdministrationTypes: React.FC = () => {
       data.append('img', biscuit.img);
       await cakesApi.createBiscuit(data).then(() => {
         fetchBiscuits();
+        clear();
       });
     }
   };
@@ -122,7 +152,28 @@ const AdministrationTypes: React.FC = () => {
       data.append('constPrice', decor.constPrice.toString());
       await cakesApi.createDecor(data).then(() => {
         fetchDecors();
+        clear();
       });
+    }
+  };
+
+  const setEdit = (type: AdministrationTypesItemsEnum, item: any) => {
+    switch (type) {
+      case AdministrationTypesItemsEnum.TYPE:
+        setType({ ...item });
+        return;
+      case AdministrationTypesItemsEnum.FILLING:
+        setFilling({ ...item });
+        return;
+      case AdministrationTypesItemsEnum.BISCUIT:
+        setBiscuit({ ...item });
+        return;
+      case AdministrationTypesItemsEnum.DECOR:
+        setDecor({ ...item });
+        return;
+      default:
+        clear();
+        return;
     }
   };
 
@@ -142,6 +193,9 @@ const AdministrationTypes: React.FC = () => {
             items={types}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.TYPE)}
+            type={AdministrationTypesItemsEnum.TYPE}
+            setEdit={setEdit}
+            setModal={setModal}
           />
         </div>
         <div className={styles.Types__column}>
@@ -150,6 +204,9 @@ const AdministrationTypes: React.FC = () => {
             items={fillings}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.FILLING)}
+            type={AdministrationTypesItemsEnum.FILLING}
+            setEdit={setEdit}
+            setModal={setModal}
           />
         </div>
         <div className={styles.Types__column}>
@@ -158,6 +215,9 @@ const AdministrationTypes: React.FC = () => {
             items={biscuits}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.BISCUIT)}
+            type={AdministrationTypesItemsEnum.BISCUIT}
+            setEdit={setEdit}
+            setModal={setModal}
           />
         </div>
         <div className={styles.Types__column}>
@@ -166,6 +226,9 @@ const AdministrationTypes: React.FC = () => {
             title={'Декор'}
             items={decors}
             isDecor
+            type={AdministrationTypesItemsEnum.DECOR}
+            setEdit={setEdit}
+            setModal={setModal}
           />
         </div>
       </div>
@@ -200,6 +263,7 @@ const AdministrationTypes: React.FC = () => {
         onClickOutside={() => {
           setModal(AdministrationTypesModalEnum.IDLE);
         }}
+        className={styles.Modal}
         isOpen={modal === AdministrationTypesModalEnum.BISCUIT}
       >
         <AdministrationTypesModalsBiscuit
@@ -219,6 +283,7 @@ const AdministrationTypes: React.FC = () => {
           decor={decor}
           setDecor={setDecor}
           createNewDecor={createNewDecor}
+          onClose={() => setModal(AdministrationTypesModalEnum.IDLE)}
         />
       </Modal>
     </section>

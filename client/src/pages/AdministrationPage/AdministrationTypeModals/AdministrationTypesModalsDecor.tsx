@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextField } from '@consta/uikit/TextField';
 import { Button } from '@consta/uikit/Button';
+import { Text } from '@consta/uikit/Text';
+import styles from './AdministrationTypeModals.styl';
 
 interface IComponentProps {
   decor: {
@@ -20,15 +22,18 @@ interface IComponentProps {
     }>
   >;
   createNewDecor(): Promise<void>;
+  onClose(): void;
 }
 
 const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
   decor,
   setDecor,
   createNewDecor,
+  onClose,
 }) => {
   return (
-    <div>
+    <div className={styles.Container}>
+      <Text size={'2xl'}>Создание декора</Text>
       <TextField
         label={'Наименование'}
         placeholder={'Введите наименование'}
@@ -82,7 +87,10 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
           })
         }
       />
-      <Button size={'s'} label={'Создать'} onClick={createNewDecor} />
+      <div className={styles.Container__actions}>
+        <Button size={'s'} label={'Отмена'} onClick={onClose} />
+        <Button size={'s'} label={'Создать'} onClick={createNewDecor} />
+      </div>
     </div>
   );
 };
