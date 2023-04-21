@@ -82,7 +82,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
   };
 
   useEffect(() => {
-    if (orderDecors.some((or) => or.isChecked)) {
+    if (orderDecors) {
       dispatch(
         setBasket({
           ...basket,
@@ -112,7 +112,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
           <div>
             <Text size={'xl'}> {item.name}</Text>
             <Button
-              label={'Показать декор'}
+              label={isOpen ? 'Скрыть декор' : 'Показать декор'}
               onClick={() => setIsOpen((prev) => !prev)}
               size={'xs'}
             />
@@ -134,6 +134,8 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
             <Button
               size={'s'}
               label={'-'}
+              view={item.countWeightType === ref.current ? 'ghost' : 'primary'}
+              disabled={item.countWeightType === ref.current}
               onClick={() => removeWeightCountInBasket(item)}
             />
             <Text size={'xl'}>
@@ -167,14 +169,17 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
         </div>
       }
     >
-      {item.decors.length === 0 && (
-        <Button
-          label={'Добавить декор к десерту'}
-          size={'s'}
-          onClick={addNewDecor}
-        />
-      )}
       <div className={styles.Decor__rows}>
+        <div className={styles.Decor__addDec}>
+          {item.decors.length === 0 && (
+            <Button
+              label={'Добавить декор к десерту'}
+              size={'xs'}
+              onClick={addNewDecor}
+            />
+          )}
+        </div>
+
         {item.decors.length > 0 && (
           <div className={styles.Decor}>
             <Text size={'s'}>Наименование</Text>

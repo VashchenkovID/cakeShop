@@ -110,6 +110,19 @@
   text-decoration: none;
 }
 
+.Button_view_secondary {
+  background: #fbc102;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+}
+
+/*.Button_view_primary:hover {*/
+/*  background-position: right center; !* change the direction of the change here *!*/
+/*  color: #fff;*/
+/*  text-decoration: none;*/
+/*}*/
+
 .ListItem.Text {
   color: #003973;
 }

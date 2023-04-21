@@ -14,7 +14,6 @@ import { PublicRoutesEnum } from 'src/router';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { Text } from '@consta/uikit/Text';
-import { IconTrash } from '@consta/uikit/IconTrash';
 import PhoneInput from 'react-phone-input-2';
 import CreateOrderCakeItem, {
   OrderBasketChangeDecors,
@@ -83,7 +82,14 @@ const CreateOrder: React.FC = () => {
         },
         date_completed: notAuthUser.order_date.toISOString(),
         items: basket.items.map((item) => {
-          return { ...item, price: item.price * item.countWeightType };
+          return {
+            ...item,
+            price: item.price * item.countWeightType,
+            decors:
+              item.decors.length > 0 && item.decors[0].items.length > 0
+                ? item.decors
+                : undefined,
+          };
         }),
       })
       .then(() => {
@@ -105,7 +111,14 @@ const CreateOrder: React.FC = () => {
           name: `Заказ пользователя ${user}`,
           date_completed: notAuthUser.order_date.toISOString(),
           items: basket.items.map((item) => {
-            return { ...item, price: item.price * item.countWeightType };
+            return {
+              ...item,
+              price: item.price * item.countWeightType,
+              decors:
+                item.decors.length > 0 && item.decors[0].items.length > 0
+                  ? item.decors
+                  : undefined,
+            };
           }),
           user_id: userId,
         })
