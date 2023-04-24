@@ -37,31 +37,39 @@ export default {
   loadRecipe: (id: string): Promise<DeviceItemModel> =>
     get(`${EnpointsEnum.GET_RECIPE}/${id}`),
   //  Вспомогательные типы (начинки и тип десерта, бисквит и декор)
+  //Типы
   createCakeType: (name: FormData) =>
     $authHost.post(`${EnpointsEnum.CREATE_TYPE}`, name),
   getCakeTypes: (): Promise<AxiosResponse<TypeModel[], any>> =>
     $authHost.get(`${EnpointsEnum.GET_TYPES}`),
   removeCakeType: (id: number) =>
     $authHost.delete(`${EnpointsEnum.DELETE_TYPES}/${id}`),
+  updateCakeType: (id: number, name: string) =>
+    $authHost.put(`${EnpointsEnum.UPDATE_TYPES}/${id}`, { name: name }),
+  //Начинки
   createCakeFilling: (data: FormData) =>
     $authHost.post(`${EnpointsEnum.CREATE_FILLING}`, data),
   getCakeFillings: () => $authHost.get(`${EnpointsEnum.GET_FILLINGS}`),
   removeCakeFilling: (id: number) =>
     $authHost.delete(`${EnpointsEnum.DELETE_FILLINGS}/${id}`),
+  updateCakeFilling: (id: number, data: FormData) =>
+    $authHost.put(`${EnpointsEnum.UPDATE_FILLINGS}/${id}`, data),
+  // Бисквиты
   getBiscuits: () => $authHost.get(`${EnpointsEnum.GET_BISCUITS}`),
   createBiscuit: (data: any) =>
     $authHost.post(`${EnpointsEnum.CREATE_BISCUIT}`, data),
-  updateBiscuit: (id: string, data: any) =>
-    $authHost.post(`${EnpointsEnum.CREATE_BISCUIT}/${id}`, data),
-  removeBiscuit: (id: string) =>
+  updateBiscuit: (id: number, data: any) =>
+    $authHost.put(`${EnpointsEnum.UPDATE_BISCUIT}/${id}`, data),
+  removeBiscuit: (id: number) =>
     $authHost.delete(`${EnpointsEnum.DELETE_BISCUIT}/${id}`),
+  //Декор
   getDecorAdmin: () => $authHost.get(`${EnpointsEnum.GET_DECOR_ADMIN}`),
   getDecor: (): Promise<AxiosResponse<DecorUserModel[], any>> =>
     $authHost.get(`${EnpointsEnum.GET_DECOR}`),
   createDecor: (data: any) =>
     $authHost.post(`${EnpointsEnum.CREATE_DECOR}`, data),
-  updateDecor: (id: string, data: any) =>
-    $authHost.post(`${EnpointsEnum.UPDATE_DECOR}/${id}`, data),
-  removeDecor: (id: string) =>
+  updateDecor: (id: number, data: FormData) =>
+    $authHost.put(`${EnpointsEnum.UPDATE_DECOR}/${id}`, data),
+  removeDecor: (id: number) =>
     $authHost.delete(`${EnpointsEnum.DELETE_DECOR}/${id}`),
 };

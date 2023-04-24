@@ -229,11 +229,9 @@ class AnalyticsController {
               items: basket.dataValues.items.map((itm) => {
                 return {
                   ...itm.dataValues,
-                  decors: orderDecors.filter(
-                    (dec) => itm.BasketId === dec.BasketId
-                  ),
                 };
               }),
+              decors: orderDecors.filter((dec) => basket.id === dec.BasketId),
             };
           })
           .map((item) => {
@@ -245,17 +243,12 @@ class AnalyticsController {
                   (accum, elem) => accum + elem.price * elem.count,
                   0
                 ) +
-                item.items
-                  .map((it) =>
-                    it.decors
-                      .map((dec) =>
-                        dec.items.reduce(
-                          (accum, elem) =>
-                            accum + elem.count * elem.pricePerUnit,
-                          0
-                        )
-                      )
-                      .reduce((acc, el) => acc + el, 0)
+                item.decors
+                  .map((dec) =>
+                    dec.items.reduce(
+                      (accum, elem) => accum + elem.count * elem.pricePerUnit,
+                      0
+                    )
                   )
                   .reduce((acc, el) => acc + el, 0),
               constPrice:
@@ -273,16 +266,12 @@ class AnalyticsController {
                       element.device * element.count * element.countWeightType
                     );
                   }, 0) +
-                item.items
-                  .map((i) =>
-                    i.decors
-                      .map((decor) =>
-                        decor.items.reduce(
-                          (acc, el) => acc + el.count * el.constPrice,
-                          0
-                        )
-                      )
-                      .reduce((acc, el) => acc + el, 0)
+                item.decors
+                  .map((decor) =>
+                    decor.items.reduce(
+                      (acc, el) => acc + el.count * el.constPrice,
+                      0
+                    )
                   )
                   .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,
@@ -298,11 +287,11 @@ class AnalyticsController {
               items: basket.dataValues.items.map((itm) => {
                 return {
                   ...itm.dataValues,
-                  decors: orderDecors.filter(
-                    (dec) => itm.IndividualOrderId === dec.IndividualOrderId
-                  ),
                 };
               }),
+              decors: orderDecors.filter(
+                (dec) => basket.id === dec.IndividualOrderId
+              ),
             };
           })
           .map((item) => {
@@ -313,20 +302,17 @@ class AnalyticsController {
                 item.items.reduce((accum, elem) => {
                   return accum + elem.price * elem.count;
                 }, 0) +
-                item.items
-                  .map((it) => {
-                    return it.decors
-                      .map((dec) => {
-                        return dec.dataValues.items.reduce((accum, elem) => {
-                          return (
-                            accum +
-                            elem.dataValues.count * elem.dataValues.pricePerUnit
-                          );
-                        }, 0);
-                      })
-                      .reduce((acc, el) => acc + el, 0);
+                item.decors
+                  .map((dec) => {
+                    return dec.dataValues.items.reduce((accum, elem) => {
+                      return (
+                        accum +
+                        elem.dataValues.count * elem.dataValues.pricePerUnit
+                      );
+                    }, 0);
                   })
                   .reduce((acc, el) => acc + el, 0),
+
               constPrice:
                 item.items
                   .map((it) => {
@@ -342,16 +328,12 @@ class AnalyticsController {
                       element.device * element.count * element.countWeightType
                     );
                   }, 0) +
-                item.items
-                  .map((i) =>
-                    i.decors
-                      .map((decor) =>
-                        decor.items.reduce(
-                          (acc, el) => acc + el.count * el.constPrice,
-                          0
-                        )
-                      )
-                      .reduce((acc, el) => acc + el, 0)
+                item.decors
+                  .map((decor) =>
+                    decor.items.reduce(
+                      (acc, el) => acc + el.count * el.constPrice,
+                      0
+                    )
                   )
                   .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,

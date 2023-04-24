@@ -28,7 +28,14 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
 }) => {
   const fullPrice = useMemo(() => {
     if (order) {
-      return order.items.reduce((accum, elem) => accum + elem.price, 0);
+      return (
+        order.items.reduce((accum, elem) => accum + elem.price * elem.count, 0) +
+        order.decors
+          .map((dec) =>
+            dec.items.reduce((acc, el) => acc + el.pricePerUnit * el.count, 0),
+          )
+          .reduce((acc, el) => acc + el, 0)
+      );
     } else return null;
   }, [order]);
   const returnOrderInProcessing = async () => {
@@ -77,6 +84,35 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
                 <div>{item.name}</div>
                 <div>{item.count}шт</div>
                 <div>{item.price},00 ₽</div>
+              </div>
+            ))}
+            <div className={styles.Container__decor}></div>
+            {order.decors.map((decor, idx) => (
+              <div className={styles.Container__rows__decor} key={idx}>
+                <div>{decor.name}</div>
+                <div className={styles.Container__rows__decor__rows}>
+                  <div
+                    className={styles.Container__rows__decor__rows__decHeader}
+                  >
+                    <div>Наименование</div>
+                    <div>Кол-во</div>
+                    <div>Ед.изм</div>
+                    <div>Цена за ед</div>
+                    <div>Цена закупки</div>
+                  </div>
+                  {decor.items.map((d, i) => (
+                    <div
+                      className={styles.Container__rows__decor__rows__decRow}
+                      key={i}
+                    >
+                      <div>{d.name}</div>
+                      <div>{d.count}</div>
+                      <div>{d.countType}</div>
+                      <div>{d.pricePerUnit},00 ₽</div>
+                      <div>{d.constPrice},00 ₽</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

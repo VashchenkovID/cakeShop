@@ -5,7 +5,8 @@ const {
   IndividualOrder,
   BasketDevice,
   IndividualOrderItem,
-  OrderDecor, OrderDecorItem,
+  OrderDecor,
+  OrderDecorItem,
 } = require("../models/models");
 const ApiError = require("../Error/ApiError");
 
@@ -47,12 +48,10 @@ class OrdersProcessingController {
               return {
                 ...basket.dataValues,
                 type: "custom",
+                decors: orderDecors.filter((dec) => basket.id === dec.BasketId),
                 items: basket.dataValues.items.map((itm) => {
                   return {
                     ...itm.dataValues,
-                    decors: orderDecors.filter(
-                      (dec) => itm.BasketId === dec.BasketId
-                    ),
                   };
                 }),
               };
@@ -68,11 +67,11 @@ class OrdersProcessingController {
                 items: order.dataValues.items.map((itm) => {
                   return {
                     ...itm.dataValues,
-                    decors: orderDecors.filter(
-                      (dec) => itm.IndividualOrderId === dec.IndividualOrderId
-                    ),
                   };
                 }),
+                decors: orderDecors.filter(
+                  (dec) => order.id === dec.IndividualOrderId
+                ),
               };
             })
             .filter(
@@ -132,13 +131,26 @@ class OrdersProcessingController {
     try {
       let { id, type } = req.params;
       let order;
+      let decors;
       if (type === "custom") {
+        decors = await OrderDecor.findAll({
+          where: {
+            BasketId: id,
+          },
+          include: [{ model: OrderDecorItem, as: "items" }],
+        });
         order = await Basket.findOne({
           where: { id },
           include: [{ model: BasketDevice, as: "items" }],
         });
       }
       if (type === "unauthorized") {
+        decors = await OrderDecor.findAll({
+          where: {
+            IndividualOrderId: id,
+          },
+          include: [{ model: OrderDecorItem, as: "items" }],
+        });
         order = await IndividualOrder.findOne({
           where: {
             id: id,
@@ -146,7 +158,8 @@ class OrdersProcessingController {
           include: [{ model: IndividualOrderItem, as: "items" }],
         });
       }
-      return res.json(order);
+      let returnedItem = { ...order.dataValues, decors: decors };
+      return res.json(returnedItem);
     } catch (e) {
       next(ApiError(e.message));
     }

@@ -21,6 +21,7 @@ import CreateOrderCakeItem, {
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DecorUserModel } from 'src/api/models/DecorUserModel';
+import { nanoid } from 'nanoid';
 
 interface UserCreateOrderType {
   name: string;
@@ -58,13 +59,22 @@ const CreateOrder: React.FC = () => {
             accum + item.price * item.count * item.countWeightType,
           0,
         ) +
-        orderDecors
-          .filter((itm) => itm.isChecked)
-          .reduce((accum, item) => accum + item.count * item.pricePerUnit, 0)
+        basket.items
+          .map((b) =>
+            b.decors
+              .map((d) =>
+                d.items.reduce(
+                  (acc, itm) => acc + itm.count * itm.pricePerUnit,
+                  0,
+                ),
+              )
+              .reduce((acc, el) => acc + el, 0),
+          )
+          .reduce((acc, el) => acc + el, 0)
       );
     } else return null;
   }, [basket]);
-
+  console.log(basket);
   const minOrderDate = useMemo(() => {
     const date = new Date();
     date.setDate(new Date().getDate() + 3);
@@ -143,7 +153,7 @@ const CreateOrder: React.FC = () => {
     if (decors) {
       setOrderDecors(
         decors.map((d) => {
-          return { ...d, isChecked: false };
+          return { ...d, isChecked: false, localId: nanoid() };
         }),
       );
     }
@@ -152,8 +162,10 @@ const CreateOrder: React.FC = () => {
   return (
     <section className={styles.Order}>
       <Text size={'3xl'}>Ваш заказ</Text>
-      {!basket ? (
-        <div>Вы не выбрали ни один десерт</div>
+      {!basket || basket.items.length === 0 ? (
+        <div className={styles.Order__not}>
+          <Text>Вы не выбрали ни один десерт</Text>
+        </div>
       ) : (
         <div className={styles.Order__rows}>
           <div className={styles.Order__row}>
@@ -173,8 +185,8 @@ const CreateOrder: React.FC = () => {
                 decors={decors}
               />
             ))}
-            {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           </div>
+          {allCount && <Text>Итого: {allCount},00 ₽</Text>}
           <Button
             className={styles.button}
             onClick={() => setModal(true)}

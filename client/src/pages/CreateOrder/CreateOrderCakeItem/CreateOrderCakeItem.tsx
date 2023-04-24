@@ -7,18 +7,21 @@ import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
-import useCreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/useCreateOrderCakeItem';
 import { Collapse } from '@consta/uikit/Collapse';
 import { DecorUserModel } from 'src/api/models/DecorUserModel';
 import CreateOrderDecorItem from 'src/pages/CreateOrder/CreateOrderDecorItem/CreateOrderDecorItem';
+import useCreateOrderCakeItem from 'src/pages/CreateOrder/CreateOrderCakeItem/useCreateOrderCakeItem';
+import { nanoid } from 'nanoid';
 
 export interface OrderBasketChangeDecors extends DecorUserModel {
   isChecked: boolean;
+  localId: string;
 }
 
 interface IComponentProps {
   item: {
     id: number;
+    localId: string;
     name: string;
     deviceId: number;
     basketId: number;
@@ -54,13 +57,11 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
   const basket = useAppSelector(selectBasket);
   const ref = useRef(item.countWeightType);
   const [isOpen, setIsOpen] = useState(false);
-
-  const {
-    removeItemInBasket,
-    removeWeightCountInBasket,
-    addItemInBasket,
-    addWeightCountInBasket,
-  } = useCreateOrderCakeItem(item, ref);
+  const [localOrderDecors, setLocalOrderDecors] = useState<
+    OrderBasketChangeDecors[]
+  >([]);
+  const { removeWeightCountInBasket, addWeightCountInBasket } =
+    useCreateOrderCakeItem(item, ref);
 
   const addNewDecor = () => {
     dispatch(
@@ -72,7 +73,12 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
               ...i,
               decors: [
                 ...i.decors,
-                { id: null, name: `Декор для ${i.name}`, items: [] as any },
+                {
+                  id: null,
+                  name: `Декор для ${i.name}`,
+                  items: [] as any,
+                  localId: nanoid(),
+                },
               ],
             };
           } else return { ...i };
@@ -83,6 +89,12 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
 
   useEffect(() => {
     if (orderDecors) {
+      setLocalOrderDecors(orderDecors);
+    }
+  }, [orderDecors]);
+
+  useEffect(() => {
+    if (localOrderDecors) {
       dispatch(
         setBasket({
           ...basket,
@@ -93,7 +105,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
                 if (decor.name === `Декор для ${item.name}`) {
                   return {
                     ...decor,
-                    items: orderDecors.filter((od) => od.isChecked),
+                    items: localOrderDecors.filter((od) => od.isChecked),
                   };
                 } else return { ...decor };
               }),
@@ -102,7 +114,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
         }),
       );
     }
-  }, [orderDecors]);
+  }, [localOrderDecors]);
   return (
     <Collapse
       isOpen={isOpen}
@@ -118,17 +130,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
             />
           </div>
           <Text className={styles.CakeItem__basketActions}>
-            <Button
-              size={'s'}
-              label={'-'}
-              onClick={() => removeItemInBasket(item)}
-            />
             <Text size={'xl'}>{item.count} шт</Text>
-            <Button
-              size={'s'}
-              onClick={() => addItemInBasket(item)}
-              label={'+'}
-            />
           </Text>
           <Text className={styles.CakeItem__basketActions} size={'xl'}>
             <Button
@@ -160,7 +162,9 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
                 dispatch(
                   setBasket({
                     ...basket,
-                    items: basket.items.filter((elem) => elem.id !== item.id),
+                    items: basket.items.filter(
+                      (elem) => elem.localId !== item.localId,
+                    ),
                   }),
                 );
               }}
@@ -190,12 +194,13 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
         )}
 
         {item.decors.length > 0 &&
-          orderDecors.map((decor, index) => (
+          localOrderDecors.map((decor, index) => (
             <CreateOrderDecorItem
               item={decor}
               key={index}
               index={index}
-              setOrderDecors={setOrderDecors}
+              setOrderDecors={setLocalOrderDecors}
+              parentId={item.id}
             />
           ))}
       </div>

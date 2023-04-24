@@ -23,6 +23,8 @@ interface IComponentProps {
   >;
   createNewDecor(): Promise<void>;
   onClose(): void;
+  title: string;
+  isDelete?: boolean;
 }
 
 const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
@@ -30,68 +32,95 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
   setDecor,
   createNewDecor,
   onClose,
+  title,
+  isDelete,
 }) => {
   return (
-    <div className={styles.Container}>
-      <Text size={'2xl'}>Создание декора</Text>
-      <TextField
-        label={'Наименование'}
-        placeholder={'Введите наименование'}
-        value={decor.name}
-        onChange={({ value }) =>
-          setDecor((prev) => {
-            return { ...prev, name: value };
-          })
-        }
-      />
-      <TextField
-        type={'number'}
-        label={'Количество в упаковке'}
-        placeholder={'Введите количество'}
-        value={decor.count.toString()}
-        onChange={({ value }) =>
-          setDecor((prev) => {
-            return { ...prev, count: Number(value) };
-          })
-        }
-      />
-      <TextField
-        label={'Единица измерения'}
-        placeholder={'Введите единицу измерения'}
-        value={decor.countType}
-        onChange={({ value }) =>
-          setDecor((prev) => {
-            return { ...prev, countType: value };
-          })
-        }
-      />
-      <TextField
-        type={'number'}
-        label={'Цена за единицу'}
-        placeholder={'Введите цену'}
-        value={decor.pricePerUnit.toString()}
-        onChange={({ value }) =>
-          setDecor((prev) => {
-            return { ...prev, pricePerUnit: Number(value) };
-          })
-        }
-      />
-      <TextField
-        type={'number'}
-        label={'Цена закупки'}
-        placeholder={'Введите цену'}
-        value={decor.constPrice.toString()}
-        onChange={({ value }) =>
-          setDecor((prev) => {
-            return { ...prev, constPrice: Number(value) };
-          })
-        }
-      />
-      <div className={styles.Container__actions}>
-        <Button size={'s'} label={'Отмена'} onClick={onClose} />
-        <Button size={'s'} label={'Создать'} onClick={createNewDecor} />
-      </div>
-    </div>
+    <>
+      {!isDelete ? (
+        <div className={styles.Container}>
+          <Text size={'2xl'}>{title}</Text>
+          <TextField
+            label={'Наименование'}
+            placeholder={'Введите наименование'}
+            value={decor.name}
+            onChange={({ value }) =>
+              setDecor((prev) => {
+                return { ...prev, name: value };
+              })
+            }
+          />
+          <TextField
+            type={'number'}
+            label={'Количество в упаковке'}
+            placeholder={'Введите количество'}
+            value={decor.count.toString()}
+            onChange={({ value }) =>
+              setDecor((prev) => {
+                return { ...prev, count: Number(value) };
+              })
+            }
+          />
+          <TextField
+            label={'Единица измерения'}
+            placeholder={'Введите единицу измерения'}
+            value={decor.countType}
+            onChange={({ value }) =>
+              setDecor((prev) => {
+                return { ...prev, countType: value };
+              })
+            }
+          />
+          <TextField
+            type={'number'}
+            label={'Цена за единицу'}
+            placeholder={'Введите цену'}
+            value={decor.pricePerUnit.toString()}
+            onChange={({ value }) =>
+              setDecor((prev) => {
+                return { ...prev, pricePerUnit: Number(value) };
+              })
+            }
+          />
+          <TextField
+            type={'number'}
+            label={'Цена закупки'}
+            placeholder={'Введите цену'}
+            value={decor.constPrice.toString()}
+            onChange={({ value }) =>
+              setDecor((prev) => {
+                return { ...prev, constPrice: Number(value) };
+              })
+            }
+          />
+          <div className={styles.Container__actions}>
+            <Button size={'s'} label={'Отмена'} onClick={onClose} />
+            <Button
+              size={'s'}
+              label={'Сохранить'}
+              onClick={() => {
+                createNewDecor().then(() => onClose());
+              }}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className={styles.Container}>
+          <Text size={'2xl'}>{title}</Text>
+          <Text>Вы действительно хотите удалить декор {decor.name} ?</Text>
+          <div className={styles.Container__actions}>
+            <Button size={'s'} label={'Отмена'} onClick={onClose} />
+            <Button
+              size={'s'}
+              label={'Удалить'}
+              onClick={() => {
+                createNewDecor().then(() => onClose());
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ export interface BasketModel {
   user_id: number;
   items: {
     id: number | null;
+    localId: string;
     name: string;
     deviceId: number;
     basketId: number | null;
@@ -16,6 +17,7 @@ export interface BasketModel {
       name: string;
       items: {
         id: number | null;
+        localId?: string;
         name: string;
         count: number;
         countType: string;

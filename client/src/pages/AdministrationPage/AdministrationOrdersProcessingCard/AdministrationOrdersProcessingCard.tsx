@@ -8,6 +8,7 @@ import { Text } from '@consta/uikit/Text';
 import ordersApi from 'src/api/requests/ordersApi';
 import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
 import { Button } from '@consta/uikit/Button';
+import CustomTextTooltip from 'src/components/CustomTextTooltip';
 
 interface IComponentProps {
   item: OrderProcessingModel;
@@ -64,18 +65,14 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
   const allPrice = useMemo(() => {
     return (
       item.items.reduce((accum, elem) => accum + elem.price * elem.count, 0) +
-      item.items
-        .map((item) =>
-          item.decors
-            .map((decor) =>
-              decor.items.reduce(
-                (accum, elem) => accum + elem.count * elem.pricePerUnit,
-                0,
-              ),
-            )
-            .reduce((acc, el) => acc + el, 0),
+      item.decors
+        .map((decor) =>
+          decor.items.reduce(
+            (accum, elem) => accum + elem.count * elem.pricePerUnit,
+            0,
+          ),
         )
-        .reduce((acc, elem) => acc + elem, 0)
+        .reduce((acc, el) => acc + el, 0)
     );
   }, [item]);
   return (
@@ -104,15 +101,17 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
             <div className={styles.ProcessingCard__content__row}>
               <div>Десерт</div>
               <div>Цена за ед.</div>
-              <div>Кол-во</div>
             </div>
             {item.items.map((itm, idx) => (
               <div className={styles.ProcessingCard__content__row} key={idx}>
-                <div>
-                  {itm.name} {itm.decors.length > 0 && `(С декором)`}
-                </div>
+                <CustomTextTooltip
+                  text={`${itm.name} ${
+                    item.decors.length > 0 ? `(С декором)` : ''
+                  }`}
+                  size={'m'}
+                  lineClamp={1}
+                ></CustomTextTooltip>
                 <div>{itm.price},00 ₽</div>
-                <div>{itm.count} шт</div>
               </div>
             ))}
           </div>

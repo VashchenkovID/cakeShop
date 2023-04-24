@@ -25,13 +25,17 @@ class DecorController {
       const { id } = req.params;
       const { name, count, countType, pricePerUnit, constPrice } = req.body;
 
-      const newDecor = await Decor.upsert(id, {
-        name: name,
-        count: count,
-        countType: countType,
-        pricePerUnit: pricePerUnit,
-        constPrice: constPrice,
-      });
+      const newDecor = await Decor.upsert(
+        {
+          id: id,
+          name: name,
+          count: count,
+          countType: countType,
+          pricePerUnit: pricePerUnit,
+          constPrice: constPrice,
+        },
+        { where: { id } }
+      );
 
       return res.json(newDecor);
     } catch (e) {

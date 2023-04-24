@@ -20,6 +20,9 @@ export const enum EnpointsEnum {
   DELETE_TYPES = '/type/remove',
   DELETE_FILLINGS = '/filling/remove',
   DELETE_BISCUIT = '/biscuit/remove',
+  UPDATE_TYPES = '/type/update',
+  UPDATE_FILLINGS = '/filling/update',
+  UPDATE_BISCUIT = '/biscuit/update',
   // Создание заказов
   CREATE_INDIVIDUAL_ORDER = '/order/create',
   CREATE_USER_ORDER = '/basket/create',

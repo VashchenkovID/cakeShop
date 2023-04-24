@@ -5,7 +5,7 @@ import styles from './BasketWithCount.styl';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
 import { IconCards } from '@consta/uikit/IconCards';
-import {IconStorage} from "@consta/uikit/IconStorage";
+import { IconStorage } from '@consta/uikit/IconStorage';
 
 const BasketWithCount = () => {
   const basket = useAppSelector(selectBasket);
@@ -21,8 +21,10 @@ const BasketWithCount = () => {
       className={styles.Container}
     >
       <IconStorage className={styles.icon} view={'ghost'} />
-      {countInOrder && (
+      {countInOrder ? (
         <div className={styles.Container__cnt}>{countInOrder}</div>
+      ) : (
+        <div></div>
       )}
     </div>
   );

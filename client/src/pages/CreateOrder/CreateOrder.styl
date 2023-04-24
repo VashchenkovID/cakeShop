@@ -1,5 +1,11 @@
 .Order
   margin 24px
+  &__not
+    display flex
+    justify-content center
+    align-items center
+    padding 16px
+    height calc(100vh - 300px)
   &__basketActions
     display flex
     gap 16px
@@ -8,6 +14,8 @@
     display flex
     flex-direction column
     gap 16px
+    max-height calc(100vh - 160px)
+    overflow-y auto
   &__row
     display grid
     grid-template-columns repeat(5,1fr)

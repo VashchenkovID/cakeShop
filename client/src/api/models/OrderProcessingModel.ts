@@ -12,6 +12,7 @@ export interface OrderProcessingModel {
   createdAt: string;
   updatedAt: string;
   items: OrderProcessingItemModel[];
+  decors: OrderProcessingItemDecorsModel[];
   type: 'unauthorized' | 'custom' | 'history';
   dropId: number;
 }

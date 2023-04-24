@@ -47,6 +47,25 @@ const AdministrationTypesItem: React.FC<IComponentProps> = ({
         setModal(AdministrationTypesModalEnum.IDLE);
     }
   };
+  const openRemove = () => {
+    setEdit(type, item);
+    switch (type) {
+      case AdministrationTypesItemsEnum.TYPE:
+        setModal(AdministrationTypesModalEnum.TYPE_REMOVE);
+        return;
+      case AdministrationTypesItemsEnum.FILLING:
+        setModal(AdministrationTypesModalEnum.FILLING_REMOVE);
+        return;
+      case AdministrationTypesItemsEnum.BISCUIT:
+        setModal(AdministrationTypesModalEnum.BISCUIT_REMOVE);
+        return;
+      case AdministrationTypesItemsEnum.DECOR:
+        setModal(AdministrationTypesModalEnum.DECOR_REMOVE);
+        return;
+      default:
+        setModal(AdministrationTypesModalEnum.IDLE);
+    }
+  };
 
   return (
     <div className={styles.Item}>
@@ -67,7 +86,12 @@ const AdministrationTypesItem: React.FC<IComponentProps> = ({
           onClick={openEdit}
           iconLeft={IconEdit}
         />
-        <Button size={'xs'} view={'primary'} iconLeft={IconTrash} />
+        <Button
+          size={'xs'}
+          view={'primary'}
+          iconLeft={IconTrash}
+          onClick={openRemove}
+        />
       </div>
 
       <Modal isOpen={open} onClickOutside={() => setOpen(false)}>

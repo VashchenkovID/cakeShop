@@ -7,7 +7,6 @@ import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setBasket } from 'src/redux/features/basket/BasketSlice';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
-import { resolveObjectURL } from 'buffer';
 import { Button } from '@consta/uikit/Button';
 
 interface IComponentProps {
@@ -16,12 +15,14 @@ interface IComponentProps {
     React.SetStateAction<OrderBasketChangeDecors[]>
   >;
   index: number;
+  parentId: number;
 }
 
 const CreateOrderDecorItem: React.FC<IComponentProps> = ({
   item,
   setOrderDecors,
   index,
+  parentId,
 }) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
@@ -37,11 +38,12 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
               return {
                 ...decor,
                 items: decor.items.map((d) => {
-                  if (d.name === item.name) {
+                  if (d.localId === item.localId && parentId === itm.id) {
                     setOrderDecors((prevState) => [
                       ...prevState.map((elem, idx) => {
                         if (
-                          elem.name === item.name &&
+                          elem.localId === item.localId &&
+                          parentId === itm.id &&
                           idx === index &&
                           elem.isChecked
                         ) {
@@ -70,11 +72,16 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
               return {
                 ...decor,
                 items: decor.items.map((d) => {
-                  if (d.name === item.name && d.count > ref.current) {
+                  if (
+                    d.count > ref.current &&
+                    d.localId === item.localId &&
+                    parentId === itm.id
+                  ) {
                     setOrderDecors((prevState) => [
                       ...prevState.map((elem, idx) => {
                         if (
-                          elem.name === item.name &&
+                          elem.localId === item.localId &&
+                          parentId === itm.id &&
                           idx === index &&
                           elem.isChecked &&
                           elem.count > ref.current

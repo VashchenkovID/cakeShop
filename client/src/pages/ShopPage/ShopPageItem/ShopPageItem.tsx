@@ -11,6 +11,7 @@ import { IconFavorite } from '@consta/uikit/IconFavorite';
 import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
 import { Modal } from '@consta/uikit/Modal';
+import { nanoid } from 'nanoid';
 interface IComponentProps {
   item: DeviceListModel;
   activeItem: number | null;
@@ -35,6 +36,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
             items: [
               {
                 id: item.id,
+                localId: nanoid(),
                 name: item.name,
                 deviceId: item.id,
                 count: 1,
@@ -50,38 +52,26 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
         setIsAdded(true);
       }
       if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  countWeightType: item.countWeightType,
-                  weightType: item.weightType,
-                  decors: [],
-                },
-              ],
-            }),
-          );
-        }
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: item.id,
+                name: item.name,
+                localId: nanoid(),
+                deviceId: item.id,
+                count: 1,
+                price: item.price,
+                basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
+              },
+            ],
+          }),
+        );
       }
     } else {
       if (!basket) {
@@ -93,6 +83,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
             items: [
               {
                 id: item.id,
+                localId: nanoid(),
                 name: item.name,
                 deviceId: item.id,
                 count: 1,
@@ -108,38 +99,26 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
         setIsAdded(true);
       }
       if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  return { ...i, count: i.count + 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  countWeightType: item.countWeightType,
-                  weightType: item.weightType,
-                  decors: [],
-                },
-              ],
-            }),
-          );
-        }
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: item.id,
+                localId: nanoid(),
+                name: item.name,
+                deviceId: item.id,
+                count: 1,
+                price: item.price,
+                basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
+              },
+            ],
+          }),
+        );
       }
     }
   };
@@ -154,6 +133,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
             items: [
               {
                 id: item.id,
+                localId: nanoid(),
                 name: item.name,
                 deviceId: item.id,
                 count: 1,
@@ -169,41 +149,17 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
         setIsAdded(true);
       }
       if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  countWeightType: item.countWeightType,
-                  weightType: item.weightType,
-                  decors: [],
-                },
-              ],
-            }),
-          );
-        }
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items.filter((i) => i.id !== item.id),
+              ...basket.items
+                .filter((i) => i.id === item.id)
+                .filter((el, ind, arr) => ind !== arr.length - 1),
+            ],
+          }),
+        );
       }
     } else {
       if (!basket) {
@@ -215,6 +171,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
             items: [
               {
                 id: item.id,
+                localId: nanoid(),
                 name: item.name,
                 deviceId: item.id,
                 count: 1,
@@ -230,41 +187,26 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
         setIsAdded(true);
       }
       if (basket) {
-        if (basket.items.find((elem) => elem.id === item.id)) {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: basket.items.map((i) => {
-                if (i.id === item.id) {
-                  if (i.count <= 1) {
-                    return { ...i, count: 1 };
-                  }
-                  return { ...i, count: i.count - 1 };
-                } else return { ...i };
-              }),
-            }),
-          );
-        } else {
-          dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: item.id,
-                  name: item.name,
-                  deviceId: item.id,
-                  count: 1,
-                  price: item.price,
-                  basketId: null,
-                  countWeightType: item.countWeightType,
-                  weightType: item.weightType,
-                  decors: [],
-                },
-              ],
-            }),
-          );
-        }
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: item.id,
+                name: item.name,
+                localId: nanoid(),
+                deviceId: item.id,
+                count: 1,
+                price: item.price,
+                basketId: null,
+                countWeightType: item.countWeightType,
+                weightType: item.weightType,
+                decors: [],
+              },
+            ],
+          }),
+        );
       }
     }
   };
@@ -272,17 +214,7 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
   const countItemBasket = useMemo(() => {
     if (basket) {
       if (basket.items.length > 0) {
-        const findItem: {
-          id: number;
-          name: string;
-          deviceId: number;
-          basketId: number;
-          count: number;
-          price: number;
-        } = basket.items.find((itm) => itm.id === item.id);
-        if (findItem) {
-          return findItem.count;
-        } else return 0;
+        return basket.items.filter((i) => i.id === item.id).length;
       } else return 0;
     } else return 0;
   }, [basket]);
@@ -292,6 +224,12 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
       setIsAdded(true);
     }
   }, [basket]);
+
+  useEffect(() => {
+    if (countItemBasket === 0) {
+      setIsAdded(false);
+    }
+  }, [countItemBasket]);
 
   return (
     <div className={styles.Item}>
