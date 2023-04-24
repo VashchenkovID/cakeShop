@@ -31,6 +31,7 @@ export const enum EnpointsEnum {
   GET_HISTORY = '/order_processing/getHistory',
   GET_HISTORY_ORDER = '/order_processing/getHistoryOrder',
   UPDATE_PROCESSING_ORDER = '/order_processing/updateOrder',
+  GET_CRAFT_ORDER = '/order_processing/getCraftItems',
   // Аналитики
   GET_POPULAR = '/analytics/getPopularity',
   GET_SALES = '/analytics/getSales',

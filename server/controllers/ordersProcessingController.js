@@ -7,6 +7,8 @@ const {
   IndividualOrderItem,
   OrderDecor,
   OrderDecorItem,
+  Device,
+  DeviceInfo,
 } = require("../models/models");
 const ApiError = require("../Error/ApiError");
 
@@ -43,43 +45,41 @@ class OrdersProcessingController {
 
       return res.json({
         items: [
-          ...baskets
-            .map((basket) => {
-              return {
-                ...basket.dataValues,
-                type: "custom",
-                decors: orderDecors.filter((dec) => basket.id === dec.BasketId),
-                items: basket.dataValues.items.map((itm) => {
-                  return {
-                    ...itm.dataValues,
-                  };
-                }),
-              };
-            })
-            .filter(
-              (itm) => itm.status !== "COMPLETED" || itm.status !== "REJECTED"
-            ),
-          ...individualOrders
-            .map((order) => {
-              return {
-                ...order.dataValues,
-                type: "unauthorized",
-                items: order.dataValues.items.map((itm) => {
-                  return {
-                    ...itm.dataValues,
-                  };
-                }),
-                decors: orderDecors.filter(
-                  (dec) => order.id === dec.IndividualOrderId
-                ),
-              };
-            })
-            .filter(
-              (itm) => itm.status !== "COMPLETED" || itm.status !== "REJECTED"
-            ),
-        ].map((element, index) => {
-          return { ...element, dropId: index };
-        }),
+          ...baskets.map((basket) => {
+            return {
+              ...basket.dataValues,
+              type: "custom",
+              decors: orderDecors.filter((dec) => basket.id === dec.BasketId),
+              items: basket.dataValues.items.map((itm) => {
+                return {
+                  ...itm.dataValues,
+                };
+              }),
+            };
+          }),
+          ...individualOrders.map((order) => {
+            return {
+              ...order.dataValues,
+              type: "unauthorized",
+              items: order.dataValues.items.map((itm) => {
+                return {
+                  ...itm.dataValues,
+                };
+              }),
+              decors: orderDecors.filter(
+                (dec) => order.id === dec.IndividualOrderId
+              ),
+            };
+          }),
+        ]
+          .map((element, index) => {
+            return { ...element, dropId: index };
+          })
+          .filter((itm) => {
+            {
+              return itm.status !== "COMPLETED";
+            }
+          }),
       });
     } catch (e) {
       next(ApiError.badRequest(e.message));
@@ -200,6 +200,101 @@ class OrdersProcessingController {
       }
     } catch (e) {
       console.log(e.message);
+    }
+  }
+  async craftOrderInfo(req, res, next) {
+    try {
+      const { id, type } = req.params;
+      let order;
+      let decors;
+      let recipes = [];
+      if (type === "custom") {
+        order = await Basket.findOne({
+          where: { id },
+          include: [{ model: BasketDevice, as: "items" }],
+        });
+        for (let item of order.items) {
+          let recipe = await Device.findOne({
+            where: {
+              id: item.deviceId,
+            },
+            include: [{ model: DeviceInfo, as: "info" }],
+          });
+          recipes.push({ ...recipe });
+        }
+        decors = await OrderDecor.findAll({
+          where: {
+            BasketId: id,
+          },
+        });
+        return res.json({
+          order: {
+            ...order.dataValues,
+            decors: decors,
+            items: order.items.map((i) => {
+              return {
+                ...i.dataValues,
+                recipe: recipes
+                  .map((rec) => {
+                    return {
+                      id: rec.dataValues.id,
+                      img: rec.dataValues.img,
+                      info: rec.dataValues.info,
+                    };
+                  })
+                  .find((r) => {
+                    return r.id === i.dataValues.deviceId;
+                  }),
+              };
+            }),
+          },
+        });
+      }
+      if (type === "unauthorized") {
+        order = await IndividualOrder.findOne({
+          where: { id },
+          include: [{ model: IndividualOrderItem, as: "items" }],
+        });
+        for (let item of order.items) {
+          let recipe = await Device.findOne({
+            where: {
+              id: item.deviceId,
+            },
+            include: [{ model: DeviceInfo, as: "info" }],
+          });
+          recipes.push({ ...recipe });
+        }
+        decors = await OrderDecor.findAll({
+          where: {
+            BasketId: id,
+          },
+        });
+        return res.json({
+          order: {
+            ...order.dataValues,
+            decors: decors,
+            items: order.items.map((i) => {
+              return {
+                ...i.dataValues,
+                recipe: recipes
+                  .map((rec) => {
+                    return {
+                      id: rec.dataValues.id,
+                      img: rec.dataValues.img,
+                      info: rec.dataValues.info,
+                    };
+                  })
+                  .find((r) => {
+                    return r.id === i.dataValues.deviceId;
+                  }),
+              };
+            }),
+          },
+        });
+      }
+      return res.status(404, { message: "Данные в базе отсутствуют" });
+    } catch (e) {
+      next(ApiError(e.message));
     }
   }
 }

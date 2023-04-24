@@ -8,5 +8,16 @@ export interface DeviceModel {
   description: string;
   createdAt: string;
   updatedAt: string;
-  info: any[];
+  info: DeviceInfoModel[];
+}
+
+export interface DeviceInfoModel {
+  id: number;
+  name: string;
+  weight: number;
+  weightType: string;
+  pricePerUnit: number;
+  createdAt: string;
+  updatedAt: string;
+  deviceId: number;
 }

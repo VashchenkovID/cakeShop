@@ -3,6 +3,7 @@ import { $authHost } from 'src/api/requests/index';
 import { EnpointsEnum } from 'src/api/endpoints';
 import { OrderProcessingModel } from 'src/api/models/OrderProcessingModel';
 import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
+import { OrderProcessingCraftingModel } from 'src/api/models/OrderProcessingCraftingModel';
 
 export default {
   createNewIndividualOrder: (data: any): Promise<AxiosResponse<any, any>> =>
@@ -27,4 +28,9 @@ export default {
     type: string,
   ): Promise<AxiosResponse<OrderProcessingModel, any>> =>
     $authHost.get(`${EnpointsEnum.GET_HISTORY_ORDER}/${type}/${id}`),
+  getCraftOrder: (
+    id: string,
+    type: string,
+  ): Promise<AxiosResponse<{ order: OrderProcessingCraftingModel }, any>> =>
+    $authHost.get(`${EnpointsEnum.GET_CRAFT_ORDER}/${type}/${id}`),
 };

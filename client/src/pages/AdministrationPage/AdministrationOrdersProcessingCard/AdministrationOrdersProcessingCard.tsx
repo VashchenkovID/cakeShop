@@ -14,12 +14,18 @@ interface IComponentProps {
   item: OrderProcessingModel;
   index: number;
   setOrders: React.Dispatch<React.SetStateAction<OrderProcessingModel[]>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveElement: React.Dispatch<
+    React.SetStateAction<{ type: string; id: number | null }>
+  >;
 }
 
 const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
   item,
   index,
   setOrders,
+  setModal,
+  setActiveElement,
 }) => {
   const newStatus = () => {
     switch (item.status) {
@@ -120,7 +126,14 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
               Итого: {allPrice}
               ,00 ₽
             </Text>
-            <Text size={'xs'} view={'link'}>
+            <Text
+              onClick={() => {
+                setActiveElement({ id: item.id, type: item.type });
+                setModal(true);
+              }}
+              size={'xs'}
+              view={'link'}
+            >
               Посмотреть полную информацию
             </Text>
           </div>

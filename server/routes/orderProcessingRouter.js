@@ -9,6 +9,11 @@ router.get(
   orderProcessingController.getOrders
 );
 router.get(
+  "/getCraftItems/:type/:id",
+  checkRole("ADMIN"),
+  orderProcessingController.craftOrderInfo
+);
+router.get(
   "/getHistory/:date",
   checkRole("ADMIN"),
   orderProcessingController.getHistory

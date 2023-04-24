@@ -8,6 +8,8 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { DatePicker } from '@consta/uikit/DatePicker';
 import useRequest from 'src/hooks/useRequest';
 import { Loader } from '@consta/uikit/Loader';
+import { Modal } from '@consta/uikit/Modal';
+import AdministrationOrderProcessingCraftModal from 'src/pages/AdministrationPage/AdministrationOrderProcessingCraftModal/AdministrationOrderProcessingCraftModal';
 
 const ColumnIndexes = [
   { index: 0, value: OrderProcessingStatusEnum.CREATED },
@@ -19,7 +21,11 @@ const ColumnIndexes = [
 
 const AdministrationOrdersProcessing: React.FC = () => {
   const [date, setDate] = useState(new Date());
-
+  const [modal, setModal] = useState(false);
+  const [activeElement, setActiveElement] = useState<{
+    type: string;
+    id: number | null;
+  }>({ type: '', id: null });
   const [orders, setOrders] = useState<OrderProcessingModel[]>([]);
   const [startType, setStartType] = useState(OrderProcessingStatusEnum.IDLE);
   const [startIndex, setStartIndex] = useState(0);
@@ -198,6 +204,8 @@ const AdministrationOrdersProcessing: React.FC = () => {
                           key={`${item.id}_${idx}`}
                           index={idx}
                           setOrders={setOrders}
+                          setModal={setModal}
+                          setActiveElement={setActiveElement}
                         />
                       ))}
                     </div>
@@ -208,6 +216,13 @@ const AdministrationOrdersProcessing: React.FC = () => {
           </DragDropContext>
         )}
       </div>
+      <Modal isOpen={modal}>
+        <AdministrationOrderProcessingCraftModal
+          activeElement={activeElement}
+          modal={modal}
+          setModal={setModal}
+        />
+      </Modal>
     </section>
   );
 };
