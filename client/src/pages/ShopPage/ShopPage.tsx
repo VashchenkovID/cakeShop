@@ -22,8 +22,20 @@ const cx = cn.bind(styles);
 const ShopPage: React.FC = () => {
   const basket = useAppSelector(selectBasket);
   const navigate = useNavigate();
-  const [types, setTypes] = useState<TypeModel[]>([]);
-  const [type, setType] = useState<TypeModel | undefined>(undefined);
+  const [types, setTypes] = useState<TypeModel[]>([
+    {
+      id: undefined,
+      name: 'Все',
+      createdAt: '',
+      updatedAt: '',
+    },
+  ]);
+  const [type, setType] = useState<TypeModel | undefined>({
+    id: undefined,
+    name: 'Все',
+    createdAt: '',
+    updatedAt: '',
+  });
   const [items, setItems] = useState<DeviceListModel[]>([]);
   const [pagination, setPagination] = useState<PaginationStateType>({
     page: 1,
@@ -43,15 +55,9 @@ const ShopPage: React.FC = () => {
     cakesApi.getCakeTypes,
     (data) => {
       if (data) {
-        setTypes([
-          ...data.data,
-          {
-            id: undefined,
-            name: 'Все',
-            createdAt: '',
-            updatedAt: '',
-          },
-        ]);
+        setTypes((prev) => {
+          return [...prev, ...data.data];
+        });
       }
     },
   );

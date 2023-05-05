@@ -39,18 +39,14 @@ const AuthContainer: React.FC = () => {
         })
         .then((r) => {
           dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
-          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
-          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
-          localStorage.setItem(LocalStorageKeysEnum.ID, r.data.id);
+          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.token);
+          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.role);
+          localStorage.setItem(LocalStorageKeysEnum.NAME, r.name);
+          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.phone);
+          localStorage.setItem(LocalStorageKeysEnum.ID, r.id);
           clearInputs();
           setLoading(false);
           navigate(PublicRoutesEnum.SHOP);
-        })
-        .catch(() => {
-          navigate(PublicRoutesEnum.AUTH);
-          setLoading(false);
         });
     }
     if (location.pathname.includes(PublicRoutesEnum.LOGIN)) {
@@ -77,6 +73,9 @@ const AuthContainer: React.FC = () => {
           setLoading(false);
         });
     }
+    await userAPI.checkCurrentUser().then((r) => {
+      localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+    });
   };
 
   const disabled = useMemo(() => {

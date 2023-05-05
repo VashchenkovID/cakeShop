@@ -1,4 +1,4 @@
-const { Device, DeviceInfo, Type } = require("../models/models");
+const { Device, DeviceInfo, Type, Rating } = require("../models/models");
 const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
@@ -32,7 +32,7 @@ class DeviceController {
         description: `${description}`,
         img: fileName,
         weightType: weightType,
-        countWeightType:countWeightType,
+        countWeightType: countWeightType,
         discount: discount,
       });
       if (info && info.length > 0) {
@@ -87,7 +87,7 @@ class DeviceController {
         BiscuitId: biscuitId,
         description: description,
         weightType: weightType,
-        countWeightType:countWeightType,
+        countWeightType: countWeightType,
         discount: discount,
         img: fileName || oldImg?.dataValues?.img,
       });
@@ -160,8 +160,20 @@ class DeviceController {
         offset,
       });
     }
+    let ratings = await Rating.findAll();
+    let devicesWithRait = devices.rows.map((device) => {
+      return {
+        ...device.dataValues,
+        rating:
+          ratings
+            .filter((rait) => rait.deviceId === device.dataValues.id)
+            .reduce((acc, el) => acc + Number(el.rating), 0) /
+          ratings.filter((rait) => rait.deviceId === device.dataValues.id)
+            .length,
+      };
+    });
 
-    return res.json(devices);
+    return res.json({ count: devices.count, rows: devicesWithRait });
   }
 
   async getOneForAdmin(req, res) {
@@ -170,7 +182,16 @@ class DeviceController {
       where: { id },
       include: [{ model: DeviceInfo, as: "info" }],
     });
-    return res.json(device);
+    let ratings = await Rating.findAll();
+    let deviceWithRait = {
+      ...device.dataValues,
+      rating:
+        ratings
+          .filter((rait) => rait.deviceId === device.dataValues.id)
+          .reduce((acc, el) => acc + Number(el.rating), 0) /
+        ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
+    };
+    return res.json(deviceWithRait);
   }
 
   async getOne(req, res) {
@@ -178,7 +199,16 @@ class DeviceController {
     const device = await Device.findOne({
       where: { id },
     });
-    return res.json(device);
+    let ratings = await Rating.findAll();
+    let deviceWithRait = {
+      ...device.dataValues,
+      rating:
+          ratings
+              .filter((rait) => rait.deviceId === device.dataValues.id)
+              .reduce((acc, el) => acc + Number(el.rating), 0) /
+          ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
+    };
+    return res.json(deviceWithRait);
   }
 
   async remove(req, res) {

@@ -2,7 +2,7 @@ export const enum EnpointsEnum {
   //Десерт
   CREATE_CAKE = '/device/shop/create',
   GET_CAKES = '/device/shop/getAll',
-  GET_ONE_CAKE = '/device/shop/get/:id',
+  GET_ONE_CAKE = '/device/shop/get',
   REMOVE_CAKE = '/device/delete',
   EDIT_CAKE = '/device/shop/update',
   GET_RECIPE = '/device/shop/admin/getOne',
@@ -42,4 +42,9 @@ export const enum EnpointsEnum {
   CREATE_DECOR = '/decor/create',
   UPDATE_DECOR = '/decor/update',
   DELETE_DECOR = '/decor/delete',
+  CREATE_RATING = '/ratings/create',
+  UPDATE_RATINGS = '/ratings/update',
+  GET_RATINGS_FOR_DEVICE = '/ratings/getDeviceRatings',
+  GET_USER_RATINGS = '/ratings/getUserRatings',
+  DELETE_RATING = '/ratings/remove',
 }

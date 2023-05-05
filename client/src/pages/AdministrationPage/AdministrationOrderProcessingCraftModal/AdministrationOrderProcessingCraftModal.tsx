@@ -1,14 +1,15 @@
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react';
-import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
-import useRequest from 'src/hooks/useRequest';
-import ordersApi from 'src/api/requests/ordersApi';
+
 import styles from './AdministrationOrderProcessingCraftModal.styl';
 import cn from 'classnames/bind';
+import { OrderProcessingModel } from 'src/api/models/OrderProcessingModel';
+import useRequest from 'src/hooks/useRequest';
+import ordersApi from 'src/api/requests/ordersApi';
+import { Loader } from '@consta/uikit/Loader';
 import { Text } from '@consta/uikit/Text';
-import {
-  OrderProcessingCraftingItemModel,
-  OrderProcessingCraftingModel,
-} from 'src/api/models/OrderProcessingCraftingModel';
+import { User } from '@consta/uikit/User';
+import OrderProcessingStatusBadge from 'src/components/OrderProcessingStatusBadge/OrderProcessingStatusBadge';
+import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
 import { Button } from '@consta/uikit/Button';
 
 interface IComponentProps {
@@ -24,89 +25,101 @@ const AdministrationOrderProcessingCraftModal: React.FC<IComponentProps> = ({
   setModal,
   modal,
 }) => {
-  const [data, setData] = useState<OrderProcessingCraftingModel | null>(null);
-  const [activeItem, setActiveItem] =
-    useState<OrderProcessingCraftingItemModel | null>(null);
-  const { load: fetchCraftingOrder, isLoading } = useRequest(
-    ordersApi.getCraftOrder,
-    (data) => {
-      if (data) {
-        setData(data.data.order);
+  const [order, setOrder] = useState<OrderProcessingModel | null>(null);
+  const { load: getHistoryOrder, isLoading: isFullLoading } = useRequest(
+    ordersApi.getHistoryOrder,
+    (r) => {
+      if (r) {
+        setOrder(r.data);
       }
     },
   );
-  const activeFullItem = useMemo(() => {
-    if (activeItem) {
-      const newItem = data.items.find((i) => i.id === activeItem.id);
-      if (newItem) {
-        return {
-          ...newItem,
-          items: newItem.recipe.info.map((itm) => {
-            return { ...itm, weight: itm.weight * newItem.countWeightType };
-          }),
-        };
-      }
-      return null;
-    }
-  }, [activeItem]);
+  const fullPrice = useMemo(() => {
+    if (order) {
+      return (
+        order.items.reduce(
+          (accum, elem) => accum + elem.price * elem.count,
+          0,
+        ) +
+        order.decors
+          .map((dec) =>
+            dec.items.reduce((acc, el) => acc + el.pricePerUnit * el.count, 0),
+          )
+          .reduce((acc, el) => acc + el, 0)
+      );
+    } else return null;
+  }, [order]);
   useEffect(() => {
     if (activeElement) {
-      fetchCraftingOrder(activeElement.id.toString(), activeElement.type);
-    } else return null;
+      getHistoryOrder(activeElement.id.toString(), activeElement.type);
+    }
   }, [activeElement]);
   return (
-    <>
-      {data && (
-        <div className={styles.ModalContainer}>
-          <Text size={'3xl'}>{data.name}</Text>
-          <section className={styles.ModalContainer__content}>
-            <div className={styles.ModalContainer__content__leftSide}>
-              {data.items.map((item, index) => (
-                <div
-                  onClick={() => setActiveItem(item)}
-                  className={cx(styles.ModalContainer__content__leftSide__row, {
-                    active: activeItem && activeItem.id === item.id,
-                  })}
-                  key={index}
-                >
-                  <Text
-                    className={cx(
-                      styles.ModalContainer__content__leftSide__row__title,
-                      {
-                        active: activeItem && activeItem.id === item.id,
-                      },
-                    )}
-                    size={'l'}
-                  >
-                    {item.name}
-                  </Text>
-                </div>
-              ))}
+    <div>
+      {isFullLoading && <Loader />}
+      {!isFullLoading && order && (
+        <div className={styles.Container}>
+          <div className={styles.Container__header}>
+            <div>
+              <Text size={'3xl'}>{order.name}</Text>
+              <User
+                size={'l'}
+                name={order.customer}
+                info={order.customer_phone}
+              />
+              <Text view={'secondary'}>
+                Дата выдачи:{' '}
+                {new Date(order.date_completed).toLocaleDateString()}
+              </Text>
             </div>
-            {activeFullItem && (
-              <div>
-                <Text size={'2xl'}>{activeFullItem.name}</Text>
-                <div>
-                  <Text>Рецепт</Text>
-                  <div>
-                    {activeFullItem.recipe.info.map((itm, idx) => (
-                      <div key={idx}>{itm.name}</div>
-                    ))}
+            <OrderProcessingStatusBadge
+              status={order.status as OrderProcessingStatusEnum}
+            />
+          </div>
+          <div className={styles.Container__rows}>
+            {order.items.map((item, index) => (
+              <div className={styles.Container__rows__row} key={index}>
+                <div>{item.name}</div>
+                <div>{item.count}шт</div>
+                <div>{item.price},00 ₽</div>
+              </div>
+            ))}
+            <div className={styles.Container__decor}></div>
+            {order.decors.map((decor, idx) => (
+              <div className={styles.Container__rows__decor} key={idx}>
+                <div>{decor.name}</div>
+                <div className={styles.Container__rows__decor__rows}>
+                  <div
+                    className={styles.Container__rows__decor__rows__decHeader}
+                  >
+                    <div>Наименование</div>
+                    <div>Кол-во</div>
+                    <div>Ед.изм</div>
+                    <div>Цена за ед</div>
+                    <div>Цена закупки</div>
                   </div>
+                  {decor.items.map((d, i) => (
+                    <div
+                      className={styles.Container__rows__decor__rows__decRow}
+                      key={i}
+                    >
+                      <div>{d.name}</div>
+                      <div>{d.count}</div>
+                      <div>{d.countType}</div>
+                      <div>{d.pricePerUnit},00 ₽</div>
+                      <div>{d.constPrice},00 ₽</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
-          </section>
-          <div className={styles.ModalContainer__actions}>
-            <Button
-              label={'Закрыть'}
-              size={'s'}
-              onClick={() => setModal(false)}
-            />
+            ))}
+          </div>
+          <div className={styles.Container__footer}>
+            {fullPrice && <Text size={'2xl'}>Итого: {fullPrice},00 ₽</Text>}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

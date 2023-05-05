@@ -14,6 +14,8 @@ import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import AdministrationPage from 'src/pages/AdministrationPage/AdministrationPage';
 import CreateOrder from 'src/pages/CreateOrder/CreateOrder';
 import MainPage from 'src/pages/MainPage/MainPage';
+import userAPI from 'src/api/requests/userAPI';
+import AddRatingPage from 'src/pages/AddRatingPage/AddRatingPage';
 
 export const publicRoutes: Array<IRouteItem> = [
   {
@@ -25,6 +27,7 @@ export const publicRoutes: Array<IRouteItem> = [
     element: <ShopPage />,
   },
   { path: `${PublicRoutesEnum.VIEW_CAKE}/:id`, element: <div></div> },
+  { path: `${PublicRoutesEnum.CREATE_RATING}/:id`, element: <AddRatingPage /> },
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
   { path: `${PublicRoutesEnum.LOGIN}`, element: <AuthContainer /> },
   { path: PublicRoutesEnum.INFO_PAGE, element: <div></div> },
@@ -79,6 +82,21 @@ const AppRouter = () => {
     localStorage.getItem(LocalStorageKeysEnum.ROLE),
   );
   const isAuth = useAppSelector(selectIsAuth);
+  const checkCurrentUser = async () => {
+    try {
+      await userAPI.checkCurrentUser().then((r) => {
+        localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+      });
+      dispatch(setIsAuth(true));
+    } catch (e) {
+      localStorage.clear();
+      dispatch(setIsAuth(false));
+    }
+  };
+
+  useEffect(() => {
+    checkCurrentUser();
+  }, []);
   useEffect(() => {
     if (storageToken()) {
       setRole(localStorage.getItem(LocalStorageKeysEnum.ROLE));

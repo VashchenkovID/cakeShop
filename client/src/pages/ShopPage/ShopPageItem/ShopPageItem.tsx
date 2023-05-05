@@ -12,14 +12,17 @@ import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
 import { Modal } from '@consta/uikit/Modal';
 import { nanoid } from 'nanoid';
+import { useNavigate } from 'react-router-dom';
+import { PublicRoutesEnum } from 'src/router';
 interface IComponentProps {
   item: DeviceListModel;
-  activeItem: number | null;
+  activeItem?: number | null;
 }
 const cx = cn.bind(styles);
 
-const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
+const ShopPageItem: React.FC<IComponentProps> = ({ item }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const basket = useAppSelector(selectBasket);
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
@@ -246,7 +249,9 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
       <div className={styles.Item__footer}>
         {item.rating > 0 && (
           <div className={styles.Item__rating}>
-            <Text className={styles.Item__rating__text}>{item.rating}</Text>
+            <Text className={styles.Item__rating__text}>
+              {item.rating.toFixed(2)}
+            </Text>
             <IconFavorite className={styles.Item__rating__icon} />
           </div>
         )}
@@ -289,15 +294,26 @@ const ShopPageItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
               src={`${process.env.REACT_APP_IMAGE}${item.img}`}
               onClick={() => setIsOpen(false)}
             />
-            <Text weight={'semibold'} className={styles.Item__title}>
-              {item.name}
-            </Text>
+            <div className={styles.Item__titleContainer}>
+              <Text weight={'semibold'} className={styles.Item__title}>
+                {item.name}
+              </Text>
+              <Button
+                onClick={() =>
+                  navigate(`${PublicRoutesEnum.CREATE_RATING}/${item.id}`)
+                }
+                label={'Оставить отзыв'}
+                size={'xs'}
+              />
+            </div>
           </div>
           <Text view={'secondary'}>{item.description}</Text>
           <div className={styles.Item__footer}>
             {item.rating > 0 && (
               <div className={styles.Item__rating}>
-                <Text className={styles.Item__rating__text}>{item.rating}</Text>
+                <Text className={styles.Item__rating__text}>
+                  {Math.abs(item.rating)}
+                </Text>
                 <IconFavorite className={styles.Item__rating__icon} />
               </div>
             )}

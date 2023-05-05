@@ -28,7 +28,7 @@ export default {
         ? `${converterUrl(EnpointsEnum.GET_CAKES, data)}`
         : EnpointsEnum.GET_CAKES,
     ),
-  loadOneCake: (id: string): Promise<any> =>
+  loadOneCake: (id: string): Promise<DeviceItemModel> =>
     get(`${EnpointsEnum.GET_ONE_CAKE}/${id}`),
   createCake: (data: any) => $authHost.post(EnpointsEnum.CREATE_CAKE, data),
   removeCake: (id: string) => del(`${EnpointsEnum.REMOVE_CAKE}/${id}`),

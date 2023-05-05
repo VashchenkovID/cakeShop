@@ -27,6 +27,6 @@ export const enum PublicRoutesEnum {
   INFO_PAGE = '/info',
   SHOP = '/shop',
   VIEW_CAKE = '/shop/view',
-  ADMINISTRATION = '/administration',
   VIEW_ORDER = '/view/order',
+  CREATE_RATING = '/create/rating',
 }

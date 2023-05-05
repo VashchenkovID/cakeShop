@@ -216,7 +216,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
           </DragDropContext>
         )}
       </div>
-      <Modal isOpen={modal}>
+      <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
         <AdministrationOrderProcessingCraftModal
           activeElement={activeElement}
           modal={modal}
