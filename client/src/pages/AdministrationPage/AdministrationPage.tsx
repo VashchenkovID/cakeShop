@@ -98,9 +98,7 @@ const AdministrationPage: React.FC = () => {
         {tab.path === PrivateRoutesEnum.ORDERS_HISTORY && (
           <AdministrationOrders />
         )}
-        {tab.path === PrivateRoutesEnum.CALENDAR && (
-          <AdministrationCalendar />
-        )}
+        {tab.path === PrivateRoutesEnum.CALENDAR && <AdministrationCalendar />}
       </div>
     </section>
   );

@@ -51,7 +51,6 @@ interface IComponentProps {
 const CreateOrderCakeItem: React.FC<IComponentProps> = ({
   item,
   orderDecors,
-  setOrderDecors,
 }) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);

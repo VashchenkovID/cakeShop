@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LocalStorageKeysEnum, RequestStatusEnum } from 'src/utils/enum';
-import { fetchAuthUser } from './actions';
-import { IAllListsEmployees, IAuthUserData } from './types';
+import { RequestStatusEnum } from 'src/utils/enum';
+import { IAllListsEmployees } from './types';
 
 const initialState: IAllListsEmployees = {
   entities: null,

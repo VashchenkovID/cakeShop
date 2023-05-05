@@ -4,7 +4,6 @@ import { selectBasket } from 'src/redux/features/basket/BasketSelectors';
 import styles from './BasketWithCount.styl';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
-import { IconCards } from '@consta/uikit/IconCards';
 import { IconStorage } from '@consta/uikit/IconStorage';
 
 const BasketWithCount = () => {

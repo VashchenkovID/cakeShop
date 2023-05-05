@@ -10,7 +10,6 @@ import { Text } from '@consta/uikit/Text';
 import { User } from '@consta/uikit/User';
 import OrderProcessingStatusBadge from 'src/components/OrderProcessingStatusBadge/OrderProcessingStatusBadge';
 import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
-import { Button } from '@consta/uikit/Button';
 
 interface IComponentProps {
   activeElement: { type: string; id: number };
@@ -18,12 +17,10 @@ interface IComponentProps {
   setModal: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const cx = cn.bind(styles);
 
 const AdministrationOrderProcessingCraftModal: React.FC<IComponentProps> = ({
   activeElement,
-  setModal,
-  modal,
+
 }) => {
   const [order, setOrder] = useState<OrderProcessingModel | null>(null);
   const { load: getHistoryOrder, isLoading: isFullLoading } = useRequest(

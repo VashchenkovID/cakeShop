@@ -4,7 +4,6 @@ import cakesApi from 'src/api/requests/cakesApi';
 import styles from './AdministrationTypes.styl';
 import AdministrationTypesSection from 'src/pages/AdministrationPage/AdministrationTypesSection/AdministrationTypesSection';
 import AdministrationTypesModalList from 'src/pages/AdministrationPage/AdministrationTypeModals/AdministrationTypesModalList';
-import { number } from 'prop-types';
 
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',

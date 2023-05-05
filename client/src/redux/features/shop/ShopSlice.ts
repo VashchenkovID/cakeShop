@@ -1,7 +1,6 @@
-import { LocalStorageKeysEnum, RequestStatusEnum } from 'src/utils/enum';
+import { RequestStatusEnum } from 'src/utils/enum';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchAuthUser } from 'src/redux/features/auth/actions';
-import { IAuthUserData } from 'src/redux/features/auth/types';
+
 import { fetchShopItems } from 'src/redux/features/shop/actions';
 
 const initialState: any = {

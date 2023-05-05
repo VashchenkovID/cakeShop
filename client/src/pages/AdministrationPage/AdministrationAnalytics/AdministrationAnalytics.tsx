@@ -29,7 +29,7 @@ const AdministrationAnalytics: React.FC = () => {
 
   const lineGraphData = useMemo(() => {
     if (sales) {
-      let findHistory: any[] = [];
+      const findHistory: any[] = [];
       const startDate = startOfMonth(date);
       const datesCount = getDaysInMonth(startDate);
       const month = getMonth(date);

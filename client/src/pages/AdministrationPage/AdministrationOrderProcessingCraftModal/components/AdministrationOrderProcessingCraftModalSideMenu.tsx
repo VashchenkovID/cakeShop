@@ -16,7 +16,7 @@ const cx = cn.bind(styles);
 
 const AdministrationOrderProcessingCraftModalSideMenu: React.FC<
   IComponentProps
-> = ({items,activeItem,setActiveItem}) => {
+> = ({ items, activeItem, setActiveItem }) => {
   return (
     <div className={styles.ModalContainer__content__leftSide}>
       {items.map((item, index) => (

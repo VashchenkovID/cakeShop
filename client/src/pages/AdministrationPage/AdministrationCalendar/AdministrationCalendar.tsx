@@ -6,7 +6,6 @@ import { Text } from '@consta/uikit/Text';
 import styles from './AdministrationCalendar.styl';
 import cn from 'classnames/bind';
 import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusEnum';
-import AdministrationAnalyticsDateChange from 'src/pages/AdministrationPage/AdministrationAnalyticsDateChange/AdministrationAnalyticsDateChange';
 import { Button } from '@consta/uikit/Button';
 import { IconArrowLeft } from '@consta/uikit/IconArrowLeft';
 import { add, getMonth, sub } from 'date-fns';

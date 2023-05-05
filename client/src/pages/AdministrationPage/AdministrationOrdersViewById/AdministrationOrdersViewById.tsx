@@ -29,7 +29,10 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
   const fullPrice = useMemo(() => {
     if (order) {
       return (
-        order.items.reduce((accum, elem) => accum + elem.price * elem.count, 0) +
+        order.items.reduce(
+          (accum, elem) => accum + elem.price * elem.count,
+          0,
+        ) +
         order.decors
           .map((dec) =>
             dec.items.reduce((acc, el) => acc + el.pricePerUnit * el.count, 0),

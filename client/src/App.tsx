@@ -12,8 +12,6 @@ import { myDefaultPreset } from 'src/utils/presetConsta/constaMyStyle/myDefaultP
 const store = setupStore();
 
 const App = () => {
-
-
   useEffect(() => {
     setAutoFreeze(false);
   }, []);

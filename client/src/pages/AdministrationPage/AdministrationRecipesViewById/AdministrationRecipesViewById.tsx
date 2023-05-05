@@ -19,21 +19,17 @@ interface IComponentProps {
 
 const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
   activeList,
-  setPageMode,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [device, setDevice] = useState<DeviceItemModel | null>(null);
 
-  const { load: fetchRecipe, isLoading } = useRequest(
-    cakesApi.loadRecipe,
-    (data) => {
-      if (data) {
-        setDevice(data);
-        dispatch(setCake(data));
-      }
-    },
-  );
+  const { load: fetchRecipe } = useRequest(cakesApi.loadRecipe, (data) => {
+    if (data) {
+      setDevice(data);
+      dispatch(setCake(data));
+    }
+  });
 
   const removeCake = async () => {
     if (device) {

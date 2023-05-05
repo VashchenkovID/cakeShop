@@ -9,9 +9,6 @@ import AdministrationRecipesList from 'src/pages/AdministrationPage/Administrati
 import AdministrationRecipesViewById from 'src/pages/AdministrationPage/AdministrationRecipesViewById/AdministrationRecipesViewById';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PaginationStateType } from 'src/components/PaginationCustom/PaginationCustom';
-
-const cx = cn.bind(styles);
-
 export enum AdminPageMode {
   CREATE = 'create',
   EDIT = 'edit',
@@ -19,7 +16,6 @@ export enum AdminPageMode {
 }
 
 const AdministrationRecipes = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const [pageMode, setPageMode] = useState(AdminPageMode.VIEW);
   const [recipes, setRecipes] = useState<DeviceListModel[]>([]);
@@ -29,15 +25,12 @@ const AdministrationRecipes = () => {
     page: 1,
     perPage: 10,
   });
-  const { load: fetchRecipes, isLoading } = useRequest(
-    cakesApi.loadAllCakes,
-    (data) => {
-      if (data) {
-        setRecipes(data.data.rows);
-        setCount(data.data.count);
-      }
-    },
-  );
+  const { load: fetchRecipes } = useRequest(cakesApi.loadAllCakes, (data) => {
+    if (data) {
+      setRecipes(data.data.rows);
+      setCount(data.data.count);
+    }
+  });
 
   useEffect(() => {
     if (location.pathname.includes('create')) {
