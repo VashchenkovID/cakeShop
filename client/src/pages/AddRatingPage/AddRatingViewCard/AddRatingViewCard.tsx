@@ -3,7 +3,6 @@ import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
 import styles from './AddRatingViewCard.styl';
 import { Text } from '@consta/uikit/Text';
 import { IconFavorite } from '@consta/uikit/IconFavorite';
-import { TextField } from '@consta/uikit/TextField';
 import Textarea from 'src/components/Textarea/Textarea';
 
 interface IComponentProps {
