@@ -26,7 +26,6 @@ export const publicRoutes: Array<IRouteItem> = [
     path: PublicRoutesEnum.SHOP,
     element: <ShopPage />,
   },
-  { path: `${PublicRoutesEnum.VIEW_CAKE}/:id`, element: <div></div> },
   { path: `${PublicRoutesEnum.CREATE_RATING}/:id`, element: <AddRatingPage /> },
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
   { path: `${PublicRoutesEnum.LOGIN}`, element: <AuthContainer /> },
@@ -68,6 +67,10 @@ export const privateRoutes: Array<IRouteItem> = [
     element: <AdministrationPage />,
   },
   {
+    path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.FEEDBACK}`,
+    element: <AdministrationPage />,
+  },
+  {
     path: `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.CALENDAR}`,
     element: <AdministrationPage />,
   },
@@ -84,10 +87,10 @@ const AppRouter = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const checkCurrentUser = async () => {
     try {
-      await userAPI.checkCurrentUser().then((r) => {
-        localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
-      });
-      dispatch(setIsAuth(true));
+      if (isAuth) {
+        await userAPI.checkCurrentUser().then((r) => {});
+        // dispatch(setIsAuth(true));
+      }
     } catch (e) {
       localStorage.clear();
       dispatch(setIsAuth(false));
@@ -95,8 +98,8 @@ const AppRouter = () => {
   };
 
   useEffect(() => {
-    checkCurrentUser();
-  }, []);
+    // checkCurrentUser();
+  }, [isAuth]);
   useEffect(() => {
     if (storageToken()) {
       setRole(localStorage.getItem(LocalStorageKeysEnum.ROLE));

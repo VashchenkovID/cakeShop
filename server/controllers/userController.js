@@ -2,6 +2,7 @@ const ApiError = require("../Error/ApiError");
 const bcrypt = require("bcrypt");
 const { User, Basket } = require("../models/models");
 const jwt = require("jsonwebtoken");
+const TokenService = require("../services/token-service");
 
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
@@ -29,13 +30,42 @@ class UserController {
       fullName: fullName,
       phone: phone,
     });
-    const token = generateJwt(user.id, user.email, user.role);
-    return res.json({
-      token,
-      role: user.role,
-      name: user.fullName,
-      phone: user.phone,
+
+    const tokens = TokenService.generateTokens({
       id: user.id,
+      role: user.role,
+      email: user.email,
+      phone: user.phone,
+      fullName: user.fullName,
+    });
+
+    const dataToken = await TokenService.saveToken(
+      user.id,
+      tokens.refreshToken
+    );
+    await User.upsert(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        password: hashPassword,
+        fullName: user.fullName,
+        phone: user.phone,
+        TokenId: dataToken.id,
+      },
+      { where: { UserId: user.id } }
+    );
+    res.cookie("refreshToken", tokens.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+    });
+    return res.json({
+      ...tokens,
+      role: user.role,
+      email: user.email,
+      phone: user.phone,
+      name: user.fullName,
     });
   }
   async login(req, res, next) {
@@ -48,15 +78,44 @@ class UserController {
     if (!comparePassword) {
       return next(ApiError.internal("Указан неверный пароль"));
     }
-    const token = generateJwt(user.id, user.email, user.role);
+    const tokens = TokenService.generateTokens({
+      id: user.id,
+      role: user.role,
+      email: user.email,
+      phone: user.phone,
+      fullName: user.fullName,
+    });
+    const dataToken = await TokenService.saveToken(
+      user.id,
+      tokens.refreshToken
+    );
+    await User.upsert(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        password: user.password,
+        fullName: user.fullName,
+        phone: user.phone,
+        TokenId: dataToken.id,
+      },
+      { where: { UserId: user.id } }
+    );
+    res.cookie("refreshToken", tokens.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+    });
     return res.json({
-      token,
+      ...tokens,
       role: user.role,
       name: user.fullName,
       phone: user.phone,
       id: user.id,
     });
   }
+  async logout(req, res, next) {}
+  async refresh(req, res, next) {}
   async check(req, res, next) {
     if (req.user) {
       const token = generateJwt(req.user.id, req.user.email, req.user.role);

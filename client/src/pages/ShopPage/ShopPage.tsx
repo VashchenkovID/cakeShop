@@ -85,7 +85,6 @@ const ShopPage: React.FC = () => {
       });
     }
   }, [pagination, type]);
-
   return (
     <section className={styles.Shop}>
       <Text size={'3xl'}>Каталог десертов</Text>

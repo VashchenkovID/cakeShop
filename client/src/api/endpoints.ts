@@ -44,7 +44,7 @@ export const enum EnpointsEnum {
   DELETE_DECOR = '/decor/delete',
   CREATE_RATING = '/ratings/create',
   UPDATE_RATINGS = '/ratings/update',
-  GET_RATINGS_FOR_DEVICE = '/ratings/getDeviceRatings',
+  GET_RATINGS_FOR_DEVICE_NOT_USER = '/ratings/feedback/getDeviceRatings',
   GET_USER_RATINGS = '/ratings/getUserRatings',
   DELETE_RATING = '/ratings/remove',
 }

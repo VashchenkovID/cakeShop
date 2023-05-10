@@ -163,7 +163,7 @@ class DeviceController {
     let ratings = await Rating.findAll();
     let devicesWithRait = devices.rows.map((device) => {
       return {
-        ...device.dataValues,
+        ...device?.dataValues,
         rating:
           ratings
             .filter((rait) => rait.deviceId === device.dataValues.id)
@@ -184,7 +184,7 @@ class DeviceController {
     });
     let ratings = await Rating.findAll();
     let deviceWithRait = {
-      ...device.dataValues,
+      ...device?.dataValues,
       rating:
         ratings
           .filter((rait) => rait.deviceId === device.dataValues.id)
@@ -201,7 +201,7 @@ class DeviceController {
     });
     let ratings = await Rating.findAll();
     let deviceWithRait = {
-      ...device.dataValues,
+      ...device?.dataValues,
       rating:
           ratings
               .filter((rait) => rait.deviceId === device.dataValues.id)

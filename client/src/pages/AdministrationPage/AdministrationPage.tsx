@@ -10,11 +10,11 @@ import { Tabs } from '@consta/uikit/Tabs';
 import AdministrationAnalytics from 'src/pages/AdministrationPage/AdministrationAnalytics/AdministrationAnalytics';
 import AdministrationOrders from 'src/pages/AdministrationPage/AdministrationOrders/AdministrationOrders';
 import AdministrationCalendar from 'src/pages/AdministrationPage/AdministrationCalendar/AdministrationCalendar';
+import AdministrationFeedback from 'src/pages/AdministrationPage/AdministrationFeedback/AdministrationFeedback';
 
 type TabType = {
   path: PrivateRoutesEnum;
   title: string;
-  component: JSX.Element;
 };
 
 const AdministrationPage: React.FC = () => {
@@ -33,32 +33,30 @@ const AdministrationPage: React.FC = () => {
     () => [
       {
         path: PrivateRoutesEnum.CALENDAR,
-        component: <div></div>,
         title: 'Календарь заказов',
       },
       {
         path: PrivateRoutesEnum.ANALYTICS,
-        component: <div></div>,
         title: 'Аналитика',
       },
       {
         path: PrivateRoutesEnum.RECIPES,
-        component: <div></div>,
         title: `Рецепты`,
       },
       {
         path: PrivateRoutesEnum.ORDERS,
-        component: <div></div>,
         title: `Обработка заказов`,
       },
       {
         path: PrivateRoutesEnum.ORDERS_HISTORY,
-        component: <div></div>,
         title: `История заказов`,
       },
       {
+        path: PrivateRoutesEnum.FEEDBACK,
+        title: `Отзывы покупателей`,
+      },
+      {
         path: PrivateRoutesEnum.TYPES,
-        component: <div></div>,
         title: `Вспомогательные типы`,
       },
     ],
@@ -99,6 +97,7 @@ const AdministrationPage: React.FC = () => {
           <AdministrationOrders />
         )}
         {tab.path === PrivateRoutesEnum.CALENDAR && <AdministrationCalendar />}
+        {tab.path === PrivateRoutesEnum.FEEDBACK && <AdministrationFeedback />}
       </div>
     </section>
   );

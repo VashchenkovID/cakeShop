@@ -10,6 +10,7 @@ class RatingsController {
       let newRating;
       if (token !== "null") {
         const user = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(user)
         newRating = await Rating.create({
           rating: rating,
           ratingComment: ratingComment,
@@ -59,6 +60,42 @@ class RatingsController {
       return res.json({ message: "OK" });
     } catch (e) {
       next(ApiError("Ошибка при удалении"));
+    }
+  }
+  async getDeviceNotUserRatings(req, res, next) {
+    try {
+      let { limit, page, device_id } = req.query;
+      const token = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
+      const reqUser = jwt.verify(token, process.env.SECRET_KEY);
+      page = page || 1;
+      limit = limit || 9;
+      let offset = page * limit - limit;
+      let ratings;
+      let ratingsWithUser;
+      const users = await User.findAll();
+      if (device_id) {
+        ratings = await Rating.findAndCountAll({
+          limit,
+          offset,
+          where: { deviceId: device_id },
+        });
+        ratingsWithUser = ratings.rows;
+      } else ratings = [];
+      return res.json({
+        count: ratings.count,
+        rows: ratingsWithUser
+          .map((rait) => {
+            return {
+              ...rait.dataValues,
+              user:
+                users.find((user) => user.id === rait.dataValues.UserId)
+                  ?.fullName || "Аноним",
+            };
+          })
+          // .filter((rating) => rating.UserId !== reqUser.id),
+      });
+    } catch (e) {
+      next(ApiError("Ошибка при запросе"));
     }
   }
   async getDeviceRatings(req, res, next) {

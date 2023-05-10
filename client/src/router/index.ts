@@ -3,10 +3,6 @@ export interface IRouteItem {
   element: JSX.Element;
 }
 
-export const enum RoutesParamsEnum {
-  ID = '/:id',
-}
-
 export const enum PrivateRoutesEnum {
   ADMINISTRATION = '/administration',
   BASKET = '/directories',
@@ -18,6 +14,7 @@ export const enum PrivateRoutesEnum {
   ORDERS = 'orders',
   ORDERS_HISTORY = 'history',
   TYPES = 'types',
+  FEEDBACK = 'feedback',
 }
 
 export const enum PublicRoutesEnum {

@@ -10,6 +10,11 @@ const User = sequilize.define("User", {
   phone: { type: DataTypes.STRING, allowNull: true },
 });
 
+const Token = sequilize.define("Token", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  refreshToken: { type: DataTypes.STRING, required: true },
+});
+
 const Basket = sequilize.define("Basket", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING },
@@ -115,6 +120,9 @@ const Rating = sequilize.define("Rating", {
 User.hasMany(Basket);
 Basket.belongsTo(User);
 
+User.hasOne(Token);
+Token.hasOne(User);
+
 User.hasMany(Rating);
 Rating.belongsTo(User);
 
@@ -159,6 +167,7 @@ OrderDecorItem.belongsTo(OrderDecor);
 
 module.exports = {
   User,
+  Token,
   Basket,
   BasketDevice,
   Device,

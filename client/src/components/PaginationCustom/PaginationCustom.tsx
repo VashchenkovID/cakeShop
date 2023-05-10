@@ -74,6 +74,7 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
       </div>
       <div className={styles.actions}>
         <Button
+          size="xs"
           form={'round'}
           view={pagination.page === 1 ? 'ghost' : 'primary'}
           iconLeft={IconArrowLeft}
@@ -81,12 +82,10 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
           disabled={pagination.page === 1}
         />
         <div className={styles.actionsPage}>
-          <Text
-          >
-            {pagination.page}
-          </Text>
+          <Text size="xs">{pagination.page}</Text>
         </div>
         <Button
+          size="xs"
           form={'round'}
           view={
             pagination.page === totalPages || !totalPages ? 'ghost' : 'primary'

@@ -56,7 +56,7 @@ const AuthContainer: React.FC = () => {
           email: login,
           password: password,
         })
-        .then((r) => {
+        .then(async (r) => {
           dispatch(setIsAuth(true));
           localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
           localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
@@ -73,9 +73,6 @@ const AuthContainer: React.FC = () => {
           setLoading(false);
         });
     }
-    await userAPI.checkCurrentUser().then((r) => {
-      localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
-    });
   };
 
   const disabled = useMemo(() => {

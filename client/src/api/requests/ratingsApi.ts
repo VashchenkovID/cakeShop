@@ -33,7 +33,9 @@ export default {
   getDeviceRatings: (
     data: GetDeviceRatingsReqType,
   ): Promise<AxiosResponse<any, { message: string }>> =>
-    $authHost.get(`${converterUrl(EnpointsEnum.GET_RATINGS_FOR_DEVICE, data)}`),
+    $authHost.get(
+      `${converterUrl(EnpointsEnum.GET_RATINGS_FOR_DEVICE_NOT_USER, data)}`,
+    ),
   getUserRatings: (
     data: ReqWithPagination,
   ): Promise<AxiosResponse<any, { message: string }>> =>

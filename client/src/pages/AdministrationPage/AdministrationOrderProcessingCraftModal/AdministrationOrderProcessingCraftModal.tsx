@@ -1,7 +1,6 @@
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react';
 
 import styles from './AdministrationOrderProcessingCraftModal.styl';
-import cn from 'classnames/bind';
 import { OrderProcessingModel } from 'src/api/models/OrderProcessingModel';
 import useRequest from 'src/hooks/useRequest';
 import ordersApi from 'src/api/requests/ordersApi';
