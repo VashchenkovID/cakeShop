@@ -74,7 +74,6 @@ const CreateOrder: React.FC = () => {
       );
     } else return null;
   }, [basket]);
-  console.log(basket);
   const minOrderDate = useMemo(() => {
     const date = new Date();
     date.setDate(new Date().getDate() + 3);
@@ -158,7 +157,7 @@ const CreateOrder: React.FC = () => {
       );
     }
   }, [decors]);
-
+  console.log(basket)
   return (
     <section className={styles.Order}>
       <Text size={'3xl'}>Ваш заказ</Text>

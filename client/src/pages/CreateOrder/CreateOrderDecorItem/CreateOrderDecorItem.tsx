@@ -15,7 +15,7 @@ interface IComponentProps {
     React.SetStateAction<OrderBasketChangeDecors[]>
   >;
   index: number;
-  parentId: number;
+  parentId: string;
 }
 
 const CreateOrderDecorItem: React.FC<IComponentProps> = ({
@@ -38,12 +38,11 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
               return {
                 ...decor,
                 items: decor.items.map((d) => {
-                  if (d.localId === item.localId && parentId === itm.id) {
+                  if (d.localId === item.localId && parentId === itm.localId) {
                     setOrderDecors((prevState) => [
                       ...prevState.map((elem, idx) => {
                         if (
-                          elem.localId === item.localId &&
-                          parentId === itm.id &&
+                          parentId === itm.localId &&
                           idx === index &&
                           elem.isChecked
                         ) {
@@ -75,13 +74,12 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
                   if (
                     d.count > ref.current &&
                     d.localId === item.localId &&
-                    parentId === itm.id
+                    parentId === itm.localId
                   ) {
                     setOrderDecors((prevState) => [
                       ...prevState.map((elem, idx) => {
                         if (
-                          elem.localId === item.localId &&
-                          parentId === itm.id &&
+                          parentId === itm.localId &&
                           idx === index &&
                           elem.isChecked &&
                           elem.count > ref.current

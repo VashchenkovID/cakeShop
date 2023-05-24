@@ -8,7 +8,7 @@ const $host = axios.create({
 const $authHost = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
-
+console.log(storageToken())
 $authHost.defaults.headers.common['Authorization'] = `Bearer ${storageToken()}`;
 
 export { $host, $authHost };

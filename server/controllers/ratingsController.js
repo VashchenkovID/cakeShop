@@ -1,6 +1,7 @@
 const { Rating, User } = require("../models/models");
 const ApiError = require("../Error/ApiError");
 const jwt = require("jsonwebtoken");
+const TokenService = require("../services/token-service");
 
 class RatingsController {
   async create(req, res, next) {
@@ -9,8 +10,7 @@ class RatingsController {
       const token = req.headers?.authorization?.split(" ")[1]; // Bearer asfasnfkajsfnjk
       let newRating;
       if (token !== "null") {
-        const user = jwt.verify(token, process.env.SECRET_KEY);
-        console.log(user)
+        const user = TokenService.validateAccessToken(token);
         newRating = await Rating.create({
           rating: rating,
           ratingComment: ratingComment,
@@ -29,7 +29,7 @@ class RatingsController {
         return res.json({ id: newRating.id });
       } else return res.status(500).json({ message: "Ошибка при создании" });
     } catch (e) {
-      next(ApiError("Ошибка при создании", e.message));
+      // next(ApiError("Ошибка при создании", e.message));
     }
   }
   async update(req, res, next) {
@@ -66,7 +66,8 @@ class RatingsController {
     try {
       let { limit, page, device_id } = req.query;
       const token = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
-      const reqUser = jwt.verify(token, process.env.SECRET_KEY);
+      const reqUser = TokenService.validateAccessToken(token);
+
       page = page || 1;
       limit = limit || 9;
       let offset = page * limit - limit;
@@ -83,16 +84,15 @@ class RatingsController {
       } else ratings = [];
       return res.json({
         count: ratings.count,
-        rows: ratingsWithUser
-          .map((rait) => {
-            return {
-              ...rait.dataValues,
-              user:
-                users.find((user) => user.id === rait.dataValues.UserId)
-                  ?.fullName || "Аноним",
-            };
-          })
-          // .filter((rating) => rating.UserId !== reqUser.id),
+        rows: ratingsWithUser.map((rait) => {
+          return {
+            ...rait?.dataValues,
+            user:
+              users.find((user) => user.id === rait?.dataValues.UserId)
+                ?.fullName || "Аноним",
+          };
+        }),
+        // .filter((rating) => rating.UserId !== reqUser.id),
       });
     } catch (e) {
       next(ApiError("Ошибка при запросе"));

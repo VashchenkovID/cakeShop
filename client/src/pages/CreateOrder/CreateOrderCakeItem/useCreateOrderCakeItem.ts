@@ -41,7 +41,7 @@ const useCreateOrderCakeItem = (
             setBasket({
               ...basket,
               items: basket.items.map((i) => {
-                if (i.id === item.id) {
+                if (i.localId === item.localId) {
                   return { ...i, countWeightType: i.countWeightType + 1 };
                 } else return { ...i };
               }),
@@ -77,7 +77,7 @@ const useCreateOrderCakeItem = (
             setBasket({
               ...basket,
               items: basket.items.map((i) => {
-                if (i.id === item.id) {
+                if (i.localId === item.localId) {
                   return { ...i, countWeightType: i.countWeightType + 1 };
                 } else return { ...i };
               }),
@@ -126,7 +126,7 @@ const useCreateOrderCakeItem = (
             setBasket({
               ...basket,
               items: basket.items.map((i) => {
-                if (i.id === item.id) {
+                if (i.localId === item.localId) {
                   if (i.countWeightType <= ref.current) {
                     return { ...i, countWeightType: ref.current };
                   }
@@ -188,7 +188,7 @@ const useCreateOrderCakeItem = (
             setBasket({
               ...basket,
               items: basket.items.map((i) => {
-                if (i.id === item.id) {
+                if (i.localId === item.localId) {
                   if (i.countWeightType <= ref.current) {
                     return { ...i, countWeightType: ref.current };
                   }

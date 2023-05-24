@@ -171,7 +171,6 @@ class AnalyticsController {
   async getMonthGraphicsSales(req, res, next) {
     try {
       const { date } = req.params;
-
       let fromDate;
       let toDate;
       if (date) {

@@ -67,7 +67,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
       setBasket({
         ...basket,
         items: basket.items.map((i) => {
-          if (i.name === item.name) {
+          if (i.localId === item.localId) {
             return {
               ...i,
               decors: [
@@ -199,7 +199,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
               key={index}
               index={index}
               setOrderDecors={setLocalOrderDecors}
-              parentId={item.id}
+              parentId={item.localId}
             />
           ))}
       </div>

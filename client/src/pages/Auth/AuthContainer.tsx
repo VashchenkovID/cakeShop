@@ -39,7 +39,7 @@ const AuthContainer: React.FC = () => {
         })
         .then((r) => {
           dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.token);
+          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.accessToken);
           localStorage.setItem(LocalStorageKeysEnum.ROLE, r.role);
           localStorage.setItem(LocalStorageKeysEnum.NAME, r.name);
           localStorage.setItem(LocalStorageKeysEnum.PHONE, r.phone);
@@ -58,7 +58,7 @@ const AuthContainer: React.FC = () => {
         })
         .then(async (r) => {
           dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.token);
+          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.accessToken);
           localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
           localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
           localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
