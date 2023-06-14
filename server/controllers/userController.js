@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { User, Basket } = require("../models/models");
 const jwt = require("jsonwebtoken");
 const TokenService = require("../services/token-service");
+const userService = require("../services/user-service");
 
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
@@ -108,20 +109,36 @@ class UserController {
     });
     return res.json({
       ...tokens,
-      role: user.role,
-      name: user.fullName,
-      phone: user.phone,
-      id: user.id,
+      user: {
+        role: user.role,
+        name: user.fullName,
+        phone: user.phone,
+        id: user.id,
+      },
     });
   }
-  async logout(req, res, next) {}
-  async refresh(req, res, next) {}
-  async check(req, res, next) {
-    if (req.user) {
-      const token = generateJwt(req.user.id, req.user.email, req.user.role);
-      return res.json({ token });
-    } else return res.json({ token: null });
+  async logout(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      console.log("refreshToken123", refreshToken);
+      const token = await TokenService.removeToken(refreshToken);
+      res.clearCookie("refreshToken");
+      return res.json(token);
+    } catch (e) {
+      next(e);
+    }
   }
+  async refresh(req, res, next) {
+    try {
+      const {refreshToken} = req.cookies;
+      const userData = await userService.refresh(refreshToken);
+      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
 }
 
 module.exports = new UserController();

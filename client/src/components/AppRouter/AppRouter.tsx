@@ -14,8 +14,11 @@ import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import AdministrationPage from 'src/pages/AdministrationPage/AdministrationPage';
 import CreateOrder from 'src/pages/CreateOrder/CreateOrder';
 import MainPage from 'src/pages/MainPage/MainPage';
-import userAPI from 'src/api/requests/userAPI';
 import AddRatingPage from 'src/pages/AddRatingPage/AddRatingPage';
+import { $authHost } from 'src/api/requests';
+import { EnpointsEnum } from 'src/api/endpoints';
+import axios from 'axios';
+import { AuthResponse } from 'src/api/requests/userAPI';
 
 export const publicRoutes: Array<IRouteItem> = [
   {
@@ -85,28 +88,29 @@ const AppRouter = () => {
     localStorage.getItem(LocalStorageKeysEnum.ROLE),
   );
   const isAuth = useAppSelector(selectIsAuth);
-  const checkCurrentUser = async () => {
+
+  const checkIsAuth = async () => {
     try {
-      if (isAuth) {
-        await userAPI.checkCurrentUser().then((r) => {});
-        // dispatch(setIsAuth(true));
-      }
+      const response = await axios.get<AuthResponse>(
+        `${process.env.REACT_APP_API_URL}${EnpointsEnum.CHECK_USER}`,
+        { withCredentials: true },
+      );
+      console.log(response)
+      localStorage.setItem(
+        LocalStorageKeysEnum.TOKEN,
+        response.data.accessToken,
+      );
+      setRole(response.data.user.role);
+      dispatch(setIsAuth(true));
     } catch (e) {
-      localStorage.clear();
+      setRole('');
       dispatch(setIsAuth(false));
     }
   };
 
   useEffect(() => {
-    // checkCurrentUser();
-  }, [isAuth]);
-  useEffect(() => {
-    if (storageToken()) {
-      setRole(localStorage.getItem(LocalStorageKeysEnum.ROLE));
-      dispatch(setIsAuth(true));
-    } else {
-      setRole('');
-      dispatch(setIsAuth(false));
+    if (storageToken() && storageToken() !== 'undefined') {
+      checkIsAuth();
     }
   }, []);
   return (

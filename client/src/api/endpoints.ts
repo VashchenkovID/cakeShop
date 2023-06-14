@@ -10,6 +10,7 @@ export const enum EnpointsEnum {
   REGISTRATION_USER = '/user/registration',
   LOGIN_USER = '/user/login',
   AUTHORIZATION_USER = '/user/auth',
+  CHECK_USER = '/user/refresh',
   // Вспомогательные типы
   CREATE_TYPE = '/type/create',
   CREATE_FILLING = '/filling/create',

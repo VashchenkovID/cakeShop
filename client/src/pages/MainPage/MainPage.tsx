@@ -35,10 +35,10 @@ const MainPage: React.FC = () => {
     },
   );
 
-  useEffect(() => {
-    fetchRecipes();
-    fetchFillings();
-  }, []);
+  // useEffect(() => {
+  //   fetchRecipes();
+  //   fetchFillings();
+  // }, []);
   return (
     <section className={styles.Shop}>
       <div className={styles.Shop__title}>

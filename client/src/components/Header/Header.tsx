@@ -16,6 +16,7 @@ import { selectIsAuth } from 'src/redux/features/auth/selectors';
 import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
 import { Button } from '@consta/uikit/Button';
 import { User } from '@consta/uikit/User';
+import AuthService from 'src/api/requests/userAPI';
 
 const cx = cn.bind(styles);
 
@@ -81,7 +82,12 @@ const Header: React.FC<IHeaderProps> = () => {
     e.preventDefault();
     navigate(patch);
   };
-
+  const logoutApp = async () => {
+    AuthService.logout().then(() => {
+      localStorage.clear();
+      dispatch(setIsAuth(false));
+    });
+  };
   return (
     <ConstaHeader
       className={cx(styles.Header, {
@@ -106,10 +112,7 @@ const Header: React.FC<IHeaderProps> = () => {
           {isAuth ? (
             <div className={styles.Header__user}>
               <Button
-                onClick={() => {
-                  localStorage.clear();
-                  dispatch(setIsAuth(false));
-                }}
+                onClick={logoutApp}
                 size={'s'}
                 view={'primary'}
                 label={'Выйти'}

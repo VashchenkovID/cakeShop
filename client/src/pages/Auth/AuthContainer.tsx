@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import userAPI from 'src/api/requests/userAPI';
 import { LocalStorageKeysEnum } from 'src/utils/enum';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PublicRoutesEnum } from 'src/router';
@@ -11,6 +10,7 @@ import { Text } from '@consta/uikit/Text';
 import { TextField } from '@consta/uikit/TextField';
 import PhoneInput from 'react-phone-input-2';
 import { Button } from '@consta/uikit/Button';
+import AuthService from 'src/api/requests/userAPI';
 
 const AuthContainer: React.FC = () => {
   const [login, setLogin] = useState<string>('');
@@ -30,39 +30,36 @@ const AuthContainer: React.FC = () => {
   const enterInApp = async () => {
     if (location.pathname.includes(PublicRoutesEnum.AUTH)) {
       setLoading(true);
-      await userAPI
-        .registrationNewUser({
-          email: login,
-          password: password,
-          fullName: name,
-          phone: phone,
-        })
-        .then((r) => {
-          dispatch(setIsAuth(true));
-          localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.accessToken);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.role);
-          localStorage.setItem(LocalStorageKeysEnum.NAME, r.name);
-          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.phone);
-          localStorage.setItem(LocalStorageKeysEnum.ID, r.id);
-          clearInputs();
-          setLoading(false);
-          navigate(PublicRoutesEnum.SHOP);
-        });
+      await AuthService.registration({
+        email: login,
+        password: password,
+        fullName: name,
+        phone: phone,
+      }).then((r) => {
+        dispatch(setIsAuth(true));
+        localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.accessToken);
+        localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.user.role);
+        localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.user.name);
+        localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.user.phone);
+        localStorage.setItem(LocalStorageKeysEnum.ID, String(r.data.user.id));
+        clearInputs();
+        setLoading(false);
+        navigate(PublicRoutesEnum.SHOP);
+      });
     }
     if (location.pathname.includes(PublicRoutesEnum.LOGIN)) {
       setLoading(true);
-      await userAPI
-        .loginUser({
-          email: login,
-          password: password,
-        })
+      await AuthService.login({
+        email: login,
+        password: password,
+      })
         .then(async (r) => {
           dispatch(setIsAuth(true));
           localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.accessToken);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.role);
-          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.name);
-          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.phone);
-          localStorage.setItem(LocalStorageKeysEnum.ID, r.data.id);
+          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.user.role);
+          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.user.name);
+          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.user.phone);
+          localStorage.setItem(LocalStorageKeysEnum.ID, String(r.data.user.id));
           clearInputs();
           navigate(PublicRoutesEnum.SHOP);
           setLoading(false);
