@@ -24,6 +24,7 @@ const AdministrationOrders: React.FC = () => {
         );
       }
     },
+    (err) => {},
   );
   const { load: getHistoryOrder, isLoading: isFullLoading } = useRequest(
     ordersApi.getHistoryOrder,
