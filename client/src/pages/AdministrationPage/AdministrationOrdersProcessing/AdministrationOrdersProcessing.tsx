@@ -10,6 +10,7 @@ import useRequest from 'src/hooks/useRequest';
 import { Loader } from '@consta/uikit/Loader';
 import { Modal } from '@consta/uikit/Modal';
 import AdministrationOrderProcessingCraftModal from 'src/pages/AdministrationPage/AdministrationOrderProcessingCraftModal/AdministrationOrderProcessingCraftModal';
+import InformerBadge from 'src/components/Informer/Informer';
 
 const ColumnIndexes = [
   { index: 0, value: OrderProcessingStatusEnum.CREATED },
@@ -154,6 +155,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
   return (
     <section className={styles.Processing}>
       <DatePicker
+        dropdownClassName={styles.datePickerPopover}
         label={'Выберите месяц'}
         labelPosition={'left'}
         className={styles.Processing__datePicker}
@@ -179,41 +181,45 @@ const AdministrationOrdersProcessing: React.FC = () => {
             }}
             onDragEnd={onDragEnd}
           >
-            {boardItems.map((board, index) => (
-              <Droppable
-                droppableId={board.type}
-                key={`${index}_${board.type}`}
-              >
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className={styles.Processing__content__column}
-                  >
+            {orders.length > 0 &&
+              boardItems.map((board, index) => (
+                <Droppable
+                  droppableId={board.type}
+                  key={`${index}_${board.type}`}
+                >
+                  {(provided) => (
                     <div
-                      className={styles.Processing__content__column__header}
-                      style={{ borderLeft: `10px solid ${board.color}` }}
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className={styles.Processing__content__column}
                     >
-                      <h1>{board.title}</h1>
-                    </div>
+                      <div
+                        className={styles.Processing__content__column__header}
+                        style={{ borderLeft: `10px solid ${board.color}` }}
+                      >
+                        <h1>{board.title}</h1>
+                      </div>
 
-                    <div className={styles.Processing__content__cards}>
-                      {board.items.map((item, idx) => (
-                        <AdministrationOrdersProcessingCard
-                          item={item}
-                          key={`${item.id}_${idx}`}
-                          index={idx}
-                          setOrders={setOrders}
-                          setModal={setModal}
-                          setActiveElement={setActiveElement}
-                        />
-                      ))}
+                      <div className={styles.Processing__content__cards}>
+                        {board.items.map((item, idx) => (
+                          <AdministrationOrdersProcessingCard
+                            item={item}
+                            key={`${item.id}_${idx}`}
+                            index={idx}
+                            setOrders={setOrders}
+                            setModal={setModal}
+                            setActiveElement={setActiveElement}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Droppable>
-            ))}
+                  )}
+                </Droppable>
+              ))}
           </DragDropContext>
+        )}
+        {orders.length === 0 && (
+          <InformerBadge text={'В выбранном месяце заказы отсутствуют'} />
         )}
       </div>
       <Modal isOpen={modal} onClickOutside={() => setModal(false)}>

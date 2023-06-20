@@ -5,6 +5,8 @@ import PaginationCustom, {
 } from 'src/components/PaginationCustom/PaginationCustom';
 import { ListLoader } from '@consta/uikit/ListCanary';
 import AdministrationFeedbackListItem from 'src/pages/AdministrationPage/AdministrationFeedback/AdministrationFeedbackListItem/AdministrationFeedbackListItem';
+import styles from './AdministrationFeedbackList.styl';
+import InformerBadge from 'src/components/Informer/Informer';
 
 interface IComponentProps {
   devices: DeviceListModel[];
@@ -26,7 +28,7 @@ const AdministrationFeedbackList: React.FC<IComponentProps> = ({
   setActiveList,
 }) => {
   return (
-    <div>
+    <div className={styles.FeedbackList}>
       {isLoading && <ListLoader />}
       {!isLoading &&
         devices &&
@@ -39,6 +41,7 @@ const AdministrationFeedbackList: React.FC<IComponentProps> = ({
             item={device}
           />
         ))}
+      {devices.length === 0 && <InformerBadge text={'Список пуст'} />}
       <PaginationCustom
         total={count}
         pagination={pagination}

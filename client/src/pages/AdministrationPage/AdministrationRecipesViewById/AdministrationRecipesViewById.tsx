@@ -10,6 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { PrivateRoutesEnum } from 'src/router';
 import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
+import IconColorStar from 'src/components/IconStar/IconColorStar';
+import { Informer } from '@consta/uikit/Informer';
+import InformerBadge from 'src/components/Informer/Informer';
 
 interface IComponentProps {
   activeList: number | null;
@@ -63,9 +66,16 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                 <Text weight={'semibold'} size={'l'}>
                   {`Продажа от: ${device.countWeightType} ${device.weightType}`}
                 </Text>
-                <Text weight={'semibold'} size={'l'}>
-                  Рейтинг: {device.rating}
-                </Text>
+                {device.rating && (
+                  <Text
+                    className={styles.rating}
+                    weight={'semibold'}
+                    size={'l'}
+                  >
+                    Рейтинг: {device.rating?.toFixed(2)} <IconColorStar />
+                  </Text>
+                )}
+
                 <Text weight={'semibold'} size={'l'}>
                   Цена: {device.price},00 ₽
                 </Text>
@@ -105,7 +115,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                   Общая стоимость
                 </Text>
               </div>
-              <div>
+              <div className={styles.FullRecipe__rightSide__list}>
                 {device.info &&
                   device.info.length > 0 &&
                   device.info.map((item, index) => (
@@ -135,36 +145,31 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                         weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        {item.pricePerUnit},00 ₽
+                        {item.pricePerUnit} ₽
                       </Text>
                       <Text
                         weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        {item.pricePerUnit * Number(item.weight)}
-                        ,00 ₽
+                        {item.pricePerUnit * Number(item.weight)} ₽
                       </Text>
                     </div>
                   ))}
               </div>
-              <div className={styles.FullRecipe__rightSide__list__row}>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <Text
-                  weight={'semibold'}
-                  className={styles.FullRecipe__rightSide__list__row__col}
-                >
-                  Итого:
-                  {device.info?.reduce(
-                    (accum, item) =>
-                      accum + item.pricePerUnit * Number(item.weight),
-                    0,
-                  )}{' '}
-                  ₽
-                </Text>
-              </div>
+
+              <Text
+                className={styles.FullRecipe__summing}
+                weight={'semibold'}
+                size={'l'}
+              >
+                Итого:
+                {device.info?.reduce(
+                  (accum, item) =>
+                    accum + item.pricePerUnit * Number(item.weight),
+                  0,
+                )}{' '}
+                ₽
+              </Text>
             </div>
           </div>
           <div className={styles.Footer}>
@@ -180,6 +185,11 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
           </div>
         </div>
       )}
+      <div>
+        {!activeList && (
+          <InformerBadge text={'Выберите рецепт из меню слева'} />
+        )}
+      </div>
     </>
   );
 };

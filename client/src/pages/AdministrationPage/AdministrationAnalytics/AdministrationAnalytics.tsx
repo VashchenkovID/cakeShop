@@ -224,7 +224,7 @@ const AdministrationAnalytics: React.FC = () => {
                   {itm.title}
                 </Text>
                 <Text style={{ color: itm.color }} size={'3xl'}>
-                  {itm.value},00 ₽
+                  {itm.value} ₽
                 </Text>
               </div>
             ))}

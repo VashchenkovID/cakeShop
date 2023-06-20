@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import { $authHost } from 'src/api/requests/index';
 import { EnpointsEnum } from 'src/api/endpoints';
 import { converterUrl } from 'src/utils/functions';
+import { RatingItemModel } from 'src/api/models/RatingItemModel';
 
 export interface CreateRatingReqBody {
   rating: number;
@@ -32,7 +33,12 @@ export default {
     $authHost.delete(`${EnpointsEnum.DELETE_RATING}/${id}`),
   getDeviceRatings: (
     data: GetDeviceRatingsReqType,
-  ): Promise<AxiosResponse<any, { message: string }>> =>
+  ): Promise<
+    AxiosResponse<
+      { count: number; rows: RatingItemModel[] },
+      { message: string }
+    >
+  > =>
     $authHost.get(
       `${converterUrl(EnpointsEnum.GET_RATINGS_FOR_DEVICE_NOT_USER, data)}`,
     ),

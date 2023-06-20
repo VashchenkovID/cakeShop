@@ -68,7 +68,7 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
               <Text>{item.name}</Text>
               <Text>{item.date_completed}</Text>
               <Text>{item.allPrice},00 ₽</Text>
-              <Text>{item.constPrice ? `${item.constPrice},00 ₽` : '-'}</Text>
+              <Text>{item.constPrice ? `${item.constPrice} ₽` : '-'}</Text>
             </div>
           ))}
         </div>

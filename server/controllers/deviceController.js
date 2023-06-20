@@ -164,12 +164,13 @@ class DeviceController {
     let devicesWithRait = devices.rows.map((device) => {
       return {
         ...device?.dataValues,
-        rating:
+        rating: (
           ratings
             .filter((rait) => rait.deviceId === device.dataValues.id)
             .reduce((acc, el) => acc + Number(el.rating), 0) /
           ratings.filter((rait) => rait.deviceId === device.dataValues.id)
-            .length,
+            .length
+        ),
       };
     });
 
@@ -203,10 +204,10 @@ class DeviceController {
     let deviceWithRait = {
       ...device?.dataValues,
       rating:
-          ratings
-              .filter((rait) => rait.deviceId === device.dataValues.id)
-              .reduce((acc, el) => acc + Number(el.rating), 0) /
-          ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
+        ratings
+          .filter((rait) => rait.deviceId === device.dataValues.id)
+          .reduce((acc, el) => acc + Number(el.rating), 0) /
+        ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
     };
     return res.json(deviceWithRait);
   }

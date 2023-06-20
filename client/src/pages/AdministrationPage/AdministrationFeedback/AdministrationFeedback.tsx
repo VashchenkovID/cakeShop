@@ -4,11 +4,17 @@ import cakesApi from 'src/api/requests/cakesApi';
 import { PaginationStateType } from 'src/components/PaginationCustom/PaginationCustom';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import AdministrationFeedbackList from 'src/pages/AdministrationPage/AdministrationFeedback/AdministrationFeedbackList/AdministrationFeedbackList';
+import styles from './AdministrationFeedback.styl';
+import ratingsApi from 'src/api/requests/ratingsApi';
+import AdministrationFeedbackRatings from 'src/pages/AdministrationPage/AdministrationFeedback/AdministrationFeedbackRatings/AdministrationFeedbackRatings';
+import { RatingItemModel } from 'src/api/models/RatingItemModel';
 
 const AdministrationFeedback: React.FC = () => {
   const [activeElement, setActiveElement] = useState<number | null>(null);
   const [count, setCount] = useState<number>(0);
   const [devices, setDevices] = useState<DeviceListModel[]>([]);
+  const [ratings, setRatings] = useState<RatingItemModel[]>([]);
+  const [limit, setLimit] = useState<number>(10);
   const [pagination, setPagination] = useState<PaginationStateType>({
     page: 1,
     perPage: 10,
@@ -20,11 +26,14 @@ const AdministrationFeedback: React.FC = () => {
       setDevices(data.data.rows);
     },
   );
-  const {
-    load: fetchFullDevice,
-    data: fullItem,
-    isLoading: isItemLoading,
-  } = useRequest(cakesApi.loadOneCake);
+  const { load: fetchFullDevice, isLoading: isItemLoading } = useRequest(
+    ratingsApi.getDeviceRatings,
+    (data) => {
+      if (data) {
+        setRatings(data.data.rows);
+      }
+    },
+  );
 
   useEffect(() => {
     fetchDevices({
@@ -35,12 +44,16 @@ const AdministrationFeedback: React.FC = () => {
 
   useEffect(() => {
     if (activeElement) {
-      fetchFullDevice(String(activeElement));
+      fetchFullDevice({
+        device_id: String(activeElement),
+        limit: limit,
+        page: 1,
+      });
     }
-  }, [activeElement]);
+  }, [activeElement, limit]);
 
   return (
-    <div>
+    <section className={styles.Feedback}>
       <AdministrationFeedbackList
         devices={devices}
         count={count}
@@ -50,7 +63,14 @@ const AdministrationFeedback: React.FC = () => {
         activeElement={activeElement}
         setActiveList={setActiveElement}
       />
-    </div>
+      <AdministrationFeedbackRatings
+        ratings={ratings}
+        isLoading={isItemLoading}
+        setLimit={setLimit}
+        limit={limit}
+        activeItem={activeElement}
+      />
+    </section>
   );
 };
 

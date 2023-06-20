@@ -8,6 +8,8 @@ import { Button } from '@consta/uikit/Button';
 import PaginationCustom, {
   PaginationStateType,
 } from 'src/components/PaginationCustom/PaginationCustom';
+import { Text } from '@consta/uikit/Text';
+import InformerBadge from 'src/components/Informer/Informer';
 
 interface IComponentProps {
   recipes: DeviceListModel[];
@@ -47,6 +49,9 @@ const AdministrationRecipesList: React.FC<IComponentProps> = ({
               setActiveList={setActiveList}
             />
           ))}
+        {recipes.length === 0 && (
+          <InformerBadge text={'Список рецептов пуст'} />
+        )}
       </div>
       <PaginationCustom
         total={count}

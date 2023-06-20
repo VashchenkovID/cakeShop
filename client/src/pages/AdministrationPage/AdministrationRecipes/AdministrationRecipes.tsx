@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AdministrationRecipes.styl';
-import cn from 'classnames/bind';
 import AdministrationRecipesCreate from 'src/pages/AdministrationPage/AdministrationRecipesCreate/AdministrationRecipesCreate';
 import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import AdministrationRecipesList from 'src/pages/AdministrationPage/AdministrationRecipesList/AdministrationRecipesList';
 import AdministrationRecipesViewById from 'src/pages/AdministrationPage/AdministrationRecipesViewById/AdministrationRecipesViewById';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { PaginationStateType } from 'src/components/PaginationCustom/PaginationCustom';
 export enum AdminPageMode {
   CREATE = 'create',

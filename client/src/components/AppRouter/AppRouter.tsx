@@ -95,7 +95,6 @@ const AppRouter = () => {
         `${process.env.REACT_APP_API_URL}${EnpointsEnum.CHECK_USER}`,
         { withCredentials: true },
       );
-      console.log(response)
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,
         response.data.accessToken,
