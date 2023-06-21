@@ -4,7 +4,10 @@
   "description": "shop app",
   "main": "index.js",
   "scripts": {
-    "app-install": "cd server && npm install && cd .. && cd client && yarn && cd .."
+    "app-install": "cd server && npm install && cd .. && cd client && yarn && cd ..",
+    "run-server": "cd server && yarn dev",
+    "run-admin": "cd cabinet-administration && yarn dev",
+    "run-client": "cd client && yarn dev"
   },
   "keywords": [
     "shop",
