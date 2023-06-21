@@ -13,7 +13,6 @@ import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
-import BasketWithCount from 'src/components/BasketWithCount/BasketWithCount';
 import { Button } from '@consta/uikit/Button';
 import { User } from '@consta/uikit/User';
 import AuthService from 'src/api/requests/userAPI';
@@ -158,7 +157,6 @@ const Header: React.FC<IHeaderProps> = () => {
       rightSide={
         <div className={styles.Header__user}>
           {isAuth && <User name={user} size={'l'} info={phone} />}
-          <BasketWithCount />{' '}
           {isAuth ? (
             <div className={styles.Header__user}>
               <Button
