@@ -1,0 +1,55 @@
+.Container
+  display flex
+  flex-direction column
+  gap 24px
+  background rgba(47, 4, 79, 0.5)
+  padding 16px
+  border-radius 10px
+  &__header
+    display flex
+    justify-content space-between
+    gap 24px
+    align-items center
+  &__decor
+    padding 8px
+  &__rows
+    display flex
+    flex-direction column
+    background rgba(234, 225, 225, 0.7)
+    border-radius 10px
+    padding 16px
+    &__decor
+      display grid
+      grid-template-columns 0.2fr 1fr
+      gap 8px
+      padding 4px 0px
+      border-bottom 1px dashed #67676b
+      &__rows
+        display flex
+        flex-direction column
+        gap 16px
+        &__decHeader
+          display grid
+          grid-template-columns repeat(5,1fr)
+          gap 16px
+          padding 4px 0px
+          border-bottom 1px dashed #67676b
+        &__decRow
+          display grid
+          grid-template-columns repeat(5,1fr)
+          gap 16px
+          padding 4px 0px
+        &__decRow:not(:last-child)
+          border-bottom 1px dashed #67676b
+    &__row
+      display grid
+      grid-template-columns repeat(3,1fr)
+      gap 16px
+      padding 4px 0px
+      border-bottom 1px dashed #67676b
+  &__footer
+    display flex
+    justify-content space-between
+    &__actions
+      display flex
+      gap 16px
