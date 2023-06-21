@@ -3,6 +3,7 @@ import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import styles from './AdministrationListItem.styl';
 import { Text } from '@consta/uikit/Text';
 import cn from 'classnames/bind';
+import ComponentCard from 'src/components/ComponentCard/ComponentCard';
 
 interface IComponentProps {
   activeElement: number | null;
@@ -18,25 +19,37 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
   setActiveList,
 }) => {
   return (
-    <div
-      onClick={() => setActiveList(item.id)}
-      className={styles.RecipesListItem}
-    >
-      <div>
-        <img
-          className={styles.RecipesListItem__image}
-          src={`${process.env.REACT_APP_IMAGE}${item.img}`}
-        />
+    <ComponentCard isActive={activeElement === item.id}>
+      <div
+        onClick={() => setActiveList(item.id)}
+        className={cx(styles.RecipesListItem)}
+      >
+        <div className={styles.RecipesListItem__titleContainer}>
+          <img
+            className={styles.RecipesListItem__image}
+            src={`${process.env.REACT_APP_IMAGE}${item.img}`}
+          />
+          <Text
+            className={cx(styles.RecipesListItem__title, {
+              active: activeElement === item.id,
+            })}
+            size={'l'}
+          >
+            {item.name}
+            <Text size={'s'} view={'secondary'}>
+              От {item.countWeightType} {item.weightType}
+            </Text>
+          </Text>
+        </div>
         <Text
-          className={cx(styles.RecipesListItem__title, {
+          className={cx(styles.RecipesListItem__price, {
             active: activeElement === item.id,
           })}
         >
-          {item.name}
+          {item.price},00 ₽
         </Text>
       </div>
-      <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>
-    </div>
+    </ComponentCard>
   );
 };
 

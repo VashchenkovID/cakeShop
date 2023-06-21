@@ -74,7 +74,18 @@ const AdministrationRecipesCreate: React.FC = () => {
       formData.append('fillingId', filling.id);
       formData.append('discount', device.discount);
       formData.append('biscuitId', biscuit.id);
-      formData.append('info', JSON.stringify(device.info));
+      formData.append(
+        'info',
+        JSON.stringify(
+          device.info.map((info: any) => {
+            return {
+              ...info,
+              pricePerUnit: info.pricePerUnit.replace(',', '.'),
+              weight: info.weight.replace(',', '.'),
+            };
+          }),
+        ),
+      );
       await cakesApi.editCake(editCake.id.toString(), formData).then(() => {
         navigate(
           `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}`,

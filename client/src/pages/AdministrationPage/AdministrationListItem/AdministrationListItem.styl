@@ -2,17 +2,20 @@
   display flex
   gap 16px
   align-items center
-  padding 16px
-  border-radius 10px
-  background rgba(47, 4, 79, 0.5)
-  border 1px solid rgba(98, 51, 179, 0.6)
   overflow-x hidden
   justify-content space-between
   cursor pointer
   overflow-y hidden
-  min-height 120px
+  &.active
+    border 2px solid #51dd00
+  &__titleContainer
+    display flex
+    gap 8px
+    align-items center
   &__image
     max-width 100px
+    max-height 100px
+    border-radius 10px
   &__title
     font-size 18px
     font-weight 700
@@ -22,3 +25,5 @@
     font-size 14px
   &__price
     font-weight 600
+    &.active
+      color #51dd00

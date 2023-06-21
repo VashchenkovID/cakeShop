@@ -53,33 +53,37 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
         <div>
           <div className={styles.FullRecipe}>
             <div className={styles.FullRecipe__leftSide}>
-              <img
-                className={styles.FullRecipe__leftSide__img}
-                src={`${process.env.REACT_APP_IMAGE}${device.img}`}
-              />
-              <Text size={'4xl'}>{device.name}</Text>
-              <Text view={'secondary'}>{device.description}</Text>
-              <Text>
-                Создан:{new Date(device.createdAt).toLocaleDateString()}
-              </Text>
-              <div className={styles.footerRecipe}>
-                <Text weight={'semibold'} size={'l'}>
-                  {`Продажа от: ${device.countWeightType} ${device.weightType}`}
-                </Text>
-                {device.rating && (
-                  <Text
-                    className={styles.rating}
-                    weight={'semibold'}
-                    size={'l'}
-                  >
-                    Рейтинг: {device.rating?.toFixed(2)} <IconColorStar />
+              <div className={styles.FullRecipe__leftSide__title}>
+                <img
+                  className={styles.FullRecipe__leftSide__img}
+                  src={`${process.env.REACT_APP_IMAGE}${device.img}`}
+                />
+                <div className={styles.FullRecipe__leftSide__deviceDescription}>
+                  <Text size={'4xl'}>{device.name}</Text>
+                  <Text>
+                    Создан:{new Date(device.createdAt).toLocaleDateString()}
                   </Text>
-                )}
 
-                <Text weight={'semibold'} size={'l'}>
-                  Цена: {device.price},00 ₽
-                </Text>
+                  <Text weight={'semibold'} size={'l'}>
+                    {`Продажа от: ${device.countWeightType} ${device.weightType}`}
+                  </Text>
+                  {device.rating && (
+                    <Text
+                      className={styles.rating}
+                      weight={'semibold'}
+                      size={'l'}
+                    >
+                      Рейтинг: {device.rating?.toFixed(2)} <IconColorStar />
+                    </Text>
+                  )}
+
+                  <Text weight={'semibold'} size={'l'}>
+                    Цена: {device.price},00 ₽
+                  </Text>
+                </div>
               </div>
+
+              <Text view={'secondary'}>{device.description}</Text>
             </div>
             <div className={styles.FullRecipe__rightSide}>
               <Text size={'3xl'}>Рецепт на 1 единицу</Text>
@@ -151,7 +155,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                         weight={'semibold'}
                         className={styles.FullRecipe__rightSide__list__row__col}
                       >
-                        {item.pricePerUnit * Number(item.weight)} ₽
+                        {(item.pricePerUnit * Number(item.weight)).toFixed(2)} ₽
                       </Text>
                     </div>
                   ))}
