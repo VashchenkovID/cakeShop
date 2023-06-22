@@ -6,6 +6,7 @@ import ComponentStyleWrapper from 'src/components/ComponentStyleWrapper/Componen
 import MainWrapper from 'src/components/MainWrapper/MainWrapper';
 import MainPageOrders from 'src/pages/MainPage/MainPageOrders/MainPageOrders';
 import MainPageSales from 'src/pages/MainPage/MainPageSales/MainPageSales';
+import MainPageTodoList from 'src/pages/MainPage/MainPageTodoList/MainPageTodoList';
 
 const MainPage: React.FC = () => {
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
@@ -20,6 +21,7 @@ const MainPage: React.FC = () => {
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
           <Text size={'l'}>Напоминания</Text>
+          <MainPageTodoList />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
           <Text size={'l'}>Посещения за месяц</Text>

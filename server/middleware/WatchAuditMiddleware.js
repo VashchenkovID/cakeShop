@@ -1,5 +1,5 @@
 const TokenService = require("../services/token-service");
-const { Audit } = require("../models/models");
+const { Audit, UniqUser } = require("../models/models");
 
 function checkEndpoint(url) {
   if (url.includes("/user/login")) {
@@ -156,6 +156,13 @@ function checkEndpoint(url) {
 module.exports = function () {
   return async function (req, res, next) {
     const url = req.originalUrl;
+    const clientIP = req.socket?.remoteAddress || req.ip;
+    const allUsers = await UniqUser.findAll();
+    if (!allUsers.map((user) => user.address).includes(clientIP)) {
+      await UniqUser.create({
+        address: clientIP,
+      });
+    }
     const authorizationHeader = req.headers.authorization;
     const accessToken = authorizationHeader?.split(" ")[1];
     if (accessToken === "null" || !accessToken) {

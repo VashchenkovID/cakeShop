@@ -10,6 +10,11 @@ const User = sequilize.define("User", {
   phone: { type: DataTypes.STRING, allowNull: true },
 });
 
+const UniqUser = sequilize.define("UniqUser", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  address: { type: DataTypes.STRING(1000) },
+});
+
 const Token = sequilize.define("Token", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   refreshToken: { type: DataTypes.STRING, required: true },
@@ -195,4 +200,5 @@ module.exports = {
   Biscuit,
   TODOList,
   Audit,
+  UniqUser
 };

@@ -23,6 +23,7 @@
     "dotenv": "16.0.1",
     "express": "4.18.1",
     "express-fileupload": "1.4.0",
+    "ip": "^1.1.8",
     "jsonwebtoken": "^8.5.1",
     "node-pg-migrate": "^6.2.2",
     "pg": "^8.7.3",
