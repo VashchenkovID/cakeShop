@@ -166,7 +166,7 @@ module.exports = {
     return plugins.filter(Boolean);
   })(),
   devServer: {
-    port: 3000,
+    port: 3001,
     hot: true,
     historyApiFallback: true,
   },
