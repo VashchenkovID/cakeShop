@@ -3,7 +3,6 @@ import useRequest from 'src/hooks/useRequest';
 import cakesApi from 'src/api/requests/cakesApi';
 import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
 import styles from './AdministrationRecipesViewById.styl';
-import { AdminPageMode } from 'src/pages/AdministrationRecipes/AdministrationRecipes';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import { setCake } from 'src/redux/features/cake/CakeSlice';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +10,10 @@ import { PrivateRoutesEnum } from 'src/router';
 import { Button } from '@consta/uikit/Button';
 import { Text } from '@consta/uikit/Text';
 import IconColorStar from 'src/components/IconStar/IconColorStar';
-import { Informer } from '@consta/uikit/Informer';
 import InformerBadge from 'src/components/Informer/Informer';
 
 interface IComponentProps {
   activeList: number | null;
-  pageMode: AdminPageMode;
-  setPageMode: React.Dispatch<React.SetStateAction<AdminPageMode>>;
 }
 
 const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
@@ -179,9 +175,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
           <div className={styles.Footer}>
             <Button
               onClick={() => {
-                navigate(
-                  `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/edit`,
-                );
+                navigate(`${PrivateRoutesEnum.EDIT_CAKE}/${device.id}`);
               }}
               label={'Редактировать'}
             />

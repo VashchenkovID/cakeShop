@@ -220,9 +220,6 @@ const AdministrationOrdersProcessing: React.FC = () => {
                 ))}
             </DragDropContext>
           )}
-          {orders.length === 0 && (
-            <InformerBadge text={'В выбранном месяце заказы отсутствуют'} />
-          )}
         </div>
         <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
           <AdministrationOrderProcessingCraftModal
@@ -232,6 +229,9 @@ const AdministrationOrdersProcessing: React.FC = () => {
           />
         </Modal>
       </section>
+      {orders.length === 0 && (
+          <InformerBadge text={'В выбранном месяце заказы отсутствуют'} />
+      )}
     </MainWrapper>
   );
 };

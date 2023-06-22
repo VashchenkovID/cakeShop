@@ -194,6 +194,7 @@ class DeviceController {
     return res.json(deviceWithRait);
   }
 
+
   async getOne(req, res) {
     const { id } = req.params;
     const device = await Device.findOne({

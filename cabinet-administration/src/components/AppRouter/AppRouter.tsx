@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { IRouteItem, PrivateRoutesEnum, PublicRoutesEnum } from 'src/router';
-
-import PrivateRoute from 'src/components/PrivateRoute';
 import { useAppDispatch } from 'src/hooks/useAppDispatch';
 import AuthContainer from 'src/pages/Auth/AuthContainer';
 import { storageToken } from 'src/utils/storage';
@@ -38,11 +36,11 @@ export const privateRoutes: Array<IRouteItem> = [
     element: <AdministrationRecipes />,
   },
   {
-    path: `${PrivateRoutesEnum.RECIPES}/create`,
+    path: `${PrivateRoutesEnum.CREATE_CAKE}`,
     element: <AdministrationRecipesCreate />,
   },
   {
-    path: `${PrivateRoutesEnum.RECIPES}/edit`,
+    path: `${PrivateRoutesEnum.EDIT_CAKE}/:id`,
     element: <AdministrationRecipesCreate />,
   },
   {

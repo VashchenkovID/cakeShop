@@ -34,7 +34,7 @@ const AdministrationRecipesList: React.FC<IComponentProps> = ({
       <Button
         onClick={() => {
           navigate(
-            `${PrivateRoutesEnum.ADMINISTRATION}/${PrivateRoutesEnum.RECIPES}/create`,
+            `${PrivateRoutesEnum.CREATE_CAKE}`,
           );
         }}
         label={'Создать новый рецепт'}

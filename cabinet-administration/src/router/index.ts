@@ -19,7 +19,5 @@ export const enum PrivateRoutesEnum {
 export const enum PublicRoutesEnum {
   AUTH = '/auth',
   LOGIN = '/login',
-  INFO_PAGE = '/info',
   SHOP = '/shop',
-  VIEW_ORDER = '/view/order',
 }

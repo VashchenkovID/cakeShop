@@ -24,7 +24,7 @@ const MainPage: React.FC = () => {
           <MainPageTodoList />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
-          <Text size={'l'}>Посещения за месяц</Text>
+          <Text size={'l'}>Уникальные пользователи приложения</Text>
           <MainPageUsers />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
