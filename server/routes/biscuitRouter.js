@@ -2,7 +2,8 @@ const Router = require("express");
 const router = new Router();
 const biscuitController = require("../controllers/biscuitController");
 const checkRole = require("../middleware/checkRoleMiddleware");
-
+const watchAudit = require("../middleware/WatchAuditMiddleware");
+router.use(watchAudit());
 router.post("/create", checkRole("ADMIN"), biscuitController.create);
 router.get("/getAll", biscuitController.getAll);
 router.put("/update/:id", checkRole("ADMIN"), biscuitController.update);

@@ -1,7 +1,7 @@
 const Router = require("express");
 const router = new Router();
-const checkRole = require("../middleware/checkRoleMiddleware");
-
+const watchAudit = require("../middleware/WatchAuditMiddleware");
+router.use(watchAudit());
 const ratingController = require("../controllers/ratingsController");
 
 router.post("/create", ratingController.create);

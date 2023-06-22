@@ -2,7 +2,8 @@ const Router = require("express");
 const router = new Router();
 const orderProcessingController = require("../controllers/ordersProcessingController");
 const checkRole = require("../middleware/checkRoleMiddleware");
-
+const watchAudit = require("../middleware/WatchAuditMiddleware");
+router.use(watchAudit());
 router.get(
   "/getOrders/:date",
   checkRole("ADMIN"),

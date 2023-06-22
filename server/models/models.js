@@ -58,7 +58,7 @@ const Device = sequilize.define("device", {
   discount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   rating: { type: DataTypes.INTEGER, defaultValue: 0 },
   img: { type: DataTypes.STRING, allowNull: true },
-  description: { type: DataTypes.STRING(1500), allowNull: true, },
+  description: { type: DataTypes.STRING(1500), allowNull: true },
   weightType: { type: DataTypes.STRING, allowNull: false },
   countWeightType: { type: DataTypes.INTEGER, allowNull: false },
 });
@@ -115,6 +115,18 @@ const Rating = sequilize.define("Rating", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   ratingComment: { type: DataTypes.STRING },
   rating: { type: DataTypes.STRING, defaultValue: "0" },
+});
+
+const TODOList = sequilize.define("TODOList", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  description: { type: DataTypes.STRING(1500) },
+  isReady: { type: DataTypes.BOOLEAN },
+});
+
+const Audit = sequilize.define("AUDIT", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  description: { type: DataTypes.STRING(1500) },
+  user: { type: DataTypes.STRING(1500) },
 });
 
 User.hasMany(Basket);
@@ -181,4 +193,6 @@ module.exports = {
   OrderDecor,
   OrderDecorItem,
   Biscuit,
+  TODOList,
+  Audit,
 };

@@ -12,6 +12,7 @@ const calendarRouter = require("./calendarRouter");
 const decorRouter = require("./decorRouter");
 const biscuitRouter = require("./biscuitRouter");
 const ratingRouter = require("./ratingsRouter");
+const todoRouter = require("./todoListRouter");
 
 router.use("/user", userRouter);
 router.use("/device", deviceRouter);
@@ -25,5 +26,6 @@ router.use("/calendar", calendarRouter);
 router.use("/biscuit", biscuitRouter);
 router.use("/decor", decorRouter);
 router.use("/ratings", ratingRouter);
+router.use("/todoList", todoRouter);
 
 module.exports = router;

@@ -2,7 +2,8 @@ const Router = require("express");
 const router = new Router();
 const typeController = require("../controllers/typeController");
 const checkRole = require("../middleware/checkRoleMiddleware");
-
+const watchAudit = require("../middleware/WatchAuditMiddleware");
+router.use(watchAudit());
 router.post("/create", checkRole("ADMIN"), typeController.create);
 router.get("/getAll", typeController.getAll);
 router.put("/update/:id", checkRole("ADMIN"), typeController.update);
