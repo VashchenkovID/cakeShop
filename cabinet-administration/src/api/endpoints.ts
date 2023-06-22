@@ -48,4 +48,11 @@ export const enum EnpointsEnum {
   GET_RATINGS_FOR_DEVICE_NOT_USER = '/ratings/feedback/getDeviceRatings',
   GET_USER_RATINGS = '/ratings/getUserRatings',
   DELETE_RATING = '/ratings/remove',
+  // Заметки
+  GET_TODOS = '/todoList/getTodo',
+  CREATE_TODOS = '/todoList/create',
+  UPDATE_TODOS = '/todoList/update',
+  DELETE_TODOS = '/todoList/delete',
+  // Уникальные пользователи
+  GET_UNIQ_USERS = '/uniqUsers/users',
 }

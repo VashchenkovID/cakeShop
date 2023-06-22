@@ -20,7 +20,6 @@ const MainPage: React.FC = () => {
           <MainPageOrders />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
-          <Text size={'l'}>Напоминания</Text>
           <MainPageTodoList />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>

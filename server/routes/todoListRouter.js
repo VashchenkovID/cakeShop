@@ -7,7 +7,7 @@ router.use(watchAudit());
 router.get('/getTodo',checkRole('ADMIN'),todoListController.getAll)
 router.get('/getTodo/:id',checkRole('ADMIN'),todoListController.getOne)
 router.post('/create', checkRole('ADMIN'),todoListController.create)
-router.put('/update', checkRole('ADMIN'),todoListController.update)
-router.delete('/delete', checkRole('ADMIN'),todoListController.remove)
+router.put('/update/:id', checkRole('ADMIN'),todoListController.update)
+router.delete('/delete/:id', checkRole('ADMIN'),todoListController.remove)
 
 module.exports = router

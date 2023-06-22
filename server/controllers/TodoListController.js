@@ -4,10 +4,10 @@ const { TODOList } = require("../models/models");
 class TodoListController {
   async create(req, res, next) {
     try {
-      let { name } = req.body;
+      let { description } = req.body;
 
       const newRow = await TODOList.create({
-        name: name,
+        description: description,
         isReady: false,
       });
       return res.json({
@@ -20,13 +20,13 @@ class TodoListController {
   async update(req, res, next) {
     try {
       let { id } = req.params;
-      let { name, isReady } = req.body;
-      if (name === "") {
+      let { description, isReady } = req.body;
+      if (description === "") {
         return res.status(404, { message: "Заполните строку!" });
       } else {
         const updatedRow = await TODOList.upsert({
           id,
-          name: name,
+          description: description,
           isReady: isReady,
         });
         return res.json({ ...updatedRow });

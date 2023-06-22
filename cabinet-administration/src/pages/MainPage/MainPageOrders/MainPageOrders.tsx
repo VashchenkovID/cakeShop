@@ -4,7 +4,7 @@ import useRequest from 'src/hooks/useRequest';
 import ordersApi from 'src/api/requests/ordersApi';
 import ScreenLoader from 'src/components/ScreenLoader/ScreenLoader';
 import { Text } from '@consta/uikit/Text';
-import MainPageOrdersItem from 'src/pages/MainPage/MainPageOrdersItem/MainPageOrdersItem';
+import MainPageOrdersItem from 'src/pages/MainPage/MainPageOrders/MainPageOrdersItem/MainPageOrdersItem';
 import styles from './MainPageOrders.styl';
 
 const MainPageOrders: React.FC = () => {
@@ -47,7 +47,7 @@ const MainPageOrders: React.FC = () => {
                 />
               ))
           ) : (
-            <Text>Заказов в данном месяце еще нет</Text>
+            <Text align={'center'}>Заказов в данном месяце еще нет</Text>
           )}
         </div>
       )}
