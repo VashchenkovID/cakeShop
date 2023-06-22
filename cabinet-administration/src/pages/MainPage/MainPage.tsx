@@ -7,6 +7,7 @@ import MainWrapper from 'src/components/MainWrapper/MainWrapper';
 import MainPageOrders from 'src/pages/MainPage/MainPageOrders/MainPageOrders';
 import MainPageSales from 'src/pages/MainPage/MainPageSales/MainPageSales';
 import MainPageTodoList from 'src/pages/MainPage/MainPageTodoList/MainPageTodoList';
+import MainPageUsers from "src/pages/MainPage/MainPageUsers/MainPageUsers";
 
 const MainPage: React.FC = () => {
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
@@ -24,6 +25,7 @@ const MainPage: React.FC = () => {
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
           <Text size={'l'}>Посещения за месяц</Text>
+          <MainPageUsers />
         </ComponentStyleWrapper>
         <ComponentStyleWrapper>
           <Text size={'l'}>Статистика продаж</Text>
