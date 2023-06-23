@@ -14,6 +14,7 @@ import { IconTrash } from '@consta/uikit/IconTrash';
 import ComponentStyleWrapper from 'src/components/ComponentStyleWrapper/ComponentStyleWrapper';
 import { useParams } from 'react-router';
 import MainWrapper from 'src/components/MainWrapper/MainWrapper';
+import { toast } from 'react-toastify';
 const cx = cn.bind(styles);
 const AdministrationRecipesCreate: React.FC = () => {
   const params = useParams();
@@ -55,7 +56,7 @@ const AdministrationRecipesCreate: React.FC = () => {
         navigate(PrivateRoutesEnum.RECIPES);
       });
     } catch (e) {
-      console.error(e.message);
+      toast.error(e.response.data.message);
     }
   };
 
@@ -88,7 +89,7 @@ const AdministrationRecipesCreate: React.FC = () => {
         navigate(PrivateRoutesEnum.RECIPES);
       });
     } catch (e) {
-      alert(e.message);
+      toast.error(e.response.data.message);
     }
   };
   const { load: fetchTypes } = useRequest(cakesApi.getCakeTypes, (data) => {

@@ -230,7 +230,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
         </Modal>
       </section>
       {orders.length === 0 && (
-          <InformerBadge text={'В выбранном месяце заказы отсутствуют'} />
+        <InformerBadge text={'В выбранном месяце заказы отсутствуют'} />
       )}
     </MainWrapper>
   );

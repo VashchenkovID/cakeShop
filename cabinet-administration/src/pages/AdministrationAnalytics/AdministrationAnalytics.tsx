@@ -10,6 +10,7 @@ import AdministrationAnalyticsDateChange from 'src/pages/AdministrationAnalytics
 import { Loader } from '@consta/uikit/Loader';
 import { startOfMonth, getDaysInMonth, getMonth } from 'date-fns';
 import MainWrapper from 'src/components/MainWrapper/MainWrapper';
+import {toast} from "react-toastify";
 
 const AdministrationAnalytics: React.FC = () => {
   const [date, setDate] = useState(new Date());
@@ -55,7 +56,6 @@ const AdministrationAnalytics: React.FC = () => {
             type: 'Незарегистрированный',
           };
         });
-      console.log(salesWithDatesCustom, salesWithDatesUnauthorized);
       for (let i = 0; i <= datesCount; i++) {
         datesArrCustom.push(new Date(yaer, month, i + 1));
         datesArrUnauthorized.push(new Date(yaer, month, i + 1));

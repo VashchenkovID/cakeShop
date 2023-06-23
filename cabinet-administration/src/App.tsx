@@ -8,6 +8,8 @@ import { AppRouter } from './components/AppRouter';
 import Header from 'src/components/Header';
 import { Theme } from '@consta/uikit/Theme';
 import { myDefaultPreset } from 'src/utils/presetConsta/constaMyStyle/myDefaultPreset';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const store = setupStore();
 
@@ -16,14 +18,22 @@ const App = () => {
     setAutoFreeze(false);
   }, []);
   return (
-    <Provider store={store}>
-      <Theme preset={myDefaultPreset}>
-        <ReduxRouter history={browserHistory} store={store}>
-          <Header />
-          <AppRouter />
-        </ReduxRouter>
-      </Theme>
-    </Provider>
+    <>
+      <Provider store={store}>
+        <Theme preset={myDefaultPreset}>
+          <ReduxRouter history={browserHistory} store={store}>
+            <Header />
+            <AppRouter />
+          </ReduxRouter>
+        </Theme>
+      </Provider>
+      <ToastContainer
+        theme={'light'}
+        position={'bottom-left'}
+        draggable={false}
+        autoClose={3000}
+      />
+    </>
   );
 };
 

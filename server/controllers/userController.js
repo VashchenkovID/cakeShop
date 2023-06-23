@@ -63,10 +63,12 @@ class UserController {
     });
     return res.json({
       ...tokens,
-      role: user.role,
-      email: user.email,
-      phone: user.phone,
-      name: user.fullName,
+      user: {
+        role: user.role,
+        name: user.fullName,
+        phone: user.phone,
+        id: user.id,
+      },
     });
   }
   async login(req, res, next) {

@@ -43,17 +43,19 @@ const AdministrationFeedbackRatings: React.FC<IComponentProps> = ({
               <InformerBadge text={'Выберите изделие из меню слева'} />
             )}
           </div>
-          <Select
-            className={styles.Ratings__footer}
-            size={'s'}
-            items={selectItems}
-            getItemLabel={(i) => i.toString()}
-            getItemKey={(item) => item}
-            value={limit}
-            onChange={(value) => setLimit(value.value)}
-            label={'Количество отзывов'}
-            labelPosition={'left'}
-          />
+          {activeItem && ratings.length > 0 && (
+            <Select
+              className={styles.Ratings__footer}
+              size={'s'}
+              items={selectItems}
+              getItemLabel={(i) => i.toString()}
+              getItemKey={(item) => item}
+              value={limit}
+              onChange={(value) => setLimit(value.value)}
+              label={'Количество отзывов'}
+              labelPosition={'left'}
+            />
+          )}
         </>
       )}
     </div>

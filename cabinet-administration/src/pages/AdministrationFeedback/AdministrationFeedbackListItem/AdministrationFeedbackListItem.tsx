@@ -4,6 +4,7 @@ import styles from './AdministrationFeedbackListItem.styl';
 
 import { Text } from '@consta/uikit/Text';
 import cn from 'classnames/bind';
+import ComponentStyleWrapper from 'src/components/ComponentStyleWrapper/ComponentStyleWrapper';
 
 interface IComponentProps {
   activeElement: number | null;
@@ -17,25 +18,27 @@ const AdministrationFeedbackListItem: React.FC<IComponentProps> = ({
   setActiveList,
 }) => {
   return (
-    <div
-      onClick={() => setActiveList(item.id)}
-      className={styles.RecipesListItem}
-    >
-      <div>
-        <img
-          className={styles.RecipesListItem__image}
-          src={`${process.env.REACT_APP_IMAGE}${item.img}`}
-        />
-        <Text
-          className={cx(styles.RecipesListItem__title, {
-            active: activeElement === item.id,
-          })}
-        >
-          {item.name}
-        </Text>
+    <ComponentStyleWrapper>
+      <div
+        onClick={() => setActiveList(item.id)}
+        className={styles.RecipesListItem}
+      >
+        <div className={styles.RecipesListItem__titleContainer}>
+          <img
+            className={styles.RecipesListItem__image}
+            src={`${process.env.REACT_APP_IMAGE}${item.img}`}
+          />
+          <Text
+            className={cx(styles.RecipesListItem__title, {
+              active: activeElement === item.id,
+            })}
+          >
+            {item.name}
+          </Text>
+        </div>
+        <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>
       </div>
-      <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>
-    </div>
+    </ComponentStyleWrapper>
   );
 };
 

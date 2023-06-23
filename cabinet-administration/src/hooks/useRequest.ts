@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const useRequest = <T extends Array<any>, R>(
   request: (...args: T) => Promise<R>,
@@ -21,7 +22,7 @@ const useRequest = <T extends Array<any>, R>(
       })
       .catch((err) => {
         setIsError(true);
-        console.error(err);
+        toast.error(err.response.data.message);
         errorCallback && errorCallback(err);
       })
       .finally(() => {

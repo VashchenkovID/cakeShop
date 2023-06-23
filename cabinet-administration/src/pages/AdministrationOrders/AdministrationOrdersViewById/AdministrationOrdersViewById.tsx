@@ -8,6 +8,7 @@ import { OrderProcessingStatusEnum } from 'src/api/models/OrderProcessingStatusE
 import styles from './AdministrationOrdersViewById.styl';
 import { Button } from '@consta/uikit/Button';
 import ordersApi from 'src/api/requests/ordersApi';
+import InformerBadge from 'src/components/Informer/Informer';
 
 interface IComponentProps {
   order: OrderProcessingModel;
@@ -56,11 +57,7 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
     <div>
       {isFullLoading && <Loader />}
       {!isFullLoading && !order && !activeOrder && (
-        <div className={styles.Container}>
-          <Text align={'center'} view={'secondary'}>
-            Выберите заказ из меню слева
-          </Text>
-        </div>
+        <InformerBadge text={'Выберите заказ из меню слева'} />
       )}
       {!isFullLoading && order && (
         <div className={styles.Container}>

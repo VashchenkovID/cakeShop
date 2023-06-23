@@ -41,6 +41,8 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
         <div className={styles.Container}>
           <Text size={'2xl'}>{title}</Text>
           <TextField
+            size={'s'}
+            form={'round'}
             label={'Наименование'}
             placeholder={'Введите наименование'}
             value={decor.name}
@@ -51,6 +53,8 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            size={'s'}
+            form={'round'}
             type={'number'}
             label={'Количество в упаковке'}
             placeholder={'Введите количество'}
@@ -62,6 +66,8 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            size={'s'}
+            form={'round'}
             label={'Единица измерения'}
             placeholder={'Введите единицу измерения'}
             value={decor.countType}
@@ -72,6 +78,8 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            size={'s'}
+            form={'round'}
             type={'number'}
             label={'Цена за единицу'}
             placeholder={'Введите цену'}
@@ -83,6 +91,8 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            size={'s'}
+            form={'round'}
             type={'number'}
             label={'Цена закупки'}
             placeholder={'Введите цену'}
