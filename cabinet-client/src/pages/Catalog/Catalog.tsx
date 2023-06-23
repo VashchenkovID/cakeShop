@@ -91,7 +91,7 @@ const Catalog: React.FC = () => {
     }
   }, [pagination, type]);
   return (
-    <div>
+    <div className={styles.Shop}>
       <div className={styles.Shop__header}>
         {types.map((t, index) => (
           <Text

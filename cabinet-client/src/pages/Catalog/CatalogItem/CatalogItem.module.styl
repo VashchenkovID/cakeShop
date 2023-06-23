@@ -5,18 +5,27 @@
   flex-direction column
   gap 16px
   max-width 20vw
+  min-width 300px
   background rgba(47,4,79,0.5)
   border 1px solid rgba(98,51,179,0.6)
   @media (max-width 600px)
     max-width 600px
+  @media (max-width 400px)
+    min-width 250px
+  @media (max-width 350px)
+    min-width 225px
   &__image
     height auto
     width 100%
     max-width: 25vw
+    @media (max-width 1300px)
+      min-width 300px
     @media (max-width 700px)
       max-width 230px
-    @media (max-width 600px)
-      max-width 400px
+    @media (max-width 400px)
+      max-width 300px
+      min-width 1vw
+
   &__basket
     display flex
     justify-content space-between

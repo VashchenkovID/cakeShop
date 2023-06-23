@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cn from "classnames/bind";
 import styles from "./Header.module.styl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -20,7 +20,10 @@ import { selectIsAuth } from "../../store/features/auth/selectors";
 import AuthService from "../../api/requests/userAPI";
 import { setIsAuth } from "../../store/features/auth/AuthSlice";
 import BasketWithCount from "../BasketWithCount/BasketWithCount";
-
+import { useResize } from "../../hooks/useResize";
+import { Sidebar } from "@consta/uikit/Sidebar";
+import { IconAlignJustify } from "@consta/uikit/IconAlignJustify";
+import { IconClose } from "@consta/uikit/IconClose";
 const cx = cn.bind(styles);
 
 interface Item {
@@ -45,6 +48,9 @@ const Header: React.FC<IHeaderProps> = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const myLoc = `/${location.pathname.split("/").slice(1, 2).join("")}`;
   const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const { width } = useResize();
   const items: Item[] = [
     {
       label: "Главная",
@@ -103,52 +109,116 @@ const Header: React.FC<IHeaderProps> = () => {
     });
   };
   return (
-    <ConstaHeader
-      className={cx(styles.Header, {
-        not:
-          myLoc === PublicRoutesEnum.AUTH || myLoc === PublicRoutesEnum.LOGIN,
-      })}
-      leftSide={
-        <HeaderModule>
-          <nav className={styles.Header__nav}>
-            {role && role === "ADMIN" ? (
-              <HeaderMenu items={items} />
-            ) : (
-              <HeaderMenu items={items.filter((itm) => !itm.access)} />
-            )}
-          </nav>
-        </HeaderModule>
-      }
-      rightSide={
-        <div className={styles.Header__user}>
-          {isAuth && <User name={user || ""} size={"l"} info={phone || ""} />}
-          <BasketWithCount />{" "}
-          {isAuth ? (
-            <div className={styles.Header__user}>
+    <>
+      <ConstaHeader
+        className={cx(styles.Header, {
+          not:
+            myLoc === PublicRoutesEnum.AUTH || myLoc === PublicRoutesEnum.LOGIN,
+        })}
+        leftSide={
+          width <= 850 ? (
+            <div>
               <Button
-                onClick={logoutApp}
-                size={"s"}
-                view={"primary"}
-                label={"Выйти"}
+                iconLeft={isOpen ? IconClose : IconAlignJustify}
+                view={"clear"}
+                size={"l"}
+                onClick={() => setIsOpen(true)}
               />
+              <Sidebar
+                style={{ background: "red" }}
+                isOpen={isOpen}
+                position={"left"}
+                onClickOutside={() => setIsOpen(false)}
+              >
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={(e) => {
+                      setIsOpen(false);
+                      if (item.onClick) {
+                        item.onClick(e);
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                ))}
+                {width < 500 && (
+                  <div>
+                    {isAuth && (
+                      <User name={user || ""} size={"l"} info={phone || ""} />
+                    )}
+                    <BasketWithCount />{" "}
+                    {isAuth ? (
+                      <div className={styles.Header__user}>
+                        <Button
+                          onClick={logoutApp}
+                          size={"s"}
+                          view={"primary"}
+                          label={"Выйти"}
+                        />
+                      </div>
+                    ) : (
+                      <div className={styles.buttons}>
+                        <Button
+                          onClick={() => navigate(PublicRoutesEnum.LOGIN)}
+                          label={"Вход"}
+                          size={"s"}
+                        />
+                        <Button
+                          onClick={() => navigate(PublicRoutesEnum.AUTH)}
+                          label={"Регистрация"}
+                          size={"s"}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Sidebar>
             </div>
           ) : (
-            <div className={styles.buttons}>
-              <Button
-                onClick={() => navigate(PublicRoutesEnum.LOGIN)}
-                label={"Вход"}
-                size={"s"}
-              />
-              <Button
-                onClick={() => navigate(PublicRoutesEnum.AUTH)}
-                label={"Регистрация"}
-                size={"s"}
-              />
+            <HeaderModule>
+              <nav className={styles.Header__nav}>
+                <HeaderMenu items={items} />
+              </nav>
+            </HeaderModule>
+          )
+        }
+        rightSide={
+          width >= 500 && (
+            <div className={styles.Header__user}>
+              {isAuth && (
+                <User name={user || ""} size={"l"} info={phone || ""} />
+              )}
+              <BasketWithCount />{" "}
+              {isAuth ? (
+                <div className={styles.Header__user}>
+                  <Button
+                    onClick={logoutApp}
+                    size={"s"}
+                    view={"primary"}
+                    label={"Выйти"}
+                  />
+                </div>
+              ) : (
+                <div className={styles.buttons}>
+                  <Button
+                    onClick={() => navigate(PublicRoutesEnum.LOGIN)}
+                    label={"Вход"}
+                    size={"s"}
+                  />
+                  <Button
+                    onClick={() => navigate(PublicRoutesEnum.AUTH)}
+                    label={"Регистрация"}
+                    size={"s"}
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      }
-    ></ConstaHeader>
+          )
+        }
+      ></ConstaHeader>
+    </>
   );
 };
 

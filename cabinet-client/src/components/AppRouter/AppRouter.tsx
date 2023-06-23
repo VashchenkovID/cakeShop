@@ -33,7 +33,7 @@ const AppRouter = () => {
   const checkIsAuth = async () => {
     try {
       const response = await axios.get<AuthResponse>(
-        `${process.env.REACT_APP_API_URL}${EnpointsEnum.CHECK_USER}`,
+        `${import.meta.env.VITE_API_URL}${EnpointsEnum.CHECK_USER}`,
         { withCredentials: true }
       );
       localStorage.setItem(
