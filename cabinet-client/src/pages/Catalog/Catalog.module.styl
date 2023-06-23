@@ -1,0 +1,65 @@
+.Shop
+  margin 24px 0px 0px 24px
+  padding-right 24px
+  max-height calc(100vh - 170px)
+  overflow-y auto
+  display flex
+  flex-direction column
+  gap 24px
+  &__header
+    display flex
+    gap 16px
+    &__type
+      padding 8px
+      cursor pointer
+      &.active
+        border-radius 10px
+        border 2px solid #f5f7fa
+  &__items
+    display flex
+    gap 16px
+    flex-wrap wrap
+  &__active
+    position absolute
+    bottom 0
+    left 0
+    padding 16px
+    background-image linear-gradient(315deg, #492489 5%,#8860D0 74%);
+    width calc(100vw - 32px)
+
+
+.IconBasket
+  position absolute
+  width 50px
+  height 50px
+  border-radius 50%
+  background #fbc102
+  display flex
+  justify-content center
+  align-items center
+  bottom 10vh
+  right 2vw
+  z-index 100
+  transition: margin .5s;
+  margin: 0 -250px; 0 0
+  transform: translate3d(0px, -20px, 0px);
+  cursor pointer
+  &.visible
+    margin-right 0
+  &__icon
+    max-width 30px
+
+
+@keyframes bobble {
+  0% {
+    transform: translate3d(50px, 40px, 0px);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translate3d(50px, 50px, 0px);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translate3d(50px, 40px, 0px);
+  }
+}

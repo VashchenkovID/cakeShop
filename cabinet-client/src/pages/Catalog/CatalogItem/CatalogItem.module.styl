@@ -1,0 +1,32 @@
+.Item
+  padding 16px
+  border-radius 10px
+  display flex
+  flex-direction column
+  gap 16px
+  max-width 20vw
+  background rgba(47,4,79,0.5)
+  border 1px solid rgba(98,51,179,0.6)
+  @media (max-width 600px)
+    max-width 600px
+  &__image
+    height auto
+    width 100%
+    max-width: 25vw
+    @media (max-width 700px)
+      max-width 230px
+    @media (max-width 600px)
+      max-width 400px
+  &__basket
+    display flex
+    justify-content space-between
+    gap 8px
+  &__addActions
+    display flex
+    gap 8px
+    align-items center
+  &__footer
+    display flex
+    align-items center
+    gap 8px
+    justify-content space-between
