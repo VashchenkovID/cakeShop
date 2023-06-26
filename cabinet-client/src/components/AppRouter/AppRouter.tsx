@@ -15,6 +15,7 @@ import Catalog from "../../pages/Catalog/Catalog";
 import CreateOrder from "../../pages/CreateOrder/CreateOrder";
 import { BasketModel } from "../../api/models/BasketModel";
 import { setBasket } from "../../store/features/basket/BasketSlice";
+import StartPage from "../../pages/StartPage/StartPage";
 
 export interface IRouteItem {
   path: string;
@@ -31,7 +32,7 @@ export const publicRoutes: Array<IRouteItem> = [
   },
   { path: `${PublicRoutesEnum.FILLINGS}`, element: <div>fillings</div> },
   { path: `${PublicRoutesEnum.INDIVIDUAL}`, element: <div>individual</div> },
-  { path: `${PublicRoutesEnum.GENERAL}`, element: <div>general</div> },
+  { path: `${PublicRoutesEnum.GENERAL}`, element: <StartPage /> },
 ];
 
 const AppRouter = () => {

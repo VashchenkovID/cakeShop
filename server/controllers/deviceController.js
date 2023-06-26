@@ -140,29 +140,55 @@ class DeviceController {
     }
   }
 
-  async getAll(req, res) {
-    let { limit, page, typeId } = req.query;
-    page = page || 1;
-    limit = limit || 9;
-    let offset = page * limit - limit;
-    let devices;
-    if (typeId) {
-      devices = await Device.findAndCountAll({
-        limit,
-        offset,
-        where: {
-          TypeId: typeId,
-        },
+  async getAll(req, res, next) {
+    try {
+      let { limit, page, typeId } = req.query;
+      page = page || 1;
+      limit = limit || 9;
+      let offset = page * limit - limit;
+      let devices;
+      if (typeId) {
+        devices = await Device.findAndCountAll({
+          limit,
+          offset,
+          where: {
+            TypeId: typeId,
+          },
+        });
+      } else {
+        devices = await Device.findAndCountAll({
+          limit,
+          offset,
+        });
+      }
+      let ratings = await Rating.findAll();
+      let devicesWithRait = devices.rows.map((device) => {
+        return {
+          ...device?.dataValues,
+          rating:
+            ratings
+              .filter((rait) => rait.deviceId === device.dataValues.id)
+              .reduce((acc, el) => acc + Number(el.rating), 0) /
+            ratings.filter((rait) => rait.deviceId === device.dataValues.id)
+              .length,
+        };
       });
-    } else {
-      devices = await Device.findAndCountAll({
-        limit,
-        offset,
-      });
+
+      return res.json({ count: devices.count, rows: devicesWithRait });
+    } catch (e) {
+      next(ApiError(e.message));
     }
-    let ratings = await Rating.findAll();
-    let devicesWithRait = devices.rows.map((device) => {
-      return {
+  }
+
+  async getOneForAdmin(req, res, next) {
+    try {
+      const { id } = req.params;
+      const device = await Device.findOne({
+        where: { id },
+        include: [{ model: DeviceInfo, as: "info" }],
+      });
+      let ratings = await Rating.findAll();
+      let deviceWithRait = {
         ...device?.dataValues,
         rating:
           ratings
@@ -171,53 +197,74 @@ class DeviceController {
           ratings.filter((rait) => rait.deviceId === device.dataValues.id)
             .length,
       };
-    });
-
-    return res.json({ count: devices.count, rows: devicesWithRait });
+      return res.json(deviceWithRait);
+    } catch (e) {
+      next(ApiError(e.message));
+    }
   }
 
-  async getOneForAdmin(req, res) {
-    const { id } = req.params;
-    const device = await Device.findOne({
-      where: { id },
-      include: [{ model: DeviceInfo, as: "info" }],
-    });
-    let ratings = await Rating.findAll();
-    let deviceWithRait = {
-      ...device?.dataValues,
-      rating:
-        ratings
-          .filter((rait) => rait.deviceId === device.dataValues.id)
-          .reduce((acc, el) => acc + Number(el.rating), 0) /
-        ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
-    };
-    return res.json(deviceWithRait);
+  async getOne(req, res, next) {
+    try {
+      const { id } = req.params;
+      const device = await Device.findOne({
+        where: { id },
+      });
+      let ratings = await Rating.findAll();
+      let deviceWithRait = {
+        ...device?.dataValues,
+        rating:
+          ratings
+            .filter((rait) => rait.deviceId === device.dataValues.id)
+            .reduce((acc, el) => acc + Number(el.rating), 0) /
+          ratings.filter((rait) => rait.deviceId === device.dataValues.id)
+            .length,
+      };
+      return res.json(deviceWithRait);
+    } catch (e) {
+      next(ApiError(e.message));
+    }
   }
 
-
-  async getOne(req, res) {
-    const { id } = req.params;
-    const device = await Device.findOne({
-      where: { id },
-    });
-    let ratings = await Rating.findAll();
-    let deviceWithRait = {
-      ...device?.dataValues,
-      rating:
-        ratings
-          .filter((rait) => rait.deviceId === device.dataValues.id)
-          .reduce((acc, el) => acc + Number(el.rating), 0) /
-        ratings.filter((rait) => rait.deviceId === device.dataValues.id).length,
-    };
-    return res.json(deviceWithRait);
+  async remove(req, res, next) {
+    try {
+      const { id } = req.params;
+      if (id) {
+        await Device.destroy({ where: { id } });
+        await DeviceInfo.destroy({ where: { deviceId: id } });
+        return res.json({ message: "Удаление успешно!" });
+      }
+    } catch (e) {
+      next(ApiError(e.message));
+    }
   }
 
-  async remove(req, res) {
-    const { id } = req.params;
-    if (id) {
-      await Device.destroy({ where: { id } });
-      await DeviceInfo.destroy({ where: { deviceId: id } });
-      return res.json({ message: "Удаление успешно!" });
+  async getStartInfo(req, res, next) {
+    try {
+      const devices = await Device.findAll();
+      const types = await Type.findAll();
+      function groupBy(xs, key) {
+        return xs.reduce(function (rv, x) {
+          (rv[x[key]] = rv[x[key]] || []).push(x);
+          return rv;
+        }, {});
+      }
+      let grouped = groupBy(
+        devices.map((d) => {
+          return {
+            ...d.dataValues,
+            typeName: types.find((t) => t.id === d.TypeId).name,
+          };
+        }),
+        "typeName"
+      );
+      Object.keys(grouped).forEach((key) => {
+        grouped[key] = grouped[key].slice(0, 3);
+      });
+      return res.json({
+        response: grouped,
+      });
+    } catch (e) {
+      next(ApiError(e.message));
     }
   }
 }

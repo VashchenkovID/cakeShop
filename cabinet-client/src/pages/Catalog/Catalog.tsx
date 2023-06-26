@@ -155,7 +155,11 @@ const Catalog: React.FC = () => {
         className={cx(styles.IconBasket, {
           visible: isBasketVisible,
         })}
-        onClick={() => navigate(`${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`)}
+        onClick={() =>
+          navigate(
+            `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`
+          )
+        }
       >
         <IconBasket className={styles.IconBasket__icon} />
       </div>

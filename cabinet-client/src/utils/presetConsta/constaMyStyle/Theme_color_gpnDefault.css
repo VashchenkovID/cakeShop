@@ -84,22 +84,13 @@
     0.52
   ); /* Цвет фона бордеров контрола по ховеру */
 
-  --color-control-bg-border-focus: rgb(
-    0,
-    145,
-    255
-  ); /* Цвет аутлайна контролов при фокусе */ /* TODO заменить на правило целиком */
-  --color-control-bg-focus: rgba(
-    0,
-    120,
-    210,
-    0.3
-  ); /* Цвет тени в состонии фокуса */
+  --color-control-bg-border-focus: #FFFFFF; /* Цвет аутлайна контролов при фокусе */ /* TODO заменить на правило целиком */
+  --color-control-bg-focus: transparent; /* Цвет тени в состонии фокуса */
   --color-control-bg-active: rgba(
     0,
     120,
     210,
-    0.5
+    0
   ); /* Цвет тени в состонии нажатия  */
 
   /* Primary */
@@ -123,7 +114,7 @@
     255
   ); /* Цвет фона бордеров контрола по ховеру */
 
-  --color-control-typo-secondary: #003973; /* Цвет второстепеного текста контрола */
+  --color-control-typo-secondary: #FFFFFF; /* Цвет второстепеного текста контрола */
 
   --color-control-typo-secondary-hover: rgb(
     0,

@@ -1,11 +1,11 @@
-import {$authHost, $host, converterUrl} from "./index";
+import { $authHost, $host, converterUrl } from "./index";
 import { AxiosResponse } from "axios";
 
 import { DeviceListModel } from "../models/DeviceListModel";
 import { EnpointsEnum } from "../endpoints";
 import { DeviceItemModel } from "../models/DeviceItemModel";
-import {TypeModel} from "../models/TypeModel";
-import {DecorUserModel} from "../models/DecorUserModel";
+import { TypeModel } from "../models/TypeModel";
+import { DecorUserModel } from "../models/DecorUserModel";
 
 interface IDeviceListResponse {
   count: number;
@@ -35,5 +35,7 @@ export default {
   //Декор
   getDecor: (): Promise<AxiosResponse<DecorUserModel[], any>> =>
     $authHost.get(`${EnpointsEnum.GET_DECOR}`),
-
+  //  Стартовая информация
+  getStart: (): Promise<AxiosResponse<any>> =>
+    $authHost.get(`${EnpointsEnum.GET_START_INFO}`),
 };

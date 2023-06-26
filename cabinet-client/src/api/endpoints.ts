@@ -21,4 +21,6 @@ export const enum EnpointsEnum {
   GET_RATINGS_FOR_DEVICE_NOT_USER = '/ratings/feedback/getDeviceRatings',
   GET_USER_RATINGS = '/ratings/getUserRatings',
   DELETE_RATING = '/ratings/remove',
+  //Start
+  GET_START_INFO = '/device/general/getInfo'
 }
