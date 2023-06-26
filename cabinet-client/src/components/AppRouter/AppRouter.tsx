@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -10,8 +10,11 @@ import { setIsAuth } from "../../store/features/auth/AuthSlice";
 import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../utils/enum";
 import { storageToken } from "../../utils/storage";
 import AuthContainer from "../../pages/Auth/AuthContainer";
-import StartPage from "../../pages/StartPage/StartPage";
+
 import Catalog from "../../pages/Catalog/Catalog";
+import CreateOrder from "../../pages/CreateOrder/CreateOrder";
+import { BasketModel } from "../../api/models/BasketModel";
+import { setBasket } from "../../store/features/basket/BasketSlice";
 
 export interface IRouteItem {
   path: string;
@@ -22,6 +25,10 @@ export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
   { path: `${PublicRoutesEnum.LOGIN}`, element: <AuthContainer /> },
   { path: `${PublicRoutesEnum.SHOP}`, element: <Catalog /> },
+  {
+    path: `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`,
+    element: <CreateOrder />,
+  },
   { path: `${PublicRoutesEnum.FILLINGS}`, element: <div>fillings</div> },
   { path: `${PublicRoutesEnum.INDIVIDUAL}`, element: <div>individual</div> },
   { path: `${PublicRoutesEnum.GENERAL}`, element: <div>general</div> },
@@ -30,6 +37,7 @@ export const publicRoutes: Array<IRouteItem> = [
 const AppRouter = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);
+  const basket: string | null = localStorage.getItem("Basket");
   const checkIsAuth = async () => {
     try {
       const response = await axios.get<AuthResponse>(
@@ -55,22 +63,28 @@ const AppRouter = () => {
     ));
   };
   useEffect(() => {
-    if (storageToken() && storageToken() !== "undefined") {
+    if (storageToken() || storageToken() !== "undefined") {
       checkIsAuth();
     }
   }, []);
+  useEffect(() => {
+    if (basket && JSON.parse(basket)) {
+      dispatch(setBasket(JSON.parse(basket) as BasketModel));
+    }
+  }, [basket]);
+
   return (
     <>
       <Routes>
+        {getRoutes(publicRoutes)}
         <Route
           path="/"
           element={<Navigate to={PublicRoutesEnum.SHOP} replace />}
         />
-        {getRoutes(publicRoutes)}
         <Route path="*" element={<div>Страница не найдена</div>} />
       </Routes>
     </>
   );
 };
 
-export default AppRouter;
+export default React.memo(AppRouter);

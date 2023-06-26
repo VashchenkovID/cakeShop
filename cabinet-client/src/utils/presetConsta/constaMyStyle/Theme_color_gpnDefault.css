@@ -103,7 +103,7 @@
   ); /* Цвет тени в состонии нажатия  */
 
   /* Primary */
-  --color-control-bg-primary: #003973; /* Цвет фона активного контрола */
+  --color-control-bg-primary: #FFFFFF; /* Цвет фона активного контрола */
   --color-control-bg-primary-hover: #e5e5be; /* Цвет фона активного контрола по ховеру */
 
   --color-control-typo-primary: rgb(255, 255, 255); /* Цвет акцентного текста */
@@ -174,7 +174,7 @@
     0.05
   ); /* Цвет фона чистого контрола по ховеру */
 
-  --color-control-typo-clear: rgba(0, 57, 92, 0.8); /* Цвет акцентного текста */
+  --color-control-typo-clear: rgb(193, 198, 255); /* Цвет акцентного текста */
 
   --color-control-typo-clear-hover: rgba(
     0,

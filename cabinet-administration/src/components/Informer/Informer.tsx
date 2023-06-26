@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@consta/uikit/Text';
-import ComponentStyleWrapper from 'src/components/ComponentStyleWrapper/ComponentStyleWrapper';
 import styles from './Informer.styl';
+import ComponentStyleWrapper from '../ComponentStyleWrapper/ComponentStyleWrapper';
 
 interface IComponentProps {
   text: string;

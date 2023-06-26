@@ -7,7 +7,7 @@
     "app-install": "cd server && npm install && cd .. && cd client && yarn && cd ..",
     "run-server": "cd server && yarn dev",
     "run-admin": "cd cabinet-administration && yarn dev",
-    "run-client": "cd client && yarn dev"
+    "run-client": "cd cabinet-client && yarn dev"
   },
   "keywords": [
     "shop",

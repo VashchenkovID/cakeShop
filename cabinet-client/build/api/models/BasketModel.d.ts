@@ -1,7 +1,7 @@
 export interface BasketModel {
     name: string;
     id: number | null;
-    user_id: number;
+    user_id: number | null;
     items: {
         id: number | null;
         localId: string;

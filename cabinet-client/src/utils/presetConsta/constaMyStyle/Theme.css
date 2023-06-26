@@ -38,10 +38,15 @@
   background: transparent !important;
   border-bottom: none;
 }
-.HeaderMenu-Link_active::before {
+.HeaderMenu-Link_active:before {
   max-width: 100% !important;
   height: 4px !important;
-  background-color: #fef0ff;
+  background-color: #fef0ff !important;
+}
+.ListItem_active::before {
+  max-width: 100% !important;
+  height: 4px !important;
+  background-color: #fef0ff !important;
 }
 
 .DragNDropField {
@@ -137,4 +142,23 @@
 }
 .Popover {
   color: #fef0ff;
+  z-index: 10000;
+}
+.TabsFitModeScrollWrapper-Button {
+  background-image: linear-gradient(
+          to right,
+          #4776e6 0%,
+          #8e54e9 51%,
+          #4776e6 100%
+  );
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+}
+.TabsFitModeScrollWrapper-Button:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }

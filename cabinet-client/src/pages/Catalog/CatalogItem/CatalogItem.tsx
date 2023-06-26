@@ -27,7 +27,6 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
   const [isAdded, setIsAdded] = useState(false);
 
   const { width } = useResize();
-  console.log(width);
   const addItemInBasket = async () => {
     if (userId) {
       if (!basket) {
@@ -233,6 +232,9 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
       setIsAdded(false);
     }
   }, [countItemBasket]);
+  useEffect(() => {
+    localStorage.setItem("Basket", JSON.stringify(basket));
+  }, [basket]);
   return (
     <div className={styles.Item}>
       <div className={styles.Item__header}>

@@ -1,4 +1,16 @@
 .class {
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

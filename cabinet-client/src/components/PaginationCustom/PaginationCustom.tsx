@@ -24,6 +24,7 @@ export interface IPaginationItemsFooterProps {
   pagination: PaginationStateType;
   setPagination: React.Dispatch<React.SetStateAction<PaginationStateType>>;
   className?: string;
+  notSelect?: boolean;
 }
 
 const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
@@ -54,24 +55,27 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
 
   return (
     <div className={cx(styles.PaginationItemsFooter, props.className)}>
-      <div className={styles.selectContainer}>
-        <Select
-          form="round"
-          size="xs"
-          className={styles.select}
-          items={items}
-          getItemKey={(item) => item}
-          getItemLabel={(item) => item.toString()}
-          value={pagination.perPage}
-          onChange={({ value }) =>
-            setPagination((prev) =>
-              value ? { ...prev, page: 1, perPage: value } : prev
-            )
-          }
-          {...selectDisabledProps}
-        />
-        <Text size="xs">{`из ${total}`}</Text>
-      </div>
+      {props.notSelect !== undefined && !props.notSelect && (
+        <div className={styles.selectContainer}>
+          <Select
+            form="round"
+            size="xs"
+            className={styles.select}
+            items={items}
+            getItemKey={(item) => item}
+            getItemLabel={(item) => item.toString()}
+            value={pagination.perPage}
+            onChange={({ value }) =>
+              setPagination((prev) =>
+                value ? { ...prev, page: 1, perPage: value } : prev
+              )
+            }
+            {...selectDisabledProps}
+          />
+
+          <Text size="xs">{`из ${total}`}</Text>
+        </div>
+      )}
       <div className={styles.actions}>
         <Button
           size="xs"

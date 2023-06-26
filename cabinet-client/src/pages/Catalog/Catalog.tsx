@@ -15,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 import IconBasket from "../../components/IconBasket/IconBasket";
 import { PublicRoutesEnum } from "../../utils/enum";
 import CatalogItem from "./CatalogItem/CatalogItem";
+import { Tabs } from "@consta/uikit/Tabs";
+import { Loader } from "@consta/uikit/Loader";
+import InformerBadge from "../../components/Informer/Informer";
+import { Pagination } from "@consta/uikit/Pagination";
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
@@ -40,6 +44,30 @@ const Catalog: React.FC = () => {
     perPage: 10,
   });
   const [count, setCount] = useState(0);
+
+  const hotKeys = {
+    prevPage: {
+      label: "← Shift",
+      values: ["Shift", "ArrowLeft"],
+    },
+    nextPage: {
+      label: "Shift →",
+      values: ["Shift", "ArrowRight"],
+    },
+  };
+
+  const handleChange = (pageNumber: number): void => {
+    if (pageNumber === 0) {
+      setPagination((prevState) => {
+        return { ...prevState, page: 1 };
+      });
+    } else {
+      setPagination((prevState) => {
+        return { ...prevState, page: pageNumber };
+      });
+    }
+  };
+
   const { load: fetchTypes, isLoading: typeLoading } = useRequest(
     cakesApi.getCakeTypes,
     (data) => {
@@ -71,6 +99,12 @@ const Catalog: React.FC = () => {
     return basket && basket.items.length > 0;
   }, [basket]);
 
+  const totalPages = useMemo(() => {
+    if (count > 10) {
+      return Math.round(count / 10);
+    } else return 1;
+  }, [count]);
+
   useEffect(() => {
     fetchTypes();
   }, []);
@@ -93,38 +127,45 @@ const Catalog: React.FC = () => {
   return (
     <div className={styles.Shop}>
       <div className={styles.Shop__header}>
-        {types.map((t, index) => (
-          <Text
-            className={cx(styles.Shop__header__type, {
-              active: type && type.id === t.id,
-            })}
-            onClick={() => setType(t)}
-            key={`${t.name}_${index}`}
-          >
-            {t.name}
-          </Text>
-        ))}
+        <Tabs
+          getItemLabel={(i) => i.name}
+          items={types}
+          value={type}
+          onChange={({ value }) => setType(value)}
+          fitMode="scroll"
+          view={"clear"}
+        />
       </div>
-      <div className={styles.Shop__items}>
-        {items.length > 0 &&
-          items.map((item, index) => (
-            <CatalogItem item={item} key={`${item.id}_${index}`} />
-          ))}
-      </div>
+      {!isLoading ? (
+        <div className={styles.Shop__items}>
+          {items.length > 0 &&
+            items.map((item, index) => (
+              <CatalogItem item={item} key={`${item.id}_${index}`} />
+            ))}
+        </div>
+      ) : (
+        <div className={styles.Shop__loader}>
+          <Loader />
+        </div>
+      )}
+      {!isLoading && items.length === 0 && (
+        <InformerBadge text={"Список пуст"} />
+      )}
       <div
         className={cx(styles.IconBasket, {
           visible: isBasketVisible,
         })}
-        onClick={() => navigate(`${PublicRoutesEnum.VIEW_ORDER}`)}
+        onClick={() => navigate(`${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`)}
       >
         <IconBasket className={styles.IconBasket__icon} />
       </div>
 
-      <footer className={styles.Shop__active}>
-        <PaginationCustom
-          total={count}
-          pagination={pagination}
-          setPagination={setPagination}
+      <footer>
+        <Pagination
+          className={styles.Shop__active}
+          currentPage={pagination.page}
+          onChange={handleChange}
+          totalPages={totalPages}
         />
       </footer>
     </div>

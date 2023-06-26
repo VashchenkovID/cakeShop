@@ -172,10 +172,13 @@ module.exports = function () {
       });
     } else {
       const userData = TokenService.validateAccessToken(accessToken);
-      await Audit.create({
-        description: `${checkEndpoint(url)} ${userData.fullName}`,
-        user: userData.fullName,
-      });
+      if (userData) {
+        await Audit.create({
+          description: `${checkEndpoint(url)} ${userData?.fullName}`,
+          user: userData.fullName,
+        });
+      }
+
     }
     next();
   };

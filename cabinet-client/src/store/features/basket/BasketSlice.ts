@@ -14,7 +14,7 @@ const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    setBasket: (state, action: PayloadAction<BasketModel>) => {
+    setBasket: (state, action: PayloadAction<BasketModel | null>) => {
       state.basket = action.payload;
     },
   },

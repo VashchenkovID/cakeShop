@@ -1,8 +1,9 @@
 .Shop
   margin 24px
-  padding-right 24px
+  min-height 60vh
   max-height calc(100vh - 170px)
   overflow-y auto
+  overflow-x hidden
   display flex
   flex-direction column
   gap 24px
@@ -26,6 +27,10 @@
     padding 16px
     background-image linear-gradient(315deg, #492489 5%,#8860D0 74%);
     width calc(100vw - 32px)
+  &__loader
+    display flex
+    justify-content center
+    align-items center
 
 
 .IconBasket
@@ -37,29 +42,19 @@
   display flex
   justify-content center
   align-items center
-  bottom 10vh
+  bottom 1vh
   right 2vw
   z-index 100
-  transition: margin .5s;
-  margin: 0 -250px; 0 0
+  transition: opacity .5s;
+  opacity 0
   transform: translate3d(0px, -20px, 0px);
   cursor pointer
   &.visible
     margin-right 0
+    opacity 1
+    @media (max-width 800px)
+      opacity 1
+      margin-right 10px
   &__icon
     max-width 30px
 
-
-@keyframes bobble {
-  0% {
-    transform: translate3d(50px, 40px, 0px);
-    animation-timing-function: ease-in;
-  }
-  50% {
-    transform: translate3d(50px, 50px, 0px);
-    animation-timing-function: ease-out;
-  }
-  100% {
-    transform: translate3d(50px, 40px, 0px);
-  }
-}

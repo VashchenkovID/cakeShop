@@ -1,0 +1,47 @@
+.CakeItem
+  display grid
+  grid-template-columns repeat(5,1fr)
+  gap 8px
+  align-items center
+  color #002033
+  padding 16px
+  &__actions
+    display flex
+    gap 24px
+    align-items center
+  &__basketActions
+    display flex
+    gap 16px
+    align-items center
+
+.Collapse :global(.Collapse-Label) {
+  padding 0px 16px
+  background rgba(47, 4, 79, 0.5)
+  border-top-left-radius 10px
+  border-top-right-radius 10px
+}
+.Collapse :global(.Collapse-Body) {
+  padding 0px 16px
+  background rgba(47, 4, 79, 0.5)
+  border-bottom-left-radius 10px
+  border-bottom-right-radius 10px
+}
+.Collapse :global(.Collapse-Icon_position_left) {
+  margin 0
+  padding 0
+}
+.Decor
+  display grid
+  grid-template-columns repeat(4,1fr)
+  gap 16px
+  &__rows
+    display flex
+    flex-direction column
+    gap 8px
+    padding 16px
+    background rgba(47, 4, 79, 0.5)
+    border-radius 10px
+  &__addDec
+    display flex
+    justify-content center
+    align-items center

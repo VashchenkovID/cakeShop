@@ -31,4 +31,5 @@ export enum PublicRoutesEnum {
   FEEDBACK = "/feedback",
   VIEW_ORDER = "/order",
   CREATE_RATING = "/ratings/create",
+  CREATE_ORDER ='/create'
 }
