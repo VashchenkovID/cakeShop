@@ -109,7 +109,10 @@
   background-size: 200% auto;
   color: white;
 }
-
+.Button_disabled {
+  background-color: rgba( 0, 66, 105, 0.3 );
+  color: rgba(255, 255, 255, 0.2);
+}
 .Button_view_primary:hover {
   background-position: right center; /* change the direction of the change here */
   color: #fff;

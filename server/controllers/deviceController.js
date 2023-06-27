@@ -261,7 +261,8 @@ class DeviceController {
         grouped[key] = grouped[key].slice(0, 3);
       });
       return res.json({
-        response: grouped,
+        items: grouped,
+        types: types,
       });
     } catch (e) {
       next(ApiError(e.message));

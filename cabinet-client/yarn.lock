@@ -232,6 +232,11 @@
   resolved "https://registry.npmjs.org/@bem-react/classnames/-/classnames-1.3.10.tgz"
   integrity sha512-tn+45Ii+S5FcYuO5FMs9YLSMUc355iUho7mwFeMMihi/ZZCQjvdR5AhVexnL9GS7pMtOeV0OsDOPDkW1sXVI3A==
 
+"@brainhubeu/react-carousel@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@brainhubeu/react-carousel/-/react-carousel-2.0.4.tgz#9b3d3e9699fca1617530e4cd242d6ef99a671917"
+  integrity sha512-FeN4IL0xg2Ld2YC7zk2asnIbECfsaV9ryiHE3KaDRy3VRPKhAdwAcsrUR4u0lzFMghzGIwtrnIfMnYjczwjAdg==
+
 "@consta/icons@^0.1.1":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@consta/icons/-/icons-0.1.1.tgz"
@@ -553,6 +558,13 @@
     "@swc/core-win32-ia32-msvc" "1.3.64"
     "@swc/core-win32-x64-msvc" "1.3.64"
 
+"@types/brainhubeu__react-carousel@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/brainhubeu__react-carousel/-/brainhubeu__react-carousel-2.0.5.tgz#1ae3ee5b8feab4d92a5cb4a4ee03ed286d6bf3ef"
+  integrity sha512-8YzD/lTSzIwnxUOWzFOjtDyvlvKHp52vqtX5t+YkNsSSg3kQOccJFrOI2mv7HyFA24ALYDakXohdsj/+9hFrQA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/classnames@^2.3.1":
   version "2.3.1"
   resolved "https://registry.npmjs.org/@types/classnames/-/classnames-2.3.1.tgz"
@@ -582,13 +594,6 @@
   version "18.2.5"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.2.5.tgz"
   integrity sha512-sRQsOS/sCLnpQhR4DSKGTtWFE3FZjpQa86KPVbhUqdYMRZ9FEFcfAytKhR/vUG2rH1oFbOOej6cuD7MFSobDRQ==
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-transition-group@^4.4.6":
-  version "4.4.6"
-  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.6.tgz#18187bcda5281f8e10dfc48f0943e2fdf4f75e2e"
-  integrity sha512-VnCdSxfcm08KjsJVQcfBmhEQAPnLB8G08hAxn39azX1qYBQ/5RVQuoHuKIcfKOdncuaUvEpFKFzEvbtIMsfVew==
   dependencies:
     "@types/react" "*"
 
