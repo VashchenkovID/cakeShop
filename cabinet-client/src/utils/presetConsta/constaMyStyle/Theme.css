@@ -37,6 +37,7 @@
 .Header {
   background: transparent !important;
   border-bottom: none;
+  padding-left: 0 !important;
 }
 .HeaderMenu-Link_active:before {
   max-width: 100% !important;

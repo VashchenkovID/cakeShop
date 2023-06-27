@@ -1,8 +1,9 @@
 .Header
-  //background transparent
-  //padding 16px
-  //display flex
-  //justify-content space-between
+  &__left
+    display flex
+    align-items center
+    gap 16px
+    padding-left 0
   &__nav
     display flex
     gap 24px
@@ -20,3 +21,32 @@
 .buttons
   display flex
   gap 16px
+
+.Sidebar
+  z-index 10000
+  padding 16px !important
+  background rgba(47, 4, 79, 0.5) !important
+  justify-content space-between
+  max-width 350px !important
+  &__user
+    display flex
+    align-items center
+    justify-content space-between
+    gap 4px
+  &__links
+    display flex
+    flex-direction column
+    gap 16px
+  &__link
+    padding 8px 0
+    cursor pointer
+    &.active
+      border-bottom 1px solid #FFFFFF
+  &__footer
+    background rgba(47, 4, 79, 0.5)
+    margin 0px -16px 16px -16px
+    padding 16px
+    border-top 1px solid rgba(255, 255, 255, 0.46)
+.Logo
+  width 60px
+  height 60px

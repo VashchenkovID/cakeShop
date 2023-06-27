@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import cn from "classnames/bind";
 import styles from "./Header.module.styl";
 import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.jpg";
 import {
   Header as ConstaHeader,
   HeaderMenu,
@@ -24,6 +25,8 @@ import { useResize } from "../../hooks/useResize";
 import { Sidebar } from "@consta/uikit/Sidebar";
 import { IconAlignJustify } from "@consta/uikit/IconAlignJustify";
 import { IconClose } from "@consta/uikit/IconClose";
+import { Text } from "@consta/uikit/Text";
+import FooterWithInfo from "../FooterWithInfo/FooterWithInfo";
 const cx = cn.bind(styles);
 
 interface Item {
@@ -106,6 +109,7 @@ const Header: React.FC<IHeaderProps> = () => {
     AuthService.logout().then(() => {
       localStorage.clear();
       dispatch(setIsAuth(false));
+      setIsOpen(false);
     });
   };
   return (
@@ -118,37 +122,54 @@ const Header: React.FC<IHeaderProps> = () => {
         leftSide={
           width <= 850 ? (
             <div>
-              <Button
-                iconLeft={isOpen ? IconClose : IconAlignJustify}
-                view={"clear"}
-                size={"l"}
-                onClick={() => setIsOpen(true)}
-              />
+              {!isOpen && (
+                <Button
+                  iconLeft={isOpen ? IconClose : IconAlignJustify}
+                  view={"clear"}
+                  size={"l"}
+                  onClick={() => setIsOpen(true)}
+                />
+              )}
+
               <Sidebar
-                style={{ background: "red" }}
+                style={{ width: width - 30 }}
+                className={styles.Sidebar}
                 isOpen={isOpen}
                 position={"left"}
                 onClickOutside={() => setIsOpen(false)}
               >
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={(e) => {
-                      setIsOpen(false);
-                      if (item.onClick) {
-                        item.onClick(e);
-                      }
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                ))}
-                {width < 500 && (
-                  <div>
-                    {isAuth && (
-                      <User name={user || ""} size={"l"} info={phone || ""} />
-                    )}
-                    <BasketWithCount />{" "}
+                <div>
+                  {width < 800 && (
+                    <div className={styles.Sidebar__user}>
+                      {isAuth && (
+                        <User name={user || ""} size={"l"} info={phone || ""} />
+                      )}
+                      <BasketWithCount />{" "}
+                      <Button
+                        iconLeft={isOpen ? IconClose : IconAlignJustify}
+                        view={"clear"}
+                        size={"l"}
+                        onClick={() => setIsOpen(false)}
+                      />
+                    </div>
+                  )}
+                  <div className={styles.Sidebar__links}>
+                    {items.map((item) => (
+                      <Text
+                        className={cx(styles.Sidebar__link, {
+                          active: item.active,
+                        })}
+                        key={item.id}
+                        onClick={(e: any) => {
+                          setIsOpen(false);
+                          if (item.onClick) {
+                            item.onClick(e);
+                          }
+                        }}
+                      >
+                        {item.label}
+                      </Text>
+                    ))}
                     {isAuth ? (
                       <div className={styles.Header__user}>
                         <Button
@@ -161,23 +182,33 @@ const Header: React.FC<IHeaderProps> = () => {
                     ) : (
                       <div className={styles.buttons}>
                         <Button
-                          onClick={() => navigate(PublicRoutesEnum.LOGIN)}
+                          onClick={() => {
+                            setIsOpen(false);
+                            navigate(PublicRoutesEnum.LOGIN);
+                          }}
                           label={"Вход"}
                           size={"s"}
                         />
                         <Button
-                          onClick={() => navigate(PublicRoutesEnum.AUTH)}
+                          onClick={() => {
+                            setIsOpen(false);
+                            navigate(PublicRoutesEnum.AUTH);
+                          }}
                           label={"Регистрация"}
                           size={"s"}
                         />
                       </div>
                     )}
                   </div>
-                )}
+                </div>
+                <div className={styles.Sidebar__footer}>
+                  <FooterWithInfo />
+                </div>
               </Sidebar>
             </div>
           ) : (
-            <HeaderModule>
+            <HeaderModule className={styles.Header__left}>
+              <img className={styles.Logo} src={logo} />
               <nav className={styles.Header__nav}>
                 <HeaderMenu items={items} />
               </nav>
@@ -185,7 +216,7 @@ const Header: React.FC<IHeaderProps> = () => {
           )
         }
         rightSide={
-          width >= 500 && (
+          width >= 500 ? (
             <div className={styles.Header__user}>
               {isAuth && (
                 <User name={user || ""} size={"l"} info={phone || ""} />
@@ -215,6 +246,8 @@ const Header: React.FC<IHeaderProps> = () => {
                 </div>
               )}
             </div>
+          ) : (
+            <img className={styles.Logo} src={logo} />
           )
         }
       ></ConstaHeader>

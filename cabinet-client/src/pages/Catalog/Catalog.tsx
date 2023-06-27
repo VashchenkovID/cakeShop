@@ -128,6 +128,7 @@ const Catalog: React.FC = () => {
     <div className={styles.Shop}>
       <div className={styles.Shop__header}>
         <Tabs
+          size={"s"}
           getItemLabel={(i) => i.name}
           items={types}
           value={type}
@@ -136,14 +137,14 @@ const Catalog: React.FC = () => {
           view={"clear"}
         />
       </div>
-      {!isLoading ? (
+      {items.length > 0 && (
         <div className={styles.Shop__items}>
-          {items.length > 0 &&
-            items.map((item, index) => (
-              <CatalogItem item={item} key={`${item.id}_${index}`} />
-            ))}
+          {items.map((item, index) => (
+            <CatalogItem item={item} key={`${item.id}_${index}`} />
+          ))}
         </div>
-      ) : (
+      )}
+      {isLoading && (
         <div className={styles.Shop__loader}>
           <Loader />
         </div>
