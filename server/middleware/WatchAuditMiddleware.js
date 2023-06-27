@@ -177,8 +177,12 @@ module.exports = function () {
           description: `${checkEndpoint(url)} ${userData?.fullName}`,
           user: userData.fullName,
         });
+      } else {
+        await Audit.create({
+          description: `${checkEndpoint(url)}`,
+          user: "Не авторизирован",
+        });
       }
-
     }
     next();
   };

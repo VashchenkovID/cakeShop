@@ -3,6 +3,16 @@
   grid-template-columns repeat(4,1fr)
   gap 16px
   align-items center
+  @media (max-width 500px)
+    display flex
+    justify-content space-between
+  &__mobile
+    &__text
+      white-space nowrap
+      @media (max-width 900px)
+        font-size 14px
+      @media (max-width 900px)
+        font-size 12px
   &__name
     display flex
     gap 8px

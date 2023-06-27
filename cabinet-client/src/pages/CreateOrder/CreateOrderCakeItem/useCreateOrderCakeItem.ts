@@ -1,12 +1,10 @@
-
-import { MutableRefObject } from 'react';
-import {useAppDispatch} from "../../../hooks/useAppDispatch";
-import {useAppSelector} from "../../../hooks/useAppSelector";
-import {selectBasket} from "../../../store/features/basket/BasketSelectors";
-import {LocalStorageKeysEnum} from "../../../utils/enum";
-import {setBasket} from "../../../store/features/basket/BasketSlice";
-import {BasketModel} from "../../../api/models/BasketModel";
-
+import React, { MutableRefObject } from "react";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { useAppSelector } from "../../../hooks/useAppSelector";
+import { selectBasket } from "../../../store/features/basket/BasketSelectors";
+import { LocalStorageKeysEnum } from "../../../utils/enum";
+import { setBasket } from "../../../store/features/basket/BasketSlice";
+import { BasketModel } from "../../../api/models/BasketModel";
 
 export interface CreateOrderCakeItemType {
   id: number | null;
@@ -21,22 +19,26 @@ export interface CreateOrderCakeItemType {
 
 const useCreateOrderCakeItem = (
   item: CreateOrderCakeItemType,
-  ref: MutableRefObject<number>,
+  ref: MutableRefObject<number>
 ) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
   const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
-  const addWeightCountInBasket = async (item: {
-    id: number;
-    localId: string;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-  }) => {
+  const addWeightCountInBasket = async (
+    e: React.MouseEvent<Element, MouseEvent>,
+    item: {
+      id: number;
+      localId: string;
+      name: string;
+      deviceId: number;
+      basketId: number | null;
+      count: number;
+      price: number;
+      weightType: string;
+      countWeightType: number;
+    }
+  ) => {
+    e.stopPropagation();
     if (userId) {
       if (basket) {
         if (basket.items.find((elem) => elem.id === item.id)) {
@@ -48,7 +50,7 @@ const useCreateOrderCakeItem = (
                   return { ...i, countWeightType: i.countWeightType + 1 };
                 } else return { ...i };
               }),
-            }),
+            })
           );
         } else {
           dispatch(
@@ -69,7 +71,7 @@ const useCreateOrderCakeItem = (
                   countWeightType: item.countWeightType,
                 },
               ],
-            } as BasketModel),
+            } as BasketModel)
           );
         }
       }
@@ -84,7 +86,7 @@ const useCreateOrderCakeItem = (
                   return { ...i, countWeightType: i.countWeightType + 1 };
                 } else return { ...i };
               }),
-            }),
+            })
           );
         } else {
           dispatch(
@@ -105,23 +107,27 @@ const useCreateOrderCakeItem = (
                   countWeightType: item.countWeightType,
                 },
               ],
-            }),
+            })
           );
         }
       }
     }
   };
-  const removeWeightCountInBasket = async (item: {
-    id: number;
-    name: string;
-    deviceId: number;
-    basketId: number | null;
-    count: number;
-    price: number;
-    weightType: string;
-    countWeightType: number;
-    localId: string;
-  }) => {
+  const removeWeightCountInBasket = async (
+    e: React.MouseEvent<Element, MouseEvent>,
+    item: {
+      id: number;
+      name: string;
+      deviceId: number;
+      basketId: number | null;
+      count: number;
+      price: number;
+      weightType: string;
+      countWeightType: number;
+      localId: string;
+    }
+  ) => {
+    e.stopPropagation();
     if (userId) {
       if (basket) {
         if (basket.items.find((elem) => elem.id === item.id)) {
@@ -136,7 +142,7 @@ const useCreateOrderCakeItem = (
                   return { ...i, countWeightType: i.countWeightType - 1 };
                 } else return { ...i };
               }),
-            }),
+            })
           );
         } else {
           dispatch(
@@ -157,7 +163,7 @@ const useCreateOrderCakeItem = (
                   countWeightType: item.countWeightType,
                 },
               ],
-            }),
+            })
           );
         }
       }
@@ -182,7 +188,7 @@ const useCreateOrderCakeItem = (
                 countWeightType: item.countWeightType,
               },
             ],
-          }),
+          })
         );
       }
       if (basket) {
@@ -198,7 +204,7 @@ const useCreateOrderCakeItem = (
                   return { ...i, countWeightType: i.countWeightType - 1 };
                 } else return { ...i };
               }),
-            }),
+            })
           );
         } else {
           dispatch(
@@ -219,7 +225,7 @@ const useCreateOrderCakeItem = (
                   countWeightType: item.countWeightType,
                 },
               ],
-            }),
+            })
           );
         }
       }

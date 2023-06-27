@@ -1,6 +1,6 @@
 .CakeItem
   display grid
-  grid-template-columns repeat(5,1fr)
+  grid-template-columns repeat(4,1fr)
   gap 8px
   align-items center
   color #002033
@@ -13,6 +13,24 @@
     display flex
     gap 16px
     align-items center
+  &__mobileContainer
+    display flex
+    flex-direction column
+    gap 16px
+    padding 16px
+    @media (max-width 400px)
+      padding 16px 2px
+      gap 8px
+  &__mobileItem
+    display flex
+    align-items center
+    gap 8px
+    justify-content space-between
+  &__mobileText
+    font-size 14px
+    @media (max-width 400px)
+      font-size 12px
+      white-space nowrap
 
 .Collapse :global(.Collapse-Label) {
   padding 0px 16px

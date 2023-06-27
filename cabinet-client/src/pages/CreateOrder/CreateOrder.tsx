@@ -175,13 +175,6 @@ const CreateOrder: React.FC = () => {
         </div>
       ) : (
         <div className={styles.Order__rows}>
-          <div className={styles.Order__row}>
-            <Text size={"3xl"}>Наименование</Text>
-            <Text size={"3xl"}>Количество</Text>
-            <Text size={"3xl"}>Вес/Кол-во в коробке</Text>
-            <Text size={"3xl"}>Цена за единицу</Text>
-            <Text size={"3xl"}>Итог</Text>
-          </div>
           <div className={styles.Order__rows}>
             {basket.items.map((item, index) => (
               <CreateOrderCakeItem

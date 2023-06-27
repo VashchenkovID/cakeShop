@@ -13,6 +13,7 @@ import useCreateOrderCakeItem from "./useCreateOrderCakeItem";
 import { setBasket } from "../../../store/features/basket/BasketSlice";
 import { BasketModel } from "../../../api/models/BasketModel";
 import CreateOrderDecorItem from "../CreateOrderDecorItem/CreateOrderDecorItem";
+import { useResize } from "../../../hooks/useResize";
 
 export interface OrderBasketChangeDecors extends DecorUserModel {
   isChecked: boolean;
@@ -43,6 +44,7 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
   item,
   orderDecors,
 }) => {
+  const { width } = useResize();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
   const ref = useRef(item.countWeightType);
@@ -113,60 +115,111 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
     <Collapse
       isOpen={isOpen}
       className={styles.Collapse}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsOpen((prev) => !prev);
+      }}
       label={
-        <div className={styles.CakeItem}>
-          <div>
-            <Text size={"xl"}> {item.name}</Text>
-            <Button
-              label={isOpen ? "Скрыть декор" : "Показать декор"}
-              onClick={() => setIsOpen((prev) => !prev)}
-              size={"xs"}
-            />
-          </div>
-          <Text className={styles.CakeItem__basketActions}>
-            <Text size={"xl"}>{item.count} шт</Text>
-          </Text>
-          <Text className={styles.CakeItem__basketActions} size={"xl"}>
-            <Button
-              size={"s"}
-              label={"-"}
-              view={item.countWeightType === ref.current ? "ghost" : "primary"}
-              disabled={item.countWeightType === ref.current}
-              onClick={() => removeWeightCountInBasket(item)}
-            />
-            <Text size={"xl"}>
-              {item.countWeightType} {item.weightType}
-            </Text>
-            <Button
-              size={"s"}
-              onClick={() => addWeightCountInBasket(item)}
-              label={"+"}
-            />
-          </Text>
-          <Text size={"xl"}>{item.price},00 ₽</Text>
-          <Text className={styles.CakeItem__actions} size={"2xl"}>
-            {Number(item.count) *
-              Number(item.price) *
-              Number(item.countWeightType)}
-            ,00 ₽
-            <Button
-              size={"s"}
-              iconLeft={IconTrash}
-              onClick={() => {
-                if (basket) {
-                  dispatch(
-                    setBasket({
-                      ...basket,
-                      items: basket.items.filter(
-                        (elem) => elem.localId !== item.localId
-                      ),
-                    })
-                  );
+        width >= 500 ? (
+          <div className={styles.CakeItem}>
+            <Text> {item.name}</Text>
+            <div className={styles.CakeItem__basketActions}>
+              <Button
+                size={"s"}
+                label={"-"}
+                view={
+                  item.countWeightType === ref.current ? "ghost" : "primary"
                 }
-              }}
-            />
-          </Text>
-        </div>
+                disabled={item.countWeightType === ref.current}
+                onClick={(e) => removeWeightCountInBasket(e, item)}
+              />
+              <Text>
+                {item.countWeightType} {item.weightType}
+              </Text>
+              <Button
+                size={"s"}
+                onClick={(e) => addWeightCountInBasket(e, item)}
+                label={"+"}
+              />
+            </div>
+            <Text>{item.price},00 ₽</Text>
+            <div className={styles.CakeItem__actions}>
+              <Text>
+                {Number(item.count) *
+                  Number(item.price) *
+                  Number(item.countWeightType)}
+                ,00 ₽
+              </Text>
+              <Button
+                size={"s"}
+                iconLeft={IconTrash}
+                onClick={() => {
+                  if (basket) {
+                    dispatch(
+                      setBasket({
+                        ...basket,
+                        items: basket.items.filter(
+                          (elem) => elem.localId !== item.localId
+                        ),
+                      })
+                    );
+                  }
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className={styles.CakeItem__mobileContainer}>
+            <Text> {item.name}</Text>
+            <div className={styles.CakeItem__mobileItem}>
+              <div className={styles.CakeItem__basketActions}>
+                <Button
+                  size={"xs"}
+                  label={"-"}
+                  view={
+                    item.countWeightType === ref.current ? "ghost" : "primary"
+                  }
+                  disabled={item.countWeightType === ref.current}
+                  onClick={(e) => removeWeightCountInBasket(e, item)}
+                />
+                <Text className={styles.CakeItem__mobileText}>
+                  {item.countWeightType} {item.weightType}
+                </Text>
+                <Button
+                  size={"xs"}
+                  onClick={(e) => addWeightCountInBasket(e, item)}
+                  label={"+"}
+                />
+              </div>
+              <div className={styles.CakeItem__actions}>
+                <Text className={styles.CakeItem__mobileText}>
+                  {Number(item.count) *
+                    Number(item.price) *
+                    Number(item.countWeightType)}
+                  ,00 ₽
+                </Text>
+                <Button
+                  size={"xs"}
+                  iconLeft={IconTrash}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (basket) {
+                      dispatch(
+                        setBasket({
+                          ...basket,
+                          items: basket.items.filter(
+                            (elem) => elem.localId !== item.localId
+                          ),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )
       }
     >
       <div className={styles.Decor__rows}>
@@ -179,16 +232,6 @@ const CreateOrderCakeItem: React.FC<IComponentProps> = ({
             />
           )}
         </div>
-
-        {item.decors.length > 0 && (
-          <div className={styles.Decor}>
-            <Text size={"s"}>Наименование</Text>
-            <Text size={"s"}>Количество</Text>
-            <Text size={"s"}>Цена за 1шт</Text>
-            <Text size={"s"}>Итог</Text>
-          </div>
-        )}
-
         {item.decors.length > 0 &&
           localOrderDecors.map((decor, index) => (
             <CreateOrderDecorItem
