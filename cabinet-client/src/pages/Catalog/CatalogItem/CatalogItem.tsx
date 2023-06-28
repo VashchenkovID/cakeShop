@@ -236,87 +236,93 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
     localStorage.setItem("Basket", JSON.stringify(basket));
   }, [basket]);
   return (
-    <div className={styles.Item}>
-      <div className={styles.Item__header}>
-        <img
-          className={styles.Item__image}
-          src={`${import.meta.env.VITE_API_URL_IMAGE}${item.img}`}
-        />
-        {item.rating > 0 && (
-          <div className={styles.Item__rating}>
-            <Text className={styles.Item__rating__text}>
-              {item.rating.toFixed(2)}
+    <div>
+      <div className={styles.Item}>
+        <div className={styles.Item__header}>
+          <img
+            className={styles.Item__image}
+            src={`${import.meta.env.VITE_API_URL_IMAGE}${item.img}`}
+          />
+          <div className={styles.Item__title}>
+            <Text truncate weight={"semibold"}>
+              {item.name}
             </Text>
-            <IconFavorite className={styles.Item__rating__icon} />
-          </div>
-        )}
-        <Text truncate weight={"semibold"} className={styles.Item__title}>
-          {item.name}
-        </Text>
-      </div>
-      <div className={styles.Item__basket}>
-        <CatalogItemPrice
-          price={item.price}
-          countWeightType={item.countWeightType}
-          discount={item.discount}
-        />
-        {width >= 1000 && (
-          <div className={styles.Item__button}>
-            {!isAdded ? (
-              <Button
-                size={"xs"}
-                onClick={() => addItemInBasket()}
-                label={"Добавить"}
+            <div className={styles.Item__rating}>
+              <Text size={"s"} className={styles.Item__rating__text}>
+                {Math.floor(item.rating * 100) / 100}
+              </Text>
+              <IconFavorite
+                className={cx(styles.Item__rating__icon, {
+                  coloder: item.rating > 0,
+                })}
               />
-            ) : (
-              <div className={styles.Item__addActions}>
-                <Button
-                  size={"xs"}
-                  label={"-"}
-                  onClick={() => removeItemInBasket()}
-                />
-                <Text>{countItemBasket}</Text>
-                <Button
-                  size={"xs"}
-                  onClick={() => addItemInBasket()}
-                  label={"+"}
-                />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      {width < 1000 ? (
-        <div className={styles.Item__footer}>
-          <Button size={"xs"} label={"Купить в 1 клик"} />
-
-          <div className={styles.Item__button}>
-            {!isAdded ? (
-              <Button
-                size={"xs"}
-                onClick={() => addItemInBasket()}
-                label={"Добавить"}
-              />
-            ) : (
-              <div className={styles.Item__addActions}>
-                <Button
-                  size={"xs"}
-                  label={"-"}
-                  onClick={() => removeItemInBasket()}
-                />
-                <Text>{countItemBasket}</Text>
-                <Button
-                  size={"xs"}
-                  onClick={() => addItemInBasket()}
-                  label={"+"}
-                />
-              </div>
-            )}
+            </div>
           </div>
         </div>
-      ) : (
-        <Button size={"s"} label={"Купить в 1 клик"} />
-      )}
+        <div className={styles.Item__basket}>
+          <CatalogItemPrice
+            price={item.price}
+            countWeightType={item.countWeightType}
+            discount={item.discount}
+          />
+          {width >= 1000 && (
+            <div className={styles.Item__button}>
+              {!isAdded ? (
+                <Button
+                  size={"xs"}
+                  onClick={() => addItemInBasket()}
+                  label={"Добавить"}
+                />
+              ) : (
+                <div className={styles.Item__addActions}>
+                  <Button
+                    size={"xs"}
+                    label={"-"}
+                    onClick={() => removeItemInBasket()}
+                  />
+                  <Text>{countItemBasket}</Text>
+                  <Button
+                    size={"xs"}
+                    onClick={() => addItemInBasket()}
+                    label={"+"}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        {width < 1000 ? (
+          <div className={styles.Item__footer}>
+            <Button size={"xs"} label={"Купить в 1 клик"} />
+
+            <div className={styles.Item__button}>
+              {!isAdded ? (
+                <Button
+                  size={"xs"}
+                  onClick={() => addItemInBasket()}
+                  label={"Добавить"}
+                />
+              ) : (
+                <div className={styles.Item__addActions}>
+                  <Button
+                    size={"xs"}
+                    label={"-"}
+                    onClick={() => removeItemInBasket()}
+                  />
+                  <Text>{countItemBasket}</Text>
+                  <Button
+                    size={"xs"}
+                    onClick={() => addItemInBasket()}
+                    label={"+"}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <Button size={"s"} label={"Купить в 1 клик"} />
+        )}
+      </div>
     </div>
   );
 };

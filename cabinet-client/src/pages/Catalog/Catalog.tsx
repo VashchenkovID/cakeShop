@@ -4,11 +4,8 @@ import cakesApi from "../../api/requests/cakesApi";
 import styles from "./Catalog.module.styl";
 import cn from "classnames/bind";
 import { TypeModel } from "../../api/models/TypeModel";
-import { Text } from "@consta/uikit/Text";
 import { DeviceListModel } from "../../api/models/DeviceListModel";
-import PaginationCustom, {
-  PaginationStateType,
-} from "../../components/PaginationCustom/PaginationCustom";
+import { PaginationStateType } from "../../components/PaginationCustom/PaginationCustom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { selectBasket } from "../../store/features/basket/BasketSelectors";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +16,12 @@ import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
 import InformerBadge from "../../components/Informer/Informer";
 import { Pagination } from "@consta/uikit/Pagination";
+import { Modal } from "@consta/uikit/Modal";
+
+export enum CatalogModalEnum {
+  IDLE = "idle",
+  VIEW_RATING = "view_rating",
+}
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
@@ -44,17 +47,17 @@ const Catalog: React.FC = () => {
     perPage: 10,
   });
   const [count, setCount] = useState(0);
-
-  const hotKeys = {
-    prevPage: {
-      label: "← Shift",
-      values: ["Shift", "ArrowLeft"],
-    },
-    nextPage: {
-      label: "Shift →",
-      values: ["Shift", "ArrowRight"],
-    },
+  //Modal changes
+  const [modal, setModal] = useState<CatalogModalEnum>(CatalogModalEnum.IDLE);
+  const [activeItem, setActiveItem] = useState<number | null>(null);
+  const onViewRating = (id: number) => {
+    setActiveItem(id);
+    setModal(CatalogModalEnum.VIEW_RATING);
   };
+  const onClose = () => {
+    setModal(CatalogModalEnum.IDLE);
+  };
+  //pagination
 
   const handleChange = (pageNumber: number): void => {
     if (pageNumber === 0) {
@@ -173,6 +176,7 @@ const Catalog: React.FC = () => {
           totalPages={totalPages}
         />
       </footer>
+      <Modal isOpen={modal === CatalogModalEnum.VIEW_RATING}></Modal>
     </div>
   );
 };
