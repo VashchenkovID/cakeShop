@@ -9,16 +9,16 @@ interface IComponentProps {
     name: string;
     count: number;
     countType: string;
-    pricePerUnit: number;
-    constPrice: number;
+    pricePerUnit:string;
+    constPrice:string;
   };
   setDecor: React.Dispatch<
     React.SetStateAction<{
       name: string;
       count: number;
       countType: string;
-      pricePerUnit: number;
-      constPrice: number;
+      pricePerUnit: string;
+      constPrice: string;
     }>
   >;
   createNewDecor(): Promise<void>;
@@ -58,7 +58,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             type={'number'}
             label={'Количество в упаковке'}
             placeholder={'Введите количество'}
-            value={decor.count.toString()}
+            value={String(decor.count)}
             onChange={({ value }) =>
               setDecor((prev) => {
                 return { ...prev, count: Number(value) };
@@ -80,26 +80,24 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
           <TextField
             size={'s'}
             form={'round'}
-            type={'number'}
             label={'Цена за единицу'}
             placeholder={'Введите цену'}
-            value={decor.pricePerUnit.toString()}
+            value={String(decor.pricePerUnit)}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, pricePerUnit: Number(value) };
+                return { ...prev, pricePerUnit: value };
               })
             }
           />
           <TextField
             size={'s'}
             form={'round'}
-            type={'number'}
             label={'Цена закупки'}
             placeholder={'Введите цену'}
-            value={decor.constPrice.toString()}
+            value={String(decor.constPrice)}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, constPrice: Number(value) };
+                return { ...prev, constPrice: value };
               })
             }
           />

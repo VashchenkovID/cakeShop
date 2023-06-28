@@ -3,6 +3,8 @@ const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
 const { where } = require("sequelize");
+const fs = require('fs')
+
 
 class DeviceController {
   async create(req, res, next) {
@@ -229,6 +231,22 @@ class DeviceController {
     try {
       const { id } = req.params;
       if (id) {
+        const fullDevice = await Device.findOne({ where: { id } })
+        if (fullDevice) {
+          fs.readdir('static', (err, files) => {
+            if (err) throw err;
+            for (const file of files) {
+              if (file === fullDevice.img) {
+                fs.unlink(path.join('static', file), (err) => {
+                  if (err) throw err;
+                  console.log('файл удален')
+                });
+              }
+
+            }
+          });
+        }
+
         await Device.destroy({ where: { id } });
         await DeviceInfo.destroy({ where: { deviceId: id } });
         return res.json({ message: "Удаление успешно!" });

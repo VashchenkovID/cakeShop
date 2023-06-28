@@ -2,6 +2,7 @@ const { Filling, Biscuit } = require("../models/models");
 const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
+const fs = require("fs");
 
 class FillingController {
   async create(req, res) {
@@ -49,6 +50,22 @@ class FillingController {
   async remove(req, res) {
     const { id } = req.params;
     if (id) {
+       const filling = await Filling.findOne({ where: { id: id } });
+      if (filling) {
+        fs.readdir('static', (err, files) => {
+          if (err) throw err;
+          for (const file of files) {
+            if (file === filling.img) {
+              fs.unlink(path.join('static', file), (err) => {
+                if (err) throw err;
+                console.log('файл удален')
+              });
+            }
+
+          }
+        });
+      }
+
       await Filling.destroy({ where: { id: id } });
       return res.json({ message: "Удаление успешно!" });
     }

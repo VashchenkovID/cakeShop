@@ -72,8 +72,8 @@ const AdministrationTypesDecorItem: React.FC<IComponentProps> = ({
       <Text>{item.name}</Text>
       <Text>{item.count}</Text>
       <Text>{item.countType}</Text>
-      <Text>{item.pricePerUnit},00 ₽</Text>
-      <Text> {item.constPrice},00 ₽</Text>
+      <Text>{Number(item.pricePerUnit)} ₽</Text>
+      <Text> {item.constPrice} ₽</Text>
       <div className={styles.DecorItem__actions}>
         <Button
           size={'xs'}

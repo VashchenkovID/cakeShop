@@ -5,6 +5,7 @@ import styles from './AdministrationTypes.styl';
 import AdministrationTypesSection from 'src/pages/AdministrationTypes/AdministrationTypesSection/AdministrationTypesSection';
 import AdministrationTypesModalList from 'src/pages/AdministrationTypes/AdministrationTypeModals/AdministrationTypesModalList';
 import MainWrapper from 'src/components/MainWrapper/MainWrapper';
+import { toast } from 'react-toastify';
 
 export enum AdministrationTypesModalEnum {
   IDLE = 'idle',
@@ -39,8 +40,8 @@ export interface AdministrationTypesDecorItem {
   name: string;
   count: number;
   countType: string;
-  pricePerUnit: number;
-  constPrice: number;
+  pricePerUnit: string;
+  constPrice: string;
 }
 
 const AdministrationTypes: React.FC = () => {
@@ -72,8 +73,8 @@ const AdministrationTypes: React.FC = () => {
     name: '',
     count: 0,
     countType: '',
-    pricePerUnit: 0,
-    constPrice: 0,
+    pricePerUnit: '',
+    constPrice: '',
   });
   const clear = () => {
     setType({ name: '', id: null });
@@ -92,8 +93,8 @@ const AdministrationTypes: React.FC = () => {
       name: '',
       count: 0,
       countType: '',
-      pricePerUnit: 0,
-      constPrice: 0,
+      pricePerUnit: '',
+      constPrice: '',
     });
   };
 
@@ -223,8 +224,8 @@ const AdministrationTypes: React.FC = () => {
       decor.name !== '' &&
       decor.countType !== '' &&
       decor.count !== 0 &&
-      decor.pricePerUnit !== 0 &&
-      decor.constPrice !== 0
+      decor.pricePerUnit !== '' &&
+      decor.constPrice !== ''
     ) {
       const data = new FormData();
       data.append('name', decor.name);
@@ -236,6 +237,8 @@ const AdministrationTypes: React.FC = () => {
         fetchDecors();
         clear();
       });
+    } else {
+      toast.error('Ошибки в заполнении полей');
     }
   };
 
@@ -245,8 +248,10 @@ const AdministrationTypes: React.FC = () => {
       decor.name !== '' &&
       decor.countType !== '' &&
       decor.count !== 0 &&
-      decor.pricePerUnit !== 0 &&
-      decor.constPrice !== 0
+      decor.pricePerUnit !== '' &&
+      !isNaN(Number(decor.pricePerUnit)) &&
+      decor.constPrice !== '' &&
+      !isNaN(Number(decor.constPrice))
     ) {
       const data = new FormData();
       data.append('name', decor.name);
@@ -258,6 +263,8 @@ const AdministrationTypes: React.FC = () => {
         fetchDecors();
         clear();
       });
+    } else {
+      toast.error('Ошибки в заполнении полей');
     }
   };
 

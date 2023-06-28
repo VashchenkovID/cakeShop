@@ -212,12 +212,13 @@ class AnalyticsController {
         devices.push({
           id: d.id,
           constPrice: d.info.reduce((accum, elem) => {
-            const oneConst = Number(elem.pricePerUnit * Number(elem.weight));
+            const oneConst = Number(
+              Number(elem.pricePerUnit) * Number(elem.weight)
+            );
             return accum + oneConst;
           }, 0),
         });
       }
-
       const orders = [
         ...baskets
           .filter((itm) => itm.status === "COMPLETED")
@@ -239,13 +240,15 @@ class AnalyticsController {
               name: item.name,
               allPrice:
                 item.items.reduce(
-                  (accum, elem) => accum + elem.price * elem.count,
+                  (accum, elem) =>
+                    accum + Number(elem.price) * Number(elem.count),
                   0
                 ) +
                 item.decors
                   .map((dec) =>
                     dec.items.reduce(
-                      (accum, elem) => accum + elem.count * elem.pricePerUnit,
+                      (accum, elem) =>
+                        accum + Number(elem.count) * Number(elem.pricePerUnit),
                       0
                     )
                   )
@@ -262,15 +265,17 @@ class AnalyticsController {
                   .reduce((accum, element) => {
                     return (
                       accum +
-                      element.device * element.count * element.countWeightType
+                      Number(element.device) *
+                        Number(element.count) *
+                        Number(element.countWeightType)
                     );
                   }, 0) +
                 item.decors
                   .map((decor) =>
-                    decor.items.reduce(
-                      (acc, el) => acc + el.count * el.constPrice,
-                      0
-                    )
+                    decor.items.reduce((acc, el) => {
+                      console.log("testLog", el.count, el.constPrice);
+                      return acc + Number(el.count) * Number(el.constPrice);
+                    }, 0)
                   )
                   .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,
@@ -299,14 +304,15 @@ class AnalyticsController {
               name: item.name,
               allPrice:
                 item.items.reduce((accum, elem) => {
-                  return accum + elem.price * elem.count;
+                  return accum + Number(elem.price) * Number(elem.count);
                 }, 0) +
                 item.decors
                   .map((dec) => {
                     return dec.dataValues.items.reduce((accum, elem) => {
                       return (
                         accum +
-                        elem.dataValues.count * elem.dataValues.pricePerUnit
+                        Number(elem.dataValues.count) *
+                          Number(elem.dataValues.pricePerUnit)
                       );
                     }, 0);
                   })
@@ -324,13 +330,16 @@ class AnalyticsController {
                   .reduce((accum, element) => {
                     return (
                       accum +
-                      element.device * element.count * element.countWeightType
+                      Number(element.device) *
+                        Number(element.count) *
+                        Number(element.countWeightType)
                     );
                   }, 0) +
                 item.decors
                   .map((decor) =>
                     decor.items.reduce(
-                      (acc, el) => acc + el.count * el.constPrice,
+                      (acc, el) =>
+                        acc + Number(el.count) * Number(el.constPrice),
                       0
                     )
                   )
