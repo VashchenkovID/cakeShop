@@ -16,6 +16,7 @@ import CreateOrder from "../../pages/CreateOrder/CreateOrder";
 import { BasketModel } from "../../api/models/BasketModel";
 import { setBasket } from "../../store/features/basket/BasketSlice";
 import StartPage from "../../pages/StartPage/StartPage";
+import DeviceView from "../../pages/DeviceView/DeviceView";
 
 export interface IRouteItem {
   path: string;
@@ -30,6 +31,7 @@ export const publicRoutes: Array<IRouteItem> = [
     path: `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`,
     element: <CreateOrder />,
   },
+  { path: `${PublicRoutesEnum.VIEW_DESSERT}/:id`, element: <DeviceView /> },
   { path: `${PublicRoutesEnum.FILLINGS}`, element: <div>fillings</div> },
   { path: `${PublicRoutesEnum.INDIVIDUAL}`, element: <div>individual</div> },
   { path: `${PublicRoutesEnum.GENERAL}`, element: <StartPage /> },

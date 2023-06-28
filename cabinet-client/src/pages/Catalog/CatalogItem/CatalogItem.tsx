@@ -3,7 +3,7 @@ import { DeviceListModel } from "../../../api/models/DeviceListModel";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum } from "../../../utils/enum";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../../utils/enum";
 import { setBasket } from "../../../store/features/basket/BasketSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
@@ -11,15 +11,15 @@ import { Button } from "@consta/uikit/Button";
 import { Text } from "@consta/uikit/Text";
 import styles from "./CatalogItem.module.styl";
 import cn from "classnames/bind";
-import CustomTextTooltip from "../../../components/CustomTextTooltip";
 import CatalogItemPrice from "../CatalogItemPrice/CatalogItemPrice";
 import { useResize } from "../../../hooks/useResize";
+import { useNavigate } from "react-router-dom";
 interface IComponentProps {
   item: DeviceListModel;
-  activeItem?: number | null;
 }
 const cx = cn.bind(styles);
-const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
+const CatalogItem: React.FC<IComponentProps> = ({ item }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
@@ -237,7 +237,10 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
   }, [basket]);
   return (
     <div>
-      <div className={styles.Item}>
+      <div
+        className={styles.Item}
+        onClick={() => navigate(`${PublicRoutesEnum.VIEW_DESSERT}/${item.id}`)}
+      >
         <div className={styles.Item__header}>
           <img
             className={styles.Item__image}
@@ -253,7 +256,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
               </Text>
               <IconFavorite
                 className={cx(styles.Item__rating__icon, {
-                  coloder: item.rating > 0,
+                  colored: item.rating > 0,
                 })}
               />
             </div>
@@ -270,7 +273,10 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
               {!isAdded ? (
                 <Button
                   size={"xs"}
-                  onClick={() => addItemInBasket()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addItemInBasket();
+                  }}
                   label={"Добавить"}
                 />
               ) : (
@@ -278,12 +284,18 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   <Button
                     size={"xs"}
                     label={"-"}
-                    onClick={() => removeItemInBasket()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeItemInBasket();
+                    }}
                   />
                   <Text>{countItemBasket}</Text>
                   <Button
                     size={"xs"}
-                    onClick={() => addItemInBasket()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addItemInBasket();
+                    }}
                     label={"+"}
                   />
                 </div>
@@ -299,7 +311,10 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
               {!isAdded ? (
                 <Button
                   size={"xs"}
-                  onClick={() => addItemInBasket()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addItemInBasket();
+                  }}
                   label={"Добавить"}
                 />
               ) : (
@@ -307,12 +322,18 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, activeItem }) => {
                   <Button
                     size={"xs"}
                     label={"-"}
-                    onClick={() => removeItemInBasket()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeItemInBasket();
+                    }}
                   />
                   <Text>{countItemBasket}</Text>
                   <Button
                     size={"xs"}
-                    onClick={() => addItemInBasket()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addItemInBasket();
+                    }}
                     label={"+"}
                   />
                 </div>

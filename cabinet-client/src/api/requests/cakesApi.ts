@@ -23,7 +23,7 @@ export default {
     data?: CakesReqType
   ): Promise<AxiosResponse<IDeviceListResponse, any>> =>
     $host.get(EnpointsEnum.GET_CAKES, { params: data }),
-  loadOneCake: (id: string): Promise<DeviceItemModel> =>
+  loadOneCake: (id: string): Promise<AxiosResponse<DeviceItemModel>> =>
     $host.get(`${EnpointsEnum.GET_ONE_CAKE}/${id}`),
   //Типы
   getCakeTypes: (): Promise<AxiosResponse<TypeModel[], any>> =>

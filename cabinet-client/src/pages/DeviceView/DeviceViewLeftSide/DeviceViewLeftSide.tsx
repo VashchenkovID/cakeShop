@@ -1,0 +1,361 @@
+import React, { useEffect, useMemo, useState } from "react";
+import ComponentStyleWrapper from "../../../components/ComponentStyleWrapper/ComponentStyleWrapper";
+import styles from "../DeviceView.module.styl";
+import cn from "classnames/bind";
+import { Text } from "@consta/uikit/Text";
+import Textarea from "../../../components/Textarea/Textarea";
+import { IconFavorite } from "@consta/uikit/IconFavorite";
+import { Button } from "@consta/uikit/Button";
+import { DeviceItemModel } from "../../../api/models/DeviceItemModel";
+import { setBasket } from "../../../store/features/basket/BasketSlice";
+import { nanoid } from "@reduxjs/toolkit";
+import { LocalStorageKeysEnum } from "../../../utils/enum";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { useAppSelector } from "../../../hooks/useAppSelector";
+import { selectBasket } from "../../../store/features/basket/BasketSelectors";
+import { Modal } from "@consta/uikit/Modal";
+import DeviceCreateRatingModal from "../Modals/DeviceCreateRatingModal";
+import { GetDeviceRatingsReqType } from "../../../api/requests/ratingsApi";
+
+interface IComponentProps {
+  device: DeviceItemModel;
+  width: number;
+  fetchRatings: (data: GetDeviceRatingsReqType) => void;
+  fetchDevice: (id: string) => void;
+}
+
+export enum DeviceModalEnum {
+  IDLE = "idle",
+  CREATE_RATING = "create_rating",
+  CREATE_BASKET = "create_basket",
+}
+
+const cx = cn.bind(styles);
+const DeviceViewLeftSide: React.FC<IComponentProps> = ({
+  device,
+  width,
+  fetchRatings,
+  fetchDevice,
+}) => {
+  // store
+  const dispatch = useAppDispatch();
+  const basket = useAppSelector(selectBasket);
+  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
+  const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
+  // state
+  const [isAdded, setIsAdded] = useState(false);
+  const [modal, setModal] = useState<DeviceModalEnum>(DeviceModalEnum.IDLE);
+  //func
+  const addItemInBasket = async () => {
+    if (userId && device) {
+      if (!basket) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Заказ пользователя ${userName}`,
+            user_id: Number(userId),
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [] as any,
+              },
+            ],
+          })
+        );
+        setIsAdded(true);
+      }
+      if (basket) {
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: device.id,
+                name: device.name,
+                localId: nanoid(),
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+      }
+    } else {
+      if (!basket && device) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Индивидуальный заказ`,
+            user_id: null,
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+        setIsAdded(true);
+      }
+      if (basket && device) {
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+      }
+    }
+  };
+  const removeItemInBasket = async () => {
+    if (userId && device) {
+      if (!basket) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Заказ пользователя ${userName}`,
+            user_id: Number(userId),
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+        setIsAdded(true);
+      }
+      if (basket) {
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items.filter((i) => i.id !== device.id),
+              ...basket.items
+                .filter((i) => i.id === device.id)
+                .filter((el, ind, arr) => ind !== arr.length - 1),
+            ],
+          })
+        );
+      }
+    } else {
+      if (!basket && device) {
+        dispatch(
+          setBasket({
+            id: null,
+            name: `Индивидуальный заказ`,
+            user_id: null,
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+        setIsAdded(true);
+      }
+      if (basket && device) {
+        dispatch(
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: device.id,
+                name: device.name,
+                localId: nanoid(),
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
+        );
+      }
+    }
+  };
+  const openCreateRating = () => {
+    setModal(DeviceModalEnum.CREATE_RATING);
+  };
+  const onClose = () => {
+    setModal(DeviceModalEnum.IDLE);
+  };
+  //computed
+  const countItemBasket = useMemo(() => {
+    if (basket && device) {
+      if (basket.items.length > 0) {
+        return basket.items.filter((i) => i.id === device.id).length;
+      } else return 0;
+    } else return 0;
+  }, [basket]);
+  // sideEffects
+  useEffect(() => {
+    if (
+      device &&
+      basket &&
+      basket.items.find((elem) => elem.id === device.id)
+    ) {
+      setIsAdded(true);
+    }
+  }, [basket]);
+
+  useEffect(() => {
+    if (countItemBasket === 0) {
+      setIsAdded(false);
+    }
+  }, [countItemBasket]);
+  useEffect(() => {
+    localStorage.setItem("Basket", JSON.stringify(basket));
+  }, [basket]);
+  return (
+    <ComponentStyleWrapper>
+      <div className={styles.Device__leftSide}>
+        <div className={styles.Device__wrapper}>
+          <img
+            src={`${import.meta.env.VITE_API_URL_IMAGE}/${device.img}`}
+            className={styles.Device__wrapper__img}
+          />
+        </div>
+
+        <Text
+          align={width <= 500 ? "center" : undefined}
+          size={width >= 500 ? "3xl" : "m"}
+        >
+          {device.name}
+        </Text>
+        <Textarea
+          className={styles.Device__description}
+          text={device.description || ""}
+          size={width >= 500 ? "m" : "s"}
+        />
+        <div>
+          {device && (
+            <div className={styles.Device__ratingWrapper}>
+              <Text>Рейтинг:</Text>
+              <div className={styles.Device__rating}>
+                <Text size={"s"} className={styles.Device__rating__text}>
+                  {Math.floor(device.rating * 100) / 100}
+                </Text>
+                <IconFavorite
+                  className={cx(styles.Device__rating__icon, {
+                    colored: device.rating > 0,
+                  })}
+                />
+              </div>
+            </div>
+          )}
+
+          <Text>Цена: {device.price} ₽</Text>
+        </div>
+        <div className={styles.Device__actions}>
+          <div>
+            {!isAdded ? (
+              <Button
+                size={width <= 800 ? "xs" : "s"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addItemInBasket();
+                }}
+                label={"Добавить"}
+              />
+            ) : (
+              <div className={styles.Device__actions}>
+                <Button
+                  size={width <= 800 ? "xs" : "s"}
+                  label={"-"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeItemInBasket();
+                  }}
+                />
+                <Text>{countItemBasket}</Text>
+                <Button
+                  size={width <= 800 ? "xs" : "s"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addItemInBasket();
+                  }}
+                  label={"+"}
+                />
+              </div>
+            )}
+          </div>
+          <Button
+            label={"Оставить отзыв"}
+            size={width <= 800 ? "xs" : "s"}
+            onClick={openCreateRating}
+          />
+        </div>
+      </div>
+      <Modal isOpen={modal === DeviceModalEnum.CREATE_RATING}>
+        <DeviceCreateRatingModal
+          onClose={onClose}
+          deviceName={device.name}
+          device_id={device.id}
+          width={width}
+          fetchRatings={fetchRatings}
+          fetchDevice={fetchDevice}
+        />
+      </Modal>
+    </ComponentStyleWrapper>
+  );
+};
+
+export default DeviceViewLeftSide;

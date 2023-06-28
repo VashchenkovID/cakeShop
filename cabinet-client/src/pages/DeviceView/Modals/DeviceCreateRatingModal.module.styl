@@ -1,0 +1,28 @@
+.Rating
+  padding 16px
+  background rgba(47, 4, 79, 1)
+  width 50vw
+  height 50vh
+  display flex
+  flex-direction column
+  gap 24px
+  justify-content space-between
+  overflow-x hidden
+  @media (max-width 800px)
+    gap 16px
+  &__header
+    display flex
+    justify-content space-between
+    align-items center
+    gap 24px
+  &__body
+    display flex
+    flex-direction column
+    gap 24px
+    @media (max-width 800px)
+      gap 16px
+  &__actions
+    display flex
+    justify-content flex-end
+    gap 16px
+    align-items center

@@ -16,12 +16,6 @@ import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
 import InformerBadge from "../../components/Informer/Informer";
 import { Pagination } from "@consta/uikit/Pagination";
-import { Modal } from "@consta/uikit/Modal";
-
-export enum CatalogModalEnum {
-  IDLE = "idle",
-  VIEW_RATING = "view_rating",
-}
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
@@ -47,16 +41,6 @@ const Catalog: React.FC = () => {
     perPage: 10,
   });
   const [count, setCount] = useState(0);
-  //Modal changes
-  const [modal, setModal] = useState<CatalogModalEnum>(CatalogModalEnum.IDLE);
-  const [activeItem, setActiveItem] = useState<number | null>(null);
-  const onViewRating = (id: number) => {
-    setActiveItem(id);
-    setModal(CatalogModalEnum.VIEW_RATING);
-  };
-  const onClose = () => {
-    setModal(CatalogModalEnum.IDLE);
-  };
   //pagination
 
   const handleChange = (pageNumber: number): void => {
@@ -176,7 +160,6 @@ const Catalog: React.FC = () => {
           totalPages={totalPages}
         />
       </footer>
-      <Modal isOpen={modal === CatalogModalEnum.VIEW_RATING}></Modal>
     </div>
   );
 };

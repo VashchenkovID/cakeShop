@@ -1,0 +1,120 @@
+.Device
+  margin 24px
+  display grid
+  grid-template-columns 1fr 1fr
+  gap 24px
+  max-height 88vh
+  overflow-y auto
+  @media (max-width 800px)
+    margin 16px
+  @media (max-width 800px)
+    display flex
+    flex-direction column
+    gap 24px
+  &__leftSide
+    display flex
+    flex-direction column
+    gap 16px
+  &__rightSide
+    display flex
+    flex-direction column
+    gap 24px
+    overflow-x hidden
+    &__header
+      display flex
+      align-items center
+      justify-content space-between
+      gap 24px
+    &__items
+      display flex
+      flex-direction column
+      gap 16px
+      max-height 70vh
+      overflow-y auto
+    &__action
+      display flex
+      justify-content center
+      align-items center
+    &__item
+      display flex
+      flex-direction column
+      gap 16px
+      &__header
+        display flex
+        justify-content space-between
+        align-items center
+        gap 24px
+      &__textarea
+        max-height 15vh
+        overflow-y auto
+  &__wrapper
+    position: relative;
+    padding-top: 35vh;
+    max-width 25vw
+    @media (max-width 1500px)
+      padding-top 25vh
+    @media (max-width 1050px)
+      padding-top 20vh
+    @media (max-width 800px)
+      padding-top 16vh
+    @media (max-width 450px)
+      max-width 70vw
+      margin-left 8vw
+      padding-top 23vh
+    @media (max-width 400px)
+      max-width 70vw
+      margin-left 6vw
+      padding-top 20vh
+    &__img
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        border-radius 10px
+  &__description
+    max-height 30vh
+    overflow-y auto
+    overflow-x hidden
+  &__ratingWrapper
+    display flex
+    align-items center
+    gap 16px
+  &__rating
+    display flex
+    align-items center
+    gap 4px
+    &__icon
+      &.colored
+        color #fbc102
+  &__actions
+    display flex
+    justify-content space-between
+    align-items center
+    gap 8px
+
+.IconBasket
+  position absolute
+  width 50px
+  height 50px
+  border-radius 50%
+  background #fbc102
+  display flex
+  justify-content center
+  align-items center
+  bottom 1vh
+  right 2vw
+  z-index 100
+  transition: opacity .5s;
+  opacity 0
+  transform: translate3d(0px, -20px, 0px);
+  cursor pointer
+  &.visible
+    margin-right 0
+    opacity 1
+    @media (max-width 800px)
+      opacity 1
+      margin-right 10px
+  &__icon
+    max-width 30px
+
