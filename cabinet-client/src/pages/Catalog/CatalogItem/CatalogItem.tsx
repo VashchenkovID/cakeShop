@@ -347,7 +347,15 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
             </div>
           </div>
         ) : (
-          <Button size={"s"} label={"Купить в 1 клик"} />
+          <Button
+            size={"s"}
+            label={"Купить в 1 клик"}
+            onClick={(e) => {
+              e.stopPropagation();
+              addItemInBasket();
+              setModal(true);
+            }}
+          />
         )}
       </div>
     </div>

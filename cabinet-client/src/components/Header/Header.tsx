@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import cn from "classnames/bind";
 import styles from "./Header.module.styl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import {
   HeaderIdEnum,
   LocalStorageKeysEnum,
+  PrivateRoutesEnum,
   PublicRoutesEnum,
 } from "../../utils/enum";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -54,7 +55,43 @@ const Header: React.FC<IHeaderProps> = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const { width } = useResize();
-  const items: Item[] = [
+
+  const headerItems: Item[] = [
+    {
+      label: "Главная",
+      id: HeaderIdEnum.GENERAL,
+      href: PublicRoutesEnum.GENERAL,
+      active: myLoc === PublicRoutesEnum.GENERAL,
+      onClick: (e) => {
+        headerTransition(e, PublicRoutesEnum.GENERAL);
+      },
+      permission: [],
+      access: false,
+    },
+    {
+      label: "Каталог",
+      id: HeaderIdEnum.SHOP,
+      href: PublicRoutesEnum.SHOP,
+      active: myLoc === PublicRoutesEnum.SHOP,
+      onClick: (e) => {
+        headerTransition(e, PublicRoutesEnum.SHOP);
+      },
+      permission: [],
+      access: false,
+    },
+    {
+      label: "Начинки",
+      id: HeaderIdEnum.FILLINGS,
+      href: PublicRoutesEnum.FILLINGS,
+      active: myLoc === PublicRoutesEnum.FILLINGS,
+      onClick: (e) => {
+        headerTransition(e, PublicRoutesEnum.FILLINGS);
+      },
+      permission: [],
+      access: false,
+    },
+  ];
+  const privateItems: Item[] = [
     {
       label: "Главная",
       id: HeaderIdEnum.GENERAL,
@@ -89,18 +126,28 @@ const Header: React.FC<IHeaderProps> = () => {
       access: false,
     },
     {
-      label: "Торт по индивидуальному заказу",
-      id: HeaderIdEnum.INDIVIDUAL,
-      href: PublicRoutesEnum.INDIVIDUAL,
-      active: myLoc === PublicRoutesEnum.INDIVIDUAL,
+      label: "Мои заказы",
+      id: HeaderIdEnum.MY_ORDERS,
+      href: PrivateRoutesEnum.MY_ORDERS,
+      active: myLoc === PrivateRoutesEnum.MY_ORDERS,
       onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.INDIVIDUAL);
+        headerTransition(e, PrivateRoutesEnum.MY_ORDERS);
+      },
+      permission: [],
+      access: false,
+    },
+    {
+      label: "Мои отзывы",
+      id: HeaderIdEnum.MY_FEEDBACK,
+      href: PrivateRoutesEnum.MY_FEEDBACK,
+      active: myLoc === PrivateRoutesEnum.MY_FEEDBACK,
+      onClick: (e) => {
+        headerTransition(e, PrivateRoutesEnum.MY_FEEDBACK);
       },
       permission: [],
       access: false,
     },
   ];
-
   const headerTransition = (e: React.MouseEvent, patch: string) => {
     e.preventDefault();
     navigate(patch);
@@ -154,22 +201,39 @@ const Header: React.FC<IHeaderProps> = () => {
                     </div>
                   )}
                   <div className={styles.Sidebar__links}>
-                    {items.map((item) => (
-                      <Text
-                        className={cx(styles.Sidebar__link, {
-                          active: item.active,
-                        })}
-                        key={item.id}
-                        onClick={(e: any) => {
-                          setIsOpen(false);
-                          if (item.onClick) {
-                            item.onClick(e);
-                          }
-                        }}
-                      >
-                        {item.label}
-                      </Text>
-                    ))}
+                    {isAuth
+                      ? privateItems.map((item) => (
+                          <Text
+                            className={cx(styles.Sidebar__link, {
+                              active: item.active,
+                            })}
+                            key={item.id}
+                            onClick={(e: any) => {
+                              setIsOpen(false);
+                              if (item.onClick) {
+                                item.onClick(e);
+                              }
+                            }}
+                          >
+                            {item.label}
+                          </Text>
+                        ))
+                      : headerItems.map((item) => (
+                          <Text
+                            className={cx(styles.Sidebar__link, {
+                              active: item.active,
+                            })}
+                            key={item.id}
+                            onClick={(e: any) => {
+                              setIsOpen(false);
+                              if (item.onClick) {
+                                item.onClick(e);
+                              }
+                            }}
+                          >
+                            {item.label}
+                          </Text>
+                        ))}
                     {isAuth ? (
                       <div className={styles.Header__user}>
                         <Button
@@ -210,7 +274,8 @@ const Header: React.FC<IHeaderProps> = () => {
             <HeaderModule className={styles.Header__left}>
               <img className={styles.Logo} src={logo} />
               <nav className={styles.Header__nav}>
-                <HeaderMenu items={items} />
+                {isAuth && <HeaderMenu items={privateItems} />}
+                {!isAuth && <HeaderMenu items={headerItems} />}
               </nav>
             </HeaderModule>
           )

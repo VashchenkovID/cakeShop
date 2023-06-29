@@ -7,7 +7,11 @@ import axios from "axios";
 import { AuthResponse } from "../../api/requests/userAPI";
 import { EnpointsEnum } from "../../api/endpoints";
 import { setIsAuth } from "../../store/features/auth/AuthSlice";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../utils/enum";
+import {
+  LocalStorageKeysEnum,
+  PrivateRoutesEnum,
+  PublicRoutesEnum,
+} from "../../utils/enum";
 import { storageToken } from "../../utils/storage";
 import AuthContainer from "../../pages/Auth/AuthContainer";
 
@@ -33,10 +37,12 @@ export const publicRoutes: Array<IRouteItem> = [
   },
   { path: `${PublicRoutesEnum.VIEW_DESSERT}/:id`, element: <DeviceView /> },
   { path: `${PublicRoutesEnum.FILLINGS}`, element: <div>fillings</div> },
-  { path: `${PublicRoutesEnum.INDIVIDUAL}`, element: <div>individual</div> },
   { path: `${PublicRoutesEnum.GENERAL}`, element: <StartPage /> },
 ];
-
+export const privateRoutes: Array<IRouteItem> = [
+  { path: `${PrivateRoutesEnum.MY_ORDERS}`, element: <div>Мои заказы</div> },
+  { path: `${PrivateRoutesEnum.MY_FEEDBACK}`, element: <div>Мои отзывы</div> },
+];
 const AppRouter = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);
@@ -84,6 +90,7 @@ const AppRouter = () => {
           path="/"
           element={<Navigate to={PublicRoutesEnum.SHOP} replace />}
         />
+        {isAuth && getRoutes(privateRoutes)}
         <Route path="*" element={<div>Страница не найдена</div>} />
       </Routes>
     </>

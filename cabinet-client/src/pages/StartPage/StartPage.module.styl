@@ -31,3 +31,35 @@
     &__items
       display flex
       gap 8px
+.Communication
+  display flex
+  flex-direction column
+  gap 24px
+  padding 16px
+  background rgba(47, 4, 79, 1)
+  &__header
+    display flex
+    justify-content space-between
+    align-items center
+    gap 24px
+  &__rows
+    display grid
+    grid-template-columns 1fr 1fr
+    gap 24px
+    @media (max-width 800px)
+      display flex
+      flex-direction column
+      gap 16px
+  &__row
+    display flex
+    gap 8px
+    align-items center
+    text-decoration none
+    cursor pointer
+  &__iconSize
+    width 20px
+    height 20px
+  &__iconColor
+    width 20px
+    height 20px
+    color #FFFFFF

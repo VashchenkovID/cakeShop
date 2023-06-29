@@ -17,7 +17,8 @@ export enum HeaderIdEnum {
   GENERAL = "general",
   SHOP = "shop",
   FILLINGS = "fillings",
-  INDIVIDUAL = "individual",
+  MY_ORDERS = "my_orders",
+  MY_FEEDBACK = "my_feedback",
 }
 export enum PublicRoutesEnum {
   GENERAL = "/general",
@@ -31,5 +32,9 @@ export enum PublicRoutesEnum {
   FEEDBACK = "/feedback",
   VIEW_ORDER = "/order",
   CREATE_RATING = "/ratings/create",
-  CREATE_ORDER ='/create'
+  CREATE_ORDER = "/create",
+}
+export enum PrivateRoutesEnum {
+  MY_ORDERS = "/orders",
+  MY_FEEDBACK = "/feedback",
 }

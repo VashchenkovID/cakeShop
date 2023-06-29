@@ -17,10 +17,42 @@ import { useNavigate } from "react-router-dom";
 import { PublicRoutesEnum } from "../../utils/enum";
 import { Modal } from "@consta/uikit/Modal";
 import CatalogBuyOneClickModal from "../Catalog/CatalogBuyOneClickModal/CatalogBuyOneClickModal";
+import { IconGeo } from "@consta/uikit/IconGeo";
+import { IconPhone } from "@consta/uikit/IconPhone";
+import IconVK from "../../components/Icons/IconVK";
+import IconTelegram from "../../components/Icons/IconTelegram";
+import IconWhatsApp from "../../components/Icons/IconWhatsApp";
+import IconInstagram from "../../components/Icons/IconInstagram";
+import { IconClose } from "@consta/uikit/IconClose";
 
-interface IComponentProps {}
+const communicationItems = [
+  {
+    href: undefined,
+    label: "+7(919)-040-95-95",
+    icon: <IconPhone className={styles.Communication__iconColor} />,
+  },
+  {
+    href: "https://vk.com/alexa_cake_smol",
+    label: "https://vk.com/alexa_cake_smol",
+    icon: <IconVK className={styles.Communication__iconSize} />,
+  },
+  {
+    href: "https://t.me/",
+    label: "https://t.me/",
+    icon: <IconTelegram className={styles.Communication__iconSize} />,
+  },
+  {
+    href: "https://wa.me/79190409595",
+    label: "+7(919)-040-95-95",
+    icon: <IconWhatsApp className={styles.Communication__iconSize} />,
+  },
+  {
+    label: "insta",
+    icon: <IconInstagram className={styles.Communication__iconSize} />,
+  },
+];
 
-const StartPage: React.FC<IComponentProps> = () => {
+const StartPage: React.FC = () => {
   const navigate = useNavigate();
   const { width } = useResize();
   const [items, setItems] = useState<{
@@ -34,6 +66,7 @@ const StartPage: React.FC<IComponentProps> = () => {
   useEffect(() => {
     fetchStart();
   }, []);
+  const [individualModal, setIndividualModal] = useState(false);
   return (
     <section className={styles.container}>
       <ComponentStyleWrapper>
@@ -69,9 +102,9 @@ const StartPage: React.FC<IComponentProps> = () => {
                 onClick={() => navigate(`${PublicRoutesEnum.SHOP}`)}
               />
               <Button
-                label={"Заказать десерт по индивидуальному заказу"}
+                label={"Сделать индивидуальный заказ"}
                 size={"s"}
-                onClick={() => navigate(`${PublicRoutesEnum.INDIVIDUAL}`)}
+                onClick={() => setIndividualModal(true)}
               />
             </div>
           </div>
@@ -134,6 +167,31 @@ const StartPage: React.FC<IComponentProps> = () => {
           setModal={setModal}
           width={width}
         />
+      </Modal>
+      <Modal isOpen={individualModal}>
+        <div className={styles.Communication}>
+          <div className={styles.Communication__header}>
+            <Text size={"2xl"}>Выберите предпочитаемый способ связи</Text>
+            <Button
+              view={"clear"}
+              iconLeft={IconClose}
+              onClick={() => setIndividualModal(false)}
+            />
+          </div>
+
+          <div className={styles.Communication__rows}>
+            {communicationItems.map((item) => (
+              <a
+                className={styles.Communication__row}
+                href={item.href}
+                target="_blank"
+              >
+                {item.icon}
+                <Text size={"s"}>{item.label}</Text>
+              </a>
+            ))}
+          </div>
+        </div>
       </Modal>
     </section>
   );
