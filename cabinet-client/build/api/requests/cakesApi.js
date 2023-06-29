@@ -10,5 +10,7 @@ export default {
     getBiscuits: () => $authHost.get(`${"/biscuit/getAll" /* EnpointsEnum.GET_BISCUITS */}`),
     //Декор
     getDecor: () => $authHost.get(`${"/decor/getAll" /* EnpointsEnum.GET_DECOR */}`),
+    //  Стартовая информация
+    getStart: () => $authHost.get(`${"/device/general/getInfo" /* EnpointsEnum.GET_START_INFO */}`),
 };
 //# sourceMappingURL=cakesApi.js.map

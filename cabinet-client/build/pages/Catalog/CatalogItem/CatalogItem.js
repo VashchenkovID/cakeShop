@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum } from "../../../utils/enum";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../../utils/enum";
 import { setBasket } from "../../../store/features/basket/BasketSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
@@ -12,8 +12,10 @@ import styles from "./CatalogItem.module.styl";
 import cn from "classnames/bind";
 import CatalogItemPrice from "../CatalogItemPrice/CatalogItemPrice";
 import { useResize } from "../../../hooks/useResize";
+import { useNavigate } from "react-router-dom";
 const cx = cn.bind(styles);
-const CatalogItem = ({ item, activeItem }) => {
+const CatalogItem = ({ item }) => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const basket = useAppSelector(selectBasket);
     const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
@@ -212,25 +214,50 @@ const CatalogItem = ({ item, activeItem }) => {
             setIsAdded(false);
         }
     }, [countItemBasket]);
-    return (React.createElement("div", { className: styles.Item },
-        React.createElement("div", { className: styles.Item__header },
-            React.createElement("img", { className: styles.Item__image, src: `${import.meta.env.VITE_API_URL_IMAGE}${item.img}` }),
-            item.rating > 0 && (React.createElement("div", { className: styles.Item__rating },
-                React.createElement(Text, { className: styles.Item__rating__text }, item.rating.toFixed(2)),
-                React.createElement(IconFavorite, { className: styles.Item__rating__icon }))),
-            React.createElement(Text, { truncate: true, weight: "semibold", className: styles.Item__title }, item.name)),
-        React.createElement("div", { className: styles.Item__basket },
-            React.createElement(CatalogItemPrice, { price: item.price, countWeightType: item.countWeightType, discount: item.discount }),
-            width >= 1000 && (React.createElement("div", { className: styles.Item__button }, !isAdded ? (React.createElement(Button, { size: "xs", onClick: () => addItemInBasket(), label: "Добавить" })) : (React.createElement("div", { className: styles.Item__addActions },
-                React.createElement(Button, { size: "xs", label: "-", onClick: () => removeItemInBasket() }),
-                React.createElement(Text, null, countItemBasket),
-                React.createElement(Button, { size: "xs", onClick: () => addItemInBasket(), label: "+" })))))),
-        width < 1000 ? (React.createElement("div", { className: styles.Item__footer },
-            React.createElement(Button, { size: "xs", label: "Купить в 1 клик" }),
-            React.createElement("div", { className: styles.Item__button }, !isAdded ? (React.createElement(Button, { size: "xs", onClick: () => addItemInBasket(), label: "Добавить" })) : (React.createElement("div", { className: styles.Item__addActions },
-                React.createElement(Button, { size: "xs", label: "-", onClick: () => removeItemInBasket() }),
-                React.createElement(Text, null, countItemBasket),
-                React.createElement(Button, { size: "xs", onClick: () => addItemInBasket(), label: "+" })))))) : (React.createElement(Button, { size: "s", label: "Купить в 1 клик" }))));
+    useEffect(() => {
+        localStorage.setItem("Basket", JSON.stringify(basket));
+    }, [basket]);
+    return (React.createElement("div", null,
+        React.createElement("div", { className: styles.Item, onClick: () => navigate(`${PublicRoutesEnum.VIEW_DESSERT}/${item.id}`) },
+            React.createElement("div", { className: styles.Item__header },
+                React.createElement("img", { className: styles.Item__image, src: `${import.meta.env.VITE_API_URL_IMAGE}${item.img}` }),
+                React.createElement("div", { className: styles.Item__title },
+                    React.createElement(Text, { truncate: true, weight: "semibold" }, item.name),
+                    React.createElement("div", { className: styles.Item__rating },
+                        React.createElement(Text, { size: "s", className: styles.Item__rating__text }, Math.floor(item.rating * 100) / 100),
+                        React.createElement(IconFavorite, { className: cx(styles.Item__rating__icon, {
+                                colored: item.rating > 0,
+                            }) })))),
+            React.createElement("div", { className: styles.Item__basket },
+                React.createElement(CatalogItemPrice, { price: item.price, countWeightType: item.countWeightType, discount: item.discount }),
+                width >= 1000 && (React.createElement("div", { className: styles.Item__button }, !isAdded ? (React.createElement(Button, { size: "xs", onClick: (e) => {
+                        e.stopPropagation();
+                        addItemInBasket();
+                    }, label: "Добавить" })) : (React.createElement("div", { className: styles.Item__addActions },
+                    React.createElement(Button, { size: "xs", label: "-", onClick: (e) => {
+                            e.stopPropagation();
+                            removeItemInBasket();
+                        } }),
+                    React.createElement(Text, null, countItemBasket),
+                    React.createElement(Button, { size: "xs", onClick: (e) => {
+                            e.stopPropagation();
+                            addItemInBasket();
+                        }, label: "+" })))))),
+            width < 1000 ? (React.createElement("div", { className: styles.Item__footer },
+                React.createElement(Button, { size: "xs", label: "Купить в 1 клик" }),
+                React.createElement("div", { className: styles.Item__button }, !isAdded ? (React.createElement(Button, { size: "xs", onClick: (e) => {
+                        e.stopPropagation();
+                        addItemInBasket();
+                    }, label: "Добавить" })) : (React.createElement("div", { className: styles.Item__addActions },
+                    React.createElement(Button, { size: "xs", label: "-", onClick: (e) => {
+                            e.stopPropagation();
+                            removeItemInBasket();
+                        } }),
+                    React.createElement(Text, null, countItemBasket),
+                    React.createElement(Button, { size: "xs", onClick: (e) => {
+                            e.stopPropagation();
+                            addItemInBasket();
+                        }, label: "+" })))))) : (React.createElement(Button, { size: "s", label: "Купить в 1 клик" })))));
 };
 export default CatalogItem;
 //# sourceMappingURL=CatalogItem.js.map

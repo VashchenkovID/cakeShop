@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import cn from "classnames/bind";
 import styles from "./Header.module.styl";
 import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.jpg";
 import { Header as ConstaHeader, HeaderMenu, HeaderModule, } from "@consta/uikit/Header";
 import { Button } from "@consta/uikit/Button";
 import { User } from "@consta/uikit/User";
@@ -16,6 +17,8 @@ import { useResize } from "../../hooks/useResize";
 import { Sidebar } from "@consta/uikit/Sidebar";
 import { IconAlignJustify } from "@consta/uikit/IconAlignJustify";
 import { IconClose } from "@consta/uikit/IconClose";
+import { Text } from "@consta/uikit/Text";
+import FooterWithInfo from "../FooterWithInfo/FooterWithInfo";
 const cx = cn.bind(styles);
 const Header = () => {
     const location = useLocation();
@@ -82,37 +85,52 @@ const Header = () => {
         AuthService.logout().then(() => {
             localStorage.clear();
             dispatch(setIsAuth(false));
+            setIsOpen(false);
         });
     };
     return (React.createElement(React.Fragment, null,
         React.createElement(ConstaHeader, { className: cx(styles.Header, {
                 not: myLoc === PublicRoutesEnum.AUTH || myLoc === PublicRoutesEnum.LOGIN,
             }), leftSide: width <= 850 ? (React.createElement("div", null,
-                React.createElement(Button, { iconLeft: isOpen ? IconClose : IconAlignJustify, view: "clear", size: "l", onClick: () => setIsOpen(true) }),
-                React.createElement(Sidebar, { style: { background: "red" }, isOpen: isOpen, position: "left", onClickOutside: () => setIsOpen(false) },
-                    items.map((item) => (React.createElement("div", { key: item.id, onClick: (e) => {
-                            setIsOpen(false);
-                            if (item.onClick) {
-                                item.onClick(e);
-                            }
-                        } }, item.label))),
-                    width < 500 && (React.createElement("div", null,
-                        isAuth && (React.createElement(User, { name: user || "", size: "l", info: phone || "" })),
-                        React.createElement(BasketWithCount, null),
-                        " ",
-                        isAuth ? (React.createElement("div", { className: styles.Header__user },
-                            React.createElement(Button, { onClick: logoutApp, size: "s", view: "primary", label: "Выйти" }))) : (React.createElement("div", { className: styles.buttons },
-                            React.createElement(Button, { onClick: () => navigate(PublicRoutesEnum.LOGIN), label: "Вход", size: "s" }),
-                            React.createElement(Button, { onClick: () => navigate(PublicRoutesEnum.AUTH), label: "Регистрация", size: "s" })))))))) : (React.createElement(HeaderModule, null,
+                !isOpen && (React.createElement(Button, { iconLeft: isOpen ? IconClose : IconAlignJustify, view: "clear", size: "l", onClick: () => setIsOpen(true) })),
+                React.createElement(Sidebar, { style: { width: width - 30 }, className: styles.Sidebar, isOpen: isOpen, position: "left", onClickOutside: () => setIsOpen(false) },
+                    React.createElement("div", null,
+                        width < 800 && (React.createElement("div", { className: styles.Sidebar__user },
+                            isAuth && (React.createElement(User, { name: user || "", size: "l", info: phone || "" })),
+                            React.createElement(BasketWithCount, null),
+                            " ",
+                            React.createElement(Button, { iconLeft: isOpen ? IconClose : IconAlignJustify, view: "clear", size: "l", onClick: () => setIsOpen(false) }))),
+                        React.createElement("div", { className: styles.Sidebar__links },
+                            items.map((item) => (React.createElement(Text, { className: cx(styles.Sidebar__link, {
+                                    active: item.active,
+                                }), key: item.id, onClick: (e) => {
+                                    setIsOpen(false);
+                                    if (item.onClick) {
+                                        item.onClick(e);
+                                    }
+                                } }, item.label))),
+                            isAuth ? (React.createElement("div", { className: styles.Header__user },
+                                React.createElement(Button, { onClick: logoutApp, size: "s", view: "primary", label: "Выйти" }))) : (React.createElement("div", { className: styles.buttons },
+                                React.createElement(Button, { onClick: () => {
+                                        setIsOpen(false);
+                                        navigate(PublicRoutesEnum.LOGIN);
+                                    }, label: "Вход", size: "s" }),
+                                React.createElement(Button, { onClick: () => {
+                                        setIsOpen(false);
+                                        navigate(PublicRoutesEnum.AUTH);
+                                    }, label: "Регистрация", size: "s" }))))),
+                    React.createElement("div", { className: styles.Sidebar__footer },
+                        React.createElement(FooterWithInfo, null))))) : (React.createElement(HeaderModule, { className: styles.Header__left },
+                React.createElement("img", { className: styles.Logo, src: logo }),
                 React.createElement("nav", { className: styles.Header__nav },
-                    React.createElement(HeaderMenu, { items: items })))), rightSide: width >= 500 && (React.createElement("div", { className: styles.Header__user },
+                    React.createElement(HeaderMenu, { items: items })))), rightSide: width >= 500 ? (React.createElement("div", { className: styles.Header__user },
                 isAuth && (React.createElement(User, { name: user || "", size: "l", info: phone || "" })),
                 React.createElement(BasketWithCount, null),
                 " ",
                 isAuth ? (React.createElement("div", { className: styles.Header__user },
                     React.createElement(Button, { onClick: logoutApp, size: "s", view: "primary", label: "Выйти" }))) : (React.createElement("div", { className: styles.buttons },
                     React.createElement(Button, { onClick: () => navigate(PublicRoutesEnum.LOGIN), label: "Вход", size: "s" }),
-                    React.createElement(Button, { onClick: () => navigate(PublicRoutesEnum.AUTH), label: "Регистрация", size: "s" }))))) })));
+                    React.createElement(Button, { onClick: () => navigate(PublicRoutesEnum.AUTH), label: "Регистрация", size: "s" }))))) : (React.createElement("img", { className: styles.Logo, src: logo })) })));
 };
 export default Header;
 //# sourceMappingURL=Header.js.map

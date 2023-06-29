@@ -14,10 +14,11 @@ export interface CakesReqType {
 }
 declare const _default: {
     loadAllCakes: (data?: CakesReqType) => Promise<AxiosResponse<IDeviceListResponse, any>>;
-    loadOneCake: (id: string) => Promise<DeviceItemModel>;
+    loadOneCake: (id: string) => Promise<AxiosResponse<DeviceItemModel>>;
     getCakeTypes: () => Promise<AxiosResponse<TypeModel[], any>>;
     getCakeFillings: () => Promise<AxiosResponse<any, any>>;
     getBiscuits: () => Promise<AxiosResponse<any, any>>;
     getDecor: () => Promise<AxiosResponse<DecorUserModel[], any>>;
+    getStart: () => Promise<AxiosResponse<any>>;
 };
 export default _default;

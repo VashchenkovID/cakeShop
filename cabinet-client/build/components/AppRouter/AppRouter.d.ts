@@ -4,5 +4,5 @@ export interface IRouteItem {
     element: JSX.Element;
 }
 export declare const publicRoutes: Array<IRouteItem>;
-declare const AppRouter: () => React.JSX.Element;
-export default AppRouter;
+declare const _default: React.MemoExoticComponent<() => React.JSX.Element>;
+export default _default;

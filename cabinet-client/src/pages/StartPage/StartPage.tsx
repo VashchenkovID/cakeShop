@@ -15,6 +15,8 @@ import CatalogItem from "../Catalog/CatalogItem/CatalogItem";
 import { TypeModel } from "../../api/models/TypeModel";
 import { useNavigate } from "react-router-dom";
 import { PublicRoutesEnum } from "../../utils/enum";
+import { Modal } from "@consta/uikit/Modal";
+import CatalogBuyOneClickModal from "../Catalog/CatalogBuyOneClickModal/CatalogBuyOneClickModal";
 
 interface IComponentProps {}
 
@@ -28,7 +30,7 @@ const StartPage: React.FC<IComponentProps> = () => {
   const { load: fetchStart } = useRequest(cakesApi.getStart, (data) => {
     setItems(data?.data || []);
   });
-
+  const [modal, setModal] = useState(false);
   useEffect(() => {
     fetchStart();
   }, []);
@@ -115,12 +117,24 @@ const StartPage: React.FC<IComponentProps> = () => {
               <div className={styles.container__deviceSection__items}>
                 {items.items[key] &&
                   items.items[key].map((item) => (
-                    <CatalogItem item={item} key={`${item.id}`} />
+                    <CatalogItem
+                      setModal={setModal}
+                      width={width}
+                      item={item}
+                      key={`${item.id}`}
+                    />
                   ))}
               </div>
             </div>
           ))}
       </div>
+      <Modal isOpen={modal}>
+        <CatalogBuyOneClickModal
+          modal={modal}
+          setModal={setModal}
+          width={width}
+        />
+      </Modal>
     </section>
   );
 };

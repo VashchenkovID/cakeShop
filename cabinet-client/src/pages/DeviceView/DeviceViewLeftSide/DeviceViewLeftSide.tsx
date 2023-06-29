@@ -16,6 +16,7 @@ import { selectBasket } from "../../../store/features/basket/BasketSelectors";
 import { Modal } from "@consta/uikit/Modal";
 import DeviceCreateRatingModal from "../Modals/DeviceCreateRatingModal";
 import { GetDeviceRatingsReqType } from "../../../api/requests/ratingsApi";
+import DeviceCreateOneClickBasket from "../Modals/DeviceCreateOneClickBasket/DeviceCreateOneClickBasket";
 
 interface IComponentProps {
   device: DeviceItemModel;
@@ -45,6 +46,7 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
   // state
   const [isAdded, setIsAdded] = useState(false);
   const [modal, setModal] = useState<DeviceModalEnum>(DeviceModalEnum.IDLE);
+  const [isView, setIsView] = useState(false);
   //func
   const addItemInBasket = async () => {
     if (userId && device) {
@@ -280,11 +282,42 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
         >
           {device.name}
         </Text>
-        <Textarea
-          className={styles.Device__description}
-          text={device.description || ""}
-          size={width >= 500 ? "m" : "s"}
-        />
+        {width >= 800 ? (
+          <Textarea
+            className={styles.Device__description}
+            text={device.description || ""}
+            size={width >= 500 ? "m" : "s"}
+          />
+        ) : (
+          <div>
+            {isView ? (
+              <div>
+                <Textarea
+                  className={styles.Device__description}
+                  text={device.description || ""}
+                  size={width >= 500 ? "m" : "s"}
+                />
+                <span
+                  className={styles.Device__openDescription}
+                  onClick={() => setIsView(false)}
+                >
+                  Скрыть
+                </span>
+              </div>
+            ) : (
+              <Text size={width >= 500 ? "m" : "s"}>
+                {device.description.slice(0, 100)}...{" "}
+                <span
+                  className={styles.Device__openDescription}
+                  onClick={() => setIsView(true)}
+                >
+                  Подробнее
+                </span>
+              </Text>
+            )}
+          </div>
+        )}
+
         <div>
           {device && (
             <div className={styles.Device__ratingWrapper}>
@@ -307,14 +340,25 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
         <div className={styles.Device__actions}>
           <div>
             {!isAdded ? (
-              <Button
-                size={width <= 800 ? "xs" : "s"}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addItemInBasket();
-                }}
-                label={"Добавить"}
-              />
+              <div className={styles.Device__leftSide__actions}>
+                <Button
+                  size={width <= 800 ? "xs" : "s"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addItemInBasket();
+                  }}
+                  label={"Добавить"}
+                />
+                <Button
+                  size={width <= 800 ? "xs" : "s"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addItemInBasket()
+                    setModal(DeviceModalEnum.CREATE_BASKET);
+                  }}
+                  label={"Купить в 1 клик"}
+                />
+              </div>
             ) : (
               <div className={styles.Device__actions}>
                 <Button
@@ -353,6 +397,9 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
           fetchRatings={fetchRatings}
           fetchDevice={fetchDevice}
         />
+      </Modal>
+      <Modal isOpen={modal === DeviceModalEnum.CREATE_BASKET}>
+        <DeviceCreateOneClickBasket modal={modal} setModal={setModal} width={width}/>
       </Modal>
     </ComponentStyleWrapper>
   );

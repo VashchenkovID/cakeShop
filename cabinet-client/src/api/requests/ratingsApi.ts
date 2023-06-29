@@ -38,7 +38,7 @@ export default {
       { message: string }
     >
   > =>
-    $authHost.get(`${EnpointsEnum.GET_RATINGS_FOR_DEVICE_NOT_USER}`, {
+    $authHost.get(`${EnpointsEnum.GET_RATINGS_DEVICE}`, {
       params: data,
     }),
   getUserRatings: (

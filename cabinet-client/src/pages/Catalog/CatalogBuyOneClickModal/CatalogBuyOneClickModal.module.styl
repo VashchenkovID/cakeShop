@@ -1,0 +1,40 @@
+.UserModal
+  display flex
+  flex-direction column
+  justify-content space-between
+  gap 24px
+  min-width 350px
+  padding 16px
+  min-height 20vh
+  background rgb(47, 4, 79)
+  @media (max-width 500px)
+    min-width 100px
+.NotUserModal
+  min-width 350px
+  background rgb(47, 4, 79)
+  display flex
+  flex-direction column
+  justify-content space-between
+  gap 24px
+  padding 24px
+  min-height 20vh
+  @media (max-width 500px)
+    min-width 100px
+  &__phoneContainer
+    display flex
+    gap 16px
+    flex-direction column
+    color #c1c8e4;
+  &__phoneInput
+    border 1px solid rgba( 0, 66, 105, 0.28 )
+    color rgb( 0, 32, 51 )
+    padding 10px
+    border-radius 5px
+  &__phoneInput:focus
+    outline none
+    border 1px solid rgb( 0, 145, 255 );
+.modalHeader
+  display flex
+  align-items center
+  justify-content space-between
+  gap 24px

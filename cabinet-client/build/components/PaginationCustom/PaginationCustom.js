@@ -25,9 +25,9 @@ const PaginationCustom = (props) => {
         setPagination((prev) => ({ ...prev, page: prev.page + value }));
     };
     return (React.createElement("div", { className: cx(styles.PaginationItemsFooter, props.className) },
-        React.createElement("div", { className: styles.selectContainer },
+        props.notSelect !== undefined && !props.notSelect && (React.createElement("div", { className: styles.selectContainer },
             React.createElement(Select, { form: "round", size: "xs", className: styles.select, items: items, getItemKey: (item) => item, getItemLabel: (item) => item.toString(), value: pagination.perPage, onChange: ({ value }) => setPagination((prev) => value ? { ...prev, page: 1, perPage: value } : prev), ...selectDisabledProps }),
-            React.createElement(Text, { size: "xs" }, `из ${total}`)),
+            React.createElement(Text, { size: "xs" }, `из ${total}`))),
         React.createElement("div", { className: styles.actions },
             React.createElement(Button, { size: "xs", form: "round", view: pagination.page === 1 ? "ghost" : "primary", iconLeft: IconArrowLeft, onClick: onChangeCurrentPage.bind(0, -1), disabled: pagination.page === 1 }),
             React.createElement("div", { className: styles.actionsPage },

@@ -19,6 +19,7 @@ export const enum EnpointsEnum {
   CREATE_RATING = '/ratings/create',
   UPDATE_RATINGS = '/ratings/update',
   GET_RATINGS_FOR_DEVICE_NOT_USER = '/ratings/feedback/getDeviceRatings',
+  GET_RATINGS_DEVICE = '/ratings/getDeviceRatings',
   GET_USER_RATINGS = '/ratings/getUserRatings',
   DELETE_RATING = '/ratings/remove',
   //Start

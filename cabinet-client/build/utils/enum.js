@@ -26,5 +26,6 @@ export var PublicRoutesEnum;
     PublicRoutesEnum["FEEDBACK"] = "/feedback";
     PublicRoutesEnum["VIEW_ORDER"] = "/order";
     PublicRoutesEnum["CREATE_RATING"] = "/ratings/create";
+    PublicRoutesEnum["CREATE_ORDER"] = "/create";
 })(PublicRoutesEnum || (PublicRoutesEnum = {}));
 //# sourceMappingURL=enum.js.map

@@ -16,9 +16,13 @@ import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
 import InformerBadge from "../../components/Informer/Informer";
 import { Pagination } from "@consta/uikit/Pagination";
+import { Modal } from "@consta/uikit/Modal";
+import CatalogBuyOneClickModal from "./CatalogBuyOneClickModal/CatalogBuyOneClickModal";
+import { useResize } from "../../hooks/useResize";
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
+  const { width } = useResize();
   const basket = useAppSelector(selectBasket);
   const navigate = useNavigate();
   const [type, setType] = useState<TypeModel | undefined>({
@@ -41,6 +45,7 @@ const Catalog: React.FC = () => {
     perPage: 10,
   });
   const [count, setCount] = useState(0);
+  const [modal, setModal] = useState(false);
   //pagination
 
   const handleChange = (pageNumber: number): void => {
@@ -127,7 +132,12 @@ const Catalog: React.FC = () => {
       {items.length > 0 && (
         <div className={styles.Shop__items}>
           {items.map((item, index) => (
-            <CatalogItem item={item} key={`${item.id}_${index}`} />
+            <CatalogItem
+                setModal={setModal}
+              item={item}
+              key={`${item.id}_${index}`}
+              width={width}
+            />
           ))}
         </div>
       )}
@@ -160,6 +170,13 @@ const Catalog: React.FC = () => {
           totalPages={totalPages}
         />
       </footer>
+      <Modal isOpen={modal}>
+        <CatalogBuyOneClickModal
+          modal={modal}
+          setModal={setModal}
+          width={width}
+        />
+      </Modal>
     </div>
   );
 };

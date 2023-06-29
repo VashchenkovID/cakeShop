@@ -3,7 +3,6 @@ import useRequest from "../../hooks/useRequest";
 import cakesApi from "../../api/requests/cakesApi";
 import styles from "./Catalog.module.styl";
 import cn from "classnames/bind";
-import PaginationCustom from "../../components/PaginationCustom/PaginationCustom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { selectBasket } from "../../store/features/basket/BasketSelectors";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +12,7 @@ import CatalogItem from "./CatalogItem/CatalogItem";
 import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
 import InformerBadge from "../../components/Informer/Informer";
+import { Pagination } from "@consta/uikit/Pagination";
 const cx = cn.bind(styles);
 const Catalog = () => {
     const basket = useAppSelector(selectBasket);
@@ -37,6 +37,19 @@ const Catalog = () => {
         perPage: 10,
     });
     const [count, setCount] = useState(0);
+    //pagination
+    const handleChange = (pageNumber) => {
+        if (pageNumber === 0) {
+            setPagination((prevState) => {
+                return { ...prevState, page: 1 };
+            });
+        }
+        else {
+            setPagination((prevState) => {
+                return { ...prevState, page: pageNumber };
+            });
+        }
+    };
     const { load: fetchTypes, isLoading: typeLoading } = useRequest(cakesApi.getCakeTypes, (data) => {
         if (data) {
             setTypes((prev) => {
@@ -61,6 +74,13 @@ const Catalog = () => {
     const isBasketVisible = useMemo(() => {
         return basket && basket.items.length > 0;
     }, [basket]);
+    const totalPages = useMemo(() => {
+        if (count > 10) {
+            return Math.round(count / 10);
+        }
+        else
+            return 1;
+    }, [count]);
     useEffect(() => {
         fetchTypes();
     }, []);
@@ -82,15 +102,17 @@ const Catalog = () => {
     }, [pagination, type]);
     return (React.createElement("div", { className: styles.Shop },
         React.createElement("div", { className: styles.Shop__header },
-            React.createElement(Tabs, { getItemLabel: (i) => i.name, items: types, value: type, onChange: ({ value }) => setType(value), fitMode: "scroll", view: "clear" })),
-        !isLoading ? (React.createElement("div", { className: styles.Shop__items }, items.length > 0 ? (items.map((item, index) => (React.createElement(CatalogItem, { item: item, key: `${item.id}_${index}` })))) : (React.createElement(InformerBadge, { text: "Список пуст" })))) : (React.createElement("div", { className: styles.Shop__loader },
+            React.createElement(Tabs, { size: "s", getItemLabel: (i) => i.name, items: types, value: type, onChange: ({ value }) => setType(value), fitMode: "scroll", view: "clear" })),
+        items.length > 0 && (React.createElement("div", { className: styles.Shop__items }, items.map((item, index) => (React.createElement(CatalogItem, { item: item, key: `${item.id}_${index}` }))))),
+        isLoading && (React.createElement("div", { className: styles.Shop__loader },
             React.createElement(Loader, null))),
+        !isLoading && items.length === 0 && (React.createElement(InformerBadge, { text: "Список пуст" })),
         React.createElement("div", { className: cx(styles.IconBasket, {
                 visible: isBasketVisible,
-            }), onClick: () => navigate(`${PublicRoutesEnum.VIEW_ORDER}`) },
+            }), onClick: () => navigate(`${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`) },
             React.createElement(IconBasket, { className: styles.IconBasket__icon })),
-        React.createElement("footer", { className: styles.Shop__active },
-            React.createElement(PaginationCustom, { total: count, pagination: pagination, setPagination: setPagination }))));
+        React.createElement("footer", null,
+            React.createElement(Pagination, { className: styles.Shop__active, currentPage: pagination.page, onChange: handleChange, totalPages: totalPages }))));
 };
 export default Catalog;
 //# sourceMappingURL=Catalog.js.map

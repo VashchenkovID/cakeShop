@@ -63,17 +63,21 @@ const DeviceView: React.FC = () => {
 
   return (
     <>
-      {!isLoading && !isLoadingRatings && (
+      {!isLoading && (
         <div className={styles.Device}>
           {device?.data && (
-            <DeviceViewLeftSide
-              device={device.data}
-              width={width}
-              fetchRatings={fetchDeviceRatings}
-              fetchDevice={fetchDevice}
-            />
+            <div>
+              <DeviceViewLeftSide
+                device={device.data}
+                width={width}
+                fetchRatings={fetchDeviceRatings}
+                fetchDevice={fetchDevice}
+              />
+            </div>
           )}
           <DeviceViewRightSide
+            isLoading={isLoadingRatings}
+            width={width}
             setPagination={setPagination}
             ratings={ratings}
             count={count}

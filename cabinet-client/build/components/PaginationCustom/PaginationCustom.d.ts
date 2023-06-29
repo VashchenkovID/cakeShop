@@ -9,6 +9,7 @@ export interface IPaginationItemsFooterProps {
     pagination: PaginationStateType;
     setPagination: React.Dispatch<React.SetStateAction<PaginationStateType>>;
     className?: string;
+    notSelect?: boolean;
 }
 declare const PaginationCustom: React.FC<IPaginationItemsFooterProps>;
 export default PaginationCustom;

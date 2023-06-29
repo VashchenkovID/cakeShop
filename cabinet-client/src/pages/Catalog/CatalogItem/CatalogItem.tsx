@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import { DeviceListModel } from "../../../api/models/DeviceListModel";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { useAppSelector } from "../../../hooks/useAppSelector";
@@ -16,17 +16,17 @@ import { useResize } from "../../../hooks/useResize";
 import { useNavigate } from "react-router-dom";
 interface IComponentProps {
   item: DeviceListModel;
+  width: number;
+  setModal: React.Dispatch<SetStateAction<boolean>>;
 }
 const cx = cn.bind(styles);
-const CatalogItem: React.FC<IComponentProps> = ({ item }) => {
+const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
   const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
   const [isAdded, setIsAdded] = useState(false);
-
-  const { width } = useResize();
   const addItemInBasket = async () => {
     if (userId) {
       if (!basket) {
@@ -247,9 +247,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item }) => {
             src={`${import.meta.env.VITE_API_URL_IMAGE}${item.img}`}
           />
           <div className={styles.Item__title}>
-            <Text truncate weight={"semibold"}>
-              {item.name}
-            </Text>
+            <Text weight={"semibold"}>{item.name}</Text>
             <div className={styles.Item__rating}>
               <Text size={"s"} className={styles.Item__rating__text}>
                 {Math.floor(item.rating * 100) / 100}
@@ -305,7 +303,15 @@ const CatalogItem: React.FC<IComponentProps> = ({ item }) => {
         </div>
         {width < 1000 ? (
           <div className={styles.Item__footer}>
-            <Button size={"xs"} label={"Купить в 1 клик"} />
+            <Button
+              size={"xs"}
+              label={"Купить в 1 клик"}
+              onClick={(e) => {
+                e.stopPropagation();
+                addItemInBasket();
+                setModal(true);
+              }}
+            />
 
             <div className={styles.Item__button}>
               {!isAdded ? (
