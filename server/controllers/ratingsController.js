@@ -67,7 +67,7 @@ class RatingsController {
       let { limit, page, device_id } = req.query;
       const token = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
       const reqUser = TokenService.validateAccessToken(token);
-
+      console.log(reqUser);
       page = page || 1;
       limit = limit || 9;
       let offset = page * limit - limit;
@@ -83,15 +83,18 @@ class RatingsController {
         ratingsWithUser = ratings.rows;
       } else ratings = [];
       return res.json({
-        count: ratings.count,
-        rows: ratingsWithUser.map((rait) => {
-          return {
-            ...rait?.dataValues,
-            user:
-              users.find((user) => user.id === rait?.dataValues.UserId)
-                ?.fullName || "Аноним",
-          };
-        }),
+        count: ratingsWithUser.filter((rating) => rating.UserId !== reqUser.id)
+          .length,
+        rows: ratingsWithUser
+          .filter((rating) => rating.UserId !== reqUser.id)
+          .map((rait) => {
+            return {
+              ...rait?.dataValues,
+              user:
+                users.find((user) => user.id === rait?.dataValues.UserId)
+                  ?.fullName || "Аноним",
+            };
+          }),
         // .filter((rating) => rating.UserId !== reqUser.id),
       });
     } catch (e) {

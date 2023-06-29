@@ -2,11 +2,6 @@ import axios from 'axios';
 import { AuthResponse } from 'src/api/requests/userAPI';
 import { LocalStorageKeysEnum } from 'src/utils/enum';
 
-const $host = axios.create({
-  withCredentials: true,
-  baseURL: process.env.REACT_APP_API_URL,
-});
-
 const $authHost = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_API_URL,
@@ -45,4 +40,4 @@ $authHost.interceptors.response.use(
   },
 );
 
-export { $host, $authHost };
+export { $authHost };

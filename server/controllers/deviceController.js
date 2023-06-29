@@ -3,8 +3,7 @@ const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
 const { where } = require("sequelize");
-const fs = require('fs')
-
+const fs = require("fs");
 
 class DeviceController {
   async create(req, res, next) {
@@ -231,18 +230,17 @@ class DeviceController {
     try {
       const { id } = req.params;
       if (id) {
-        const fullDevice = await Device.findOne({ where: { id } })
+        const fullDevice = await Device.findOne({ where: { id } });
         if (fullDevice) {
-          fs.readdir('static', (err, files) => {
+          fs.readdir("static", (err, files) => {
             if (err) throw err;
             for (const file of files) {
               if (file === fullDevice.img) {
-                fs.unlink(path.join('static', file), (err) => {
+                fs.unlink(path.join("static", file), (err) => {
                   if (err) throw err;
-                  console.log('файл удален')
+                  console.log("файл удален");
                 });
               }
-
             }
           });
         }
@@ -266,10 +264,22 @@ class DeviceController {
           return rv;
         }, {});
       }
+      let ratings = await Rating.findAll();
+      let devicesWithRait = devices.map((device) => {
+        return {
+          ...device?.dataValues,
+          rating:
+            ratings
+              .filter((rait) => rait.deviceId === device.dataValues.id)
+              .reduce((acc, el) => acc + Number(el.rating), 0) /
+            ratings.filter((rait) => rait.deviceId === device.dataValues.id)
+              .length,
+        };
+      });
       let grouped = groupBy(
-        devices.map((d) => {
+        devicesWithRait.map((d) => {
           return {
-            ...d.dataValues,
+            ...d,
             typeName: types.find((t) => t.id === d.TypeId).name,
           };
         }),

@@ -99,13 +99,13 @@ function checkEndpoint(url) {
     return "Получение популярности изделий";
   }
   if (url.includes("/analytics/getSales")) {
-    return "Получение графика продаж";
+    return "Получение графика продаж пользователем";
   }
   if (url.includes("/calendar/dates")) {
-    return "Получение календаря заказов";
+    return "Получение календаря заказов пользователем";
   }
   if (url.includes("/decor/getAllAdmin")) {
-    return "Получение списка декора для администратора";
+    return "Получение списка декора для администратора пользователем";
   }
   if (url.includes("/decor/getAll")) {
     return "Получение списка декора";
@@ -151,6 +151,24 @@ function checkEndpoint(url) {
   if (url.includes("/order_processing/getHistoryOrder")) {
     return "Получение заказа из истории";
   }
+  if (url.includes("/todoList/getTodo")) {
+    return "Получение списка заметок пользователем";
+  }
+  if (url.includes("/todoList/getTodo/")) {
+    return "Получение информации о заметке пользователем";
+  }
+  if (url.includes("/todoList/create")) {
+    return "Создание заметки пользователем";
+  }
+  if (url.includes("/todoList/update")) {
+    return "Редактирование заметки пользователем";
+  }
+  if (url.includes("/todoList/delete")) {
+    return "Удаление заметки пользователем";
+  }
+  if (url.includes("/uniqUsers/users")) {
+    return "Получение списка уникальных посетителей пользователем";
+  }
 }
 
 module.exports = function () {
@@ -165,6 +183,7 @@ module.exports = function () {
     }
     const authorizationHeader = req.headers.authorization;
     const accessToken = authorizationHeader?.split(" ")[1];
+
     if (accessToken === "null" || !accessToken) {
       await Audit.create({
         description: `${checkEndpoint(url)}`,
@@ -172,15 +191,13 @@ module.exports = function () {
       });
     } else {
       const userData = TokenService.validateAccessToken(accessToken);
+      console.log(accessToken, userData, url);
       if (userData) {
         await Audit.create({
-          description: `${checkEndpoint(url)} ${userData?.fullName}`,
-          user: userData.fullName,
-        });
-      } else {
-        await Audit.create({
-          description: `${checkEndpoint(url)}`,
-          user: "Не авторизирован",
+          description: `${checkEndpoint(url)} ${
+            userData?.fullName || userData?.name
+          }`,
+          user: userData.fullName || userData?.name || "Неизвестен",
         });
       }
     }

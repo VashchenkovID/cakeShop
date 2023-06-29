@@ -1,6 +1,6 @@
 import { get } from 'src/api';
 import { EnpointsEnum } from 'src/api/endpoints';
-import { $authHost, $host } from 'src/api/requests/index';
+import { $authHost } from 'src/api/requests/index';
 import { DeviceListModel } from 'src/api/models/DeviceListModel';
 import { AxiosResponse } from 'axios';
 import { DeviceItemModel } from 'src/api/models/DeviceItemModel';
@@ -24,7 +24,7 @@ export default {
   loadAllCakes: (
     data?: CakesReqType,
   ): Promise<AxiosResponse<IDeviceListResponse, any>> =>
-    $host.get(
+    $authHost.get(
       data
         ? `${converterUrl(EnpointsEnum.GET_CAKES, data)}`
         : EnpointsEnum.GET_CAKES,
