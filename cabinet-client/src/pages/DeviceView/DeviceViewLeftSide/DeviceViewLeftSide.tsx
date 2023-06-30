@@ -6,17 +6,17 @@ import { Text } from "@consta/uikit/Text";
 import Textarea from "../../../components/Textarea/Textarea";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
 import { Button } from "@consta/uikit/Button";
-import { DeviceItemModel } from "../../../api/models/DeviceItemModel";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
+import { DeviceItemModel } from "src/api/models/DeviceItemModel";
+import { setBasket } from "src/store/features/basket/BasketSlice";
 import { nanoid } from "@reduxjs/toolkit";
-import { LocalStorageKeysEnum } from "../../../utils/enum";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
 import { Modal } from "@consta/uikit/Modal";
 import DeviceCreateRatingModal from "../Modals/DeviceCreateRatingModal";
-import { GetDeviceRatingsReqType } from "../../../api/requests/ratingsApi";
+import { GetDeviceRatingsReqType } from "src/api/requests/ratingsApi";
 import DeviceCreateOneClickBasket from "../Modals/DeviceCreateOneClickBasket/DeviceCreateOneClickBasket";
+import {storageUser} from "src/utils/storage";
 
 interface IComponentProps {
   device: DeviceItemModel;
@@ -41,21 +41,20 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
   // store
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
-  const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
+  const user = storageUser()
   // state
   const [isAdded, setIsAdded] = useState(false);
   const [modal, setModal] = useState<DeviceModalEnum>(DeviceModalEnum.IDLE);
   const [isView, setIsView] = useState(false);
   //func
   const addItemInBasket = async () => {
-    if (userId && device) {
+    if (user.id && device) {
       if (!basket) {
         dispatch(
           setBasket({
             id: null,
-            name: `Заказ пользователя ${userName}`,
-            user_id: Number(userId),
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
             items: [
               {
                 id: device.id,
@@ -146,13 +145,13 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
     }
   };
   const removeItemInBasket = async () => {
-    if (userId && device) {
+    if (user.id && device) {
       if (!basket) {
         dispatch(
           setBasket({
             id: null,
-            name: `Заказ пользователя ${userName}`,
-            user_id: Number(userId),
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
             items: [
               {
                 id: device.id,

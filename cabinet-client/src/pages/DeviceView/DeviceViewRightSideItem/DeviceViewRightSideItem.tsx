@@ -4,7 +4,7 @@ import styles from "../DeviceView.module.styl";
 import { User } from "@consta/uikit/User";
 import StarRating from "../../../components/StarRating/StarRating";
 import Textarea from "../../../components/Textarea/Textarea";
-import { RatingItemModel } from "../../../api/models/RatingItemModel";
+import { RatingItemModel } from "src/api/models/RatingItemModel";
 import { Text } from "@consta/uikit/Text";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
 

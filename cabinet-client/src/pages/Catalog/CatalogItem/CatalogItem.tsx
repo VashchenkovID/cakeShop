@@ -1,10 +1,10 @@
 import React, { SetStateAction, useEffect, useMemo, useState } from "react";
-import { DeviceListModel } from "../../../api/models/DeviceListModel";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../../utils/enum";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
+import { DeviceListModel } from "src/api/models/DeviceListModel";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
+import { setBasket } from "src/store/features/basket/BasketSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
 import { Button } from "@consta/uikit/Button";
@@ -12,8 +12,8 @@ import { Text } from "@consta/uikit/Text";
 import styles from "./CatalogItem.module.styl";
 import cn from "classnames/bind";
 import CatalogItemPrice from "../CatalogItemPrice/CatalogItemPrice";
-import { useResize } from "../../../hooks/useResize";
 import { useNavigate } from "react-router-dom";
+import {storageUser} from "src/utils/storage";
 interface IComponentProps {
   item: DeviceListModel;
   width: number;
@@ -24,17 +24,17 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
+  const user = storageUser()
+  console.log(user)
   const [isAdded, setIsAdded] = useState(false);
   const addItemInBasket = async () => {
-    if (userId) {
+    if (user.id) {
       if (!basket) {
         dispatch(
           setBasket({
             id: null,
-            name: `Заказ пользователя ${userName}`,
-            user_id: Number(userId),
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
             items: [
               {
                 id: item.id,
@@ -125,13 +125,13 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
     }
   };
   const removeItemInBasket = async () => {
-    if (userId) {
+    if (user.id) {
       if (!basket) {
         dispatch(
           setBasket({
             id: null,
-            name: `Заказ пользователя ${userName}`,
-            user_id: Number(userId),
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
             items: [
               {
                 id: item.id,

@@ -5,15 +5,15 @@ import { Button } from "@consta/uikit/Button";
 import { IconTrash } from "@consta/uikit/IconTrash";
 import { Collapse } from "@consta/uikit/Collapse";
 import { nanoid } from "nanoid";
-import { DecorUserModel } from "../../../api/models/DecorUserModel";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
+import { DecorUserModel } from "src/api/models/DecorUserModel";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
 import useCreateOrderCakeItem from "./useCreateOrderCakeItem";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
-import { BasketModel } from "../../../api/models/BasketModel";
+import { setBasket } from "src/store/features/basket/BasketSlice";
+import { BasketModel } from "src/api/models/BasketModel";
 import CreateOrderDecorItem from "../CreateOrderDecorItem/CreateOrderDecorItem";
-import { useResize } from "../../../hooks/useResize";
+import { useResize } from "src/hooks/useResize";
 
 export interface OrderBasketChangeDecors extends DecorUserModel {
   isChecked: boolean;

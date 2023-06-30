@@ -1,9 +1,6 @@
 export enum LocalStorageKeysEnum {
   TOKEN = "token",
-  ID = "id",
-  ROLE = "role",
-  NAME = "name",
-  PHONE = "phone",
+  USER = 'user'
 }
 
 export const enum RequestStatusEnum {

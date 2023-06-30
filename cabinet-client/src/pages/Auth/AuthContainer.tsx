@@ -5,10 +5,10 @@ import { Text } from "@consta/uikit/Text";
 import { TextField } from "@consta/uikit/TextField";
 import PhoneInput from "react-phone-input-2";
 import { Button } from "@consta/uikit/Button";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../utils/enum";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
 import AuthService from "../../api/requests/userAPI";
-import { setIsAuth } from "../../store/features/auth/AuthSlice";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { setIsAuth } from "src/store/features/auth/AuthSlice";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
 
 const AuthContainer: React.FC = () => {
   const [login, setLogin] = useState<string>("");
@@ -37,10 +37,10 @@ const AuthContainer: React.FC = () => {
         .then((r) => {
           dispatch(setIsAuth(true));
           localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.accessToken);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.user.role);
-          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.user.name);
-          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.user.phone);
-          localStorage.setItem(LocalStorageKeysEnum.ID, String(r.data.user.id));
+          localStorage.setItem(
+            LocalStorageKeysEnum.USER,
+            JSON.stringify(r.data.user)
+          );
           clearInputs();
           setLoading(false);
           navigate(PublicRoutesEnum.SHOP);
@@ -59,10 +59,10 @@ const AuthContainer: React.FC = () => {
         .then(async (r) => {
           dispatch(setIsAuth(true));
           localStorage.setItem(LocalStorageKeysEnum.TOKEN, r.data.accessToken);
-          localStorage.setItem(LocalStorageKeysEnum.ROLE, r.data.user.role);
-          localStorage.setItem(LocalStorageKeysEnum.NAME, r.data.user.name);
-          localStorage.setItem(LocalStorageKeysEnum.PHONE, r.data.user.phone);
-          localStorage.setItem(LocalStorageKeysEnum.ID, String(r.data.user.id));
+          localStorage.setItem(
+            LocalStorageKeysEnum.USER,
+            JSON.stringify(r.data.user)
+          );
           clearInputs();
           navigate(PublicRoutesEnum.SHOP);
           setLoading(false);

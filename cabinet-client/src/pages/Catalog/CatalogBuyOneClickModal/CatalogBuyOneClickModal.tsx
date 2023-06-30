@@ -1,11 +1,11 @@
 import React, { SetStateAction, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../../utils/enum";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
 import ordersApi from "../../../api/requests/ordersApi";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
+import { setBasket } from "src/store/features/basket/BasketSlice";
 import styles from "./CatalogBuyOneClickModal.module.styl";
 import { Text } from "@consta/uikit/Text";
 import { Button } from "@consta/uikit/Button";
@@ -14,6 +14,7 @@ import { DatePicker } from "@consta/uikit/DatePicker";
 import { TextField } from "@consta/uikit/TextField";
 import PhoneInput from "react-phone-input-2";
 import cn from "classnames/bind";
+import {storageUser} from "src/utils/storage";
 
 interface IComponentProps {
   modal: boolean;
@@ -36,8 +37,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
+  const user = storageUser()
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
     name: "",
     phone: "",
@@ -83,13 +83,14 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
         });
         navigate(`${PublicRoutesEnum.SHOP}`);
         dispatch(setBasket(null));
+        onClose()
       });
   };
   const createNewBasketOrder = async () => {
-    if (userId && basket && notAuthUser.order_date) {
+    if (user.id && basket && notAuthUser.order_date) {
       await ordersApi
         .createNewUserOrder({
-          name: `Заказ пользователя ${user}`,
+          name: `Заказ пользователя ${user.name}`,
           date_completed: notAuthUser.order_date.toISOString(),
           items: basket.items.map((item) => {
             return {
@@ -101,7 +102,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
                   : undefined,
             };
           }),
-          user_id: userId,
+          user_id: user.id,
         })
         .then(() => {
           setNotAuthUser({
@@ -112,6 +113,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
           });
           navigate(`${PublicRoutesEnum.SHOP}`);
           dispatch(setBasket(null));
+          onClose()
         });
     }
   };

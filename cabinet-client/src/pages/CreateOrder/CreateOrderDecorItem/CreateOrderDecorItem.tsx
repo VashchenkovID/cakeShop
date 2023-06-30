@@ -4,12 +4,11 @@ import { Text } from "@consta/uikit/Text";
 import styles from "./CreateOrderDecorItem.module.styl";
 import { Button } from "@consta/uikit/Button";
 import { OrderBasketChangeDecors } from "../CreateOrderCakeItem/CreateOrderCakeItem";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
-import { BasketModel } from "../../../api/models/BasketModel";
-import { useResize } from "../../../hooks/useResize";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
+import { setBasket } from "src/store/features/basket/BasketSlice";
+import { useResize } from "src/hooks/useResize";
 
 interface IComponentProps {
   item: OrderBasketChangeDecors;

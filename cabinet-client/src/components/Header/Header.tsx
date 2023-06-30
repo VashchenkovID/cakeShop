@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import cn from "classnames/bind";
 import styles from "./Header.module.styl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,24 +10,24 @@ import {
 } from "@consta/uikit/Header";
 import { Button } from "@consta/uikit/Button";
 import { User } from "@consta/uikit/User";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
 import {
   HeaderIdEnum,
-  LocalStorageKeysEnum,
   PrivateRoutesEnum,
   PublicRoutesEnum,
-} from "../../utils/enum";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { selectIsAuth } from "../../store/features/auth/selectors";
+} from "src/utils/enum";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectIsAuth } from "src/store/features/auth/selectors";
 import AuthService from "../../api/requests/userAPI";
-import { setIsAuth } from "../../store/features/auth/AuthSlice";
+import { setIsAuth } from "src/store/features/auth/AuthSlice";
 import BasketWithCount from "../BasketWithCount/BasketWithCount";
-import { useResize } from "../../hooks/useResize";
+import { useResize } from "src/hooks/useResize";
 import { Sidebar } from "@consta/uikit/Sidebar";
 import { IconAlignJustify } from "@consta/uikit/IconAlignJustify";
 import { IconClose } from "@consta/uikit/IconClose";
 import { Text } from "@consta/uikit/Text";
 import FooterWithInfo from "../FooterWithInfo/FooterWithInfo";
+import { storageUser } from "src/utils/storage";
 const cx = cn.bind(styles);
 
 interface Item {
@@ -47,11 +47,9 @@ const Header: React.FC<IHeaderProps> = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
-  const phone = localStorage.getItem(LocalStorageKeysEnum.PHONE);
+  const user = storageUser();
   const isAuth = useAppSelector(selectIsAuth);
   const myLoc = `/${location.pathname.split("/").slice(1, 2).join("")}`;
-  const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
 
   const [isOpen, setIsOpen] = useState(false);
   const { width } = useResize();
@@ -189,7 +187,11 @@ const Header: React.FC<IHeaderProps> = () => {
                   {width < 800 && (
                     <div className={styles.Sidebar__user}>
                       {isAuth && (
-                        <User name={user || ""} size={"l"} info={phone || ""} />
+                        <User
+                          name={user.name || ""}
+                          size={"l"}
+                          info={user.phone || ""}
+                        />
                       )}
                       <BasketWithCount />{" "}
                       <Button
@@ -284,7 +286,7 @@ const Header: React.FC<IHeaderProps> = () => {
           width >= 500 ? (
             <div className={styles.Header__user}>
               {isAuth && (
-                <User name={user || ""} size={"l"} info={phone || ""} />
+                <User name={user.name || ""} size={"l"} info={user.phone || ""} />
               )}
               <BasketWithCount />{" "}
               {isAuth ? (

@@ -4,6 +4,9 @@ export const storageToken = () => {
   return localStorage.getItem(LocalStorageKeysEnum.TOKEN);
 };
 
-export const storageId = () => {
-  return localStorage.getItem(LocalStorageKeysEnum.ID);
-};
+export const storageUser = () => {
+  const user = localStorage.getItem(LocalStorageKeysEnum.USER)
+  if (user) {
+    return JSON.parse(user)
+  } else return null
+}

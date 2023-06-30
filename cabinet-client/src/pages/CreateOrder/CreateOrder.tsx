@@ -11,18 +11,19 @@ import { Text } from "@consta/uikit/Text";
 import PhoneInput from "react-phone-input-2";
 
 import { nanoid } from "nanoid";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { selectBasket } from "../../store/features/basket/BasketSelectors";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
 import ordersApi from "../../api/requests/ordersApi";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../utils/enum";
-import { setBasket } from "../../store/features/basket/BasketSlice";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
+import { setBasket } from "src/store/features/basket/BasketSlice";
 import CreateOrderCakeItem, {
   OrderBasketChangeDecors,
 } from "./CreateOrderCakeItem/CreateOrderCakeItem";
-import { DecorUserModel } from "../../api/models/DecorUserModel";
+import { DecorUserModel } from "src/api/models/DecorUserModel";
 import useRequest from "../../hooks/useRequest";
 import cakesApi from "../../api/requests/cakesApi";
+import {storageUser} from "src/utils/storage";
 
 interface UserCreateOrderType {
   name: string;
@@ -37,7 +38,7 @@ const CreateOrder: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
+  const user = storageUser()
   const [modal, setModal] = useState(false);
   const [orderDecors, setOrderDecors] = useState<OrderBasketChangeDecors[]>([]);
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
@@ -51,7 +52,6 @@ const CreateOrder: React.FC = () => {
     if (data) setDecors(data.data);
   });
 
-  const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const allCount = useMemo(() => {
     if (basket && basket.items.length > 0) {
       return (
@@ -119,10 +119,10 @@ const CreateOrder: React.FC = () => {
   };
 
   const createNewBasketOrder = async () => {
-    if (userId && basket && notAuthUser.order_date) {
+    if (user.id && basket && notAuthUser.order_date) {
       await ordersApi
         .createNewUserOrder({
-          name: `Заказ пользователя ${user}`,
+          name: `Заказ пользователя ${user.name}`,
           date_completed: notAuthUser.order_date.toISOString(),
           items: basket.items.map((item) => {
             return {
@@ -134,7 +134,7 @@ const CreateOrder: React.FC = () => {
                   : undefined,
             };
           }),
-          user_id: userId,
+          user_id: user.id,
         })
         .then(() => {
           setNotAuthUser({

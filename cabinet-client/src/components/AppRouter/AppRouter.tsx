@@ -1,24 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { selectIsAuth } from "../../store/features/auth/selectors";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectIsAuth } from "src/store/features/auth/selectors";
 import axios from "axios";
-import { AuthResponse } from "../../api/requests/userAPI";
-import { EnpointsEnum } from "../../api/endpoints";
-import { setIsAuth } from "../../store/features/auth/AuthSlice";
+import { AuthResponse } from "src/api/requests/userAPI";
+import { EnpointsEnum } from "src/api/endpoints";
+import { setIsAuth } from "src/store/features/auth/AuthSlice";
 import {
   LocalStorageKeysEnum,
   PrivateRoutesEnum,
   PublicRoutesEnum,
-} from "../../utils/enum";
-import { storageToken } from "../../utils/storage";
+} from "src/utils/enum";
+import { storageToken } from "src/utils/storage";
 import AuthContainer from "../../pages/Auth/AuthContainer";
 
 import Catalog from "../../pages/Catalog/Catalog";
 import CreateOrder from "../../pages/CreateOrder/CreateOrder";
-import { BasketModel } from "../../api/models/BasketModel";
-import { setBasket } from "../../store/features/basket/BasketSlice";
+import { BasketModel } from "src/api/models/BasketModel";
+import { setBasket } from "src/store/features/basket/BasketSlice";
 import StartPage from "../../pages/StartPage/StartPage";
 import DeviceView from "../../pages/DeviceView/DeviceView";
 

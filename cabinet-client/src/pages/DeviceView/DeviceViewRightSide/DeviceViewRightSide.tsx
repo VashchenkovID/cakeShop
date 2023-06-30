@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RatingItemModel } from "../../../api/models/RatingItemModel";
+import { RatingItemModel } from "src/api/models/RatingItemModel";
 import { Text } from "@consta/uikit/Text";
 import ComponentStyleWrapper from "../../../components/ComponentStyleWrapper/ComponentStyleWrapper";
 import styles from "../DeviceView.module.styl";
