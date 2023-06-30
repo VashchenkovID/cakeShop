@@ -191,7 +191,6 @@ module.exports = function () {
       });
     } else {
       const userData = TokenService.validateAccessToken(accessToken);
-      console.log(accessToken, userData, url);
       if (userData) {
         await Audit.create({
           description: `${checkEndpoint(url)} ${

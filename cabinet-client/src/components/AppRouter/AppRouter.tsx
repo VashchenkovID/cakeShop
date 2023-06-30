@@ -21,6 +21,7 @@ import { BasketModel } from "src/api/models/BasketModel";
 import { setBasket } from "src/store/features/basket/BasketSlice";
 import StartPage from "../../pages/StartPage/StartPage";
 import DeviceView from "../../pages/DeviceView/DeviceView";
+import Orders from "src/pages/Orders/Orders";
 
 export interface IRouteItem {
   path: string;
@@ -40,7 +41,7 @@ export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.GENERAL}`, element: <StartPage /> },
 ];
 export const privateRoutes: Array<IRouteItem> = [
-  { path: `${PrivateRoutesEnum.MY_ORDERS}`, element: <div>Мои заказы</div> },
+  { path: `${PrivateRoutesEnum.MY_ORDERS}`, element: <Orders /> },
   { path: `${PrivateRoutesEnum.MY_FEEDBACK}`, element: <div>Мои отзывы</div> },
 ];
 const AppRouter = () => {

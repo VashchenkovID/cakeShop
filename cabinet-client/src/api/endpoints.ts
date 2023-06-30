@@ -14,6 +14,7 @@ export const enum EnpointsEnum {
   // Создание заказов
   CREATE_INDIVIDUAL_ORDER = '/order/create',
   CREATE_USER_ORDER = '/basket/create',
+  GET_ORDERS = '/basket/getUserOrders',
   //Декор
   GET_DECOR = '/decor/getAll',
   CREATE_RATING = '/ratings/create',

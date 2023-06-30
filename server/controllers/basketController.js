@@ -5,7 +5,13 @@ const {
   OrderDecor,
   OrderDecorItem,
   Decor,
+  IndividualOrder,
+  IndividualOrderItem,
 } = require("../models/models");
+const TokenService = require("../services/token-service");
+const { startOfMonth, endOfMonth } = require("date-fns");
+const { Op } = require("sequelize");
+const ApiError = require("../Error/ApiError");
 
 class BasketController {
   async create(req, res, next) {
@@ -119,17 +125,67 @@ class BasketController {
     return res.json({ id: order.id });
   }
   async getAll(req, res) {
-    let { limit, page, userId } = req.query;
+    let { limit, page } = req.query;
+    const authorizationHeader = req.headers.authorization;
+    const accessToken = authorizationHeader?.split(" ")[1];
+    let userData;
+    if (accessToken) {
+      userData = TokenService.validateAccessToken(accessToken);
+    }
     page = page || 1;
     limit = limit || 9;
     let offset = page * limit - limit;
     let devices;
-    if (userId) {
-      devices = await Basket.findAndCountAll({ limit, offset, UserId: userId });
+    if (userData && userData.id) {
+      devices = await Basket.findAndCountAll({
+        limit,
+        offset,
+        UserId: userData.id,
+      });
     } else devices = await Basket.findAndCountAll({ limit, offset });
     return res.json(devices);
   }
-
+  async getUserOrders(req, res, next) {
+    try {
+      let { limit, page } = req.query;
+      const authorizationHeader = req.headers.authorization;
+      const accessToken = authorizationHeader?.split(" ")[1];
+      let userData;
+      if (accessToken) {
+        userData = TokenService.validateAccessToken(accessToken);
+      }
+      page = page || 1;
+      limit = limit || 9;
+      let offset = page * limit - limit;
+      let devices;
+      if (userData && userData.id) {
+        devices = await Basket.findAndCountAll({
+          limit,
+          offset,
+          UserId: userData.id,
+          include: [
+            { model: BasketDevice, as: "items" },
+            {
+              model: OrderDecor,
+              as: "decors",
+              include: [{ model: OrderDecorItem, as: "items" }],
+            },
+          ],
+        });
+        return res.json({
+          count: devices.count,
+          rows: devices.rows.map((basket) => {
+            return {
+              ...basket.dataValues,
+              decors: basket.dataValues.decors.map((decor) => decor.items),
+            };
+          }),
+        });
+      } else return res.status(403, { message: "Не авторизован" });
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
   async getOne(req, res) {
     const { id } = req.params;
     const basket = await Basket.findOne({
