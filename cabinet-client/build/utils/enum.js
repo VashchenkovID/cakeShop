@@ -11,7 +11,8 @@ export var HeaderIdEnum;
     HeaderIdEnum["GENERAL"] = "general";
     HeaderIdEnum["SHOP"] = "shop";
     HeaderIdEnum["FILLINGS"] = "fillings";
-    HeaderIdEnum["INDIVIDUAL"] = "individual";
+    HeaderIdEnum["MY_ORDERS"] = "my_orders";
+    HeaderIdEnum["MY_FEEDBACK"] = "my_feedback";
 })(HeaderIdEnum || (HeaderIdEnum = {}));
 export var PublicRoutesEnum;
 (function (PublicRoutesEnum) {
@@ -28,4 +29,9 @@ export var PublicRoutesEnum;
     PublicRoutesEnum["CREATE_RATING"] = "/ratings/create";
     PublicRoutesEnum["CREATE_ORDER"] = "/create";
 })(PublicRoutesEnum || (PublicRoutesEnum = {}));
+export var PrivateRoutesEnum;
+(function (PrivateRoutesEnum) {
+    PrivateRoutesEnum["MY_ORDERS"] = "/orders";
+    PrivateRoutesEnum["MY_FEEDBACK"] = "/feedback";
+})(PrivateRoutesEnum || (PrivateRoutesEnum = {}));
 //# sourceMappingURL=enum.js.map

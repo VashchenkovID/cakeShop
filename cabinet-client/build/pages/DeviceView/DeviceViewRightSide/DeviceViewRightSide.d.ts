@@ -8,6 +8,7 @@ interface IComponentProps {
     ratings: RatingItemModel[];
     count: number;
     width: number;
+    isLoading: boolean;
 }
 declare const DeviceViewRightSide: React.FC<IComponentProps>;
 export default DeviceViewRightSide;

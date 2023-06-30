@@ -3,18 +3,22 @@ import useRequest from "../../hooks/useRequest";
 import cakesApi from "../../api/requests/cakesApi";
 import styles from "./Catalog.module.styl";
 import cn from "classnames/bind";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { selectBasket } from "../../store/features/basket/BasketSelectors";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
 import { useNavigate } from "react-router-dom";
 import IconBasket from "../../components/IconBasket/IconBasket";
-import { PublicRoutesEnum } from "../../utils/enum";
+import { PublicRoutesEnum } from "src/utils/enum";
 import CatalogItem from "./CatalogItem/CatalogItem";
 import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
 import InformerBadge from "../../components/Informer/Informer";
 import { Pagination } from "@consta/uikit/Pagination";
+import { Modal } from "@consta/uikit/Modal";
+import CatalogBuyOneClickModal from "./CatalogBuyOneClickModal/CatalogBuyOneClickModal";
+import { useResize } from "src/hooks/useResize";
 const cx = cn.bind(styles);
 const Catalog = () => {
+    const { width } = useResize();
     const basket = useAppSelector(selectBasket);
     const navigate = useNavigate();
     const [type, setType] = useState({
@@ -37,6 +41,7 @@ const Catalog = () => {
         perPage: 10,
     });
     const [count, setCount] = useState(0);
+    const [modal, setModal] = useState(false);
     //pagination
     const handleChange = (pageNumber) => {
         if (pageNumber === 0) {
@@ -103,7 +108,7 @@ const Catalog = () => {
     return (React.createElement("div", { className: styles.Shop },
         React.createElement("div", { className: styles.Shop__header },
             React.createElement(Tabs, { size: "s", getItemLabel: (i) => i.name, items: types, value: type, onChange: ({ value }) => setType(value), fitMode: "scroll", view: "clear" })),
-        items.length > 0 && (React.createElement("div", { className: styles.Shop__items }, items.map((item, index) => (React.createElement(CatalogItem, { item: item, key: `${item.id}_${index}` }))))),
+        items.length > 0 && (React.createElement("div", { className: styles.Shop__items }, items.map((item, index) => (React.createElement(CatalogItem, { setModal: setModal, item: item, key: `${item.id}_${index}`, width: width }))))),
         isLoading && (React.createElement("div", { className: styles.Shop__loader },
             React.createElement(Loader, null))),
         !isLoading && items.length === 0 && (React.createElement(InformerBadge, { text: "Список пуст" })),
@@ -112,7 +117,9 @@ const Catalog = () => {
             }), onClick: () => navigate(`${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`) },
             React.createElement(IconBasket, { className: styles.IconBasket__icon })),
         React.createElement("footer", null,
-            React.createElement(Pagination, { className: styles.Shop__active, currentPage: pagination.page, onChange: handleChange, totalPages: totalPages }))));
+            React.createElement(Pagination, { className: styles.Shop__active, currentPage: pagination.page, onChange: handleChange, totalPages: totalPages })),
+        React.createElement(Modal, { isOpen: modal },
+            React.createElement(CatalogBuyOneClickModal, { modal: modal, setModal: setModal, width: width }))));
 };
 export default Catalog;
 //# sourceMappingURL=Catalog.js.map

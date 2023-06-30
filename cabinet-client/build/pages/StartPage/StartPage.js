@@ -13,6 +13,40 @@ import { useResize } from "../../hooks/useResize";
 import CatalogItem from "../Catalog/CatalogItem/CatalogItem";
 import { useNavigate } from "react-router-dom";
 import { PublicRoutesEnum } from "../../utils/enum";
+import { Modal } from "@consta/uikit/Modal";
+import CatalogBuyOneClickModal from "../Catalog/CatalogBuyOneClickModal/CatalogBuyOneClickModal";
+import { IconPhone } from "@consta/uikit/IconPhone";
+import IconVK from "../../components/Icons/IconVK";
+import IconTelegram from "../../components/Icons/IconTelegram";
+import IconWhatsApp from "../../components/Icons/IconWhatsApp";
+import IconInstagram from "../../components/Icons/IconInstagram";
+import { IconClose } from "@consta/uikit/IconClose";
+const communicationItems = [
+    {
+        href: undefined,
+        label: "+7(919)-040-95-95",
+        icon: React.createElement(IconPhone, { className: styles.Communication__iconColor }),
+    },
+    {
+        href: "https://vk.com/alexa_cake_smol",
+        label: "https://vk.com/alexa_cake_smol",
+        icon: React.createElement(IconVK, { className: styles.Communication__iconSize }),
+    },
+    {
+        href: "https://t.me/",
+        label: "https://t.me/",
+        icon: React.createElement(IconTelegram, { className: styles.Communication__iconSize }),
+    },
+    {
+        href: "https://wa.me/79190409595",
+        label: "+7(919)-040-95-95",
+        icon: React.createElement(IconWhatsApp, { className: styles.Communication__iconSize }),
+    },
+    {
+        label: "insta",
+        icon: React.createElement(IconInstagram, { className: styles.Communication__iconSize }),
+    },
+];
 const StartPage = () => {
     const navigate = useNavigate();
     const { width } = useResize();
@@ -20,9 +54,11 @@ const StartPage = () => {
     const { load: fetchStart } = useRequest(cakesApi.getStart, (data) => {
         setItems(data?.data || []);
     });
+    const [modal, setModal] = useState(false);
     useEffect(() => {
         fetchStart();
     }, []);
+    const [individualModal, setIndividualModal] = useState(false);
     return (React.createElement("section", { className: styles.container },
         React.createElement(ComponentStyleWrapper, null,
             React.createElement(Carousel, { plugins: [
@@ -42,7 +78,7 @@ const StartPage = () => {
                     React.createElement(Text, { size: width >= 800 ? "m" : "s", align: "center" }, "\u041C\u0430\u0433\u0430\u0437\u0438\u043D \u043A\u043E\u043D\u0434\u0438\u0442\u0435\u0440\u0441\u043A\u0438\u0445 \u0438\u0437\u0434\u0435\u043B\u0438\u0439"),
                     React.createElement("div", { className: styles.container__slide__actions },
                         React.createElement(Button, { label: "Выбрать десерт", size: "s", onClick: () => navigate(`${PublicRoutesEnum.SHOP}`) }),
-                        React.createElement(Button, { label: "Заказать десерт по индивидуальному заказу", size: "s", onClick: () => navigate(`${PublicRoutesEnum.INDIVIDUAL}`) }))),
+                        React.createElement(Button, { label: "Сделать индивидуальный заказ", size: "s", onClick: () => setIndividualModal(true) }))),
                 React.createElement("div", { className: styles.container__slide },
                     React.createElement(Text, null,
                         React.createElement(Text, null, "\u041F\u0440\u0438\u0432\u0435\u0442!"),
@@ -60,7 +96,17 @@ const StartPage = () => {
                 Object.keys(items.items).map((key) => (React.createElement("div", { className: styles.container__deviceSection__underSection },
                     React.createElement(Text, { size: "2xl" }, key),
                     React.createElement("div", { className: styles.container__deviceSection__items }, items.items[key] &&
-                        items.items[key].map((item) => (React.createElement(CatalogItem, { item: item, key: `${item.id}` }))))))))));
+                        items.items[key].map((item) => (React.createElement(CatalogItem, { setModal: setModal, width: width, item: item, key: `${item.id}` })))))))),
+        React.createElement(Modal, { isOpen: modal },
+            React.createElement(CatalogBuyOneClickModal, { modal: modal, setModal: setModal, width: width })),
+        React.createElement(Modal, { isOpen: individualModal },
+            React.createElement("div", { className: styles.Communication },
+                React.createElement("div", { className: styles.Communication__header },
+                    React.createElement(Text, { size: "2xl" }, "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0440\u0435\u0434\u043F\u043E\u0447\u0438\u0442\u0430\u0435\u043C\u044B\u0439 \u0441\u043F\u043E\u0441\u043E\u0431 \u0441\u0432\u044F\u0437\u0438"),
+                    React.createElement(Button, { view: "clear", iconLeft: IconClose, onClick: () => setIndividualModal(false) })),
+                React.createElement("div", { className: styles.Communication__rows }, communicationItems.map((item) => (React.createElement("a", { className: styles.Communication__row, href: item.href, target: "_blank" },
+                    item.icon,
+                    React.createElement(Text, { size: "s" }, item.label)))))))));
 };
 export default React.memo(StartPage);
 //# sourceMappingURL=StartPage.js.map

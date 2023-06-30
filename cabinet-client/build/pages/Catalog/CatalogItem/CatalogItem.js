@@ -11,17 +11,15 @@ import { Text } from "@consta/uikit/Text";
 import styles from "./CatalogItem.module.styl";
 import cn from "classnames/bind";
 import CatalogItemPrice from "../CatalogItemPrice/CatalogItemPrice";
-import { useResize } from "../../../hooks/useResize";
 import { useNavigate } from "react-router-dom";
 const cx = cn.bind(styles);
-const CatalogItem = ({ item }) => {
+const CatalogItem = ({ item, width, setModal }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const basket = useAppSelector(selectBasket);
     const userName = localStorage.getItem(LocalStorageKeysEnum.NAME);
     const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
     const [isAdded, setIsAdded] = useState(false);
-    const { width } = useResize();
     const addItemInBasket = async () => {
         if (userId) {
             if (!basket) {
@@ -222,7 +220,7 @@ const CatalogItem = ({ item }) => {
             React.createElement("div", { className: styles.Item__header },
                 React.createElement("img", { className: styles.Item__image, src: `${import.meta.env.VITE_API_URL_IMAGE}${item.img}` }),
                 React.createElement("div", { className: styles.Item__title },
-                    React.createElement(Text, { truncate: true, weight: "semibold" }, item.name),
+                    React.createElement(Text, { weight: "semibold" }, item.name),
                     React.createElement("div", { className: styles.Item__rating },
                         React.createElement(Text, { size: "s", className: styles.Item__rating__text }, Math.floor(item.rating * 100) / 100),
                         React.createElement(IconFavorite, { className: cx(styles.Item__rating__icon, {
@@ -244,7 +242,11 @@ const CatalogItem = ({ item }) => {
                             addItemInBasket();
                         }, label: "+" })))))),
             width < 1000 ? (React.createElement("div", { className: styles.Item__footer },
-                React.createElement(Button, { size: "xs", label: "Купить в 1 клик" }),
+                React.createElement(Button, { size: "xs", label: "Купить в 1 клик", onClick: (e) => {
+                        e.stopPropagation();
+                        addItemInBasket();
+                        setModal(true);
+                    } }),
                 React.createElement("div", { className: styles.Item__button }, !isAdded ? (React.createElement(Button, { size: "xs", onClick: (e) => {
                         e.stopPropagation();
                         addItemInBasket();
@@ -257,7 +259,11 @@ const CatalogItem = ({ item }) => {
                     React.createElement(Button, { size: "xs", onClick: (e) => {
                             e.stopPropagation();
                             addItemInBasket();
-                        }, label: "+" })))))) : (React.createElement(Button, { size: "s", label: "Купить в 1 клик" })))));
+                        }, label: "+" })))))) : (React.createElement(Button, { size: "s", label: "Купить в 1 клик", onClick: (e) => {
+                    e.stopPropagation();
+                    addItemInBasket();
+                    setModal(true);
+                } })))));
 };
 export default CatalogItem;
 //# sourceMappingURL=CatalogItem.js.map

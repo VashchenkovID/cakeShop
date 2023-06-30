@@ -1,6 +1,4 @@
 import React from "react";
 import "@brainhubeu/react-carousel/lib/style.css";
-interface IComponentProps {
-}
-declare const _default: React.NamedExoticComponent<IComponentProps>;
+declare const _default: React.NamedExoticComponent<{}>;
 export default _default;

@@ -7,7 +7,7 @@ import { Header as ConstaHeader, HeaderMenu, HeaderModule, } from "@consta/uikit
 import { Button } from "@consta/uikit/Button";
 import { User } from "@consta/uikit/User";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { HeaderIdEnum, LocalStorageKeysEnum, PublicRoutesEnum, } from "../../utils/enum";
+import { HeaderIdEnum, LocalStorageKeysEnum, PrivateRoutesEnum, PublicRoutesEnum, } from "../../utils/enum";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { selectIsAuth } from "../../store/features/auth/selectors";
 import AuthService from "../../api/requests/userAPI";
@@ -31,7 +31,42 @@ const Header = () => {
     const role = localStorage.getItem(LocalStorageKeysEnum.ROLE);
     const [isOpen, setIsOpen] = useState(false);
     const { width } = useResize();
-    const items = [
+    const headerItems = [
+        {
+            label: "Главная",
+            id: HeaderIdEnum.GENERAL,
+            href: PublicRoutesEnum.GENERAL,
+            active: myLoc === PublicRoutesEnum.GENERAL,
+            onClick: (e) => {
+                headerTransition(e, PublicRoutesEnum.GENERAL);
+            },
+            permission: [],
+            access: false,
+        },
+        {
+            label: "Каталог",
+            id: HeaderIdEnum.SHOP,
+            href: PublicRoutesEnum.SHOP,
+            active: myLoc === PublicRoutesEnum.SHOP,
+            onClick: (e) => {
+                headerTransition(e, PublicRoutesEnum.SHOP);
+            },
+            permission: [],
+            access: false,
+        },
+        {
+            label: "Начинки",
+            id: HeaderIdEnum.FILLINGS,
+            href: PublicRoutesEnum.FILLINGS,
+            active: myLoc === PublicRoutesEnum.FILLINGS,
+            onClick: (e) => {
+                headerTransition(e, PublicRoutesEnum.FILLINGS);
+            },
+            permission: [],
+            access: false,
+        },
+    ];
+    const privateItems = [
         {
             label: "Главная",
             id: HeaderIdEnum.GENERAL,
@@ -66,12 +101,23 @@ const Header = () => {
             access: false,
         },
         {
-            label: "Торт по индивидуальному заказу",
-            id: HeaderIdEnum.INDIVIDUAL,
-            href: PublicRoutesEnum.INDIVIDUAL,
-            active: myLoc === PublicRoutesEnum.INDIVIDUAL,
+            label: "Мои заказы",
+            id: HeaderIdEnum.MY_ORDERS,
+            href: PrivateRoutesEnum.MY_ORDERS,
+            active: myLoc === PrivateRoutesEnum.MY_ORDERS,
             onClick: (e) => {
-                headerTransition(e, PublicRoutesEnum.INDIVIDUAL);
+                headerTransition(e, PrivateRoutesEnum.MY_ORDERS);
+            },
+            permission: [],
+            access: false,
+        },
+        {
+            label: "Мои отзывы",
+            id: HeaderIdEnum.MY_FEEDBACK,
+            href: PrivateRoutesEnum.MY_FEEDBACK,
+            active: myLoc === PrivateRoutesEnum.MY_FEEDBACK,
+            onClick: (e) => {
+                headerTransition(e, PrivateRoutesEnum.MY_FEEDBACK);
             },
             permission: [],
             access: false,
@@ -101,14 +147,23 @@ const Header = () => {
                             " ",
                             React.createElement(Button, { iconLeft: isOpen ? IconClose : IconAlignJustify, view: "clear", size: "l", onClick: () => setIsOpen(false) }))),
                         React.createElement("div", { className: styles.Sidebar__links },
-                            items.map((item) => (React.createElement(Text, { className: cx(styles.Sidebar__link, {
-                                    active: item.active,
-                                }), key: item.id, onClick: (e) => {
-                                    setIsOpen(false);
-                                    if (item.onClick) {
-                                        item.onClick(e);
-                                    }
-                                } }, item.label))),
+                            isAuth
+                                ? privateItems.map((item) => (React.createElement(Text, { className: cx(styles.Sidebar__link, {
+                                        active: item.active,
+                                    }), key: item.id, onClick: (e) => {
+                                        setIsOpen(false);
+                                        if (item.onClick) {
+                                            item.onClick(e);
+                                        }
+                                    } }, item.label)))
+                                : headerItems.map((item) => (React.createElement(Text, { className: cx(styles.Sidebar__link, {
+                                        active: item.active,
+                                    }), key: item.id, onClick: (e) => {
+                                        setIsOpen(false);
+                                        if (item.onClick) {
+                                            item.onClick(e);
+                                        }
+                                    } }, item.label))),
                             isAuth ? (React.createElement("div", { className: styles.Header__user },
                                 React.createElement(Button, { onClick: logoutApp, size: "s", view: "primary", label: "Выйти" }))) : (React.createElement("div", { className: styles.buttons },
                                 React.createElement(Button, { onClick: () => {
@@ -123,7 +178,8 @@ const Header = () => {
                         React.createElement(FooterWithInfo, null))))) : (React.createElement(HeaderModule, { className: styles.Header__left },
                 React.createElement("img", { className: styles.Logo, src: logo }),
                 React.createElement("nav", { className: styles.Header__nav },
-                    React.createElement(HeaderMenu, { items: items })))), rightSide: width >= 500 ? (React.createElement("div", { className: styles.Header__user },
+                    isAuth && React.createElement(HeaderMenu, { items: privateItems }),
+                    !isAuth && React.createElement(HeaderMenu, { items: headerItems })))), rightSide: width >= 500 ? (React.createElement("div", { className: styles.Header__user },
                 isAuth && (React.createElement(User, { name: user || "", size: "l", info: phone || "" })),
                 React.createElement(BasketWithCount, null),
                 " ",

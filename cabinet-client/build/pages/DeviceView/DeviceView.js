@@ -49,9 +49,10 @@ const DeviceView = () => {
         }
     }, [params, pagination]);
     return (React.createElement(React.Fragment, null,
-        !isLoading && !isLoadingRatings && (React.createElement("div", { className: styles.Device },
-            device?.data && (React.createElement(DeviceViewLeftSide, { device: device.data, width: width, fetchRatings: fetchDeviceRatings, fetchDevice: fetchDevice })),
-            React.createElement(DeviceViewRightSide, { width: width, setPagination: setPagination, ratings: ratings, count: count }))),
+        !isLoading && (React.createElement("div", { className: styles.Device },
+            device?.data && (React.createElement("div", null,
+                React.createElement(DeviceViewLeftSide, { device: device.data, width: width, fetchRatings: fetchDeviceRatings, fetchDevice: fetchDevice }))),
+            React.createElement(DeviceViewRightSide, { isLoading: isLoadingRatings, width: width, setPagination: setPagination, ratings: ratings, count: count }))),
         React.createElement("div", { className: cx(styles.IconBasket, {
                 visible: isBasketVisible,
             }), onClick: () => navigate(`${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`) },

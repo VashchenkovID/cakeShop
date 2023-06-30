@@ -14,6 +14,7 @@ import { useAppSelector } from "../../../hooks/useAppSelector";
 import { selectBasket } from "../../../store/features/basket/BasketSelectors";
 import { Modal } from "@consta/uikit/Modal";
 import DeviceCreateRatingModal from "../Modals/DeviceCreateRatingModal";
+import DeviceCreateOneClickBasket from "../Modals/DeviceCreateOneClickBasket/DeviceCreateOneClickBasket";
 export var DeviceModalEnum;
 (function (DeviceModalEnum) {
     DeviceModalEnum["IDLE"] = "idle";
@@ -262,10 +263,16 @@ const DeviceViewLeftSide = ({ device, width, fetchRatings, fetchDevice, }) => {
                     device.price,
                     " \u20BD")),
             React.createElement("div", { className: styles.Device__actions },
-                React.createElement("div", null, !isAdded ? (React.createElement(Button, { size: width <= 800 ? "xs" : "s", onClick: (e) => {
-                        e.stopPropagation();
-                        addItemInBasket();
-                    }, label: "Добавить" })) : (React.createElement("div", { className: styles.Device__actions },
+                React.createElement("div", null, !isAdded ? (React.createElement("div", { className: styles.Device__leftSide__actions },
+                    React.createElement(Button, { size: width <= 800 ? "xs" : "s", onClick: (e) => {
+                            e.stopPropagation();
+                            addItemInBasket();
+                        }, label: "Добавить" }),
+                    React.createElement(Button, { size: width <= 800 ? "xs" : "s", onClick: (e) => {
+                            e.stopPropagation();
+                            addItemInBasket();
+                            setModal(DeviceModalEnum.CREATE_BASKET);
+                        }, label: "Купить в 1 клик" }))) : (React.createElement("div", { className: styles.Device__actions },
                     React.createElement(Button, { size: width <= 800 ? "xs" : "s", label: "-", onClick: (e) => {
                             e.stopPropagation();
                             removeItemInBasket();
@@ -277,7 +284,9 @@ const DeviceViewLeftSide = ({ device, width, fetchRatings, fetchDevice, }) => {
                         }, label: "+" })))),
                 React.createElement(Button, { label: "Оставить отзыв", size: width <= 800 ? "xs" : "s", onClick: openCreateRating }))),
         React.createElement(Modal, { isOpen: modal === DeviceModalEnum.CREATE_RATING },
-            React.createElement(DeviceCreateRatingModal, { onClose: onClose, deviceName: device.name, device_id: device.id, width: width, fetchRatings: fetchRatings, fetchDevice: fetchDevice }))));
+            React.createElement(DeviceCreateRatingModal, { onClose: onClose, deviceName: device.name, device_id: device.id, width: width, fetchRatings: fetchRatings, fetchDevice: fetchDevice })),
+        React.createElement(Modal, { isOpen: modal === DeviceModalEnum.CREATE_BASKET },
+            React.createElement(DeviceCreateOneClickBasket, { modal: modal, setModal: setModal, width: width }))));
 };
 export default DeviceViewLeftSide;
 //# sourceMappingURL=DeviceViewLeftSide.js.map

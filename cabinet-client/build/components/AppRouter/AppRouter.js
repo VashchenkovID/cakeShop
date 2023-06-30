@@ -5,7 +5,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { selectIsAuth } from "../../store/features/auth/selectors";
 import axios from "axios";
 import { setIsAuth } from "../../store/features/auth/AuthSlice";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "../../utils/enum";
+import { LocalStorageKeysEnum, PrivateRoutesEnum, PublicRoutesEnum, } from "../../utils/enum";
 import { storageToken } from "../../utils/storage";
 import AuthContainer from "../../pages/Auth/AuthContainer";
 import Catalog from "../../pages/Catalog/Catalog";
@@ -23,8 +23,11 @@ export const publicRoutes = [
     },
     { path: `${PublicRoutesEnum.VIEW_DESSERT}/:id`, element: React.createElement(DeviceView, null) },
     { path: `${PublicRoutesEnum.FILLINGS}`, element: React.createElement("div", null, "fillings") },
-    { path: `${PublicRoutesEnum.INDIVIDUAL}`, element: React.createElement("div", null, "individual") },
     { path: `${PublicRoutesEnum.GENERAL}`, element: React.createElement(StartPage, null) },
+];
+export const privateRoutes = [
+    { path: `${PrivateRoutesEnum.MY_ORDERS}`, element: React.createElement("div", null, "\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B") },
+    { path: `${PrivateRoutesEnum.MY_FEEDBACK}`, element: React.createElement("div", null, "\u041C\u043E\u0438 \u043E\u0442\u0437\u044B\u0432\u044B") },
 ];
 const AppRouter = () => {
     const dispatch = useAppDispatch();
@@ -57,6 +60,7 @@ const AppRouter = () => {
         React.createElement(Routes, null,
             getRoutes(publicRoutes),
             React.createElement(Route, { path: "/", element: React.createElement(Navigate, { to: PublicRoutesEnum.SHOP, replace: true }) }),
+            isAuth && getRoutes(privateRoutes),
             React.createElement(Route, { path: "*", element: React.createElement("div", null, "\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u0430") }))));
 };
 export default React.memo(AppRouter);
