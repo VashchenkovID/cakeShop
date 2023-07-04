@@ -13,14 +13,12 @@ export const enum RequestStatusEnum {
 export enum HeaderIdEnum {
   GENERAL = "general",
   SHOP = "shop",
-  FILLINGS = "fillings",
   MY_ORDERS = "my_orders",
   MY_FEEDBACK = "my_feedback",
 }
 export enum PublicRoutesEnum {
   GENERAL = "/general",
   SHOP = "/shop",
-  FILLINGS = "/fillings",
   INDIVIDUAL = "/individual",
   VIEW_DESSERT = "/view/dessert",
   AUTH = "/auth",

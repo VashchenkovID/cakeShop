@@ -6,5 +6,6 @@ export interface RatingItemModel {
   updatedAt: string;
   UserId: number;
   deviceId: string;
+  deviceName?:string;
   user: string;
 }

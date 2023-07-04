@@ -22,6 +22,7 @@ import { setBasket } from "src/store/features/basket/BasketSlice";
 import StartPage from "../../pages/StartPage/StartPage";
 import DeviceView from "../../pages/DeviceView/DeviceView";
 import Orders from "src/pages/Orders/Orders";
+import Feedback from "src/pages/Feedback/Feedback";
 
 export interface IRouteItem {
   path: string;
@@ -37,12 +38,11 @@ export const publicRoutes: Array<IRouteItem> = [
     element: <CreateOrder />,
   },
   { path: `${PublicRoutesEnum.VIEW_DESSERT}/:id`, element: <DeviceView /> },
-  { path: `${PublicRoutesEnum.FILLINGS}`, element: <div>fillings</div> },
   { path: `${PublicRoutesEnum.GENERAL}`, element: <StartPage /> },
 ];
 export const privateRoutes: Array<IRouteItem> = [
   { path: `${PrivateRoutesEnum.MY_ORDERS}`, element: <Orders /> },
-  { path: `${PrivateRoutesEnum.MY_FEEDBACK}`, element: <div>Мои отзывы</div> },
+  { path: `${PrivateRoutesEnum.MY_FEEDBACK}`, element: <Feedback /> },
 ];
 const AppRouter = () => {
   const dispatch = useAppDispatch();
@@ -57,6 +57,10 @@ const AppRouter = () => {
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,
         response.data.accessToken
+      );
+      localStorage.setItem(
+        LocalStorageKeysEnum.USER,
+        JSON.stringify(response.data.user)
       );
       dispatch(setIsAuth(true));
     } catch (e) {

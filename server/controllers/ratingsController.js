@@ -1,13 +1,12 @@
-const { Rating, User } = require("../models/models");
+const { Rating, User, Device } = require("../models/models");
 const ApiError = require("../Error/ApiError");
-const jwt = require("jsonwebtoken");
 const TokenService = require("../services/token-service");
 
 class RatingsController {
   async create(req, res, next) {
     try {
       const { rating, ratingComment, device_id } = req.body;
-      const token = req.headers?.authorization?.split(" ")[1]; // Bearer asfasnfkajsfnjk
+      const token = req.headers?.authorization?.split(" ")[1];
       let newRating;
       if (token !== "null") {
         const user = TokenService.validateAccessToken(token);
@@ -65,9 +64,8 @@ class RatingsController {
   async getDeviceNotUserRatings(req, res, next) {
     try {
       let { limit, page, device_id } = req.query;
-      const token = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
+      const token = req.headers.authorization.split(" ")[1];
       const reqUser = TokenService.validateAccessToken(token);
-      console.log(reqUser);
       page = page || 1;
       limit = limit || 9;
       let offset = page * limit - limit;
@@ -135,19 +133,34 @@ class RatingsController {
   }
   async getUserRatings(req, res, next) {
     try {
-      let { limit, page, user_id } = req.query;
+      let { limit, page } = req.query;
       page = page || 1;
       limit = limit || 9;
       let offset = page * limit - limit;
       let ratings;
-      if (user_id) {
+      const authorizationHeader = req.headers.authorization;
+      const accessToken = authorizationHeader?.split(" ")[1];
+      let userData;
+      const devices = await Device.findAll();
+      if (accessToken) {
+        userData = TokenService.validateAccessToken(accessToken);
+      }
+      if (userData) {
         ratings = await Rating.findAndCountAll({
           limit,
           offset,
-          where: { UserId: user_id },
+          where: { UserId: userData.id },
         });
-      } else ratings = [];
-      return res.json(ratings);
+      } else ratings = { count: 0, rows: [] };
+      return res.json({
+        count: ratings.count,
+        rows: ratings.rows.map((rating) => {
+          return {
+            ...rating.dataValues,
+            deviceName: devices.find((d) => rating.deviceId === d.id).name,
+          };
+        }),
+      });
     } catch (e) {
       next(ApiError("Ошибка при запросе"));
     }

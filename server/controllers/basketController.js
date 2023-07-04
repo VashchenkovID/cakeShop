@@ -177,7 +177,7 @@ class BasketController {
           rows: devices.rows.map((basket) => {
             return {
               ...basket.dataValues,
-              decors: basket.dataValues.decors.map((decor) => decor.items),
+              decors: basket.dataValues.decors.map((decor) => decor.items).flat(),
             };
           }),
         });

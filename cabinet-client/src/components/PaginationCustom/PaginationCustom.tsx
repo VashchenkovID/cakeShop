@@ -43,7 +43,7 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
   const selectDisabledProps = useMemo(() => {
     if (total <= pagination.perPage) {
       return {
-        disabled: true,
+        disabled: false,
         value: total,
       };
     } else return;

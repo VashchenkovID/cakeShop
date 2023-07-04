@@ -77,17 +77,6 @@ const Header: React.FC<IHeaderProps> = () => {
       permission: [],
       access: false,
     },
-    {
-      label: "Начинки",
-      id: HeaderIdEnum.FILLINGS,
-      href: PublicRoutesEnum.FILLINGS,
-      active: myLoc === PublicRoutesEnum.FILLINGS,
-      onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.FILLINGS);
-      },
-      permission: [],
-      access: false,
-    },
   ];
   const privateItems: Item[] = [
     {
@@ -108,17 +97,6 @@ const Header: React.FC<IHeaderProps> = () => {
       active: myLoc === PublicRoutesEnum.SHOP,
       onClick: (e) => {
         headerTransition(e, PublicRoutesEnum.SHOP);
-      },
-      permission: [],
-      access: false,
-    },
-    {
-      label: "Начинки",
-      id: HeaderIdEnum.FILLINGS,
-      href: PublicRoutesEnum.FILLINGS,
-      active: myLoc === PublicRoutesEnum.FILLINGS,
-      onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.FILLINGS);
       },
       permission: [],
       access: false,
@@ -188,12 +166,12 @@ const Header: React.FC<IHeaderProps> = () => {
                     <div className={styles.Sidebar__user}>
                       {isAuth && (
                         <User
-                          name={user.name || ""}
+                          name={user?.name || ""}
                           size={"l"}
-                          info={user.phone || ""}
+                          info={user?.phone || ""}
                         />
                       )}
-                      <BasketWithCount />{" "}
+                      <BasketWithCount setIsOpen={setIsOpen} />{" "}
                       <Button
                         iconLeft={isOpen ? IconClose : IconAlignJustify}
                         view={"clear"}
@@ -286,7 +264,7 @@ const Header: React.FC<IHeaderProps> = () => {
           width >= 500 ? (
             <div className={styles.Header__user}>
               {isAuth && (
-                <User name={user.name || ""} size={"l"} info={user.phone || ""} />
+                <User name={user?.name || ""} size={"l"} info={user?.phone || ""} />
               )}
               <BasketWithCount />{" "}
               {isAuth ? (
