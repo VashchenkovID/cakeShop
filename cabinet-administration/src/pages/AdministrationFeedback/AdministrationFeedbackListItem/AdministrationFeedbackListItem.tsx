@@ -36,7 +36,7 @@ const AdministrationFeedbackListItem: React.FC<IComponentProps> = ({
             {item.name}
           </Text>
         </div>
-        <Text className={styles.RecipesListItem__price}>{item.price},00 ₽</Text>
+        <Text className={styles.RecipesListItem__price}>{item.price} ₽</Text>
       </div>
     </ComponentStyleWrapper>
   );

@@ -14,7 +14,7 @@ import { DeviceListModel } from "src/api/models/DeviceListModel";
 import CatalogItem from "../Catalog/CatalogItem/CatalogItem";
 import { TypeModel } from "src/api/models/TypeModel";
 import { useNavigate } from "react-router-dom";
-import { PublicRoutesEnum } from "src/utils/enum";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
 import { Modal } from "@consta/uikit/Modal";
 import CatalogBuyOneClickModal from "../Catalog/CatalogBuyOneClickModal/CatalogBuyOneClickModal";
 import { IconPhone } from "@consta/uikit/IconPhone";
@@ -131,7 +131,17 @@ const StartPage: React.FC = () => {
             items.types.length > 0 &&
             items.types.map((type) => (
               <ComponentStyleWrapper key={type.id}>
-                <Text cursor={"pointer"} align={"center"}>
+                <Text
+                  cursor={"pointer"}
+                  align={"center"}
+                  onClick={() => {
+                    localStorage.setItem(
+                      LocalStorageKeysEnum.DESSERT_TYPE,
+                      JSON.stringify(type)
+                    );
+                    navigate(PublicRoutesEnum.SHOP);
+                  }}
+                >
                   {type.name}
                 </Text>
               </ComponentStyleWrapper>

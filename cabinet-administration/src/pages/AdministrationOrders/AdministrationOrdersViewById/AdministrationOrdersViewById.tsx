@@ -83,7 +83,7 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
               <div className={styles.Container__rows__row} key={index}>
                 <div>{item.name}</div>
                 <div>{item.count}шт</div>
-                <div>{item.price},00 ₽</div>
+                <div>{item.price} ₽</div>
               </div>
             ))}
             <div className={styles.Container__decor}></div>
@@ -108,8 +108,8 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
                       <div>{d.name}</div>
                       <div>{d.count}</div>
                       <div>{d.countType}</div>
-                      <div>{d.pricePerUnit},00 ₽</div>
-                      <div>{d.constPrice},00 ₽</div>
+                      <div>{d.pricePerUnit} ₽</div>
+                      <div>{d.constPrice} ₽</div>
                     </div>
                   ))}
                 </div>
@@ -117,7 +117,7 @@ const AdministrationOrdersViewById: React.FC<IComponentProps> = ({
             ))}
           </div>
           <div className={styles.Container__footer}>
-            {fullPrice && <Text size={'2xl'}>Итого: {fullPrice},00 ₽</Text>}
+            {fullPrice && <Text size={'2xl'}>Итого: {fullPrice} ₽</Text>}
             <div className={styles.Container__footer__actions}>
               {order.status === OrderProcessingStatusEnum.REJECTED && (
                 <Button

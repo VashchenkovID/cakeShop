@@ -52,7 +52,7 @@ const AdministrationAnalyticsPopulars: React.FC<IComponentProps> = ({
                     />
                   ) : null}
                 </Text>
-                <Text>{item.price},00 ₽</Text>
+                <Text>{item.price} ₽</Text>
                 <Text>{item.count} шт</Text>
               </div>
             ))}

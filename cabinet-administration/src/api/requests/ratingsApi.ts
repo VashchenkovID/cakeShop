@@ -40,7 +40,7 @@ export default {
     >
   > =>
     $authHost.get(
-      `${converterUrl(EnpointsEnum.GET_RATINGS_FOR_DEVICE_NOT_USER, data)}`,
+      `${converterUrl(EnpointsEnum.GET_RATINGS_FOR_DEVICE, data)}`,
     ),
   getUserRatings: (
     data: ReqWithPagination,

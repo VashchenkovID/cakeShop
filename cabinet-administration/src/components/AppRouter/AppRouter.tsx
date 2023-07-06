@@ -20,6 +20,7 @@ import AdministrationFeedback from 'src/pages/AdministrationFeedback/Administrat
 import AdministrationCalendar from 'src/pages/AdministrationCalendar/AdministrationCalendar';
 import { useAppSelector } from 'src/hooks/useAppSelector';
 import { selectIsAuth } from 'src/redux/features/auth/selectors';
+import PrivateRoute from 'src/components/PrivateRoute';
 
 export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
@@ -101,22 +102,11 @@ const AppRouter = () => {
       checkIsAuth();
     }
   }, []);
+
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to={
-                storageToken()
-                  ? PrivateRoutesEnum.ADMINISTRATION
-                  : PublicRoutesEnum.LOGIN
-              }
-              replace
-            />
-          }
-        />
+        <Route path="/" element={<PrivateRoute />} />
         {getRoutes(privateRoutes)}
         {getRoutes(publicRoutes)}
         <Route path="*" element={<div>Страница не найдена</div>} />

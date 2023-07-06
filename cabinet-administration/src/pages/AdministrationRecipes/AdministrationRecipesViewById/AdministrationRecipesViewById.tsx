@@ -74,7 +74,7 @@ const AdministrationRecipesViewById: React.FC<IComponentProps> = ({
                   )}
 
                   <Text weight={'semibold'} size={'l'}>
-                    Цена: {device.price},00 ₽
+                    Цена: {device.price} ₽
                   </Text>
                 </div>
               </div>

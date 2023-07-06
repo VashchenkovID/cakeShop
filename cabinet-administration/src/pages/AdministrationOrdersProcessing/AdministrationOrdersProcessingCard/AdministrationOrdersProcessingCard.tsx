@@ -117,14 +117,14 @@ const AdministrationOrdersProcessingCard: React.FC<IComponentProps> = ({
                   size={'m'}
                   lineClamp={1}
                 ></CustomTextTooltip>
-                <div>{itm.price},00 ₽</div>
+                <div>{itm.price} ₽</div>
               </div>
             ))}
           </div>
           <div className={styles.ProcessingCard__footer}>
             <Text size={'s'} weight={'semibold'}>
               Итого: {allPrice}
-              ,00 ₽
+               ₽
             </Text>
             <Text
               onClick={() => {

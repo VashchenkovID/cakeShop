@@ -3,8 +3,10 @@ import { Loader } from '@consta/uikit/Loader';
 import { RatingItemModel } from 'src/api/models/RatingItemModel';
 import AdministrationFeedbackRatingItem from 'src/pages/AdministrationFeedback/AdministrationFeedbackRatingItem/AdministrationFeedbackRatingItem';
 import styles from './AdministrationFeedbackRatings.styl';
-import { Select } from '@consta/uikit/Select';
 import InformerBadge from 'src/components/Informer/Informer';
+import PaginationCustom, {
+  PaginationStateType,
+} from 'src/components/PaginationCustom/PaginationCustom';
 
 interface IComponentProps {
   isLoading: boolean;
@@ -12,14 +14,17 @@ interface IComponentProps {
   setLimit: React.Dispatch<SetStateAction<number>>;
   limit: number;
   activeItem: number;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationStateType>>;
+  pagination: PaginationStateType;
 }
-const selectItems = [10, 25, 100, 200];
 const AdministrationFeedbackRatings: React.FC<IComponentProps> = ({
   ratings,
   isLoading,
   setLimit,
   limit,
   activeItem,
+  pagination,
+  setPagination,
 }) => {
   return (
     <div>
@@ -44,16 +49,11 @@ const AdministrationFeedbackRatings: React.FC<IComponentProps> = ({
             )}
           </div>
           {activeItem && ratings.length > 0 && (
-            <Select
+            <PaginationCustom
               className={styles.Ratings__footer}
-              size={'s'}
-              items={selectItems}
-              getItemLabel={(i) => i.toString()}
-              getItemKey={(item) => item}
-              value={limit}
-              onChange={(value) => setLimit(value.value)}
-              label={'Количество отзывов'}
-              labelPosition={'left'}
+              total={limit}
+              pagination={pagination}
+              setPagination={setPagination}
             />
           )}
         </>

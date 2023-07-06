@@ -46,7 +46,7 @@ const AdministrationListItem: React.FC<IComponentProps> = ({
             active: activeElement === item.id,
           })}
         >
-          {item.price},00 ₽
+          {item.price} ₽
         </Text>
       </div>
     </ComponentCard>

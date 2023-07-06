@@ -20,6 +20,10 @@ const AdministrationFeedback: React.FC = () => {
     page: 1,
     perPage: 10,
   });
+  const [paginationRatings, setPaginationRatings] = useState<PaginationStateType>({
+    page: 1,
+    perPage: 10,
+  });
   const { load: fetchDevices, isLoading } = useRequest(
     cakesApi.loadAllCakes,
     (data) => {
@@ -47,11 +51,11 @@ const AdministrationFeedback: React.FC = () => {
     if (activeElement) {
       fetchFullDevice({
         device_id: String(activeElement),
-        limit: limit,
-        page: 1,
+        limit: paginationRatings.perPage,
+        page: paginationRatings.page,
       });
     }
-  }, [activeElement, limit]);
+  }, [activeElement, paginationRatings]);
 
   return (
     <MainWrapper title={'Отзывы покупателей'}>
@@ -71,6 +75,8 @@ const AdministrationFeedback: React.FC = () => {
           setLimit={setLimit}
           limit={limit}
           activeItem={activeElement}
+          setPagination={setPaginationRatings}
+          pagination={paginationRatings}
         />
       </section>
     </MainWrapper>

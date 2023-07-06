@@ -5,9 +5,8 @@ import { PublicRoutesEnum } from 'src/router';
 export interface PrivateRouterProps {}
 
 const PrivateRoute: React.FC<PrivateRouterProps> = () => {
-  console.log(123)
   const checkPrivateRouter = useMemo(() => {
-    if (!storageToken()) {
+    if (!storageToken() || storageToken() === 'НЕ АВТОРИЗОВАН') {
       return <Navigate to={PublicRoutesEnum.LOGIN} />;
     } else {
       return <Outlet />;

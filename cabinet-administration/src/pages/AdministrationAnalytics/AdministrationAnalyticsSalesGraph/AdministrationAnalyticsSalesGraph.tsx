@@ -43,7 +43,7 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
                 formatter: (datum: any) => {
                   return {
                     name: `${datum.name}`,
-                    value: `${datum.allPrice},00 ₽`,
+                    value: `${datum.allPrice} ₽`,
                   };
                 },
               }}
@@ -67,7 +67,7 @@ const AdministrationAnalyticsSalesGraph: React.FC<IComponentProps> = ({
               <Text>{item.type}</Text>
               <Text>{item.name}</Text>
               <Text>{item.date_completed}</Text>
-              <Text>{item.allPrice},00 ₽</Text>
+              <Text>{item.allPrice} ₽</Text>
               <Text>{item.constPrice ? `${item.constPrice} ₽` : '-'}</Text>
             </div>
           ))}

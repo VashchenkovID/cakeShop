@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useRequest from "../../hooks/useRequest";
-import cakesApi from "../../api/requests/cakesApi";
+import cakesApi, { CakesReqType } from "../../api/requests/cakesApi";
 import styles from "./Catalog.module.styl";
 import cn from "classnames/bind";
 import { TypeModel } from "src/api/models/TypeModel";
@@ -8,9 +8,9 @@ import { DeviceListModel } from "src/api/models/DeviceListModel";
 import { PaginationStateType } from "src/components/PaginationCustom/PaginationCustom";
 import { useAppSelector } from "src/hooks/useAppSelector";
 import { selectBasket } from "src/store/features/basket/BasketSelectors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import IconBasket from "../../components/IconBasket/IconBasket";
-import { PublicRoutesEnum } from "src/utils/enum";
+import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
 import CatalogItem from "./CatalogItem/CatalogItem";
 import { Tabs } from "@consta/uikit/Tabs";
 import { Loader } from "@consta/uikit/Loader";
@@ -22,6 +22,7 @@ import { useResize } from "src/hooks/useResize";
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { width } = useResize();
   const basket = useAppSelector(selectBasket);
   const navigate = useNavigate();
@@ -64,6 +65,13 @@ const Catalog: React.FC = () => {
     cakesApi.getCakeTypes,
     (data) => {
       if (data) {
+        if (watchSearchParamsWithFilters.typeId) {
+          setType(
+            data.data.find(
+              (d) => d.id === Number(watchSearchParamsWithFilters.typeId)
+            )
+          );
+        }
         setTypes((prev) => {
           return [
             {
@@ -97,25 +105,45 @@ const Catalog: React.FC = () => {
     } else return 1;
   }, [count]);
 
+  const watchSearchParamsWithFilters = useMemo(() => {
+    let result: { [key: string]: string } = {};
+    for (const entry of searchParams.entries()) {
+      const [param, value] = entry;
+      result = { ...result, [param]: value };
+    }
+    return result;
+  }, [searchParams]);
+
   useEffect(() => {
     fetchTypes();
   }, []);
 
   useEffect(() => {
-    if (type) {
-      fetchRecipes({
-        typeId: type.id,
-        page: pagination.page,
-        limit: pagination.perPage,
-      });
-    } else {
-      fetchRecipes({
-        typeId: undefined,
-        page: pagination.page,
-        limit: pagination.perPage,
-      });
+    const localType = localStorage.getItem(LocalStorageKeysEnum.DESSERT_TYPE);
+    if (localType) {
+      setType(JSON.parse(localType) as TypeModel);
     }
+  }, [localStorage]);
+
+  useEffect(() => {
+    fetchRecipes(watchSearchParamsWithFilters as CakesReqType);
+  }, [searchParams]);
+  useEffect(() => {
+    const newParams: { [key: string]: string } = {
+      page: pagination.page.toString(),
+      limit: pagination.perPage.toString(),
+    };
+    if (type?.id) {
+      newParams.typeId = type.id.toString();
+    }
+    setSearchParams(newParams, { replace: true });
   }, [pagination, type]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem(LocalStorageKeysEnum.DESSERT_TYPE);
+    };
+  }, []);
   return (
     <div className={styles.Shop}>
       <div className={styles.Shop__header}>
@@ -133,7 +161,7 @@ const Catalog: React.FC = () => {
         <div className={styles.Shop__items}>
           {items.map((item, index) => (
             <CatalogItem
-                setModal={setModal}
+              setModal={setModal}
               item={item}
               key={`${item.id}_${index}`}
               width={width}
