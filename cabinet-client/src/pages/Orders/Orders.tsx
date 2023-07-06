@@ -35,21 +35,24 @@ const Orders: React.FC = () => {
   return (
     <div className={styles.Orders}>
       <ComponentStyleWrapper>
-        <Text size={"3xl"}>Мои заказы</Text>
-        <div className={styles.Orders__items}>
-          {!isLoading && orders.length > 0 &&
-            orders.map((item, index) => (
-              <OrdersItem
-                item={item}
-                key={`${item.id}_${index}`}
-                width={width}
-              />
-            ))}
-        </div>
-        {isLoading && <Loader />}
-      </ComponentStyleWrapper>
-      <PaginationCustom className={styles.Orders__pagination} total={count} pagination={pagination} setPagination={setPagination} />
+        <div className={styles.Orders__body}>
+          <Text size={"3xl"}>Мои заказы</Text>
+          <div className={styles.Orders__items}>
+            {!isLoading && orders.length > 0 &&
+                orders.map((item, index) => (
+                    <OrdersItem
+                        item={item}
+                        key={`${item.id}_${index}`}
+                        width={width}
+                    />
+                ))}
+          </div>
+          {isLoading && <Loader />}
+          <PaginationCustom className={styles.Orders__pagination} total={count} pagination={pagination} setPagination={setPagination} />
 
+        </div>
+
+      </ComponentStyleWrapper>
     </div>
   );
 };

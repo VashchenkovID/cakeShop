@@ -1,18 +1,16 @@
 .Orders
-  margin 24px
-  max-height 83vh
-  overflow-y auto
+  margin 0 auto
+  padding 24px
+  max-width 1200px
   @media (max-width 800px)
-    margin 16px
+    padding 16px
+  &__body
+    display flex
+    flex-direction column
+    gap 24px
   &__items
     display flex
     flex-direction column
     gap 16px
-  &__pagination
-    position fixed
-    bottom 0
-    left 0
-    border-radius 0
-    padding 16px 32px
-    width 100%
-    overflow-x hidden
+    max-height 68vh
+    overflow-y auto

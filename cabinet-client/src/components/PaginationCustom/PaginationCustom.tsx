@@ -8,6 +8,7 @@ import styles from "./PaginationCustom.module.styl";
 import classNames from "classnames/bind";
 import { IconArrowLeft } from "@consta/uikit/IconArrowLeft";
 import { IconArrowRight } from "@consta/uikit/IconArrowRight";
+import { useResize } from "src/hooks/useResize";
 
 const cx = classNames.bind(styles);
 
@@ -24,7 +25,6 @@ export interface IPaginationItemsFooterProps {
   pagination: PaginationStateType;
   setPagination: React.Dispatch<React.SetStateAction<PaginationStateType>>;
   className?: string;
-  notSelect?: boolean;
 }
 
 const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
@@ -34,7 +34,7 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
     pagination,
     setPagination,
   } = props;
-
+  const { width } = useResize();
   const totalPages = useMemo(
     () => Math.ceil(total / pagination.perPage),
     [pagination.perPage, total]
@@ -43,7 +43,7 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
   const selectDisabledProps = useMemo(() => {
     if (total <= pagination.perPage) {
       return {
-        disabled: false,
+        disabled: true,
         value: total,
       };
     } else return;
@@ -55,27 +55,24 @@ const PaginationCustom: React.FC<IPaginationItemsFooterProps> = (props) => {
 
   return (
     <div className={cx(styles.PaginationItemsFooter, props.className)}>
-      {props.notSelect !== undefined && !props.notSelect && (
-        <div className={styles.selectContainer}>
-          <Select
-            form="round"
-            size="xs"
-            className={styles.select}
-            items={items}
-            getItemKey={(item) => item}
-            getItemLabel={(item) => item.toString()}
-            value={pagination.perPage}
-            onChange={({ value }) =>
-              setPagination((prev) =>
-                value ? { ...prev, page: 1, perPage: value } : prev
-              )
-            }
-            {...selectDisabledProps}
-          />
-
-          <Text size="xs">{`из ${total}`}</Text>
-        </div>
-      )}
+      <div className={styles.selectContainer}>
+        <Select
+          form="round"
+          size="xs"
+          className={styles.select}
+          items={items}
+          getItemKey={(item) => item}
+          getItemLabel={(item) => item.toString()}
+          value={pagination.perPage}
+          onChange={({ value }) =>
+            setPagination((prev) =>
+              value ? { ...prev, page: 1, perPage: value } : prev
+            )
+          }
+          {...selectDisabledProps}
+        />
+        {width >= 500 && <Text size="xs">{`из ${total}`}</Text>}
+      </div>
       <div className={styles.actions}>
         <Button
           size="xs"

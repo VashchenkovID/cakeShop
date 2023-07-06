@@ -43,6 +43,6 @@ export default {
     }),
   getUserRatings: (
     data: ReqWithPagination
-  ): Promise<AxiosResponse<RatingItemModel[], { message: string }>> =>
+  ): Promise<AxiosResponse<{count:number;rows:RatingItemModel[]}, { message: string }>> =>
     $authHost.get(EnpointsEnum.GET_USER_RATINGS, { params: data }),
 };

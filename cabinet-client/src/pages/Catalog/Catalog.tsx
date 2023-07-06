@@ -26,12 +26,22 @@ const Catalog: React.FC = () => {
   const { width } = useResize();
   const basket = useAppSelector(selectBasket);
   const navigate = useNavigate();
-  const [type, setType] = useState<TypeModel | undefined>({
-    id: undefined,
-    name: "Все",
-    createdAt: "",
-    updatedAt: "",
-  });
+
+  const initialType = () => {
+    const localType = localStorage.getItem(LocalStorageKeysEnum.DESSERT_TYPE);
+    if (localType) {
+      return JSON.parse(localType) as TypeModel;
+    } else {
+      return {
+        id: undefined,
+        name: "Все",
+        createdAt: "",
+        updatedAt: "",
+      };
+    }
+  };
+
+  const [type, setType] = useState<TypeModel | undefined>(initialType());
   const [types, setTypes] = useState<TypeModel[]>([
     {
       id: undefined,
@@ -117,13 +127,6 @@ const Catalog: React.FC = () => {
   useEffect(() => {
     fetchTypes();
   }, []);
-
-  useEffect(() => {
-    const localType = localStorage.getItem(LocalStorageKeysEnum.DESSERT_TYPE);
-    if (localType) {
-      setType(JSON.parse(localType) as TypeModel);
-    }
-  }, [localStorage]);
 
   useEffect(() => {
     fetchRecipes(watchSearchParamsWithFilters as CakesReqType);
