@@ -92,7 +92,11 @@ class RatingsController {
                 users.find((user) => user.id === rait?.dataValues.UserId)
                   ?.fullName || "Аноним",
             };
-          }),
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ),
         // .filter((rating) => rating.UserId !== reqUser.id),
       });
     } catch (e) {
@@ -118,14 +122,19 @@ class RatingsController {
       } else ratings = [];
       return res.json({
         count: ratings.count,
-        rows: ratingsWithUser.map((rait) => {
-          return {
-            ...rait.dataValues,
-            user:
-              users.find((user) => user.id === rait.dataValues.UserId)
-                ?.fullName || "Аноним",
-          };
-        }),
+        rows: ratingsWithUser
+          .map((rait) => {
+            return {
+              ...rait.dataValues,
+              user:
+                users.find((user) => user.id === rait.dataValues.UserId)
+                  ?.fullName || "Аноним",
+            };
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ),
       });
     } catch (e) {
       next(ApiError("Ошибка при запросе"));
@@ -154,12 +163,17 @@ class RatingsController {
       } else ratings = { count: 0, rows: [] };
       return res.json({
         count: ratings.count,
-        rows: ratings.rows.map((rating) => {
-          return {
-            ...rating.dataValues,
-            deviceName: devices.find((d) => rating.deviceId === d.id).name,
-          };
-        }),
+        rows: ratings.rows
+          .map((rating) => {
+            return {
+              ...rating.dataValues,
+              deviceName: devices.find((d) => rating.deviceId === d.id).name,
+            };
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ),
       });
     } catch (e) {
       next(ApiError("Ошибка при запросе"));
