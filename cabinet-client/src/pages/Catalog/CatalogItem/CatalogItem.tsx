@@ -3,7 +3,7 @@ import { DeviceListModel } from "src/api/models/DeviceListModel";
 import { useAppDispatch } from "src/hooks/useAppDispatch";
 import { useAppSelector } from "src/hooks/useAppSelector";
 import { selectBasket } from "src/store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
+import { PublicRoutesEnum } from "src/utils/enum";
 import { setBasket } from "src/store/features/basket/BasketSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { IconFavorite } from "@consta/uikit/IconFavorite";
@@ -13,7 +13,7 @@ import styles from "./CatalogItem.module.styl";
 import cn from "classnames/bind";
 import CatalogItemPrice from "../CatalogItemPrice/CatalogItemPrice";
 import { useNavigate } from "react-router-dom";
-import {storageUser} from "src/utils/storage";
+import { storageUser } from "src/utils/storage";
 interface IComponentProps {
   item: DeviceListModel;
   width: number;
@@ -24,11 +24,10 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const user = storageUser()
-  console.log(user)
+  const user = storageUser();
   const [isAdded, setIsAdded] = useState(false);
   const addItemInBasket = async () => {
-    if (user.id) {
+    if (user && user.id) {
       if (!basket) {
         dispatch(
           setBasket({
@@ -125,7 +124,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
     }
   };
   const removeItemInBasket = async () => {
-    if (user.id) {
+    if (user && user.id) {
       if (!basket) {
         dispatch(
           setBasket({
@@ -193,19 +192,10 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
           setBasket({
             ...basket,
             items: [
-              ...basket.items,
-              {
-                id: item.id,
-                name: item.name,
-                localId: nanoid(),
-                deviceId: item.id,
-                count: 1,
-                price: item.price,
-                basketId: null,
-                countWeightType: item.countWeightType,
-                weightType: item.weightType,
-                decors: [],
-              },
+              ...basket.items.filter((i) => i.id !== item.id),
+              ...basket.items
+                .filter((i) => i.id === item.id)
+                .filter((el, ind, arr) => ind !== arr.length - 1),
             ],
           })
         );

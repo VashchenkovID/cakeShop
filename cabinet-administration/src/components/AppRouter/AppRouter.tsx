@@ -107,6 +107,10 @@ const AppRouter = () => {
     <>
       <Routes>
         <Route path="/" element={<PrivateRoute />} />
+        <Route
+          path="/"
+          element={<Navigate to={PrivateRoutesEnum.ADMINISTRATION} />}
+        />
         {getRoutes(privateRoutes)}
         {getRoutes(publicRoutes)}
         <Route path="*" element={<div>Страница не найдена</div>} />

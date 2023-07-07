@@ -1,10 +1,10 @@
 import React, { MutableRefObject } from "react";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { selectBasket } from "../../../store/features/basket/BasketSelectors";
-import { LocalStorageKeysEnum } from "../../../utils/enum";
-import { setBasket } from "../../../store/features/basket/BasketSlice";
-import { BasketModel } from "../../../api/models/BasketModel";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectBasket } from "src/store/features/basket/BasketSelectors";
+import { setBasket } from "src/store/features/basket/BasketSlice";
+import { BasketModel } from "src/api/models/BasketModel";
+import {storageUser} from "src/utils/storage";
 
 export interface CreateOrderCakeItemType {
   id: number | null;
@@ -23,7 +23,7 @@ const useCreateOrderCakeItem = (
 ) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const userId = localStorage.getItem(LocalStorageKeysEnum.ID);
+  const user = storageUser()
   const addWeightCountInBasket = async (
     e: React.MouseEvent<Element, MouseEvent>,
     item: {
@@ -39,7 +39,7 @@ const useCreateOrderCakeItem = (
     }
   ) => {
     e.stopPropagation();
-    if (userId) {
+    if (user && user.id) {
       if (basket) {
         if (basket.items.find((elem) => elem.id === item.id)) {
           dispatch(
@@ -128,7 +128,7 @@ const useCreateOrderCakeItem = (
     }
   ) => {
     e.stopPropagation();
-    if (userId) {
+    if (user && user.id) {
       if (basket) {
         if (basket.items.find((elem) => elem.id === item.id)) {
           dispatch(
