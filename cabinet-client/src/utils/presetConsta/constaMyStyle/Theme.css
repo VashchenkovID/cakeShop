@@ -133,13 +133,19 @@
 /*}*/
 
 .ListItem.Text {
-  color: #003973;
+  color: #000000;
+}
+.DateTimeLabel {
+  color: #000000 !important;
 }
 .DateTimeItem {
-  color: #003973;
+  color: #000000;
+}
+.DateTimeItem_selected {
+  background: #fbc102;
 }
 .DateTimeItem_disabled {
-  color: #d9ddff;
+  color: rgba(193, 200, 228, 0.65);
 }
 .DateTimeLabel {
   color: #003973;
@@ -165,4 +171,7 @@
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+.Text.ListItem.TabsTab {
+  font-family: var(--font-primary) !important;
 }
