@@ -175,3 +175,7 @@
 .Text.ListItem.TabsTab {
   font-family: var(--font-primary) !important;
 }
+.Tabs-Tab {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
