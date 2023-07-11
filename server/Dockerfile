@@ -1,15 +1,11 @@
-# Fetching the latest node image on alpine linux
-FROM node:alpine AS development
+FROM node:alpine
 
-# Setting up the work directory
 WORKDIR /server
-
-# Installing dependencies
-COPY ./package.json /server
-RUN npm install
-
-# Copying all the files in our project
 COPY . .
 
+RUN rm -rf /server/node_modules
+RUN rm -rf /server/package-lock.json
+
+RUN npm install
 # Starting our application
 CMD npm start
