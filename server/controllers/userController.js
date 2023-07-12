@@ -72,52 +72,56 @@ class UserController {
     });
   }
   async login(req, res, next) {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return next(ApiError.internal("Пользователь не найден"));
-    }
-    let comparePassword = bcrypt.compareSync(password, user.password);
-    if (!comparePassword) {
-      return next(ApiError.internal("Указан неверный пароль"));
-    }
-    const tokens = TokenService.generateTokens({
-      id: user.id,
-      role: user.role,
-      email: user.email,
-      phone: user.phone,
-      fullName: user.fullName,
-    });
-    const dataToken = await TokenService.saveToken(
-      user.id,
-      tokens.refreshToken
-    );
-    await User.upsert(
-      {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        return next(ApiError.internal("Пользователь не найден"));
+      }
+      let comparePassword = bcrypt.compareSync(password, user.password);
+      if (!comparePassword) {
+        return next(ApiError.internal("Указан неверный пароль"));
+      }
+      const tokens = TokenService.generateTokens({
         id: user.id,
+        role: user.role,
         email: user.email,
-        role: user.role,
-        password: user.password,
+        phone: user.phone,
         fullName: user.fullName,
-        phone: user.phone,
-        TokenId: dataToken.id,
-      },
-      { where: { UserId: user.id } }
-    );
-    res.cookie("refreshToken", tokens.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      secure: true,
-    });
-    return res.json({
-      ...tokens,
-      user: {
-        role: user.role,
-        name: user.fullName,
-        phone: user.phone,
-        id: user.id,
-      },
-    });
+      });
+      const dataToken = await TokenService.saveToken(
+        user.id,
+        tokens.refreshToken
+      );
+      await User.upsert(
+        {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          password: user.password,
+          fullName: user.fullName,
+          phone: user.phone,
+          TokenId: dataToken.id,
+        },
+        { where: { UserId: user.id } }
+      );
+      res.cookie("refreshToken", tokens.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: false,
+        secure: true,
+      });
+      return res.json({
+        ...tokens,
+        user: {
+          role: user.role,
+          name: user.fullName,
+          phone: user.phone,
+          id: user.id,
+        },
+      });
+    } catch (e) {
+      next(e);
+    }
   }
   async logout(req, res, next) {
     try {
