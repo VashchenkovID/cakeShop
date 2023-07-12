@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.CLIENT_ADMIN_URL, process.env.CLIENT_CLIENT_URL],
+    origin: [process.env.CLIENT_ADMIN_URL, process.env.CLIENT_CLIENT_URL,'http://84.38.180.242:5173', 'http://84.38.180.242:3000'],
   })
 );
 app.use(express.static(path.resolve((__dirname, "static"))));
