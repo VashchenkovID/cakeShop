@@ -1,0 +1,19 @@
+{
+  "extends": [
+  "./node_modules/gts/"
+],
+    "plugins": [
+  "react-hooks" // for activate eslint checking react hooks
+],
+    "rules": {
+  "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ],
+      "node/no-unpublished-import": "off",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/rules-of-hooks": "error"
+}
+}

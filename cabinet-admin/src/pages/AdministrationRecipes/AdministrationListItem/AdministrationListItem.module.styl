@@ -1,0 +1,29 @@
+.RecipesListItem
+  display flex
+  gap 16px
+  align-items center
+  overflow-x hidden
+  justify-content space-between
+  cursor pointer
+  overflow-y hidden
+  &.active
+    border 2px solid #51dd00
+  &__titleContainer
+    display flex
+    gap 8px
+    align-items center
+  &__image
+    max-width 100px
+    max-height 100px
+    border-radius 10px
+  &__title
+    font-size 18px
+    font-weight 700
+    &.active
+      color #51dd00
+  &__subTitle
+    font-size 14px
+  &__price
+    font-weight 600
+    &.active
+      color #51dd00

@@ -2,8 +2,6 @@ import axios from "axios";
 
 import { AuthResponse } from "./userAPI";
 import {LocalStorageKeysEnum} from "../../utils/enum";
-
-console.log(import.meta.env, 'env')
 const $host = axios.create({
   withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,

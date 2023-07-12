@@ -40,9 +40,9 @@ services:
 
   cabinet-admin:
     container_name: cabinet-admin
-    build: cabinet-administration
+    build: cabinet-admin
     env_file:
-      - ./cabinet-administration/.env
+      - ./cabinet-admin/.env
     ports:
       - "3000:80"
     deploy:

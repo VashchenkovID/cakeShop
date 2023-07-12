@@ -1,0 +1,49 @@
+.RecipeCreate
+  display grid
+  grid-template-columns 1fr 0.8fr
+  gap 24px
+  max-height calc(100vh - 150px)
+  overflow-y auto
+  margin-top 24px
+  &__disabled
+    background rgba(81, 86, 92, 0.4)
+    color:#FFFFFF
+  &__compound
+    display flex
+    flex-direction column
+    gap 16px
+    &__selects
+      display flex
+      gap 16px
+  &__leftSide
+    gap 16px
+    display grid
+    grid-template-columns 1fr 1fr
+  &__rightSide
+    display flex
+    flex-direction column
+    gap 16px
+  &__image
+    max-width 400px
+    max-height 400px
+    border-radius 10px
+  &__parameters
+    display grid
+    grid-template-columns 1fr 1fr
+    gap 24px
+
+.Recipe
+  display flex
+  flex-direction column
+  gap 8px
+  max-height 60vh
+  overflow-y auto
+  &__addBtn
+    margin-top 16px
+  &__row
+    display grid
+    grid-template-columns repeat(5, 1fr)
+    align-items center
+    gap 16px
+    &__button
+      margin-top 26px

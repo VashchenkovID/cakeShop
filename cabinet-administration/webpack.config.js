@@ -23,7 +23,7 @@ if (fs.existsSync(path.resolve('.env.local'))) {
 const isProduction = process.env.NODE_ENV !== 'development';
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './src/main.tsx',
   target: 'web',
   output: {
     path: path.join(__dirname, '/dist'),

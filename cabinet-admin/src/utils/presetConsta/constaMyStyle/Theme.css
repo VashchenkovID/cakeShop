@@ -1,0 +1,168 @@
+.Theme {
+  --graphics-size-xs: 12px;
+  --graphics-size-s: 16px;
+  --graphics-size-m: 24px;
+  --graphics-size-l: 32px;
+  --graphics-size-xl: 40px;
+  --graphics-size-2xl: 60px;
+  --graphics-size-3xl: 80px;
+  --graphics-size-4xl: 120px;
+}
+
+.Theme *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.TableHeader-Buttons {
+  padding-right: 10px;
+}
+
+.Theme *::-webkit-scrollbar-track {
+  background-color: var(--color-scroll-bg);
+}
+
+.Theme *::-webkit-scrollbar-corner {
+  background-color: var(--color-scroll-bg);
+}
+
+.Theme *::-webkit-scrollbar-thumb {
+  background-color: var(--color-scroll-thumb);
+  border-radius: 4px;
+}
+
+.Theme *::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-scroll-thumb-hover);
+}
+
+.Header {
+  background: transparent !important;
+  border-bottom: none;
+  padding-left: 0 !important;
+}
+.HeaderMenu-Link_active:before {
+  max-width: 100% !important;
+  height: 4px !important;
+  background-color: #fef0ff !important;
+}
+.ListItem_active::before {
+  max-width: 100% !important;
+  height: 4px !important;
+  background-color: #fef0ff !important;
+}
+
+.DragNDropField {
+  border: none !important;
+  background-color: rgba(0, 66, 105, 0.05) !important;
+}
+
+.Pagination-PrevPage,
+.Pagination-NextPage {
+  display: none !important;
+}
+
+.TableCell_isHeader {
+  background: #f5f7fa !important;
+}
+
+.TableCell-Wrapper {
+  min-height: 52px !important;
+  padding-right: 6%;
+}
+
+.TableCell-Wrapper_withoutPadding {
+  min-height: 100% !important;
+}
+
+.Modal {
+  z-index: 5;
+}
+.Select-ControlInner {
+  cursor: auto;
+}
+.TagBase {
+  cursor: pointer;
+}
+.User {
+  cursor: pointer;
+}
+.Popover {
+  z-index: 100;
+}
+.Button_disabled {
+  background-color: rgba( 0, 66, 105, 0.3 );
+  color: rgba(255, 255, 255, 0.2);
+}
+.Text_view_ghost {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.Button_view_primary {
+  background-image: linear-gradient(
+          to right,
+          #4776e6 0%,
+          #8e54e9 51%,
+          #4776e6 100%
+  );
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+}
+.Button_disabled {
+  background-color: rgba( 0, 66, 105, 0.3 );
+  color: rgba(255, 255, 255, 0.2);
+}
+.Button_view_primary:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.Button_view_secondary {
+  background: #fbc102;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+}
+
+/*.Button_view_primary:hover {*/
+/*  background-position: right center; !* change the direction of the change here *!*/
+/*  color: #fff;*/
+/*  text-decoration: none;*/
+/*}*/
+
+.ListItem.Text {
+  color: #003973;
+}
+.DateTimeItem {
+  color: #003973;
+}
+.DateTimeItem_disabled {
+  color: #d9ddff;
+}
+.DateTimeLabel {
+  color: #003973;
+}
+.Popover {
+  color: #fef0ff;
+  z-index: 10000;
+}
+.TabsFitModeScrollWrapper-Button {
+  background-image: linear-gradient(
+          to right,
+          #4776e6 0%,
+          #8e54e9 51%,
+          #4776e6 100%
+  );
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+}
+.TabsFitModeScrollWrapper-Button:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
