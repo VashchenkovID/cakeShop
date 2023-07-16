@@ -22,8 +22,6 @@ services:
       - "5173:80"
     deploy:
       replicas: 1
-    environment:
-      VIRTUAL_HOST: kassandras-cake.ru
 
   cabinet-admin:
     container_name: cabinet-admin
