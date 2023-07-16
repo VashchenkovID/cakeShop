@@ -1,9 +1,0 @@
-export declare const REQUEST = "_REQUEST";
-export declare const SUCCESS = "_SUCCESS";
-export declare const FAILURE = "_FAILURE";
-export declare const IDLE = "_IDLE";
-export declare const idle = "idle";
-export declare const pending = "pending";
-export declare const morePending = "morePending";
-export declare const fulfilled = "fulfilled";
-export declare const rejected = "rejected";

@@ -1,1 +1,0 @@
-{"version":3,"file":"calendarApi.js","sourceRoot":"","sources":["../../../src/api/requests/calendarApi.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,SAAS,EAAE,MAAM,wBAAwB,CAAC;AAGnD,eAAe;IACb,WAAW,EAAE,CAAC,IAAY,EAAoC,EAAE,CAC9D,SAAS,CAAC,GAAG,CAAC,GAAG,iDAAyB,IAAI,IAAI,EAAE,CAAC;CACxD,CAAC"}

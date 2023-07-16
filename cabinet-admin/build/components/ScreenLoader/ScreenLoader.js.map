@@ -1,1 +1,0 @@
-{"version":3,"file":"ScreenLoader.js","sourceRoot":"","sources":["../../../src/components/ScreenLoader/ScreenLoader.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAC1B,OAAO,KAAK,MAAM,4BAA4B,CAAC;AAC/C,oDAAoD;AAEpD,MAAM,YAAY,GAAa,GAAG,EAAE;IAClC,OAAO,6BAAK,SAAS,EAAE,KAAK,CAAC,MAAM,cAAe,CAAC;AACrD,CAAC,CAAC;AAEF,eAAe,YAAY,CAAC"}
