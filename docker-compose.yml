@@ -39,6 +39,7 @@ services:
       replicas: 1
     environment:
       VIRTUAL_HOST: kassandras-cake.ru
+      VIRTUAL_PORT: 5173
 
   cabinet-admin:
     container_name: cabinet-admin
@@ -51,6 +52,7 @@ services:
       replicas: 1
     environment:
       VIRTUAL_HOST: admin-panel.kassandras-cake.ru
+      VIRTUAL_PORT: 3000
 
   web:
     image: jwilder/nginx-proxy
