@@ -30,9 +30,7 @@ services:
 
   cabinet-client:
     container_name: cabinet-client
-    build:
-      context: .
-      dockerfile: cabinet-client/Dockerfile
+    build: cabinet-client
     env_file:
       - ./cabinet-client/.env
     ports:
