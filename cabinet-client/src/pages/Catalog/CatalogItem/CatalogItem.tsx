@@ -22,6 +22,7 @@ interface IComponentProps {
 }
 const cx = cn.bind(styles);
 const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
+  console.log('123123test')
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
@@ -242,7 +243,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
               src={`http://84.38.180.242:8081/${item.img}`}
             />
             <div className={styles.Item__title}>
-              <Text weight={"semibold"}>{item.name}  345345345</Text>
+              <Text weight={"semibold"}>test</Text>
               <div className={styles.Item__rating}>
                 <Text size={"s"} className={styles.Item__rating__text}>
                   {Math.floor(item.rating * 100) / 100}
