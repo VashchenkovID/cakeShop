@@ -226,6 +226,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
   useEffect(() => {
     localStorage.setItem("Basket", JSON.stringify(basket));
   }, [basket]);
+  console.log(import.meta.env.VITE_API_URL_IMAGE)
   return (
     <div>
       <ComponentStyleWrapper>
@@ -238,7 +239,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
           <div className={styles.Item__header}>
             <img
               className={styles.Item__image}
-              src={`${import.meta.env.VITE_API_URL_IMAGE}/${item.img}`}
+              src={`http://84.38.180.242:8081/${item.img}`}
             />
             <div className={styles.Item__title}>
               <Text weight={"semibold"}>{item.name}</Text>
