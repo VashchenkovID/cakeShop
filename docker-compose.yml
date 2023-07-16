@@ -53,7 +53,7 @@ services:
       VIRTUAL_HOST: admin-panel.kassandras-cake.ru
 
   web:
-    image: jwilder/nginx-proxy
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
