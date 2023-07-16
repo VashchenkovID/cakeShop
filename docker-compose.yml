@@ -38,6 +38,7 @@ services:
     deploy:
       replicas: 1
 
+
   cabinet-admin:
     container_name: cabinet-admin
     build: cabinet-admin
