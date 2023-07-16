@@ -12,14 +12,27 @@ services:
       - ./static:/home/server/static
     deploy:
       replicas: 1
+  #  server_db:
+  #    container_name: cakes
+  #    image: postgres:13.3
+  #    restart: always
+  #    environment:
+  #      POSTGRES_USER: postgres
+  #      POSTGRES_PASSWORD: revolution67rus
+  #      PGDATA: /var/lib/postgresql/data
+  #      POSTGRES_DB: cakeShop
+  #    volumes:
+  #      - ./docker-volumes/postgres/:/var/lib/postgresql/data
+  #    ports:
+  #      - "54321:5432"
+  #    deploy:
+  #      replicas: 1
 
   cabinet-client:
     container_name: cabinet-client
     build: cabinet-client
     env_file:
       - ./cabinet-client/.env
-    volumes:
-      - ./static:/data/static
     ports:
       - "5173:80"
     deploy:
@@ -34,6 +47,7 @@ services:
       - "3000:80"
     deploy:
       replicas: 1
+
   web:
     image: nginx:latest
     ports:
@@ -41,5 +55,3 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./static:/data/static
-    restart: always
-    privileged: true
