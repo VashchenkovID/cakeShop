@@ -103,9 +103,9 @@ class UserController {
         },
         { where: { UserId: user.id } }
       );
-      res.cookie("refreshToken", tokens.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      });
+      // res.cookie("refreshToken", tokens.refreshToken, {
+      //   maxAge: 30 * 24 * 60 * 60 * 1000,
+      // });
       return res.json({
         ...tokens,
         user: {
