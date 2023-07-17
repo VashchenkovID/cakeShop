@@ -59,7 +59,8 @@ class UserController {
     res.cookie("refreshToken", tokens.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       domain: "84.38.180.242",
-      sameSite: 'strict',
+      sameSite: 'none',
+      secure:true,
     });
     return res.json({
       ...tokens,
@@ -108,7 +109,8 @@ class UserController {
       res.cookie("refreshToken", tokens.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         domain: "84.38.180.242",
-        sameSite: 'strict',
+        sameSite: 'none',
+        secure:true,
       });
       return res.json({
         ...tokens,
@@ -140,7 +142,8 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         domain: "84.38.180.242",
-        sameSite: 'strict',
+        sameSite: 'none',
+        secure:true,
       });
       return res.json(userData);
     } catch (e) {
