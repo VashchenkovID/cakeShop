@@ -142,7 +142,7 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken, {
         httpOnly: false,
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        domain: "84.38.180.242",
+        domain: "http://84.38.180.242",
         path: "/",
       });
       return res.json(userData);

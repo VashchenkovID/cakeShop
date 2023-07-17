@@ -1,11 +1,13 @@
 import axios from "axios";
 
 import { AuthResponse } from "./userAPI";
-import {LocalStorageKeysEnum} from "../../utils/enum";
+import { LocalStorageKeysEnum } from "../../utils/enum";
 const $host = axios.create({
   withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,
-
+  headers: {
+    ["Access-Control-Allow-Origin"]: "http://84.38.180.242",
+  },
 });
 
 const $authHost = axios.create({
