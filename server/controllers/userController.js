@@ -112,6 +112,7 @@ class UserController {
         domain: "84.38.180.242",
         path: "/",
       });
+      console.log(res.cookies)
       return res.json({
         ...tokens,
         user: {
