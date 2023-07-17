@@ -17,7 +17,7 @@ const UniqUser = sequilize.define("UniqUser", {
 
 const Token = sequilize.define("Token", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  refreshToken: { type: DataTypes.STRING, required: true },
+  refreshToken: { type: DataTypes.STRING(3000), required: true },
 });
 
 const Basket = sequilize.define("Basket", {
