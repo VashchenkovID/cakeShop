@@ -14,8 +14,13 @@ const PORT = process.env.PORT || 3000;
 const corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   credentials: true,
-  origin: true,
-  exposedHeaders: ["set-cookie"],
+  origin: [
+    process.env.CLIENT_ADMIN_URL,
+    process.env.CLIENT_CLIENT_URL,
+    "http://84.38.180.242:5173",
+    "http://84.38.180.242:3000",
+    "http://kassandras-cake.ru",
+  ],
 };
 
 const app = express();
