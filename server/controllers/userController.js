@@ -57,10 +57,11 @@ class UserController {
       { where: { UserId: user.id } }
     );
     res.cookie("refreshToken", tokens.refreshToken, {
+      httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       domain: "84.38.180.242",
-      sameSite: 'none',
-      secure:true,
+      sameSite: "none",
+      secure: true,
     });
     return res.json({
       ...tokens,
@@ -107,10 +108,11 @@ class UserController {
         { where: { UserId: user.id } }
       );
       res.cookie("refreshToken", tokens.refreshToken, {
+        httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
         domain: "84.38.180.242",
-        sameSite: 'none',
-        secure:true,
+        sameSite: "none",
+        secure: true,
       });
       return res.json({
         ...tokens,
@@ -140,10 +142,11 @@ class UserController {
       const { refreshToken } = req.cookies;
       const userData = await userService.refresh(refreshToken);
       res.cookie("refreshToken", userData.refreshToken, {
+        httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
         domain: "84.38.180.242",
-        sameSite: 'none',
-        secure:true,
+        sameSite: "none",
+        secure: true,
       });
       return res.json(userData);
     } catch (e) {
