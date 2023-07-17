@@ -32,7 +32,6 @@ services:
       - "3001:80"
     deploy:
       replicas: 1
-
   web:
     image: nginx:latest
     ports:
