@@ -56,13 +56,8 @@ class UserController {
       },
       { where: { UserId: user.id } }
     );
-    const cookieExpiry = new Date();
-    cookieExpiry.setYear(cookieExpiry.getYear() + 8000);
     res.cookie("refreshToken", tokens.refreshToken, {
-      httpOnly: true,
-      expires: cookieExpiry,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: "84.38.180.242",
     });
     return res.json({
       ...tokens,
@@ -108,13 +103,8 @@ class UserController {
         },
         { where: { UserId: user.id } }
       );
-      const cookieExpiry = new Date();
-      cookieExpiry.setYear(cookieExpiry.getYear() + 8000);
       res.cookie("refreshToken", tokens.refreshToken, {
-        httpOnly: true,
-        expires: cookieExpiry,
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        domain: "84.38.180.242",
       });
       return res.json({
         ...tokens,
@@ -143,14 +133,8 @@ class UserController {
     try {
       const { refreshToken } = req.cookies;
       const userData = await userService.refresh(refreshToken);
-      const cookieExpiry = new Date();
-      cookieExpiry.setYear(cookieExpiry.getYear() + 8000);
       res.cookie("refreshToken", userData.refreshToken, {
-        httpOnly: true,
-        expires: cookieExpiry,
-        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        domain: "84.38.180.242",
       });
       return res.json(userData);
     } catch (e) {
