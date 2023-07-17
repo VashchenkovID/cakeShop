@@ -1,23 +1,16 @@
 import axios from "axios";
 
 import { AuthResponse } from "./userAPI";
-import { LocalStorageKeysEnum } from "../../utils/enum";
+import { LocalStorageKeysEnum } from "src/utils/enum";
+
 const $host = axios.create({
   withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    ["Origin"]: "http://84.38.180.242",
-    ["Referer"]: "http://84.38.180.242/",
-  },
 });
 
 const $authHost = axios.create({
   withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    ["Origin"]: "http://84.38.180.242",
-    ["Referer"]: "http://84.38.180.242/",
-  },
 });
 $authHost.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem(
