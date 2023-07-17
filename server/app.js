@@ -24,9 +24,6 @@ app.use(
       "http://84.38.180.242:3001",
       "http://kassandras-cake.ru",
     ],
-    cookie: {
-      domain: "84.38.180.242",
-    },
   })
 );
 app.use(express.static(path.resolve((__dirname, "static"))));
