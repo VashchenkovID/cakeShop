@@ -11,21 +11,23 @@ const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
+const corsOptions = {
+  origin: "http://84.38.180.242",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  credentials: true,
+  origin: [
+    process.env.CLIENT_ADMIN_URL,
+    process.env.CLIENT_CLIENT_URL,
+    "http://84.38.180.242:5173",
+    "http://84.38.180.242:3001",
+    "http://kassandras-cake.ru",
+  ],
+};
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    credentials: true,
-    origin: [
-      process.env.CLIENT_ADMIN_URL,
-      process.env.CLIENT_CLIENT_URL,
-      "http://84.38.180.242:5173",
-      "http://84.38.180.242:3001",
-      "http://kassandras-cake.ru",
-    ],
-  })
-);
+app.use(cors({ ...corsOptions }));
 app.use(express.static(path.resolve((__dirname, "static"))));
 app.use(fileUpload({}));
 app.use("/api", router);
