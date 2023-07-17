@@ -5,9 +5,9 @@ const User = sequilize.define("User", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   email: { type: DataTypes.STRING(1500), unique: true },
   password: { type: DataTypes.STRING(1500) },
-  role: { type: DataTypes.STRING, defaultValue: "USER" },
+  role: { type: DataTypes.STRING(1500), defaultValue: "USER" },
   fullName: { type: DataTypes.STRING(1500), allowNull: true },
-  phone: { type: DataTypes.STRING, allowNull: true },
+  phone: { type: DataTypes.STRING(1500), allowNull: true },
 });
 
 const UniqUser = sequilize.define("UniqUser", {
