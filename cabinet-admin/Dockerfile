@@ -1,12 +1,12 @@
 FROM node:18-alpine as build
-WORKDIR /app
-COPY . /app
-ENV PATH /app/node_modules/.bin:$PATH
+WORKDIR /admin
+COPY . /admin
+ENV PATH /admin/node_modules/.bin:$PATH
 RUN yarn
 RUN yarn build
 
 FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /admin/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
 
