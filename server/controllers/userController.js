@@ -59,7 +59,6 @@ class UserController {
     res.cookie("refreshToken", tokens.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: false,
-      domain:'http://kassandras-cake.ru'
     });
     return res.json({
       ...tokens,
@@ -107,7 +106,6 @@ class UserController {
       );
       res.cookie("refreshToken", tokens.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        domain:'http://kassandras-cake.ru'
       });
       return res.json({
         ...tokens,
@@ -139,7 +137,6 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: false,
-        domain:'http://kassandras-cake.ru'
       });
       return res.json(userData);
     } catch (e) {

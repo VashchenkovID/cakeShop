@@ -17,7 +17,22 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.CLIENT_ADMIN_URL, process.env.CLIENT_CLIENT_URL,'http://84.38.180.242:5173', 'http://84.38.180.242:3001','http://kassandras-cake.ru'],
+    origin: [
+      process.env.CLIENT_ADMIN_URL,
+      process.env.CLIENT_CLIENT_URL,
+      "http://84.38.180.242:5173",
+      "http://84.38.180.242:3001",
+      "http://kassandras-cake.ru",
+    ],
+    cookie: {
+      domain: [
+        process.env.CLIENT_ADMIN_URL,
+        process.env.CLIENT_CLIENT_URL,
+        "http://84.38.180.242:5173",
+        "http://84.38.180.242:3001",
+        "http://kassandras-cake.ru",
+      ],
+    },
   })
 );
 app.use(express.static(path.resolve((__dirname, "static"))));
