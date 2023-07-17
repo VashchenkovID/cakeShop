@@ -62,7 +62,6 @@ class UserController {
       domain: "84.38.180.242",
       path: "/",
       sameSite: 'none',
-      secure: true,
     });
     return res.json({
       ...tokens,
@@ -114,7 +113,6 @@ class UserController {
         domain: "84.38.180.242",
         path: "/",
         sameSite: 'none',
-        secure: true,
       });
       return res.json({
         ...tokens,
@@ -149,7 +147,6 @@ class UserController {
         domain: "http://84.38.180.242",
         path: "/",
         sameSite: 'none',
-        secure: true,
       });
       return res.json(userData);
     } catch (e) {
