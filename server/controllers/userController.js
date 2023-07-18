@@ -56,9 +56,6 @@ class UserController {
       },
       { where: { UserId: user.id } }
     );
-    res.cookie("refreshToken", tokens.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
     return res.json({
       ...tokens,
       user: {
@@ -103,9 +100,6 @@ class UserController {
         },
         { where: { UserId: user.id } }
       );
-      res.cookie("refreshToken", tokens.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      });
       return res.json({
         ...tokens,
         user: {
@@ -121,9 +115,8 @@ class UserController {
   }
   async logout(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const refreshToken = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
       const token = await TokenService.removeToken(refreshToken);
-      res.clearCookie("refreshToken");
       return res.json(token);
     } catch (e) {
       next(e);
@@ -131,11 +124,8 @@ class UserController {
   }
   async refresh(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const refreshToken = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
       const userData = await userService.refresh(refreshToken);
-      res.cookie("refreshToken", userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      });
       return res.json(userData);
     } catch (e) {
       next(e);
