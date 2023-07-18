@@ -113,8 +113,19 @@
   background-color: rgba( 0, 66, 105, 0.3 );
   color: rgba(255, 255, 255, 0.2);
 }
+.Button_disabled:hover {
+  background-color: rgba( 0, 66, 105, 0.3 ) !important;
+  color: rgba(255, 255, 255, 0.2);
+}
+
 .Button_view_primary:hover {
   background-position: right center; /* change the direction of the change here */
+  background-image: linear-gradient(
+          to right,
+          #4776e6 0%,
+          #8e54e9 51%,
+          #4776e6 100%
+  ) !important;
   color: #fff;
   text-decoration: none;
 }
@@ -123,7 +134,14 @@
   background: #fbc102;
   text-align: center;
   text-transform: uppercase;
-  color: white;
+  color: #000000;
+  border: none;
+}
+.Button_view_secondary:hover {
+  background: rgba(251, 193, 2, 0.7) !important;
+  text-align: center;
+  text-transform: uppercase;
+  color: #000000; !important;
 }
 
 /*.Button_view_primary:hover {*/
@@ -178,4 +196,12 @@
 .Tabs-Tab {
   background: rgba(0,0,0,0.2);
   border-radius: 10px;
+}
+.Modal-Window {
+  background: linear-gradient(
+          -45deg,
+          #6dadd7,
+          #6fd1ba,
+          #e86b9c
+  )
 }

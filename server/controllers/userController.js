@@ -123,11 +123,8 @@ class UserController {
     }
   }
   async refresh(req, res, next) {
-
     try {
-      console.log('refresh method')
       const refreshToken = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
-      console.log('refresh method token', refreshToken)
       const userData = await userService.refresh(refreshToken);
       return res.json(userData);
     } catch (e) {

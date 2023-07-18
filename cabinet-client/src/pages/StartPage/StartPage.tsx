@@ -69,24 +69,63 @@ const StartPage: React.FC = () => {
   return (
     <section className={styles.container}>
       <ComponentStyleWrapper>
-        <Carousel
-          plugins={[
-            {
-              resolve: arrowsPlugin,
-              options: {
-                arrowLeft: <Button iconLeft={IconArrowLeft} view={"clear"} />,
-                arrowLeftDisabled: (
-                  <Button iconLeft={IconArrowLeft} view={"clear"} />
-                ),
-                arrowRight: <Button iconLeft={IconArrowRight} view={"clear"} />,
-                arrowRightDisabled: (
-                  <Button iconLeft={IconArrowRight} view={"clear"} />
-                ),
-                addArrowClickHandler: true,
+        {width >= 330 ? (
+          <Carousel
+            plugins={[
+              {
+                resolve: arrowsPlugin,
+                options: {
+                  arrowLeft: <Button iconLeft={IconArrowLeft} view={"clear"} />,
+                  arrowLeftDisabled: (
+                    <Button iconLeft={IconArrowLeft} view={"clear"} />
+                  ),
+                  arrowRight: (
+                    <Button iconLeft={IconArrowRight} view={"clear"} />
+                  ),
+                  arrowRightDisabled: (
+                    <Button iconLeft={IconArrowRight} view={"clear"} />
+                  ),
+                  addArrowClickHandler: true,
+                },
               },
-            },
-          ]}
-        >
+            ]}
+          >
+            <div className={styles.container__slide}>
+              <Text align={"center"} size={width >= 800 ? "5xl" : "3xl"}>
+                Kassandra's Cake
+              </Text>
+              <Text size={width >= 800 ? "m" : "s"} align={"center"}>
+                Магазин кондитерских изделий
+              </Text>
+              <div className={styles.container__slide__actions}>
+                <Button
+                  label={"Выбрать десерт"}
+                  size={width >= 800 ? "s" : "xs"}
+                  onClick={() => navigate(`${PublicRoutesEnum.SHOP}`)}
+                />
+                <Button
+                  label={"Заказать по эскизу"}
+                  size={width >= 800 ? "s" : "xs"}
+                  onClick={() => setIndividualModal(true)}
+                />
+              </div>
+            </div>
+            <div className={styles.container__slide}>
+              <Text>
+                <Text>Привет!</Text>
+                <Text>
+                  Меня зовут Александра и я домашний кондитер с образованием
+                  «Инженер-технолог пищевой промышленности»👩🏼‍🍳🧑🏼‍🔧
+                </Text>
+                <Text>
+                  Живу и работаю в Смоленске 🏙 Готовлю торты, капкейки и другие
+                  десерты на заказ 🍰🧁 Создаю невероятный шоколад и конфеты
+                  🍫🍭
+                </Text>
+              </Text>
+            </div>
+          </Carousel>
+        ) : (
           <div className={styles.container__slide}>
             <Text align={"center"} size={width >= 800 ? "5xl" : "3xl"}>
               Kassandra's Cake
@@ -97,30 +136,17 @@ const StartPage: React.FC = () => {
             <div className={styles.container__slide__actions}>
               <Button
                 label={"Выбрать десерт"}
-                size={"s"}
+                size={width >= 800 ? "s" : "xs"}
                 onClick={() => navigate(`${PublicRoutesEnum.SHOP}`)}
               />
               <Button
-                label={"Сделать индивидуальный заказ"}
-                size={"s"}
+                label={"Заказать по эскизу"}
+                size={width >= 800 ? "s" : "xs"}
                 onClick={() => setIndividualModal(true)}
               />
             </div>
           </div>
-          <div className={styles.container__slide}>
-            <Text>
-              <Text>Привет!</Text>
-              <Text>
-                Меня зовут Александра и я домашний кондитер с образованием
-                «Инженер-технолог пищевой промышленности»👩🏼‍🍳🧑🏼‍🔧
-              </Text>
-              <Text>
-                Живу и работаю в Смоленске 🏙 Готовлю торты, капкейки и другие
-                десерты на заказ 🍰🧁 Создаю невероятный шоколад и конфеты 🍫🍭
-              </Text>
-            </Text>
-          </div>
-        </Carousel>
+        )}
       </ComponentStyleWrapper>
       <div className={styles.container__deviceSection}>
         <Text className={styles.container__deviceSection__line} size={"3xl"}>

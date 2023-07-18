@@ -197,7 +197,7 @@ const CreateOrder: React.FC = () => {
       <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
         {user ? (
           <div className={styles.UserModal}>
-            <Text className={styles.modalTitle} size={"2xl"}>
+            <Text className={styles.modalTitle} size={"2xl"} >
               Оформление заказа
             </Text>
             <DatePicker

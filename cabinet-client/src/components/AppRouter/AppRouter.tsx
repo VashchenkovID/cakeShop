@@ -23,7 +23,7 @@ import StartPage from "../../pages/StartPage/StartPage";
 import DeviceView from "../../pages/DeviceView/DeviceView";
 import Orders from "src/pages/Orders/Orders";
 import Feedback from "src/pages/Feedback/Feedback";
-import {$authHost, $host} from "src/api/requests";
+import { $authHost, $host } from "src/api/requests";
 
 export interface IRouteItem {
   path: string;
@@ -52,11 +52,11 @@ const AppRouter = () => {
   const checkIsAuth = async () => {
     try {
       const response = await $authHost.get<AuthResponse>(
-        `${EnpointsEnum.CHECK_USER}`,
+        `${EnpointsEnum.CHECK_USER}`
       );
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,
-        response.data.accessToken
+        response.data.refreshToken
       );
       localStorage.setItem(
         LocalStorageKeysEnum.USER,

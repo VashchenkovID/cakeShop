@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { IRouteItem, PrivateRoutesEnum, PublicRoutesEnum } from "src/router";
 import { useAppDispatch } from "src/hooks/useAppDispatch";
 import AuthContainer from "src/pages/Auth/AuthContainer";
@@ -73,6 +73,7 @@ export const privateRoutes: Array<IRouteItem> = [
 
 const AppRouter = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isAuth = useAppSelector(selectIsAuth);
   const checkIsAuth = async () => {
     try {
@@ -81,11 +82,13 @@ const AppRouter = () => {
       );
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,
-        response.data.accessToken
+        response.data.refreshToken
       );
       dispatch(setIsAuth(true));
     } catch (e) {
       dispatch(setIsAuth(false));
+      localStorage.clear();
+      navigate(PublicRoutesEnum.LOGIN);
     }
   };
   const getRoutes = (routes: IRouteItem[]) => {

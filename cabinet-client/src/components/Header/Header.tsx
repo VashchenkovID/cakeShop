@@ -56,17 +56,6 @@ const Header: React.FC<IHeaderProps> = () => {
 
   const headerItems: Item[] = [
     {
-      label: "Главная",
-      id: HeaderIdEnum.GENERAL,
-      href: PublicRoutesEnum.GENERAL,
-      active: myLoc === PublicRoutesEnum.GENERAL,
-      onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.GENERAL);
-      },
-      permission: [],
-      access: false,
-    },
-    {
       label: "Каталог",
       id: HeaderIdEnum.SHOP,
       href: PublicRoutesEnum.SHOP,
@@ -79,17 +68,6 @@ const Header: React.FC<IHeaderProps> = () => {
     },
   ];
   const privateItems: Item[] = [
-    {
-      label: "Главная",
-      id: HeaderIdEnum.GENERAL,
-      href: PublicRoutesEnum.GENERAL,
-      active: myLoc === PublicRoutesEnum.GENERAL,
-      onClick: (e) => {
-        headerTransition(e, PublicRoutesEnum.GENERAL);
-      },
-      permission: [],
-      access: false,
-    },
     {
       label: "Каталог",
       id: HeaderIdEnum.SHOP,
@@ -252,7 +230,9 @@ const Header: React.FC<IHeaderProps> = () => {
             </div>
           ) : (
             <HeaderModule className={styles.Header__left}>
-              <img className={styles.Logo} src={logo} />
+              <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+                Kassandra's cake
+              </Text>
               <nav className={styles.Header__nav}>
                 {isAuth && <HeaderMenu items={privateItems} />}
                 {!isAuth && <HeaderMenu items={headerItems} />}
@@ -264,7 +244,11 @@ const Header: React.FC<IHeaderProps> = () => {
           width >= 500 ? (
             <div className={styles.Header__user}>
               {isAuth && (
-                <User name={user?.name || ""} size={"l"} info={user?.phone || ""} />
+                <User
+                  name={user?.name || ""}
+                  size={"l"}
+                  info={user?.phone || ""}
+                />
               )}
               <BasketWithCount />{" "}
               {isAuth ? (
@@ -292,7 +276,9 @@ const Header: React.FC<IHeaderProps> = () => {
               )}
             </div>
           ) : (
-            <img className={styles.Logo} src={logo} />
+            <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+              Kassandra's cake
+            </Text>
           )
         }
       ></ConstaHeader>

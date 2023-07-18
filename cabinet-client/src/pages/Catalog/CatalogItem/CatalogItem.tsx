@@ -22,7 +22,6 @@ interface IComponentProps {
 }
 const cx = cn.bind(styles);
 const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
-  console.log('123123test')
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
@@ -227,7 +226,6 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
   useEffect(() => {
     localStorage.setItem("Basket", JSON.stringify(basket));
   }, [basket]);
-  console.log(import.meta.env.VITE_API_URL_IMAGE)
   return (
     <div>
       <ComponentStyleWrapper>
@@ -243,7 +241,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
               src={`http://84.38.180.242:8081/${item.img}`}
             />
             <div className={styles.Item__title}>
-              <Text weight={"semibold"}>Тестовое имя</Text>
+              <Text weight={"semibold"}>{item.name}</Text>
               <div className={styles.Item__rating}>
                 <Text size={"s"} className={styles.Item__rating__text}>
                   {Math.floor(item.rating * 100) / 100}
