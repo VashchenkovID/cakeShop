@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  credentials: true,
   origin: [
     process.env.CLIENT_ADMIN_URL,
     process.env.CLIENT_CLIENT_URL,

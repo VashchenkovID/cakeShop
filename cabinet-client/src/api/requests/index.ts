@@ -4,12 +4,10 @@ import { AuthResponse } from "./userAPI";
 import { LocalStorageKeysEnum } from "src/utils/enum";
 
 const $host = axios.create({
-  withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,
 });
 
 const $authHost = axios.create({
-  withCredentials: true,
   baseURL: import.meta.env.VITE_API_URL,
 });
 $authHost.interceptors.request.use((config) => {
@@ -34,7 +32,6 @@ $authHost.interceptors.response.use(
       try {
         const response = await axios.get<AuthResponse>(
           `${import.meta.env.REACT_APP_API_URL}/refresh`,
-          { withCredentials: true }
         );
         localStorage.setItem("token", response.data.accessToken);
         return $authHost.request(originalRequest);

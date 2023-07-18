@@ -23,6 +23,7 @@ import StartPage from "../../pages/StartPage/StartPage";
 import DeviceView from "../../pages/DeviceView/DeviceView";
 import Orders from "src/pages/Orders/Orders";
 import Feedback from "src/pages/Feedback/Feedback";
+import {$authHost, $host} from "src/api/requests";
 
 export interface IRouteItem {
   path: string;
@@ -50,9 +51,8 @@ const AppRouter = () => {
   const basket: string | null = localStorage.getItem("Basket");
   const checkIsAuth = async () => {
     try {
-      const response = await axios.get<AuthResponse>(
-        `${import.meta.env.VITE_API_URL}${EnpointsEnum.CHECK_USER}`,
-        { withCredentials: true }
+      const response = await $authHost.get<AuthResponse>(
+        `${EnpointsEnum.CHECK_USER}`,
       );
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,

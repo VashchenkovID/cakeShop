@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { IRouteItem, PrivateRoutesEnum, PublicRoutesEnum } from 'src/router';
-import { useAppDispatch } from 'src/hooks/useAppDispatch';
-import AuthContainer from 'src/pages/Auth/AuthContainer';
-import { storageToken } from 'src/utils/storage';
-import { LocalStorageKeysEnum } from 'src/utils/enum';
-import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
-import MainPage from 'src/pages/MainPage/MainPage';
-import { EnpointsEnum } from 'src/api/endpoints';
-import axios from 'axios';
-import { AuthResponse } from 'src/api/requests/userAPI';
-import AdministrationRecipes from 'src/pages/AdministrationRecipes/AdministrationRecipes';
-import AdministrationRecipesCreate from 'src/pages/AdministrationRecipes/AdministrationRecipesCreate/AdministrationRecipesCreate';
-import AdministrationAnalytics from 'src/pages/AdministrationAnalytics/AdministrationAnalytics';
-import AdministrationTypes from 'src/pages/AdministrationTypes/AdministrationTypes';
-import AdministrationOrders from 'src/pages/AdministrationOrders/AdministrationOrders';
-import AdministrationOrdersProcessing from 'src/pages/AdministrationOrdersProcessing/AdministrationOrdersProcessing';
-import AdministrationFeedback from 'src/pages/AdministrationFeedback/AdministrationFeedback';
-import AdministrationCalendar from 'src/pages/AdministrationCalendar/AdministrationCalendar';
-import { useAppSelector } from 'src/hooks/useAppSelector';
-import { selectIsAuth } from 'src/redux/features/auth/selectors';
-import PrivateRoute from 'src/components/PrivateRoute';
+import React, { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { IRouteItem, PrivateRoutesEnum, PublicRoutesEnum } from "src/router";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import AuthContainer from "src/pages/Auth/AuthContainer";
+import { storageToken } from "src/utils/storage";
+import { LocalStorageKeysEnum } from "src/utils/enum";
+import { setIsAuth } from "src/redux/features/auth/AuthSlice";
+import MainPage from "src/pages/MainPage/MainPage";
+import { EnpointsEnum } from "src/api/endpoints";
+import axios from "axios";
+import { AuthResponse } from "src/api/requests/userAPI";
+import AdministrationRecipes from "src/pages/AdministrationRecipes/AdministrationRecipes";
+import AdministrationRecipesCreate from "src/pages/AdministrationRecipes/AdministrationRecipesCreate/AdministrationRecipesCreate";
+import AdministrationAnalytics from "src/pages/AdministrationAnalytics/AdministrationAnalytics";
+import AdministrationTypes from "src/pages/AdministrationTypes/AdministrationTypes";
+import AdministrationOrders from "src/pages/AdministrationOrders/AdministrationOrders";
+import AdministrationOrdersProcessing from "src/pages/AdministrationOrdersProcessing/AdministrationOrdersProcessing";
+import AdministrationFeedback from "src/pages/AdministrationFeedback/AdministrationFeedback";
+import AdministrationCalendar from "src/pages/AdministrationCalendar/AdministrationCalendar";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectIsAuth } from "src/redux/features/auth/selectors";
+import PrivateRoute from "src/components/PrivateRoute";
+import { $authHost } from "src/api/requests";
 
 export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
@@ -75,13 +76,12 @@ const AppRouter = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const checkIsAuth = async () => {
     try {
-      const response = await axios.get<AuthResponse>(
-        `${import.meta.env.VITE_API_URL}${EnpointsEnum.CHECK_USER}`,
-        { withCredentials: true },
+      const response = await $authHost.get<AuthResponse>(
+        `${EnpointsEnum.CHECK_USER}`
       );
       localStorage.setItem(
         LocalStorageKeysEnum.TOKEN,
-        response.data.accessToken,
+        response.data.accessToken
       );
       dispatch(setIsAuth(true));
     } catch (e) {
@@ -98,7 +98,7 @@ const AppRouter = () => {
     ));
   };
   useEffect(() => {
-    if (storageToken() && storageToken() !== 'undefined') {
+    if (storageToken() && storageToken() !== "undefined") {
       checkIsAuth();
     }
   }, []);
