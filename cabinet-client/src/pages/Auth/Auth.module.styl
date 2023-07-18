@@ -22,6 +22,10 @@
     border-radius 10px
     padding 16px 32px
     width 450px
+    @media (max-width 500px)
+      width 300px
+    @media (max-width 400px)
+      width 220px
   &__phoneContainer
     display flex
     gap 16px
@@ -29,6 +33,10 @@
     color #c1c8e4;
     width 450px
     font-size 14px
+    @media (max-width 500px)
+      width 300px
+    @media (max-width 400px)
+      width 220px
   &__phoneInput
     border 1px solid rgba( 0, 66, 105, 0.28 )
     color rgb( 0, 32, 51 )
@@ -37,3 +45,6 @@
   &__phoneInput:focus
     outline none
     border 1px solid rgb( 0, 145, 255 );
+  &__span
+    text-decoration underline
+    cursor pointer

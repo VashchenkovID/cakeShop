@@ -124,12 +124,19 @@ const Header: React.FC<IHeaderProps> = () => {
           width <= 850 ? (
             <div>
               {!isOpen && (
-                <Button
-                  iconLeft={isOpen ? IconClose : IconAlignJustify}
-                  view={"clear"}
-                  size={"l"}
-                  onClick={() => setIsOpen(true)}
-                />
+                <div
+                  style={{ display: "flex", gap: "8px", alignItems: "center" }}
+                >
+                  <Button
+                    iconLeft={isOpen ? IconClose : IconAlignJustify}
+                    view={"clear"}
+                    size={"l"}
+                    onClick={() => setIsOpen(true)}
+                  />
+                  <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+                    Kassandra's cake
+                  </Text>
+                </div>
               )}
 
               <Sidebar
@@ -276,9 +283,7 @@ const Header: React.FC<IHeaderProps> = () => {
               )}
             </div>
           ) : (
-            <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
-              Kassandra's cake
-            </Text>
+            <BasketWithCount />
           )
         }
       ></ConstaHeader>

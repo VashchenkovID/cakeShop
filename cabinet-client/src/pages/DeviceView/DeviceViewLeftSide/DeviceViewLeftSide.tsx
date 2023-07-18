@@ -16,7 +16,7 @@ import { Modal } from "@consta/uikit/Modal";
 import DeviceCreateRatingModal from "../Modals/DeviceCreateRatingModal";
 import { GetDeviceRatingsReqType } from "src/api/requests/ratingsApi";
 import DeviceCreateOneClickBasket from "../Modals/DeviceCreateOneClickBasket/DeviceCreateOneClickBasket";
-import {storageUser} from "src/utils/storage";
+import { storageUser } from "src/utils/storage";
 
 interface IComponentProps {
   device: DeviceItemModel;
@@ -41,7 +41,7 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
   // store
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const user = storageUser()
+  const user = storageUser();
   // state
   const [isAdded, setIsAdded] = useState(false);
   const [modal, setModal] = useState<DeviceModalEnum>(DeviceModalEnum.IDLE);
@@ -51,95 +51,95 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
     if (user && user.id) {
       if (!basket) {
         dispatch(
-            setBasket({
-              id: null,
-              name: `Заказ пользователя ${user.name}`,
-              user_id: Number(user.id),
-              items: [
-                {
-                  id: device.id,
-                  localId: nanoid(),
-                  name: device.name,
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [] as any,
-                },
-              ],
-            })
+          setBasket({
+            id: null,
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [] as any,
+              },
+            ],
+          })
         );
         setIsAdded(true);
       }
       if (basket) {
         dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: device.id,
-                  name: device.name,
-                  localId: nanoid(),
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [],
-                },
-              ],
-            })
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: device.id,
+                name: device.name,
+                localId: nanoid(),
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
         );
       }
     } else {
       if (!basket) {
         dispatch(
-            setBasket({
-              id: null,
-              name: `Индивидуальный заказ`,
-              user_id: null,
-              items: [
-                {
-                  id: device.id,
-                  localId: nanoid(),
-                  name: device.name,
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [],
-                },
-              ],
-            })
+          setBasket({
+            id: null,
+            name: `Индивидуальный заказ`,
+            user_id: null,
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
         );
         setIsAdded(true);
       }
       if (basket) {
         dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items,
-                {
-                  id: device.id,
-                  localId: nanoid(),
-                  name: device.name,
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [],
-                },
-              ],
-            })
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items,
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
         );
       }
     }
@@ -148,77 +148,77 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
     if (user && user.id) {
       if (!basket) {
         dispatch(
-            setBasket({
-              id: null,
-              name: `Заказ пользователя ${user.name}`,
-              user_id: Number(user.id),
-              items: [
-                {
-                  id: device.id,
-                  localId: nanoid(),
-                  name: device.name,
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [],
-                },
-              ],
-            })
+          setBasket({
+            id: null,
+            name: `Заказ пользователя ${user.name}`,
+            user_id: Number(user.id),
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
         );
         setIsAdded(true);
       }
       if (basket) {
         dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items.filter((i) => i.id !== device.id),
-                ...basket.items
-                    .filter((i) => i.id === device.id)
-                    .filter((el, ind, arr) => ind !== arr.length - 1),
-              ],
-            })
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items.filter((i) => i.id !== device.id),
+              ...basket.items
+                .filter((i) => i.id === device.id)
+                .filter((el, ind, arr) => ind !== arr.length - 1),
+            ],
+          })
         );
       }
     } else {
       if (!basket) {
         dispatch(
-            setBasket({
-              id: null,
-              name: `Индивидуальный заказ`,
-              user_id: null,
-              items: [
-                {
-                  id: device.id,
-                  localId: nanoid(),
-                  name: device.name,
-                  deviceId: device.id,
-                  count: 1,
-                  price: device.price,
-                  basketId: null,
-                  countWeightType: device.countWeightType,
-                  weightType: device.weightType,
-                  decors: [],
-                },
-              ],
-            })
+          setBasket({
+            id: null,
+            name: `Индивидуальный заказ`,
+            user_id: null,
+            items: [
+              {
+                id: device.id,
+                localId: nanoid(),
+                name: device.name,
+                deviceId: device.id,
+                count: 1,
+                price: device.price,
+                basketId: null,
+                countWeightType: device.countWeightType,
+                weightType: device.weightType,
+                decors: [],
+              },
+            ],
+          })
         );
         setIsAdded(true);
       }
       if (basket) {
         dispatch(
-            setBasket({
-              ...basket,
-              items: [
-                ...basket.items.filter((i) => i.id !== device.id),
-                ...basket.items
-                    .filter((i) => i.id === device.id)
-                    .filter((el, ind, arr) => ind !== arr.length - 1),
-              ],
-            })
+          setBasket({
+            ...basket,
+            items: [
+              ...basket.items.filter((i) => i.id !== device.id),
+              ...basket.items
+                .filter((i) => i.id === device.id)
+                .filter((el, ind, arr) => ind !== arr.length - 1),
+            ],
+          })
         );
       }
     }
@@ -343,7 +343,7 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
                   size={width <= 800 ? "xs" : "s"}
                   onClick={(e) => {
                     e.stopPropagation();
-                    addItemInBasket()
+                    addItemInBasket();
                     setModal(DeviceModalEnum.CREATE_BASKET);
                   }}
                   label={"Купить в 1 клик"}
@@ -389,7 +389,11 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
         />
       </Modal>
       <Modal isOpen={modal === DeviceModalEnum.CREATE_BASKET}>
-        <DeviceCreateOneClickBasket modal={modal} setModal={setModal} width={width}/>
+        <DeviceCreateOneClickBasket
+          modal={modal}
+          setModal={setModal}
+          width={width}
+        />
       </Modal>
     </ComponentStyleWrapper>
   );

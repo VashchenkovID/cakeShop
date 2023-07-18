@@ -72,6 +72,7 @@ const AuthContainer: React.FC = () => {
           setLoading(false);
         });
     }
+    setLoading(false);
   };
 
   const disabled = useMemo(() => {
@@ -164,7 +165,8 @@ const AuthContainer: React.FC = () => {
                 navigate(PublicRoutesEnum.AUTH);
               }}
             >
-              Еще не зарегистрированы? Регистрация
+              Еще не зарегистрированы?{" "}
+              <span className={style.Container__span}>Регистрация</span>
             </Text>
           ) : (
             <Text
@@ -173,7 +175,8 @@ const AuthContainer: React.FC = () => {
                 navigate(PublicRoutesEnum.LOGIN);
               }}
             >
-              Уже зарегистрированы? Войти
+              Уже зарегистрированы?{" "}
+              <span className={style.Container__span}>Войти</span>
             </Text>
           )}
 

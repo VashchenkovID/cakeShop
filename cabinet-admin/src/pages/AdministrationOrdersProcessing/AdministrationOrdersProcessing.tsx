@@ -151,7 +151,7 @@ const AdministrationOrdersProcessing: React.FC = () => {
     }
   };
   useEffect(() => {
-    getOrders(date.toISOString());
+    getOrders(new Date(date.setDate(date.getDate()+1)).toISOString());
   }, [date]);
   return (
     <MainWrapper title={'Обработка заказов'}>

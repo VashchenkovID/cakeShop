@@ -62,30 +62,16 @@
         &__star
           color #fbc102
   &__wrapper
-    position: relative;
-    padding-top: 35vh;
-    max-width 25vw
-    @media (max-width 1500px)
-      padding-top 25vh
-    @media (max-width 1050px)
-      padding-top 20vh
-    @media (max-width 800px)
-      padding-top 16vh
-    @media (max-width 450px)
-      max-width 70vw
-      margin-left 8vw
-      padding-top 23vh
-    @media (max-width 400px)
-      max-width 70vw
-      margin-left 6vw
-      padding-top 20vh
+    @media (max-width 780px)
+      display flex
+      justify-content center
     &__img
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
         border-radius 10px
+        max-height 35vh
+        max-width 35vw
+
+
+
   &__description
     max-height 30vh
     overflow-y auto
