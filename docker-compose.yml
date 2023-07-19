@@ -19,7 +19,7 @@ services:
     env_file:
       - ./cabinet-client/.env
     ports:
-      - "5174:80"
+      - "5173:80"
     deploy:
       replicas: 1
 
