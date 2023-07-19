@@ -140,7 +140,7 @@
   background: #fbc102;
   text-align: center;
   text-transform: uppercase;
-  color: #000000;
+  color: #000000 !important;
   border: none;
 }
 .Button_view_secondary:hover {

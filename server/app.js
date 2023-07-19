@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const sequelize = require("./db");
-const models = require("./models/models");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
@@ -12,7 +11,6 @@ const path = require("path");
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   origin: [
     process.env.CLIENT_ADMIN_URL,
     process.env.CLIENT_CLIENT_URL,

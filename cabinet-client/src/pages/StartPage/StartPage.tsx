@@ -71,7 +71,7 @@ const StartPage: React.FC = () => {
     <TransitionWrapper>
       <section className={styles.container}>
         <ComponentStyleWrapper>
-          {width >= 330 ? (
+          {width >= 800 ? (
             <Carousel
               plugins={[
                 {
@@ -210,7 +210,7 @@ const StartPage: React.FC = () => {
         <Modal isOpen={individualModal}>
           <div className={styles.Communication}>
             <div className={styles.Communication__header}>
-              <Text size={"2xl"}>Выберите предпочитаемый способ связи</Text>
+              <Text size={"2xl"} view={'brand'}>Выберите предпочитаемый способ связи</Text>
               <Button
                 view={"clear"}
                 iconLeft={IconClose}
@@ -226,7 +226,7 @@ const StartPage: React.FC = () => {
                   target="_blank"
                 >
                   {item.icon}
-                  <Text size={"s"}>{item.label}</Text>
+                  <Text view={'brand'} size={"s"}>{item.label}</Text>
                 </a>
               ))}
             </div>

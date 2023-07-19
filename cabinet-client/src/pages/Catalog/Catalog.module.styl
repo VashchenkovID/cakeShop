@@ -20,6 +20,8 @@
     min-height 60vh
     max-height 70vh
     overflow-y auto
+    @media (max-width 800px)
+      max-height 55vh
     @media (max-width 450px)
       justify-content center
   &__active
@@ -51,6 +53,8 @@
   opacity 0
   transform: translate3d(0px, -20px, 0px);
   cursor pointer
+  @media (max-width 800px)
+    bottom 10vh
   &.visible
     margin-right 0
     opacity 1

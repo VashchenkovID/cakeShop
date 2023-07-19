@@ -1,10 +1,12 @@
 .container
   margin 24px
-  max-height 82vh
+  max-height 90vh
   overflow-y auto
   display flex
   flex-direction column
   gap 24px
+  @media (max-width 800px)
+    max-height 80vh
   &__slide
     display flex
     flex-direction column
@@ -43,7 +45,7 @@
   flex-direction column
   gap 24px
   padding 16px
-  background rgba(47, 4, 79, 1)
+  background #FFFFFF
   &__header
     display flex
     justify-content space-between
@@ -69,4 +71,4 @@
   &__iconColor
     width 20px
     height 20px
-    color #FFFFFF
+    color #000000
