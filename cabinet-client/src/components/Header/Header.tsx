@@ -150,10 +150,15 @@ const Header: React.FC<IHeaderProps> = () => {
                 <div>
                   {width < 800 && (
                     <div className={styles.Sidebar__user}>
-                      {isAuth && (
-                        <Text size={'l'} view={'brand'}>Добро пожаловать,{user?.name || ""}</Text>
+                      {isAuth ? (
+                        <Text size={"l"} view={"brand"}>
+                          Добро пожаловать,{user?.name || ""}
+                        </Text>
+                      ) : (
+                        <Text size={"l"} view={"brand"}>
+                          Kassandra's Cake
+                        </Text>
                       )}
-                      <BasketWithCount setIsOpen={setIsOpen} />{" "}
                       <Button
                         iconLeft={isOpen ? IconClose : IconAlignJustify}
                         view={"clear"}
