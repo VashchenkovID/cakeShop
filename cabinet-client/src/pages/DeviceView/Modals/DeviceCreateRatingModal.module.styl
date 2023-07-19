@@ -1,14 +1,15 @@
 .Rating
   padding 16px
-  width 50vw
-  height 50vh
+  min-width  50vw
+  max-height  50vh
   display flex
   flex-direction column
   gap 24px
   justify-content space-between
   overflow-x hidden
-  @media (max-width 800px)
+  @media (max-width 500px)
     gap 16px
+    padding 8px
   &__header
     display flex
     justify-content space-between
@@ -25,3 +26,8 @@
     justify-content flex-end
     gap 16px
     align-items center
+    @media (max-width 325px)
+      gap 8px
+.datePick :global(.FieldLabel) {
+  color:black
+}

@@ -1,6 +1,15 @@
+@font-face {
+  font-family: "Lobster";
+  src: url("src/fonts/Lobster-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .Theme_font_myDefault {
-  --font-primary: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-mono: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --font-primary: "Lobster", -apple-system, BlinkMacSystemFont, "Comic Neue",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  --font-mono: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   font-family: var(--font-primary);
 }

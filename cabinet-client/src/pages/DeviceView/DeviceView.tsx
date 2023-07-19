@@ -13,6 +13,7 @@ import IconBasket from "../../components/IconBasket/IconBasket";
 import { useAppSelector } from "src/hooks/useAppSelector";
 import { selectBasket } from "src/store/features/basket/BasketSelectors";
 import DeviceViewRightSide from "./DeviceViewRightSide/DeviceViewRightSide";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 const cx = cn.bind(styles);
 const DeviceView: React.FC = () => {
@@ -62,41 +63,44 @@ const DeviceView: React.FC = () => {
   }, [params, pagination]);
 
   return (
-    <>
-      {!isLoading && (
-        <div className={styles.Device}>
-          {device?.data && (
-            <div>
-              <DeviceViewLeftSide
-                device={device.data}
-                width={width}
-                fetchRatings={fetchDeviceRatings}
-                fetchDevice={fetchDevice}
-              />
-            </div>
-          )}
-          <DeviceViewRightSide
-            isLoading={isLoadingRatings}
-            width={width}
-            setPagination={setPagination}
-            ratings={ratings}
-            count={count}
-          />
+    <TransitionWrapper>
+      <section>
+        {" "}
+        {!isLoading && (
+          <div className={styles.Device}>
+            {device?.data && (
+              <div>
+                <DeviceViewLeftSide
+                  device={device.data}
+                  width={width}
+                  fetchRatings={fetchDeviceRatings}
+                  fetchDevice={fetchDevice}
+                />
+              </div>
+            )}
+            <DeviceViewRightSide
+              isLoading={isLoadingRatings}
+              width={width}
+              setPagination={setPagination}
+              ratings={ratings}
+              count={count}
+            />
+          </div>
+        )}
+        <div
+          className={cx(styles.IconBasket, {
+            visible: isBasketVisible,
+          })}
+          onClick={() =>
+            navigate(
+              `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`
+            )
+          }
+        >
+          <IconBasket className={styles.IconBasket__icon} />
         </div>
-      )}
-      <div
-        className={cx(styles.IconBasket, {
-          visible: isBasketVisible,
-        })}
-        onClick={() =>
-          navigate(
-            `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`
-          )
-        }
-      >
-        <IconBasket className={styles.IconBasket__icon} />
-      </div>
-    </>
+      </section>
+    </TransitionWrapper>
   );
 };
 

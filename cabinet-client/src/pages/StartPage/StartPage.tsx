@@ -23,6 +23,7 @@ import IconTelegram from "../../components/Icons/IconTelegram";
 import IconWhatsApp from "../../components/Icons/IconWhatsApp";
 import IconInstagram from "../../components/Icons/IconInstagram";
 import { IconClose } from "@consta/uikit/IconClose";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 const communicationItems = [
   {
@@ -67,29 +68,68 @@ const StartPage: React.FC = () => {
   }, []);
   const [individualModal, setIndividualModal] = useState(false);
   return (
-    <section className={styles.container}>
-      <ComponentStyleWrapper>
-        {width >= 330 ? (
-          <Carousel
-            plugins={[
-              {
-                resolve: arrowsPlugin,
-                options: {
-                  arrowLeft: <Button iconLeft={IconArrowLeft} view={"clear"} />,
-                  arrowLeftDisabled: (
-                    <Button iconLeft={IconArrowLeft} view={"clear"} />
-                  ),
-                  arrowRight: (
-                    <Button iconLeft={IconArrowRight} view={"clear"} />
-                  ),
-                  arrowRightDisabled: (
-                    <Button iconLeft={IconArrowRight} view={"clear"} />
-                  ),
-                  addArrowClickHandler: true,
+    <TransitionWrapper>
+      <section className={styles.container}>
+        <ComponentStyleWrapper>
+          {width >= 330 ? (
+            <Carousel
+              plugins={[
+                {
+                  resolve: arrowsPlugin,
+                  options: {
+                    arrowLeft: (
+                      <Button iconLeft={IconArrowLeft} view={"clear"} />
+                    ),
+                    arrowLeftDisabled: (
+                      <Button iconLeft={IconArrowLeft} view={"clear"} />
+                    ),
+                    arrowRight: (
+                      <Button iconLeft={IconArrowRight} view={"clear"} />
+                    ),
+                    arrowRightDisabled: (
+                      <Button iconLeft={IconArrowRight} view={"clear"} />
+                    ),
+                    addArrowClickHandler: true,
+                  },
                 },
-              },
-            ]}
-          >
+              ]}
+            >
+              <div className={styles.container__slide}>
+                <Text align={"center"} size={width >= 800 ? "5xl" : "3xl"}>
+                  Kassandra's Cake
+                </Text>
+                <Text size={width >= 800 ? "m" : "s"} align={"center"}>
+                  Магазин кондитерских изделий
+                </Text>
+                <div className={styles.container__slide__actions}>
+                  <Button
+                    label={"Выбрать десерт"}
+                    size={width >= 800 ? "s" : "xs"}
+                    onClick={() => navigate(`${PublicRoutesEnum.SHOP}`)}
+                  />
+                  <Button
+                    label={"Заказать по эскизу"}
+                    size={width >= 800 ? "s" : "xs"}
+                    onClick={() => setIndividualModal(true)}
+                  />
+                </div>
+              </div>
+              <div className={styles.container__slide}>
+                <Text>
+                  <Text>Привет!</Text>
+                  <Text>
+                    Меня зовут Александра и я домашний кондитер с образованием
+                    «Инженер-технолог пищевой промышленности»👩🏼‍🍳🧑🏼‍🔧
+                  </Text>
+                  <Text>
+                    Живу и работаю в Смоленске 🏙 Готовлю торты, капкейки и
+                    другие десерты на заказ 🍰🧁 Создаю невероятный шоколад и
+                    конфеты 🍫🍭
+                  </Text>
+                </Text>
+              </div>
+            </Carousel>
+          ) : (
             <div className={styles.container__slide}>
               <Text align={"center"} size={width >= 800 ? "5xl" : "3xl"}>
                 Kassandra's Cake
@@ -110,125 +150,90 @@ const StartPage: React.FC = () => {
                 />
               </div>
             </div>
-            <div className={styles.container__slide}>
-              <Text>
-                <Text>Привет!</Text>
-                <Text>
-                  Меня зовут Александра и я домашний кондитер с образованием
-                  «Инженер-технолог пищевой промышленности»👩🏼‍🍳🧑🏼‍🔧
-                </Text>
-                <Text>
-                  Живу и работаю в Смоленске 🏙 Готовлю торты, капкейки и другие
-                  десерты на заказ 🍰🧁 Создаю невероятный шоколад и конфеты
-                  🍫🍭
-                </Text>
-              </Text>
-            </div>
-          </Carousel>
-        ) : (
-          <div className={styles.container__slide}>
-            <Text align={"center"} size={width >= 800 ? "5xl" : "3xl"}>
-              Kassandra's Cake
-            </Text>
-            <Text size={width >= 800 ? "m" : "s"} align={"center"}>
-              Магазин кондитерских изделий
-            </Text>
-            <div className={styles.container__slide__actions}>
-              <Button
-                label={"Выбрать десерт"}
-                size={width >= 800 ? "s" : "xs"}
-                onClick={() => navigate(`${PublicRoutesEnum.SHOP}`)}
-              />
-              <Button
-                label={"Заказать по эскизу"}
-                size={width >= 800 ? "s" : "xs"}
-                onClick={() => setIndividualModal(true)}
-              />
-            </div>
+          )}
+        </ComponentStyleWrapper>
+        <div className={styles.container__deviceSection}>
+          <Text className={styles.container__deviceSection__line} size={"3xl"}>
+            Популярные категории
+          </Text>
+          <div className={styles.container__deviceSection__types}>
+            {items &&
+              items.types.length > 0 &&
+              items.types.map((type) => (
+                <ComponentStyleWrapper key={type.id}>
+                  <Text
+                    cursor={"pointer"}
+                    align={"center"}
+                    onClick={() => {
+                      localStorage.setItem(
+                        LocalStorageKeysEnum.DESSERT_TYPE,
+                        JSON.stringify(type)
+                      );
+                      navigate(PublicRoutesEnum.SHOP);
+                    }}
+                  >
+                    {type.name}
+                  </Text>
+                </ComponentStyleWrapper>
+              ))}
           </div>
-        )}
-      </ComponentStyleWrapper>
-      <div className={styles.container__deviceSection}>
-        <Text className={styles.container__deviceSection__line} size={"3xl"}>
-          Популярные категории
-        </Text>
-        <div className={styles.container__deviceSection__types}>
+        </div>
+        <div className={styles.container__deviceSection}>
+          <Text className={styles.container__deviceSection__line} size={"3xl"}>
+            Популярные десерты
+          </Text>
           {items &&
-            items.types.length > 0 &&
-            items.types.map((type) => (
-              <ComponentStyleWrapper key={type.id}>
-                <Text
-                  cursor={"pointer"}
-                  align={"center"}
-                  onClick={() => {
-                    localStorage.setItem(
-                      LocalStorageKeysEnum.DESSERT_TYPE,
-                      JSON.stringify(type)
-                    );
-                    navigate(PublicRoutesEnum.SHOP);
-                  }}
-                >
-                  {type.name}
-                </Text>
-              </ComponentStyleWrapper>
-            ))}
-        </div>
-      </div>
-      <div className={styles.container__deviceSection}>
-        <Text className={styles.container__deviceSection__line} size={"3xl"}>
-          Популярные десерты
-        </Text>
-        {items &&
-          Object.keys(items.items).map((key) => (
-            <div className={styles.container__deviceSection__underSection}>
-              <Text size={"2xl"}>{key}</Text>
-              <div className={styles.container__deviceSection__items}>
-                {items.items[key] &&
-                  items.items[key].map((item) => (
-                    <CatalogItem
-                      setModal={setModal}
-                      width={width}
-                      item={item}
-                      key={`${item.id}`}
-                    />
-                  ))}
+            Object.keys(items.items).map((key) => (
+              <div className={styles.container__deviceSection__underSection}>
+                <Text size={"2xl"}>{key}</Text>
+                <div className={styles.container__deviceSection__items}>
+                  {items.items[key] &&
+                    items.items[key].map((item) => (
+                      <CatalogItem
+                        setModal={setModal}
+                        width={width}
+                        item={item}
+                        key={`${item.id}`}
+                      />
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
-      <Modal isOpen={modal}>
-        <CatalogBuyOneClickModal
-          modal={modal}
-          setModal={setModal}
-          width={width}
-        />
-      </Modal>
-      <Modal isOpen={individualModal}>
-        <div className={styles.Communication}>
-          <div className={styles.Communication__header}>
-            <Text size={"2xl"}>Выберите предпочитаемый способ связи</Text>
-            <Button
-              view={"clear"}
-              iconLeft={IconClose}
-              onClick={() => setIndividualModal(false)}
-            />
-          </div>
-
-          <div className={styles.Communication__rows}>
-            {communicationItems.map((item) => (
-              <a
-                className={styles.Communication__row}
-                href={item.href}
-                target="_blank"
-              >
-                {item.icon}
-                <Text size={"s"}>{item.label}</Text>
-              </a>
             ))}
-          </div>
         </div>
-      </Modal>
-    </section>
+        <Modal isOpen={modal}>
+          <CatalogBuyOneClickModal
+            modal={modal}
+            setModal={setModal}
+            width={width}
+          />
+        </Modal>
+        <Modal isOpen={individualModal}>
+          <div className={styles.Communication}>
+            <div className={styles.Communication__header}>
+              <Text size={"2xl"}>Выберите предпочитаемый способ связи</Text>
+              <Button
+                view={"clear"}
+                iconLeft={IconClose}
+                onClick={() => setIndividualModal(false)}
+              />
+            </div>
+
+            <div className={styles.Communication__rows}>
+              {communicationItems.map((item) => (
+                <a
+                  className={styles.Communication__row}
+                  href={item.href}
+                  target="_blank"
+                >
+                  {item.icon}
+                  <Text size={"s"}>{item.label}</Text>
+                </a>
+              ))}
+            </div>
+          </div>
+        </Modal>
+      </section>
+    </TransitionWrapper>
   );
 };
 

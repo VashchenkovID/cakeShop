@@ -4,8 +4,8 @@ import ComponentStyleWrapper from "src/components/ComponentStyleWrapper/Componen
 import { Text } from "@consta/uikit/Text";
 import StarRating from "src/components/StarRating/StarRating";
 import Textarea from "src/components/Textarea/Textarea";
-import {IconFavorite} from "@consta/uikit/IconFavorite";
-import styles from './FeedbackItem.module.styl'
+import { IconFavorite } from "@consta/uikit/IconFavorite";
+import styles from "./FeedbackItem.module.styl";
 
 interface IComponentProps {
   rating: RatingItemModel;
@@ -22,12 +22,14 @@ const FeedbackItem: React.FC<IComponentProps> = ({ rating, width }) => {
             <StarRating rating={Number(rating.rating)} readonly />
           ) : (
             <div className={styles.Item__mobileRating}>
-              <Text size={'s'}>{rating.rating}</Text>
+              <Text size={"s"}>{rating.rating}</Text>
               <IconFavorite className={styles.Item__star} />
             </div>
           )}
         </div>
-        <Textarea text={rating.ratingComment} />
+        {rating.ratingComment !== "" && (
+          <Textarea text={rating.ratingComment} />
+        )}
       </div>
     </ComponentStyleWrapper>
   );

@@ -11,10 +11,13 @@ import { Text } from "@consta/uikit/Text";
 import FeedbackItem from "src/pages/Feedback/FeedbackItem/FeedbackItem";
 import styles from "./Feedback.module.styl";
 import { Button } from "@consta/uikit/Button";
-import { IconArrowLeft } from "@consta/uikit/IconArrowLeft";
 import { IconAdd } from "@consta/uikit/IconAdd";
+import { Modal } from "@consta/uikit/Modal";
+import FeedbackCreateRatingModal from "src/pages/Feedback/FeedbackCreateRatingModal/FeedbackCreateRatingModal";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 const Feedback: React.FC = () => {
   const { width } = useResize();
+  const [modal, setModal] = useState(false);
   const [ratings, setRatings] = useState<RatingItemModel[]>([]);
   const { load: fetchRatings, isLoading } = useRequest(
     ratingsApi.getUserRatings,
@@ -31,37 +34,53 @@ const Feedback: React.FC = () => {
   });
   const [count, setCount] = useState(0);
 
+  const onClose = () => {
+    setModal(false);
+  };
+  const refetch = () => {
+    fetchRatings({ limit: pagination.perPage, page: pagination.page });
+  };
   useEffect(() => {
     fetchRatings({ limit: pagination.perPage, page: pagination.page });
   }, [pagination]);
   return (
-    <div className={styles.Feedback}>
-      <ComponentStyleWrapper>
-        <div className={styles.Feedback__body}>
-          <div className={styles.Feedback__header}>
-            <Text size={ width <= 500 ? 'l' : "3xl"}>Мои отзывы</Text>
-            <Button
-              label={"Новый отзыв"}
-              iconLeft={IconAdd}
-              size={width <= 800 ? "xs" : "s"}
+    <TransitionWrapper>
+      <div className={styles.Feedback}>
+        <ComponentStyleWrapper>
+          <div className={styles.Feedback__body}>
+            <div className={styles.Feedback__header}>
+              <Text size={width <= 500 ? "l" : "3xl"}>Мои отзывы</Text>
+              <Button
+                label={"Новый отзыв"}
+                iconLeft={IconAdd}
+                size={width <= 800 ? "xs" : "s"}
+                onClick={() => setModal(true)}
+              />
+            </div>
+
+            <div className={styles.Feedback__rows}>
+              {ratings.length > 0 &&
+                !isLoading &&
+                ratings.map((item) => (
+                  <FeedbackItem rating={item} width={width} key={item.id} />
+                ))}
+            </div>
+            <PaginationCustom
+              total={count}
+              pagination={pagination}
+              setPagination={setPagination}
             />
           </div>
-
-          <div className={styles.Feedback__rows}>
-            {ratings.length > 0 &&
-              !isLoading &&
-              ratings.map((item) => (
-                <FeedbackItem rating={item} width={width} key={item.id} />
-              ))}
-          </div>
-          <PaginationCustom
-            total={count}
-            pagination={pagination}
-            setPagination={setPagination}
+        </ComponentStyleWrapper>
+        <Modal isOpen={modal}>
+          <FeedbackCreateRatingModal
+            width={width}
+            onClose={onClose}
+            refetch={refetch}
           />
-        </div>
-      </ComponentStyleWrapper>
-    </div>
+        </Modal>
+      </div>
+    </TransitionWrapper>
   );
 };
 

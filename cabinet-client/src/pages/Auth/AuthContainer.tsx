@@ -9,6 +9,7 @@ import { LocalStorageKeysEnum, PublicRoutesEnum } from "src/utils/enum";
 import AuthService from "../../api/requests/userAPI";
 import { setIsAuth } from "src/store/features/auth/AuthSlice";
 import { useAppDispatch } from "src/hooks/useAppDispatch";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 const AuthContainer: React.FC = () => {
   const [login, setLogin] = useState<string>("");
@@ -91,7 +92,7 @@ const AuthContainer: React.FC = () => {
   }, [location.pathname, login, name, password, phone]);
 
   return (
-    <>
+    <TransitionWrapper>
       <div className={style.Container}>
         <div className={style.Container__body}>
           <Text size={"3xl"} className={style.Container__title}>
@@ -191,7 +192,7 @@ const AuthContainer: React.FC = () => {
           />
         </div>
       </div>
-    </>
+    </TransitionWrapper>
   );
 };
 

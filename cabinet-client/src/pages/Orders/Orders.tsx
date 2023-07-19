@@ -11,6 +11,7 @@ import OrdersItem from "src/pages/Orders/OrdersItem/OrdersItem";
 import { useResize } from "src/hooks/useResize";
 import styles from "./Orders.module.styl";
 import {Loader} from "@consta/uikit/Loader";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 const Orders: React.FC = () => {
   const { width } = useResize();
@@ -32,28 +33,30 @@ const Orders: React.FC = () => {
   useEffect(() => {
     fetchOrders({ limit: pagination.perPage, page: pagination.page });
   }, [pagination]);
-  return (
-    <div className={styles.Orders}>
-      <ComponentStyleWrapper>
-        <div className={styles.Orders__body}>
-          <Text size={"3xl"}>Мои заказы</Text>
-          <div className={styles.Orders__items}>
-            {!isLoading && orders.length > 0 &&
-                orders.map((item, index) => (
-                    <OrdersItem
-                        item={item}
-                        key={`${item.id}_${index}`}
-                        width={width}
-                    />
-                ))}
-          </div>
-          {isLoading && <Loader />}
-          <PaginationCustom className={styles.Orders__pagination} total={count} pagination={pagination} setPagination={setPagination} />
+  return (<TransitionWrapper>
+        <div className={styles.Orders}>
+          <ComponentStyleWrapper>
+            <div className={styles.Orders__body}>
+              <Text size={"3xl"}>Мои заказы</Text>
+              <div className={styles.Orders__items}>
+                {!isLoading && orders.length > 0 &&
+                    orders.map((item, index) => (
+                        <OrdersItem
+                            item={item}
+                            key={`${item.id}_${index}`}
+                            width={width}
+                        />
+                    ))}
+              </div>
+              {isLoading && <Loader />}
+              <PaginationCustom className={styles.Orders__pagination} total={count} pagination={pagination} setPagination={setPagination} />
 
+            </div>
+
+          </ComponentStyleWrapper>
         </div>
+      </TransitionWrapper>
 
-      </ComponentStyleWrapper>
-    </div>
   );
 };
 

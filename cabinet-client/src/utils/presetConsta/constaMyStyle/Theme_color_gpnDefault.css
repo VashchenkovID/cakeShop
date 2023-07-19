@@ -33,7 +33,7 @@
   --color-typo-primary: #FFFFFF; /* Цвет основного текста */
   --color-typo-secondary: rgba(255, 255, 255, 0.7); /* Цвет второстепенного текста */
   --color-typo-ghost: rgba(0, 32, 51, 0.3); /* Цвет дополнительного текста */
-  --color-typo-brand: rgb(0, 113, 178); /* Цвет брендового текста */
+  --color-typo-brand: #000000; /* Цвет брендового текста */
   --color-typo-system: rgb(151, 178, 196); /* Цвет фона системнный */
 
   --color-typo-normal: rgb(51, 180, 255); /* Цвет фона нейтральный */
@@ -84,7 +84,7 @@
     0.52
   ); /* Цвет фона бордеров контрола по ховеру */
 
-  --color-control-bg-border-focus: #FFFFFF; /* Цвет аутлайна контролов при фокусе */ /* TODO заменить на правило целиком */
+  --color-control-bg-border-focus: #fbc102; /* Цвет аутлайна контролов при фокусе */ /* TODO заменить на правило целиком */
   --color-control-bg-focus: transparent; /* Цвет тени в состонии фокуса */
   --color-control-bg-active: rgba(
     0,
@@ -165,7 +165,7 @@
     0.05
   ); /* Цвет фона чистого контрола по ховеру */
 
-  --color-control-typo-clear: rgb(193, 198, 255); /* Цвет акцентного текста */
+  --color-control-typo-clear: black; /* Цвет акцентного текста */
 
   --color-control-typo-clear-hover: rgba(
     0,

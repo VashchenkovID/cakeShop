@@ -241,7 +241,7 @@ const CatalogItem: React.FC<IComponentProps> = ({ item, width, setModal }) => {
               src={`http://84.38.180.242:8081/${item.img}`}
             />
             <div className={styles.Item__title}>
-              <Text weight={"semibold"}>{item.name}</Text>
+              <Text >{item.name}</Text>
               <div className={styles.Item__rating}>
                 <Text size={"s"} className={styles.Item__rating__text}>
                   {Math.floor(item.rating * 100) / 100}

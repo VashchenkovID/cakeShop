@@ -1,3 +1,4 @@
+
 html,
 body {
   width: 100%;
@@ -7,14 +8,14 @@ body {
 body {
   background: linear-gradient(
     -45deg,
-    #ed8e6d,
-    #ae8a48,
+    #ceffa6,
+    #80d3ff,
     #6dadd7,
     #e86b9c,
     #6fd1ba
   );
   background-size: 400% 400%;
-  animation: gradient 45s ease infinite;
+  animation: gradient 15s ease infinite;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,7 +35,17 @@ body {
   }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.my-node-enter {
+  opacity: 0;
+}
+.my-node-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.my-node-exit {
+  opacity: 1;
+}
+.my-node-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
 }

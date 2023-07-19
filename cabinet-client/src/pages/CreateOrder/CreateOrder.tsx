@@ -23,7 +23,8 @@ import CreateOrderCakeItem, {
 import { DecorUserModel } from "src/api/models/DecorUserModel";
 import useRequest from "../../hooks/useRequest";
 import cakesApi from "../../api/requests/cakesApi";
-import {storageUser} from "src/utils/storage";
+import { storageUser } from "src/utils/storage";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 interface UserCreateOrderType {
   name: string;
@@ -38,7 +39,7 @@ const CreateOrder: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const user = storageUser()
+  const user = storageUser();
   const [modal, setModal] = useState(false);
   const [orderDecors, setOrderDecors] = useState<OrderBasketChangeDecors[]>([]);
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
@@ -166,132 +167,138 @@ const CreateOrder: React.FC = () => {
     localStorage.setItem("Basket", JSON.stringify(basket));
   }, [basket]);
 
-  return (
-    <section className={styles.Order}>
-      <Text size={"3xl"}>Ваш заказ</Text>
-      {!basket || basket.items.length === 0 ? (
-        <div className={styles.Order__not}>
-          <Text>Вы не выбрали ни один десерт</Text>
-        </div>
-      ) : (
-        <div className={styles.Order__rows}>
-          <div className={styles.Order__rows}>
-            {basket.items.map((item, index) => (
-              <CreateOrderCakeItem
-                orderDecors={orderDecors}
-                setOrderDecors={setOrderDecors}
-                item={item}
-                key={index}
-                decors={decors}
-              />
-            ))}
-          </div>
-          {allCount && <Text>Итого: {allCount},00 ₽</Text>}
-          <Button
-            className={styles.button}
-            onClick={() => setModal(true)}
-            label={"Оформить"}
-          />
-        </div>
-      )}
-      <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
-        {user ? (
-          <div className={styles.UserModal}>
-            <Text className={styles.modalTitle} size={"2xl"} >
-              Оформление заказа
-            </Text>
-            <DatePicker
-              label={"Дата выдачи заказа"}
-              value={notAuthUser.order_date}
-              minDate={minOrderDate}
-              onChange={({ value }) =>
-                setNotAuthUser((prevState) => {
-                  return { ...prevState, order_date: value };
-                })
-              }
-            />
-            <Button
-              label={"Оформить"}
-              onClick={createNewBasketOrder}
-              disabled={!notAuthUser.order_date}
-            />
-          </div>
-        ) : (
-          <div className={styles.NotUserModal}>
-            <Text className={styles.modalTitle} size={"2xl"}>
-              Оформление заказа
-            </Text>
-            <TextField
-              label={"Имя"}
-              placeholder={"Введите имя"}
-              value={notAuthUser.name}
-              onChange={({ value }) =>
-                setNotAuthUser((prevState) => {
-                  return { ...prevState, name: value || "" };
-                })
-              }
-            />
-            <PhoneInput
-              specialLabel={"Номер телефона"}
-              containerClass={styles.NotUserModal__phoneContainer}
-              inputClass={cx(styles.NotUserModal__phoneInput)}
-              placeholder={"Введите номер телефона"}
-              country={"ru"}
-              value={notAuthUser.phone}
-              onChange={(value) =>
-                setNotAuthUser((prevState) => {
-                  return {
-                    ...prevState,
-                    phone: value
-                      .split("")
-                      .map((elem, index) => (index === 0 ? "7" : elem))
-                      .join(""),
-                  };
-                })
-              }
-            />
-            <TextField
-              label={"Почта"}
-              placeholder={"Введите почтовый адрес"}
-              value={notAuthUser.email}
-              onChange={({ value }) =>
-                setNotAuthUser((prevState) => {
-                  return { ...prevState, email: value || "" };
-                })
-              }
-            />
-            <DatePicker
-              label={"Дата выдачи"}
-              placeholder={"Выберите дату выдачи заказа"}
-              value={notAuthUser.order_date}
-              minDate={minOrderDate}
-              onChange={({ value }) =>
-                setNotAuthUser((prevState) => {
-                  return { ...prevState, order_date: value };
-                })
-              }
-            />
-            <Button
-              className={styles.btn}
-              label={"Оформить"}
-              onClick={createNewIndividualOrder}
-              view={
-                notAuthUser.name === "" ||
-                notAuthUser.phone === "" ||
-                !notAuthUser.order_date
-                  ? "ghost"
-                  : "primary"
-              }
-              disabled={
-                notAuthUser.name === "" ||
-                notAuthUser.phone === "" ||
-                !notAuthUser.order_date
-              }
-            />
-          </div>
-        )}
-      </Modal>
-    </section>
+  return (<TransitionWrapper>
+        <section className={styles.Order}>
+          <Text size={"3xl"}>Ваш заказ</Text>
+          {!basket || basket.items.length === 0 ? (
+              <div className={styles.Order__not}>
+                <Text>Вы не выбрали ни один десерт</Text>
+              </div>
+          ) : (
+              <div className={styles.Order__rows}>
+                <div className={styles.Order__rows}>
+                  {basket.items.map((item, index) => (
+                      <CreateOrderCakeItem
+                          orderDecors={orderDecors}
+                          setOrderDecors={setOrderDecors}
+                          item={item}
+                          key={index}
+                          decors={decors}
+                      />
+                  ))}
+                </div>
+                {allCount && <Text>Итого: {allCount},00 ₽</Text>}
+                <Button
+                    className={styles.button}
+                    onClick={() => setModal(true)}
+                    label={"Оформить"}
+                />
+              </div>
+          )}
+          <Modal isOpen={modal} onClickOutside={() => setModal(false)}>
+            {user ? (
+                <div className={styles.UserModal}>
+                  <Text className={styles.modalTitle} size={"2xl"}>
+                    Оформление заказа
+                  </Text>
+                  <DatePicker
+                      className={styles.datePick}
+                      label={"Дата выдачи заказа"}
+                      value={notAuthUser.order_date}
+                      minDate={minOrderDate}
+                      onChange={({ value }) =>
+                          setNotAuthUser((prevState) => {
+                            return { ...prevState, order_date: value };
+                          })
+                      }
+                  />
+                  <Button
+                      label={"Оформить"}
+                      onClick={createNewBasketOrder}
+                      disabled={!notAuthUser.order_date}
+                  />
+                </div>
+            ) : (
+                <div className={styles.NotUserModal}>
+                  <Text className={styles.modalTitle} size={"2xl"}>
+                    Оформление заказа
+                  </Text>
+                  <TextField
+                      className={styles.datePick}
+                      label={"Имя"}
+                      placeholder={"Введите имя"}
+                      value={notAuthUser.name}
+                      onChange={({ value }) =>
+                          setNotAuthUser((prevState) => {
+                            return { ...prevState, name: value || "" };
+                          })
+                      }
+                  />
+                  <PhoneInput
+                      specialLabel={"Номер телефона"}
+                      containerClass={styles.NotUserModal__phoneContainer}
+                      inputClass={cx(styles.NotUserModal__phoneInput)}
+                      placeholder={"Введите номер телефона"}
+                      country={"ru"}
+                      value={notAuthUser.phone}
+                      onChange={(value) =>
+                          setNotAuthUser((prevState) => {
+                            return {
+                              ...prevState,
+                              phone: value
+                                  .split("")
+                                  .map((elem, index) => (index === 0 ? "7" : elem))
+                                  .join(""),
+                            };
+                          })
+                      }
+                  />
+                  <TextField
+                      className={styles.datePick}
+                      label={"Почта"}
+                      placeholder={"Введите почтовый адрес"}
+                      value={notAuthUser.email}
+                      onChange={({ value }) =>
+                          setNotAuthUser((prevState) => {
+                            return { ...prevState, email: value || "" };
+                          })
+                      }
+                  />
+                  <DatePicker
+                      className={styles.datePick}
+                      label={"Дата выдачи"}
+                      placeholder={"Выберите дату выдачи заказа"}
+                      value={notAuthUser.order_date}
+                      minDate={minOrderDate}
+                      onChange={({ value }) =>
+                          setNotAuthUser((prevState) => {
+                            return { ...prevState, order_date: value };
+                          })
+                      }
+                  />
+                  <Button
+                      className={styles.btn}
+                      label={"Оформить"}
+                      onClick={createNewIndividualOrder}
+                      view={
+                        notAuthUser.name === "" ||
+                        notAuthUser.phone === "" ||
+                        !notAuthUser.order_date
+                            ? "ghost"
+                            : "primary"
+                      }
+                      disabled={
+                          notAuthUser.name === "" ||
+                          notAuthUser.phone === "" ||
+                          !notAuthUser.order_date
+                      }
+                  />
+                </div>
+            )}
+          </Modal>
+        </section>
+      </TransitionWrapper>
+
   );
 };
 

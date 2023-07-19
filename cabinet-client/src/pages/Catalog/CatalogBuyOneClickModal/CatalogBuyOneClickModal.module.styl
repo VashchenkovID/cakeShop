@@ -6,12 +6,10 @@
   min-width 350px
   padding 16px
   min-height 20vh
-  background linear-gradient( -45deg,#ed8e6d, #ae8a48, #e86b9c, #6dadd7, #6fd1ba)
   @media (max-width 500px)
     min-width 100px
 .NotUserModal
   min-width 350px
-  background rgb(47, 4, 79)
   display flex
   flex-direction column
   justify-content space-between
@@ -24,7 +22,8 @@
     display flex
     gap 16px
     flex-direction column
-    color #c1c8e4;
+    color black;
+    font-size 14px
   &__phoneInput
     border 1px solid rgba( 0, 66, 105, 0.28 )
     color rgb( 0, 32, 51 )
@@ -32,9 +31,14 @@
     border-radius 5px
   &__phoneInput:focus
     outline none
-    border 1px solid rgb( 0, 145, 255 );
+    border 1px solid #fbc102
 .modalHeader
   display flex
   align-items center
   justify-content space-between
   gap 24px
+
+
+.datePick :global(.FieldLabel) {
+  color:black
+}

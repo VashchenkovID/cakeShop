@@ -5,7 +5,7 @@
   gap 24px
   min-width 350px
   padding 16px
-  min-height 20vh
+  min-height 10vh
   @media (max-width 500px)
     min-width 100px
 .NotUserModal
@@ -17,12 +17,13 @@
   padding 24px
   min-height 20vh
   @media (max-width 500px)
-   min-width 100px
+    min-width 100px
   &__phoneContainer
     display flex
     gap 16px
     flex-direction column
-    color #c1c8e4;
+    color black;
+    font-size 14px
   &__phoneInput
     border 1px solid rgba( 0, 66, 105, 0.28 )
     color rgb( 0, 32, 51 )
@@ -30,9 +31,14 @@
     border-radius 5px
   &__phoneInput:focus
     outline none
-    border 1px solid rgb( 0, 145, 255 );
+    border 1px solid #fbc102
 .modalHeader
   display flex
   align-items center
   justify-content space-between
   gap 24px
+
+
+.datePick :global(.FieldLabel) {
+  color:black
+}

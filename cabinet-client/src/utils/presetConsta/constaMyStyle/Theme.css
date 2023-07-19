@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Lobster";
+  src: url("src/fonts/Lobster-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
 .Theme {
   --graphics-size-xs: 12px;
   --graphics-size-s: 16px;
@@ -89,7 +95,7 @@
   z-index: 100;
 }
 .Button_disabled {
-  background-color: rgba( 0, 66, 105, 0.3 );
+  background-color: rgba(0, 66, 105, 0.3);
   color: rgba(255, 255, 255, 0.2);
 }
 .Text_view_ghost {
@@ -110,21 +116,21 @@
   color: white;
 }
 .Button_disabled {
-  background-color: rgba( 0, 66, 105, 0.3 );
+  background-color: rgba(0, 66, 105, 0.3);
   color: rgba(255, 255, 255, 0.2);
 }
 .Button_disabled:hover {
-  background-color: rgba( 0, 66, 105, 0.3 ) !important;
+  background-color: rgba(0, 66, 105, 0.3) !important;
   color: rgba(255, 255, 255, 0.2);
 }
 
 .Button_view_primary:hover {
   background-position: right center; /* change the direction of the change here */
   background-image: linear-gradient(
-          to right,
-          #4776e6 0%,
-          #8e54e9 51%,
-          #4776e6 100%
+    to right,
+    #4776e6 0%,
+    #8e54e9 51%,
+    #4776e6 100%
   ) !important;
   color: #fff;
   text-decoration: none;
@@ -142,12 +148,6 @@
   text-align: center;
   text-transform: uppercase;
 }
-
-/*.Button_view_primary:hover {*/
-/*  background-position: right center; !* change the direction of the change here *!*/
-/*  color: #fff;*/
-/*  text-decoration: none;*/
-/*}*/
 
 .ListItem.Text {
   color: #000000;
@@ -173,10 +173,10 @@
 }
 .TabsFitModeScrollWrapper-Button {
   background-image: linear-gradient(
-          to right,
-          #4776e6 0%,
-          #8e54e9 51%,
-          #4776e6 100%
+    to right,
+    #4776e6 0%,
+    #8e54e9 51%,
+    #4776e6 100%
   );
   text-align: center;
   text-transform: uppercase;
@@ -190,17 +190,19 @@
   text-decoration: none;
 }
 .Text.ListItem.TabsTab {
-  font-family: var(--font-primary) !important;
+  font-family: "Lobster", sans-serif !important;
 }
 .Tabs-Tab {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 .Modal-Window {
-  background: linear-gradient(
-          -45deg,
-          #6dadd7,
-          #6fd1ba,
-          #e86b9c
-  )
+  background: #ffffff;
+}
+.TextField-InputContainer_focus {
+  border: 1px solid rgba(0, 66, 105, 0.28);
+}
+.Select-SelectContainer_focused {
+  border: 1px solid rgba(0, 66, 105, 0.28);
+  border-radius: 50px;
 }

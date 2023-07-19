@@ -127,7 +127,9 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
       {user ? (
         <div className={styles.UserModal}>
           <div className={styles.modalHeader}>
-            <Text size={width <= 500 ? "m" : "2xl"}>Оформление заказа</Text>
+            <Text size={width <= 500 ? "m" : "2xl"} view={"brand"}>
+              Оформление заказа
+            </Text>
             <Button
               view={"clear"}
               iconLeft={IconClose}
@@ -137,6 +139,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
           </div>
 
           <DatePicker
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Дата выдачи заказа"}
             value={notAuthUser.order_date}
@@ -150,6 +153,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
           <Button
             size={width <= 500 ? "xs" : "s"}
             label={"Оформить"}
+            view={"secondary"}
             onClick={createNewBasketOrder}
             disabled={!notAuthUser.order_date}
           />
@@ -157,7 +161,9 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
       ) : (
         <div className={styles.NotUserModal}>
           <div className={styles.modalHeader}>
-            <Text size={width <= 500 ? "m" : "2xl"}>Оформление заказа</Text>
+            <Text size={width <= 500 ? "m" : "2xl"} view={"brand"}>
+              Оформление заказа
+            </Text>
             <Button
               view={"clear"}
               iconLeft={IconClose}
@@ -166,6 +172,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
             />
           </div>
           <TextField
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Имя"}
             placeholder={"Введите имя"}
@@ -196,6 +203,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Почта"}
             placeholder={"Введите почтовый адрес"}
@@ -207,6 +215,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
             }
           />
           <DatePicker
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Дата выдачи"}
             placeholder={"Выберите дату выдачи заказа"}
@@ -228,7 +237,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
               notAuthUser.phone === "" ||
               !notAuthUser.order_date
                 ? "ghost"
-                : "primary"
+                : "secondary"
             }
             disabled={
               notAuthUser.name === "" ||

@@ -14,7 +14,7 @@ import { DatePicker } from "@consta/uikit/DatePicker";
 import { TextField } from "@consta/uikit/TextField";
 import PhoneInput from "react-phone-input-2";
 import cn from "classnames/bind";
-import {storageUser} from "src/utils/storage";
+import { storageUser } from "src/utils/storage";
 
 interface IComponentProps {
   modal: boolean;
@@ -37,7 +37,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const basket = useAppSelector(selectBasket);
-  const user = storageUser()
+  const user = storageUser();
   const [notAuthUser, setNotAuthUser] = useState<UserCreateOrderType>({
     name: "",
     phone: "",
@@ -83,7 +83,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
         });
         navigate(`${PublicRoutesEnum.SHOP}`);
         dispatch(setBasket(null));
-        onClose()
+        onClose();
       });
   };
   const createNewBasketOrder = async () => {
@@ -113,7 +113,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
           });
           navigate(`${PublicRoutesEnum.SHOP}`);
           dispatch(setBasket(null));
-          onClose()
+          onClose();
         });
     }
   };
@@ -126,7 +126,9 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
       {user ? (
         <div className={styles.UserModal}>
           <div className={styles.modalHeader}>
-            <Text size={width <= 500 ? "m" : "2xl"}>Оформление заказа</Text>
+            <Text size={width <= 500 ? "m" : "2xl"} view={"brand"}>
+              Оформление заказа
+            </Text>
             <Button
               view={"clear"}
               iconLeft={IconClose}
@@ -136,6 +138,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
           </div>
 
           <DatePicker
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Дата выдачи заказа"}
             value={notAuthUser.order_date}
@@ -156,7 +159,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
       ) : (
         <div className={styles.NotUserModal}>
           <div className={styles.modalHeader}>
-            <Text size={width <= 500 ? "m" : "2xl"}>Оформление заказа</Text>
+            <Text size={width <= 500 ? "m" : "2xl"} view={'brand'}>Оформление заказа</Text>
             <Button
               view={"clear"}
               iconLeft={IconClose}
@@ -165,6 +168,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
             />
           </div>
           <TextField
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Имя"}
             placeholder={"Введите имя"}
@@ -195,6 +199,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
             }
           />
           <TextField
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Почта"}
             placeholder={"Введите почтовый адрес"}
@@ -206,6 +211,7 @@ const CatalogBuyOneClickModal: React.FC<IComponentProps> = ({
             }
           />
           <DatePicker
+            className={styles.datePick}
             size={width <= 500 ? "xs" : "s"}
             label={"Дата выдачи"}
             placeholder={"Выберите дату выдачи заказа"}

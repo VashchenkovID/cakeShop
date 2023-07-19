@@ -241,7 +241,7 @@ const Header: React.FC<IHeaderProps> = () => {
                 Kassandra's cake
               </Text>
               <nav className={styles.Header__nav}>
-                {isAuth && <HeaderMenu items={privateItems} />}
+                {isAuth && <HeaderMenu className={styles.Header__font} items={privateItems} />}
                 {!isAuth && <HeaderMenu items={headerItems} />}
               </nav>
             </HeaderModule>

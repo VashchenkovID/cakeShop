@@ -261,7 +261,7 @@ const DeviceViewLeftSide: React.FC<IComponentProps> = ({
       <div className={styles.Device__leftSide}>
         <div className={styles.Device__wrapper}>
           <img
-            src={`${import.meta.env.VITE_API_URL_IMAGE}/${device.img}`}
+            src={`${import.meta.env.VITE_API_URL_IMAGE}${device.img}`}
             className={styles.Device__wrapper__img}
           />
         </div>

@@ -7,6 +7,7 @@ router.use(watchAudit());
 router.post("/shop/create", checkRole("ADMIN"), deviceController.create);
 router.put("/shop/update/:id", checkRole("ADMIN"), deviceController.update);
 router.get("/shop/getAll", deviceController.getAll);
+router.get("/entity", deviceController.getEntity);
 router.get("/general/getInfo", deviceController.getStartInfo);
 router.get("/shop/get/:id", deviceController.getOne);
 router.get(

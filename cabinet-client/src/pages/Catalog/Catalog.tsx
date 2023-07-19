@@ -19,6 +19,7 @@ import { Pagination } from "@consta/uikit/Pagination";
 import { Modal } from "@consta/uikit/Modal";
 import CatalogBuyOneClickModal from "./CatalogBuyOneClickModal/CatalogBuyOneClickModal";
 import { useResize } from "src/hooks/useResize";
+import TransitionWrapper from "src/components/TransitionWrapper/TransitionWrapper";
 
 const cx = cn.bind(styles);
 const Catalog: React.FC = () => {
@@ -148,67 +149,69 @@ const Catalog: React.FC = () => {
     };
   }, []);
   return (
-    <div className={styles.Shop}>
-      <div className={styles.Shop__header}>
-        <Tabs
-          size={"s"}
-          getItemLabel={(i) => i.name}
-          items={types}
-          value={type}
-          onChange={({ value }) => setType(value)}
-          fitMode="scroll"
-          view={"clear"}
-        />
-      </div>
-      {items.length > 0 && (
-        <div className={styles.Shop__items}>
-          {items.map((item, index) => (
-            <CatalogItem
-              setModal={setModal}
-              item={item}
-              key={`${item.id}_${index}`}
-              width={width}
-            />
-          ))}
+    <TransitionWrapper>
+      <div className={styles.Shop}>
+        <div className={styles.Shop__header}>
+          <Tabs
+            size={"s"}
+            getItemLabel={(i) => i.name}
+            items={types}
+            value={type}
+            onChange={({ value }) => setType(value)}
+            fitMode="scroll"
+            view={"clear"}
+          />
         </div>
-      )}
-      {isLoading && (
-        <div className={styles.Shop__loader}>
-          <Loader />
+        {items.length > 0 && (
+          <div className={styles.Shop__items}>
+            {items.map((item, index) => (
+              <CatalogItem
+                setModal={setModal}
+                item={item}
+                key={`${item.id}_${index}`}
+                width={width}
+              />
+            ))}
+          </div>
+        )}
+        {isLoading && (
+          <div className={styles.Shop__loader}>
+            <Loader />
+          </div>
+        )}
+        {!isLoading && items.length === 0 && (
+          <InformerBadge text={"Список пуст"} />
+        )}
+        <div
+          className={cx(styles.IconBasket, {
+            visible: isBasketVisible,
+          })}
+          onClick={() =>
+            navigate(
+              `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`
+            )
+          }
+        >
+          <IconBasket className={styles.IconBasket__icon} />
         </div>
-      )}
-      {!isLoading && items.length === 0 && (
-        <InformerBadge text={"Список пуст"} />
-      )}
-      <div
-        className={cx(styles.IconBasket, {
-          visible: isBasketVisible,
-        })}
-        onClick={() =>
-          navigate(
-            `${PublicRoutesEnum.VIEW_ORDER}/${PublicRoutesEnum.CREATE_ORDER}`
-          )
-        }
-      >
-        <IconBasket className={styles.IconBasket__icon} />
-      </div>
 
-      <footer>
-        <Pagination
-          className={styles.Shop__active}
-          currentPage={pagination.page}
-          onChange={handleChange}
-          totalPages={totalPages}
-        />
-      </footer>
-      <Modal isOpen={modal}>
-        <CatalogBuyOneClickModal
-          modal={modal}
-          setModal={setModal}
-          width={width}
-        />
-      </Modal>
-    </div>
+        <footer>
+          <Pagination
+            className={styles.Shop__active}
+            currentPage={pagination.page}
+            onChange={handleChange}
+            totalPages={totalPages}
+          />
+        </footer>
+        <Modal isOpen={modal}>
+          <CatalogBuyOneClickModal
+            modal={modal}
+            setModal={setModal}
+            width={width}
+          />
+        </Modal>
+      </div>
+    </TransitionWrapper>
   );
 };
 

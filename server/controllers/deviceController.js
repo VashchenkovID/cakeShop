@@ -296,6 +296,20 @@ class DeviceController {
       next(ApiError(e.message));
     }
   }
+
+  async getEntity(req, res, next) {
+    try {
+      const devices = await Device.findAll();
+
+      return res.json(
+        devices.map((device) => {
+          return { id: device.id, name: device.name };
+        })
+      );
+    } catch (e) {
+      next(ApiError(e.message));
+    }
+  }
 }
 
 module.exports = new DeviceController();

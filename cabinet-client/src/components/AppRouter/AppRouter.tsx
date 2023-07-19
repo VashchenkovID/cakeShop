@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "src/hooks/useAppDispatch";
 import { useAppSelector } from "src/hooks/useAppSelector";
 import { selectIsAuth } from "src/store/features/auth/selectors";
-import axios from "axios";
 import { AuthResponse } from "src/api/requests/userAPI";
 import { EnpointsEnum } from "src/api/endpoints";
 import { setIsAuth } from "src/store/features/auth/AuthSlice";

@@ -55,19 +55,21 @@ const DeviceCreateRatingModal: React.FC<IComponentProps> = ({
   return (
     <div className={styles.Rating}>
       <div className={styles.Rating__header}>
-        <Text size={width <= 500 ? "s" : "2xl"}>
+        <Text size={width <= 500 ? "s" : "2xl"} view={"brand"}>
           Рейтинг десерта {deviceName}
         </Text>
         <Button
           iconLeft={IconClose}
           view={"clear"}
-          size={width <= 500 ? "s" : "m"}
+          size={width <= 500 ? "xs" : "s"}
           onClick={onClose}
         />
       </div>
       <div className={styles.Rating__body}>
         <div className={styles.Rating__body}>
-          <Text size={width <= 500 ? "s" : "m"}>Оценка:</Text>
+          <Text size={width <= 500 ? "s" : "m"} view={"brand"}>
+            Оценка:
+          </Text>
           <StarRating
             rating={modalState.rating}
             setRating={(value) =>
@@ -78,6 +80,7 @@ const DeviceCreateRatingModal: React.FC<IComponentProps> = ({
           />
         </div>
         <TextField
+          className={styles.datePick}
           form={"round"}
           size={"s"}
           type={"textarea"}
@@ -100,11 +103,13 @@ const DeviceCreateRatingModal: React.FC<IComponentProps> = ({
           label={"Отменить"}
           size={width <= 500 ? "xs" : "s"}
           onClick={onClose}
+          view={'secondary'}
         />
         <Button
           label={"Создать"}
           size={width <= 500 ? "xs" : "s"}
           onClick={onSave}
+          view={'secondary'}
         />
       </div>
     </div>
