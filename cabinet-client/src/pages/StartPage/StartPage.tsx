@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./StartPage.module.styl";
 import useRequest from "../../hooks/useRequest";
 import cakesApi from "../../api/requests/cakesApi";
-import Carousel, { arrowsPlugin } from "@brainhubeu/react-carousel";
+import Carousel, {
+  arrowsPlugin,
+  autoplayPlugin,
+  infinitePlugin,
+} from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 import { Button } from "@consta/uikit/Button";
 import { IconArrowLeft } from "@consta/uikit/IconArrowLeft";
@@ -90,6 +94,18 @@ const StartPage: React.FC = () => {
                       <Button iconLeft={IconArrowRight} view={"clear"} />
                     ),
                     addArrowClickHandler: true,
+                  },
+                },
+                {
+                  resolve: autoplayPlugin,
+                  options: {
+                    interval: 2000,
+                  },
+                },
+                {
+                  resolve: infinitePlugin,
+                  options: {
+                    numberOfInfiniteClones: 3,
                   },
                 },
               ]}
@@ -210,7 +226,9 @@ const StartPage: React.FC = () => {
         <Modal isOpen={individualModal}>
           <div className={styles.Communication}>
             <div className={styles.Communication__header}>
-              <Text size={"2xl"} view={'brand'}>Выберите предпочитаемый способ связи</Text>
+              <Text size={"2xl"} view={"brand"}>
+                Выберите предпочитаемый способ связи
+              </Text>
               <Button
                 view={"clear"}
                 iconLeft={IconClose}
@@ -226,7 +244,9 @@ const StartPage: React.FC = () => {
                   target="_blank"
                 >
                   {item.icon}
-                  <Text view={'brand'} size={"s"}>{item.label}</Text>
+                  <Text view={"brand"} size={"s"}>
+                    {item.label}
+                  </Text>
                 </a>
               ))}
             </div>
