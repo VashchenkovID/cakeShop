@@ -53,14 +53,16 @@ const AdministrationRecipesCreate: React.FC = () => {
 
   const addDevice = async () => {
     try {
-      if (file && type && filling && biscuit) {
+      if (type && filling && biscuit) {
         const formData = new FormData();
         formData.append("name", device.name);
         formData.append("price", `${device.price}`);
         formData.append("description", `${device.description}`);
         formData.append("weightType", `${device.weightType}`);
         formData.append("countWeightType", `${device.countWeightType}`);
-        formData.append("img", file);
+        if (file) {
+          formData.append("img", file);
+        }
         formData.append("typeId", type.id.toString());
         formData.append("fillingId", filling.id.toString());
         formData.append("discount", device.discount);
@@ -77,14 +79,16 @@ const AdministrationRecipesCreate: React.FC = () => {
 
   const EditDevice = async () => {
     try {
-      if (file && type && filling && biscuit && params.id) {
+      if (type && filling && biscuit && params.id) {
         const formData = new FormData();
         formData.append("name", device.name);
         formData.append("price", `${device.price}`);
         formData.append("description", `${device.description}`);
         formData.append("weightType", `${device.weightType}`);
         formData.append("countWeightType", `${device.countWeightType}`);
-        formData.append("img", file);
+        if (file) {
+          formData.append("img", file);
+        }
         formData.append("typeId", type.id.toString());
         formData.append("fillingId", filling.id.toString());
         formData.append("discount", device.discount);

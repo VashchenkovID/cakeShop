@@ -89,7 +89,7 @@
   z-index: 100;
 }
 .Button_disabled {
-  background-color: rgba( 0, 66, 105, 0.3 );
+  background-color: rgba(0, 66, 105, 0.3);
   color: rgba(255, 255, 255, 0.2);
 }
 .Text_view_ghost {
@@ -97,12 +97,7 @@
 }
 
 .Button_view_primary {
-  background-image: linear-gradient(
-          to right,
-          #4776e6 0%,
-          #8e54e9 51%,
-          #4776e6 100%
-  );
+  background: #37c25e;
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -110,11 +105,11 @@
   color: white;
 }
 .Button_disabled {
-  background-color: rgba( 0, 66, 105, 0.3 );
+  background-color: rgba(0, 66, 105, 0.3);
   color: rgba(255, 255, 255, 0.2);
 }
 .Button_view_primary:hover {
-  background-position: right center; /* change the direction of the change here */
+  background: #37c25e !important;
   color: #fff;
   text-decoration: none;
 }
@@ -149,12 +144,7 @@
   z-index: 10000;
 }
 .TabsFitModeScrollWrapper-Button {
-  background-image: linear-gradient(
-          to right,
-          #4776e6 0%,
-          #8e54e9 51%,
-          #4776e6 100%
-  );
+  background: #37c25e !important;
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -165,4 +155,15 @@
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+.Checkbox-Input:checked {
+  background: #37c25e !important;
+  border: 1px solid #37c25e;
+}
+.Checkbox-Input {
+  border: 1px solid #37c25e;
+}
+.Checkbox-Input:before {
+  border-bottom: 2px solid #151a27;
+  border-left: 2px solid #151a27;
 }
