@@ -153,7 +153,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
           <Button
             size={width <= 500 ? "xs" : "s"}
             label={"Оформить"}
-            view={"secondary"}
+            view={"primary"}
             onClick={createNewBasketOrder}
             disabled={!notAuthUser.order_date}
           />
@@ -237,7 +237,7 @@ const DeviceCreateOneClickBasket: React.FC<IComponentProps> = ({
               notAuthUser.phone === "" ||
               !notAuthUser.order_date
                 ? "ghost"
-                : "secondary"
+                : "primary"
             }
             disabled={
               notAuthUser.name === "" ||

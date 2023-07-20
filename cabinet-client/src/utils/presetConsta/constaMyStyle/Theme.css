@@ -45,10 +45,13 @@
   border-bottom: none;
   padding-left: 0 !important;
 }
+.HeaderMenu-Link {
+  color: #FFFFFF !important;
+}
 .HeaderMenu-Link_active:before {
   max-width: 100% !important;
   height: 4px !important;
-  background-color: #fef0ff !important;
+  background: #fff !important;
 }
 .ListItem_active::before {
   max-width: 100% !important;
@@ -103,17 +106,11 @@
 }
 
 .Button_view_primary {
-  background-image: linear-gradient(
-    to right,
-    #4776e6 0%,
-    #8e54e9 51%,
-    #4776e6 100%
-  );
+  background: #3D63EA;
   text-align: center;
   text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
+  color: #FFFFFF !important;
+  border: none;
 }
 .Button_disabled {
   background-color: rgba(0, 66, 105, 0.3);
@@ -125,28 +122,34 @@
 }
 
 .Button_view_primary:hover {
-  background-position: right center; /* change the direction of the change here */
-  background-image: linear-gradient(
-    to right,
-    #4776e6 0%,
-    #8e54e9 51%,
-    #4776e6 100%
-  ) !important;
-  color: #fff;
-  text-decoration: none;
+  background: #3D63EA !important;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFFFFF !important;
+  border: none;
 }
 
 .Button_view_secondary {
-  background: #fbc102;
-  text-align: center;
-  text-transform: uppercase;
-  color: #000000 !important;
-  border: none;
+  background: transparent !important;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  border: 1px solid #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 .Button_view_secondary:hover {
-  background: rgba(251, 193, 2, 0.7) !important;
-  text-align: center;
-  text-transform: uppercase;
+  background: transparent !important;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  border: 1px solid #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .ListItem.Text {
@@ -172,17 +175,14 @@
   z-index: 10000;
 }
 .TabsFitModeScrollWrapper-Button {
-  background-image: linear-gradient(
-    to right,
-    #4776e6 0%,
-    #8e54e9 51%,
-    #4776e6 100%
-  );
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
+  background: transparent !important;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  border: 1px solid #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .TabsFitModeScrollWrapper-Button:hover {
   background-position: right center; /* change the direction of the change here */
@@ -192,8 +192,10 @@
 .Text.ListItem.TabsTab {
   font-family: "Lobster", sans-serif !important;
 }
+.ListItem.TabsTab_checked {
+  color: #FFFFFF !important;
+}
 .Tabs-Tab {
-  background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 .Modal-Window {
@@ -205,4 +207,7 @@
 .Select-SelectContainer_focused {
   border: 1px solid rgba(0, 66, 105, 0.28);
   border-radius: 50px;
+}
+.Select-SelectContainer_view_default.Select-SelectContainer_disabled .Select-Control {
+  color: rgba(0, 0, 0, 0.16) !important;
 }

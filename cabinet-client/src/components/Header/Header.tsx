@@ -134,7 +134,7 @@ const Header: React.FC<IHeaderProps> = () => {
                     className={styles.Header__burger}
                     onClick={() => setIsOpen(true)}
                   />
-                  <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+                  <Text size={'l'} style={{color:'#ffffff'}} onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
                     Kassandra's cake
                   </Text>
                 </div>
@@ -207,7 +207,7 @@ const Header: React.FC<IHeaderProps> = () => {
                         <Button
                           onClick={logoutApp}
                           size={"s"}
-                          view={"secondary"}
+                          view={"primary"}
                           label={"Выйти"}
                         />
                       </div>
@@ -219,7 +219,7 @@ const Header: React.FC<IHeaderProps> = () => {
                             navigate(PublicRoutesEnum.LOGIN);
                           }}
                           label={"Вход"}
-                          view={"secondary"}
+                          view={"primary"}
                           size={"s"}
                         />
                         <Button
@@ -228,7 +228,7 @@ const Header: React.FC<IHeaderProps> = () => {
                             navigate(PublicRoutesEnum.AUTH);
                           }}
                           label={"Регистрация"}
-                          view={"secondary"}
+                          view={"primary"}
                           size={"s"}
                         />
                       </div>
@@ -242,7 +242,7 @@ const Header: React.FC<IHeaderProps> = () => {
             </div>
           ) : (
             <HeaderModule className={styles.Header__left}>
-              <Text onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+              <Text size={'2xl'} style={{color:'#ffffff'}} onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
                 Kassandra's cake
               </Text>
               <nav className={styles.Header__nav}>
@@ -262,9 +262,9 @@ const Header: React.FC<IHeaderProps> = () => {
             <div className={styles.Header__user}>
               {isAuth && (
                 <User
+                    className={styles.userComp}
                   name={user?.name || ""}
                   size={"l"}
-                  info={user?.phone || ""}
                 />
               )}
               <BasketWithCount />{" "}
@@ -273,7 +273,7 @@ const Header: React.FC<IHeaderProps> = () => {
                   <Button
                     onClick={logoutApp}
                     size={"s"}
-                    view={"primary"}
+                    view={"secondary"}
                     label={"Выйти"}
                   />
                 </div>
@@ -283,11 +283,13 @@ const Header: React.FC<IHeaderProps> = () => {
                     onClick={() => navigate(PublicRoutesEnum.LOGIN)}
                     label={"Вход"}
                     size={"s"}
+                    view={"secondary"}
                   />
                   <Button
                     onClick={() => navigate(PublicRoutesEnum.AUTH)}
                     label={"Регистрация"}
                     size={"s"}
+                    view={"secondary"}
                   />
                 </div>
               )}

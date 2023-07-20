@@ -124,14 +124,17 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
             });
           }}
         />
-        <Text truncate className={styles.Decor__mobile__text}>
+        <Text
+          className={styles.Decor__mobile__textTitle}
+        >
           {item.name}
         </Text>
       </div>
       <div className={styles.Decor__actions}>
         <Button
+          className={styles.Decor__button}
           view={
-            !item.isChecked || item.count <= ref.current ? "ghost" : "secondary"
+            !item.isChecked || item.count <= ref.current ? "ghost" : "primary"
           }
           disabled={!item.isChecked || item.count <= ref.current}
           size={"xs"}
@@ -143,7 +146,7 @@ const CreateOrderDecorItem: React.FC<IComponentProps> = ({
         </Text>
         <Button
           view={
-            !item.isChecked || item.count < ref.current ? "ghost" : "secondary"
+            !item.isChecked || item.count < ref.current ? "ghost" : "primary"
           }
           disabled={!item.isChecked || item.count < ref.current}
           size={"xs"}

@@ -41,7 +41,7 @@ const FooterWithInfo: React.FC = () => {
       {items.map((item, index) => (
         <div className={styles.Footer__row}>
           {item.icon}
-          <Text size={"s"}>{item.label}</Text>
+          <Text style={{color:"#ffffff"}} size={"s"}>{item.label}</Text>
         </div>
       ))}
     </div>
