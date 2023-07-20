@@ -124,9 +124,7 @@ const Header: React.FC<IHeaderProps> = () => {
           width <= 850 ? (
             <div>
               {!isOpen && (
-                <div
-                  style={{ display: "flex", gap: "8px", alignItems: "center" }}
-                >
+                <div className={styles.mobileLogo}>
                   <Button
                     iconLeft={isOpen ? IconClose : IconAlignJustify}
                     view={"clear"}
@@ -134,7 +132,11 @@ const Header: React.FC<IHeaderProps> = () => {
                     className={styles.Header__burger}
                     onClick={() => setIsOpen(true)}
                   />
-                  <Text size={'l'} style={{color:'#ffffff'}} onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+                  <Text
+                    size={"l"}
+                    className={styles.logoText}
+                    onClick={() => navigate(PublicRoutesEnum.GENERAL)}
+                  >
                     Kassandra's cake
                   </Text>
                 </div>
@@ -155,7 +157,11 @@ const Header: React.FC<IHeaderProps> = () => {
                           Добро пожаловать,{user?.name || ""}
                         </Text>
                       ) : (
-                        <Text size={"l"} view={"brand"}>
+                        <Text
+                          size={"l"}
+                          view={"brand"}
+                          onClick={() => navigate(PublicRoutesEnum.GENERAL)}
+                        >
                           Kassandra's Cake
                         </Text>
                       )}
@@ -242,7 +248,11 @@ const Header: React.FC<IHeaderProps> = () => {
             </div>
           ) : (
             <HeaderModule className={styles.Header__left}>
-              <Text size={'2xl'} style={{color:'#ffffff'}} onClick={() => navigate(PublicRoutesEnum.GENERAL)}>
+              <Text
+                size={"2xl"}
+                className={styles.logoText}
+                onClick={() => navigate(PublicRoutesEnum.GENERAL)}
+              >
                 Kassandra's cake
               </Text>
               <nav className={styles.Header__nav}>
@@ -262,7 +272,7 @@ const Header: React.FC<IHeaderProps> = () => {
             <div className={styles.Header__user}>
               {isAuth && (
                 <User
-                    className={styles.userComp}
+                  className={styles.userComp}
                   name={user?.name || ""}
                   size={"l"}
                 />

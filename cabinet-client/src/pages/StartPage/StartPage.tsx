@@ -170,7 +170,7 @@ const StartPage: React.FC = () => {
         </ComponentStyleWrapper>
         <div className={styles.container__deviceSection}>
           <Text className={styles.container__deviceSection__line} size={"3xl"}>
-            Популярные категории
+            Категории
           </Text>
           <div className={styles.container__deviceSection__types}>
             {items &&
