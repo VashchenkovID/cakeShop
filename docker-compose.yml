@@ -42,7 +42,7 @@ services:
     env_file:
       - ./cabinet-admin/.env
     ports:
-      - "3001:80"
+      - "3002:80"
     deploy:
       replicas: 1
   web:
