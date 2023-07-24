@@ -1,5 +1,16 @@
 version: "3.7"
 services:
+  cake_db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=cakes
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerasdfzxcv
+    ports:
+      - '5432:5432'
   server:
     container_name: server_api
     build: server
@@ -12,6 +23,8 @@ services:
       - ./static:/home/server/static
     deploy:
       replicas: 1
+    depends_on:
+      - cake_db
 
   cabinet-client:
     container_name: cabinet-client
