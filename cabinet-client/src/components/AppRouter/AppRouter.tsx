@@ -64,6 +64,8 @@ const AppRouter = () => {
       dispatch(setIsAuth(true));
     } catch (e) {
       dispatch(setIsAuth(false));
+      localStorage.removeItem(LocalStorageKeysEnum.TOKEN)
+      localStorage.removeItem(LocalStorageKeysEnum.USER)
     }
   };
   const getRoutes = (routes: IRouteItem[]) => {

@@ -1,21 +1,22 @@
-import React from 'react';
-import cn from 'classnames/bind';
-import styles from './styles.module.styl';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { PrivateRoutesEnum, PublicRoutesEnum } from 'src/router';
+import React from "react";
+import cn from "classnames/bind";
+import styles from "./styles.module.styl";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PrivateRoutesEnum, PublicRoutesEnum } from "src/router";
 import {
   Header as ConstaHeader,
   HeaderMenu,
   HeaderModule,
-} from '@consta/uikit/Header';
-import { HeaderIdEnum, LocalStorageKeysEnum } from 'src/utils/enum';
-import { useAppDispatch } from 'src/hooks/useAppDispatch';
-import { setIsAuth } from 'src/redux/features/auth/AuthSlice';
-import { useAppSelector } from 'src/hooks/useAppSelector';
-import { selectIsAuth } from 'src/redux/features/auth/selectors';
-import { Button } from '@consta/uikit/Button';
-import { User } from '@consta/uikit/User';
-import AuthService from 'src/api/requests/userAPI';
+} from "@consta/uikit/Header";
+import { HeaderIdEnum, LocalStorageKeysEnum } from "src/utils/enum";
+import { useAppDispatch } from "src/hooks/useAppDispatch";
+import { setIsAuth } from "src/redux/features/auth/AuthSlice";
+import { useAppSelector } from "src/hooks/useAppSelector";
+import { selectIsAuth } from "src/redux/features/auth/selectors";
+import { Button } from "@consta/uikit/Button";
+import { User } from "@consta/uikit/User";
+import AuthService from "src/api/requests/userAPI";
+import { Text } from "@consta/uikit/Text";
 
 const cx = cn.bind(styles);
 
@@ -38,10 +39,10 @@ const Header: React.FC<IHeaderProps> = () => {
   const user = localStorage.getItem(LocalStorageKeysEnum.NAME);
   const phone = localStorage.getItem(LocalStorageKeysEnum.PHONE);
   const isAuth = useAppSelector(selectIsAuth);
-  const myLoc = `/${location.pathname.split('/').slice(1, 2).join('')}`;
+  const myLoc = `/${location.pathname.split("/").slice(1, 2).join("")}`;
   const items: Item[] = [
     {
-      label: 'Главная',
+      label: "Главная",
       id: HeaderIdEnum.ADMINISTRATION,
       href: PrivateRoutesEnum.ADMINISTRATION,
       active: myLoc === PrivateRoutesEnum.ADMINISTRATION,
@@ -52,7 +53,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Аналитика',
+      label: "Аналитика",
       id: HeaderIdEnum.ANALYTICS,
       href: PrivateRoutesEnum.ANALYTICS,
       active: myLoc === PrivateRoutesEnum.ANALYTICS,
@@ -63,7 +64,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Календарь',
+      label: "Календарь",
       id: HeaderIdEnum.CALENDAR,
       href: PrivateRoutesEnum.CALENDAR,
       active: myLoc === PrivateRoutesEnum.CALENDAR,
@@ -74,7 +75,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Обработка заказов',
+      label: "Обработка заказов",
       id: HeaderIdEnum.ORDERS,
       href: PrivateRoutesEnum.ORDERS,
       active: myLoc === PrivateRoutesEnum.ORDERS,
@@ -85,7 +86,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'История заказов',
+      label: "История заказов",
       id: HeaderIdEnum.ORDERS_HISTORY,
       href: PrivateRoutesEnum.ORDERS_HISTORY,
       active: myLoc === PrivateRoutesEnum.ORDERS_HISTORY,
@@ -96,7 +97,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Рецепты',
+      label: "Рецепты",
       id: HeaderIdEnum.RECIPES,
       href: PrivateRoutesEnum.RECIPES,
       active: myLoc === PrivateRoutesEnum.RECIPES,
@@ -107,7 +108,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Отзывы',
+      label: "Отзывы",
       id: HeaderIdEnum.FEEDBACK,
       href: PrivateRoutesEnum.FEEDBACK,
       active: myLoc === PrivateRoutesEnum.FEEDBACK,
@@ -118,7 +119,7 @@ const Header: React.FC<IHeaderProps> = () => {
       access: true,
     },
     {
-      label: 'Справочники',
+      label: "Справочники",
       id: HeaderIdEnum.TYPES,
       href: PrivateRoutesEnum.TYPES,
       active: myLoc === PrivateRoutesEnum.TYPES,
@@ -130,7 +131,6 @@ const Header: React.FC<IHeaderProps> = () => {
     },
   ];
   const headerTransition = (e: React.MouseEvent, patch: string) => {
-    console.log(myLoc === patch, myLoc, patch);
     e.preventDefault();
     navigate(patch);
   };
@@ -149,34 +149,37 @@ const Header: React.FC<IHeaderProps> = () => {
       })}
       leftSide={
         <HeaderModule>
-          <nav className={styles.Header__nav}>
-            <HeaderMenu items={isAuth ? items : []} />
-          </nav>
+          <div className={styles.Header__left}>
+            <Text>Kassandra's Cake</Text>
+            <nav className={styles.Header__nav}>
+              <HeaderMenu items={isAuth ? items : []} />
+            </nav>
+          </div>
         </HeaderModule>
       }
       rightSide={
         <div className={styles.Header__user}>
-          {isAuth && <User name={user || ''} size={'l'} info={phone || ''} />}
+          {isAuth && <User name={user || ""} size={"l"} info={phone || ""} />}
           {isAuth ? (
             <div className={styles.Header__user}>
               <Button
                 onClick={logoutApp}
-                size={'s'}
-                view={'primary'}
-                label={'Выйти'}
+                size={"s"}
+                view={"primary"}
+                label={"Выйти"}
               />
             </div>
           ) : (
             <div className={styles.buttons}>
               <Button
                 onClick={() => navigate(PublicRoutesEnum.LOGIN)}
-                label={'Вход'}
-                size={'s'}
+                label={"Вход"}
+                size={"s"}
               />
               <Button
                 onClick={() => navigate(PublicRoutesEnum.AUTH)}
-                label={'Регистрация'}
-                size={'s'}
+                label={"Регистрация"}
+                size={"s"}
               />
             </div>
           )}
