@@ -146,6 +146,17 @@ const Header: React.FC<IHeaderProps> = () => {
       permission: [],
       access: true,
     },
+    {
+      label: "Инструкция",
+      id: HeaderIdEnum.REFERENCE,
+      href: PrivateRoutesEnum.REFERENCE,
+      active: myLoc === PrivateRoutesEnum.REFERENCE,
+      onClick: (e) => {
+        headerTransition(e, PrivateRoutesEnum.REFERENCE);
+      },
+      permission: [],
+      access: true,
+    },
   ];
   const headerTransition = (e: React.MouseEvent, patch: string) => {
     e.preventDefault();

@@ -23,6 +23,7 @@ import { selectIsAuth } from "src/redux/features/auth/selectors";
 import PrivateRoute from "src/components/PrivateRoute";
 import { $authHost } from "src/api/requests";
 import AdministrationCalculate from "src/pages/AdministrationCalculate/AdministrationCalculate";
+import AdministrationReference from "src/pages/AdministrationReference/AdministrationReference";
 
 export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
@@ -73,6 +74,10 @@ export const privateRoutes: Array<IRouteItem> = [
   {
     path: `${PrivateRoutesEnum.CALCULATE}`,
     element: <AdministrationCalculate />,
+  },
+  {
+    path: `${PrivateRoutesEnum.REFERENCE}`,
+    element: <AdministrationReference />,
   },
 ];
 
