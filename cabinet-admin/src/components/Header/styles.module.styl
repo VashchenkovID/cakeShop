@@ -25,3 +25,52 @@
 .buttons
   display flex
   gap 16px
+.Sidebar
+  z-index 10000
+  padding 16px !important
+  background: radial-gradient(350.94% 343.49% at 51.82% -159.87%, #404657 0%, rgba(64, 70, 87, 1) 100%);
+  backdrop-filter: blur(34px);
+  justify-content space-between
+  max-width 350px !important
+  &__user
+    display flex
+    align-items center
+    justify-content space-between
+    gap 4px
+  &__closeBtn
+    color #000000
+  &__links
+    display flex
+    flex-direction column
+    gap 16px
+    margin-top 24px
+  &__link
+    padding 8px 0
+    cursor pointer
+    color black
+    &.active
+      color #fbc102
+      border-bottom 1px solid #fbc102
+  &__footer
+    box-shadow: 0 5px 15px 0 rgba(0,0,0,0.2);
+    margin 0px -16px 16px -16px
+    padding 16px
+    border-top 1px solid rgba(255, 255, 255, 0.46)
+    background rgba(0,0,0,0.7);
+.Logo
+  width 60px
+  height 60px
+.userComp :global(.User-Name)
+  color #FFFFFF
+
+
+.mobileLogo
+  display flex
+  gap 8px
+  align-items center
+.logoText
+  color #FFFFFF
+  cursor pointer
+.Header
+  &__burger
+    border-radius 0

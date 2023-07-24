@@ -2,6 +2,11 @@
   display grid
   grid-template-columns 1fr 1fr
   gap 24px
+  @media (max-width 800px)
+    display flex
+    flex-direction column
+    max-height 80vh
+    overflow-y auto
   &__column
     display flex
     flex-direction column

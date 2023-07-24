@@ -24,4 +24,5 @@ export enum HeaderIdEnum {
   ORDERS_HISTORY = '/history',
   TYPES = '/types',
   FEEDBACK = '/feedback',
+  CALCULATE = '/calculate'
 }

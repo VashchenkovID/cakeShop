@@ -57,4 +57,6 @@ export const enum EnpointsEnum {
   DELETE_TODOS = '/todoList/delete',
   // Уникальные пользователи
   GET_UNIQ_USERS = '/uniqUsers/users',
+  // Для селектов
+  GET_ENT_DEVICE = '/device/entity'
 }

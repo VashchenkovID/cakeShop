@@ -2,6 +2,13 @@
   display grid
   grid-template-columns 1fr 0.7fr
   gap 24px
+  max-height 80vh
+  overflow-y auto
+  @media (max-width 800px)
+    display flex
+    flex-direction column-reverse
+    max-height 80vh
+    overflow-y auto
   &__badgesContainer
     background rgba(47, 4, 79, 0.5)
     padding 16px

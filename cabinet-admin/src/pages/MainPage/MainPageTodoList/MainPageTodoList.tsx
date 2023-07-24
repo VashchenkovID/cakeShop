@@ -75,7 +75,7 @@ const MainPageTodoList: React.FC = () => {
           todos.map((item, index) => (
             <MainPageTodoListItem
               index={index}
-              key={`${item.id}_${index}`}
+              key={`${item.id}`}
               setTodos={setTodos}
               item={item}
               fetchTodos={fetchTodos}

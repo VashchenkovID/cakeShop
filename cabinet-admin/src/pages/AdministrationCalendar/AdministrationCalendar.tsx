@@ -15,6 +15,7 @@ import { OrderProcessingModel } from 'src/api/models/OrderProcessingModel';
 import { Modal } from '@consta/uikit/Modal';
 import AdministrationOrderModal from 'src/pages/AdministrationOrders/AdministrationOrderModal/AdministrationOrderModal';
 import MainWrapper from 'src/components/MainWrapper/MainWrapper';
+import {useResize} from "src/hooks/useResize";
 const weekDayNames = [
   'Понедельник',
   'Вторник',
@@ -28,6 +29,7 @@ const weekDayNames = [
 const cx = cn.bind(styles);
 
 const AdministrationCalendar: React.FC = () => {
+  const {width} = useResize()
   const [calendar, setCalendar] = useState<{ date: string; orders: any[] }[]>(
     [],
   );
@@ -108,7 +110,7 @@ const AdministrationCalendar: React.FC = () => {
                 <div className={styles.Calendar__cells__voidCell}></div>
               ) : (
                 <div className={styles.Calendar__cells__ordersCell}>
-                  <Text>{new Date(cell.date).toLocaleDateString()}</Text>
+                  <Text size={width <= 800 ? 'xs' : 's'}>{new Date(cell.date).toLocaleDateString()}</Text>
                   {cell.orders.length > 0 && (
                     <div
                       className={styles.Calendar__cells__ordersCell__statuses}

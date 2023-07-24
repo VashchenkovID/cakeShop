@@ -14,6 +14,7 @@ export const enum PrivateRoutesEnum {
   ORDERS_HISTORY = '/history',
   TYPES = '/types',
   FEEDBACK = '/feedback',
+  CALCULATE = '/calculate'
 }
 
 export const enum PublicRoutesEnum {

@@ -1,0 +1,27 @@
+.FullRecipe
+  &__rightSide
+    display flex
+    flex-direction column
+    justify-content center
+    margin-top 24px
+    &__header
+      display grid
+      grid-template-columns repeat(3,1fr)
+      gap 8px
+      padding 16px
+      align-items center
+      border 1px solid #f5f7fa
+    &__list
+      display flex
+      flex-direction column
+      max-height 42vh
+      overflow-y auto
+      &__row
+        display grid
+        grid-template-columns repeat(3,1fr)
+        gap 8px
+        padding 16px
+        border 1px solid #f5f7fa
+        &__col
+          text-align center
+          color: #f5f7fa

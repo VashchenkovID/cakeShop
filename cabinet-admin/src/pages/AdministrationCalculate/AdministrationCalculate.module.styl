@@ -1,0 +1,18 @@
+.Container
+  display flex
+  flex-direction column
+  gap 24px
+  &__header
+    display flex
+    gap 16px
+    align-items center
+    @media (max-width 800px)
+      justify-content space-between
+    &__select
+      max-width 250px
+  &__content
+    display grid
+    grid-template-columns 1fr 1fr
+    gap 24px
+    max-height 80vh
+    overflow-y auto

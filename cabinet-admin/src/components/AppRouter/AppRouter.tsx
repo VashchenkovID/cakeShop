@@ -22,6 +22,7 @@ import { useAppSelector } from "src/hooks/useAppSelector";
 import { selectIsAuth } from "src/redux/features/auth/selectors";
 import PrivateRoute from "src/components/PrivateRoute";
 import { $authHost } from "src/api/requests";
+import AdministrationCalculate from "src/pages/AdministrationCalculate/AdministrationCalculate";
 
 export const publicRoutes: Array<IRouteItem> = [
   { path: `${PublicRoutesEnum.AUTH}`, element: <AuthContainer /> },
@@ -68,6 +69,10 @@ export const privateRoutes: Array<IRouteItem> = [
   {
     path: `${PrivateRoutesEnum.CALENDAR}`,
     element: <AdministrationCalendar />,
+  },
+  {
+    path: `${PrivateRoutesEnum.CALCULATE}`,
+    element: <AdministrationCalculate />,
   },
 ];
 
