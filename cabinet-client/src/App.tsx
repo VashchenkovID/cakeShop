@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Theme } from "@consta/uikit/Theme";
 import { myDefaultPreset } from "./utils/presetConsta/constaMyStyle/myDefaultPreset";
 import Header from "./components/Header";
+import { ToastContainer } from 'react-toastify';
 
 function Contexts(props: { children: ReactNode }) {
   return <BrowserRouter>{props.children}</BrowserRouter>;
@@ -19,6 +20,12 @@ const App = () => {
           <Header />
           <AppRouter />
         </Contexts>
+          <ToastContainer
+              theme={'light'}
+              position={'bottom-left'}
+              draggable={false}
+              autoClose={3000}
+          />
       </Theme>
     </>
   );

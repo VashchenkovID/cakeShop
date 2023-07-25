@@ -172,7 +172,7 @@ const Header: React.FC<IHeaderProps> = () => {
   };
   return (
     <>
-      {width >= 800 ? (
+      {width >= 1050 ? (
         <ConstaHeader
           className={cx(styles.Header, {
             not:

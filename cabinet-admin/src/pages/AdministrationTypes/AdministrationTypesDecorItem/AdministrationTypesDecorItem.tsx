@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text } from '@consta/uikit/Text';
-import styles from './AdministrationTypesDecorItem.module.styl';
+import React from "react";
+import { Text } from "@consta/uikit/Text";
+import styles from "./AdministrationTypesDecorItem.module.styl";
 import {
   AdministrationTypesItemsEnum,
   AdministrationTypesModalEnum,
-} from 'src/pages/AdministrationTypes/AdministrationTypes';
-import { Button } from '@consta/uikit/Button';
-import { IconEdit } from '@consta/uikit/IconEdit';
-import { IconTrash } from '@consta/uikit/IconTrash';
+} from "src/pages/AdministrationTypes/AdministrationTypes";
+import { Button } from "@consta/uikit/Button";
+import { IconEdit } from "@consta/uikit/IconEdit";
+import { IconTrash } from "@consta/uikit/IconTrash";
 
 interface IComponentProps {
   item: {
@@ -76,14 +76,14 @@ const AdministrationTypesDecorItem: React.FC<IComponentProps> = ({
       <Text> {item.constPrice} ₽</Text>
       <div className={styles.DecorItem__actions}>
         <Button
-          size={'xs'}
-          view={'primary'}
+          size={"xs"}
+          view={"primary"}
           onClick={openEdit}
           iconLeft={IconEdit}
         />
         <Button
-          size={'xs'}
-          view={'primary'}
+          size={"xs"}
+          view={"primary"}
           iconLeft={IconTrash}
           onClick={openRemove}
         />
@@ -92,4 +92,8 @@ const AdministrationTypesDecorItem: React.FC<IComponentProps> = ({
   );
 };
 
-export default AdministrationTypesDecorItem;
+const areEqual = (prev: IComponentProps, next: IComponentProps) => {
+  return JSON.stringify(prev.item) === JSON.stringify(next.item);
+};
+
+export default React.memo(AdministrationTypesDecorItem, areEqual);

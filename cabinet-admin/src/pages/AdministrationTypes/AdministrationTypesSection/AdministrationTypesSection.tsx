@@ -74,5 +74,7 @@ const AdministrationTypesSection: React.FC<IComponentProps> = ({
     </div>
   );
 };
-
-export default AdministrationTypesSection;
+const areEqual = (prev: IComponentProps, next: IComponentProps) => {
+    return JSON.stringify(prev.items) === JSON.stringify(next.items);
+};
+export default React.memo(AdministrationTypesSection,areEqual);

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Text } from '@consta/uikit/Text';
-import styles from './AdministrationTypesItem.module.styl';
-import { Modal } from '@consta/uikit/Modal';
+import React, { useState } from "react";
+import { Text } from "@consta/uikit/Text";
+import styles from "./AdministrationTypesItem.module.styl";
+import { Modal } from "@consta/uikit/Modal";
 import {
   AdministrationTypesItemsEnum,
   AdministrationTypesModalEnum,
-} from 'src/pages/AdministrationTypes/AdministrationTypes';
-import { Button } from '@consta/uikit/Button';
-import { IconEdit } from '@consta/uikit/IconEdit';
-import { IconTrash } from '@consta/uikit/IconTrash';
+} from "src/pages/AdministrationTypes/AdministrationTypes";
+import { Button } from "@consta/uikit/Button";
+import { IconEdit } from "@consta/uikit/IconEdit";
+import { IconTrash } from "@consta/uikit/IconTrash";
 
 interface IComponentProps {
   item: {
@@ -73,22 +73,22 @@ const AdministrationTypesItem: React.FC<IComponentProps> = ({
         {item.img && (
           <img
             onClick={() => setOpen(true)}
-            style={{ width: 60, height: 60, borderRadius: '10px' }}
+            style={{ width: 60, height: 60, borderRadius: "10px" }}
             src={`${import.meta.env.VITE_API_URL_IMAGE}/${item.img}`}
           />
         )}
-        <Text size={'l'}>{item.name}</Text>
+        <Text size={"l"}>{item.name}</Text>
       </div>
       <div className={styles.Item__case}>
         <Button
-          size={'xs'}
-          view={'primary'}
+          size={"xs"}
+          view={"primary"}
           onClick={openEdit}
           iconLeft={IconEdit}
         />
         <Button
-          size={'xs'}
-          view={'primary'}
+          size={"xs"}
+          view={"primary"}
           iconLeft={IconTrash}
           onClick={openRemove}
         />
@@ -97,7 +97,7 @@ const AdministrationTypesItem: React.FC<IComponentProps> = ({
       <Modal isOpen={open} onClickOutside={() => setOpen(false)}>
         <img
           onClick={() => setOpen(false)}
-          style={{ maxWidth: '60vw', borderRadius: '10px' }}
+          style={{ maxWidth: "60vw", borderRadius: "10px" }}
           src={`${import.meta.env.VITE_API_URL_IMAGE}/${item.img}`}
         />
       </Modal>
@@ -105,4 +105,8 @@ const AdministrationTypesItem: React.FC<IComponentProps> = ({
   );
 };
 
-export default AdministrationTypesItem;
+const areEqual = (prev: IComponentProps, next: IComponentProps) => {
+  return JSON.stringify(prev.item) === JSON.stringify(next.item);
+};
+
+export default React.memo(AdministrationTypesItem, areEqual);

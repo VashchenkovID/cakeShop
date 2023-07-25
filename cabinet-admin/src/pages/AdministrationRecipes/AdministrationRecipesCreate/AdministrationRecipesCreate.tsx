@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cakesApi from "../../../api/requests/cakesApi";
 import styles from "./AdministrationRecipesCreate.module.styl";
-import cn from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import { PrivateRoutesEnum } from "src/router";
 import useRequest from "src/hooks/useRequest";
@@ -16,7 +15,8 @@ import { useParams } from "react-router";
 import MainWrapper from "src/components/MainWrapper/MainWrapper";
 import { toast } from "react-toastify";
 import { TypeModel } from "src/api/models/TypeModel";
-const cx = cn.bind(styles);
+import { Attachment } from "@consta/uikit/Attach";
+
 const AdministrationRecipesCreate: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -29,13 +29,13 @@ const AdministrationRecipesCreate: React.FC = () => {
   >([]);
   const [device, setDevice] = useState<any>({
     name: "",
-    price: 0,
+    price: "",
     description: "",
     info: [],
     img: "",
-    discount: 0,
+    discount: "",
     weightType: "",
-    countWeightType: 0,
+    countWeightType: "",
   });
   const [type, setType] = useState<TypeModel | null>(null);
   const [filling, setFilling] = useState<{
@@ -49,7 +49,6 @@ const AdministrationRecipesCreate: React.FC = () => {
     img: string;
   } | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [renderImage, setRenderImage] = useState("");
 
   const addDevice = async () => {
     try {
@@ -148,7 +147,6 @@ const AdministrationRecipesCreate: React.FC = () => {
             weightType: r.weightType,
             countWeightType: r.countWeightType,
           });
-          setRenderImage(`${import.meta.env.VITE_API_URL_IMAGE}${r.img}`);
           if (types.length > 0) {
             setType(types.find((item) => item.id === r.TypeId) as TypeModel);
           }
@@ -215,7 +213,6 @@ const AdministrationRecipesCreate: React.FC = () => {
               onDropFiles={(file) => {
                 setFile(file[0]);
                 const src = URL.createObjectURL(file[0]);
-                setRenderImage(src.slice(5));
               }}
             >
               {({ openFileDialog }) => (
@@ -226,17 +223,18 @@ const AdministrationRecipesCreate: React.FC = () => {
                   <Text size={"s"} view={"secondary"}>
                     Поддерживаются файлы форматов jpg,png,jpeg
                   </Text>
+                  {file && (
+                    <Attachment
+                      key={file.name}
+                      fileName={file.name}
+                      fileExtension={file.name.match(/\.(?!.*\.)(\w*)/)?.[1]}
+                      fileDescription={file.type}
+                    />
+                  )}
                   <Button onClick={openFileDialog} label="Выбрать файл" />
                 </>
               )}
             </DragNDropField>
-            {renderImage !== "" && (
-              <img
-                className={styles.RecipeCreate__image}
-                src={renderImage}
-                alt="Ошибка"
-              />
-            )}
             <div className={styles.Recipe__compound}>
               <Text>Состав:</Text>
               <div className={styles.RecipeCreate__compound__selects}>

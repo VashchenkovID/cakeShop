@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import useRequest from 'src/hooks/useRequest';
-import cakesApi from 'src/api/requests/cakesApi';
-import styles from './AdministrationTypes.module.styl';
-import AdministrationTypesSection from 'src/pages/AdministrationTypes/AdministrationTypesSection/AdministrationTypesSection';
-import AdministrationTypesModalList from 'src/pages/AdministrationTypes/AdministrationTypeModals/AdministrationTypesModalList';
-import MainWrapper from 'src/components/MainWrapper/MainWrapper';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import useRequest from "src/hooks/useRequest";
+import cakesApi from "src/api/requests/cakesApi";
+import styles from "./AdministrationTypes.module.styl";
+import AdministrationTypesSection from "src/pages/AdministrationTypes/AdministrationTypesSection/AdministrationTypesSection";
+import AdministrationTypesModalList from "src/pages/AdministrationTypes/AdministrationTypeModals/AdministrationTypesModalList";
+import MainWrapper from "src/components/MainWrapper/MainWrapper";
+import { toast } from "react-toastify";
 
 export enum AdministrationTypesModalEnum {
-  IDLE = 'idle',
-  FILLING = 'filling',
-  TYPE = 'type',
-  BISCUIT = 'biscuit',
-  DECOR = 'decor',
-  TYPE_EDIT = 'typeEdit',
-  FILLING_EDIT = 'fillingEdit',
-  BISCUIT_EDIT = 'biscuitEdit',
-  DECOR_EDIT = 'decorEdit',
-  TYPE_REMOVE = 'typeRemove',
-  FILLING_REMOVE = 'fillingRemove',
-  BISCUIT_REMOVE = 'biscuitRemove',
-  DECOR_REMOVE = 'decorRemove',
+  IDLE = "idle",
+  FILLING = "filling",
+  TYPE = "type",
+  BISCUIT = "biscuit",
+  DECOR = "decor",
+  TYPE_EDIT = "typeEdit",
+  FILLING_EDIT = "fillingEdit",
+  BISCUIT_EDIT = "biscuitEdit",
+  DECOR_EDIT = "decorEdit",
+  TYPE_REMOVE = "typeRemove",
+  FILLING_REMOVE = "fillingRemove",
+  BISCUIT_REMOVE = "biscuitRemove",
+  DECOR_REMOVE = "decorRemove",
 }
 
 export enum AdministrationTypesItemsEnum {
-  TYPE = 'type',
-  FILLING = 'filling',
-  BISCUIT = 'biscuit',
-  DECOR = 'decor',
+  TYPE = "type",
+  FILLING = "filling",
+  BISCUIT = "biscuit",
+  DECOR = "decor",
 }
 
 export interface AdministrationTypesItemWithImg {
@@ -45,56 +45,57 @@ export interface AdministrationTypesDecorItem {
 }
 
 const AdministrationTypes: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [types, setTypes] = useState<{ id: number; name: string }[]>([]);
   const [fillings, setFillings] = useState<AdministrationTypesItemWithImg[]>(
-    [],
+    []
   );
   const [biscuits, setBiscuits] = useState<AdministrationTypesItemWithImg[]>(
-    [],
+    []
   );
   const [decors, setDecors] = useState<AdministrationTypesDecorItem[]>([]);
   const [modal, setModal] = useState(AdministrationTypesModalEnum.IDLE);
   const [type, setType] = useState<{ id: number | null; name: string }>({
     id: null,
-    name: '',
+    name: "",
   });
   const [filling, setFilling] = useState<AdministrationTypesItemWithImg>({
     id: null,
-    name: '',
+    name: "",
     img: null,
   });
   const [biscuit, setBiscuit] = useState<AdministrationTypesItemWithImg>({
     id: null,
-    name: '',
+    name: "",
     img: null,
   });
   const [decor, setDecor] = useState<AdministrationTypesDecorItem>({
     id: null,
-    name: '',
+    name: "",
     count: 0,
-    countType: '',
-    pricePerUnit: '',
-    constPrice: '',
+    countType: "",
+    pricePerUnit: "",
+    constPrice: "",
   });
   const clear = () => {
-    setType({ name: '', id: null });
+    setType({ name: "", id: null });
     setFilling({
       id: null,
-      name: '',
+      name: "",
       img: null,
     });
     setBiscuit({
       id: null,
-      name: '',
+      name: "",
       img: null,
     });
     setDecor({
       id: null,
-      name: '',
+      name: "",
       count: 0,
-      countType: '',
-      pricePerUnit: '',
-      constPrice: '',
+      countType: "",
+      pricePerUnit: "",
+      constPrice: "",
     });
   };
 
@@ -110,7 +111,7 @@ const AdministrationTypes: React.FC = () => {
       if (data) {
         setFillings(data.data);
       }
-    },
+    }
   );
 
   const { load: fetchBiscuits } = useRequest(cakesApi.getBiscuits, (data) => {
@@ -125,157 +126,6 @@ const AdministrationTypes: React.FC = () => {
     }
   });
 
-  const createNewType = async () => {
-    if (type.name !== '') {
-      const data = new FormData();
-      data.append('name', type.name);
-      await cakesApi
-        .createCakeType(data)
-        .then(() => {
-          fetchTypes();
-        })
-        .then(() => clear());
-    }
-  };
-  const updateType = async () => {
-    if (type.id && type.name !== '') {
-      await cakesApi
-        .updateCakeType(type.id, type.name)
-        .then(() => {
-          fetchTypes();
-        })
-        .then(() => clear());
-    }
-  };
-  const removeType = async () => {
-    if (type.id) {
-      await cakesApi.removeCakeType(type.id).then(() => {
-        fetchTypes();
-        clear();
-      });
-    }
-  };
-
-  const createNewFilling = async () => {
-    if (filling.name !== '') {
-      const data = new FormData();
-      data.append('name', filling.name);
-      data.append('img', filling.img);
-      await cakesApi.createCakeFilling(data).then(() => {
-        fetchFillings();
-        clear();
-      });
-    }
-  };
-  const updateFilling = async () => {
-    if (filling.id && filling.name !== '') {
-      const data = new FormData();
-      data.append('name', filling.name);
-      data.append('img', filling.img);
-      await cakesApi.updateCakeFilling(filling.id, data).then(() => {
-        fetchFillings();
-        clear();
-      });
-    }
-  };
-  const removeFilling = async () => {
-    if (filling.id) {
-      await cakesApi.removeCakeFilling(filling.id).then(() => {
-        fetchFillings();
-        clear();
-      });
-    }
-  };
-
-  const createNewBiscuit = async () => {
-    if (biscuit.name !== '') {
-      const data = new FormData();
-      data.append('name', biscuit.name);
-      data.append('img', biscuit.img);
-      await cakesApi.createBiscuit(data).then(() => {
-        fetchBiscuits();
-        clear();
-      });
-    }
-  };
-
-  const updateBiscuit = async () => {
-    if (biscuit.id && biscuit.name !== '') {
-      const data = new FormData();
-      data.append('name', biscuit.name);
-      data.append('img', biscuit.img);
-      await cakesApi.updateBiscuit(biscuit.id, data).then(() => {
-        fetchBiscuits();
-        clear();
-      });
-    }
-  };
-  const removeBiscuit = async () => {
-    if (biscuit.id) {
-      await cakesApi.removeBiscuit(biscuit.id).then(() => {
-        fetchBiscuits();
-        clear();
-      });
-    }
-  };
-
-  const createNewDecor = async () => {
-    if (
-      decor.name !== '' &&
-      decor.countType !== '' &&
-      decor.count !== 0 &&
-      decor.pricePerUnit !== '' &&
-      decor.constPrice !== ''
-    ) {
-      const data = new FormData();
-      data.append('name', decor.name);
-      data.append('countType', decor.countType);
-      data.append('count', decor.count.toString());
-      data.append('pricePerUnit', decor.pricePerUnit.toString());
-      data.append('constPrice', decor.constPrice.toString());
-      await cakesApi.createDecor(data).then(() => {
-        fetchDecors();
-        clear();
-      });
-    } else {
-      toast.error('Ошибки в заполнении полей');
-    }
-  };
-
-  const updateDecor = async () => {
-    if (
-      decor.id &&
-      decor.name !== '' &&
-      decor.countType !== '' &&
-      decor.count !== 0 &&
-      decor.pricePerUnit !== '' &&
-      !isNaN(Number(decor.pricePerUnit)) &&
-      decor.constPrice !== '' &&
-      !isNaN(Number(decor.constPrice))
-    ) {
-      const data = new FormData();
-      data.append('name', decor.name);
-      data.append('countType', decor.countType);
-      data.append('count', decor.count.toString());
-      data.append('pricePerUnit', decor.pricePerUnit.toString());
-      data.append('constPrice', decor.constPrice.toString());
-      await cakesApi.updateDecor(decor.id, data).then(() => {
-        fetchDecors();
-        clear();
-      });
-    } else {
-      toast.error('Ошибки в заполнении полей');
-    }
-  };
-
-  const removeDecor = async () => {
-    if (decor.id) {
-      await cakesApi.removeDecor(decor.id).then(() => {
-        fetchDecors();
-        clear();
-      });
-    }
-  };
   const setEdit = (type: AdministrationTypesItemsEnum, item: any) => {
     switch (type) {
       case AdministrationTypesItemsEnum.TYPE:
@@ -296,6 +146,13 @@ const AdministrationTypes: React.FC = () => {
     }
   };
 
+  const refreshPage = () => {
+    fetchTypes();
+    fetchFillings();
+    fetchBiscuits();
+    fetchDecors();
+  };
+
   useEffect(() => {
     fetchTypes();
     fetchFillings();
@@ -304,12 +161,12 @@ const AdministrationTypes: React.FC = () => {
   }, []);
 
   return (
-    <MainWrapper title={'Справочники'}>
+    <MainWrapper title={"Справочники"}>
       <div className={styles.Types}>
         <div className={styles.Types__column}>
           <AdministrationTypesSection
             clear={clear}
-            title={'Типы десертов'}
+            title={"Типы десертов"}
             items={types}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.TYPE)}
@@ -321,7 +178,7 @@ const AdministrationTypes: React.FC = () => {
         <div className={styles.Types__column}>
           <AdministrationTypesSection
             clear={clear}
-            title={'Типы начинки'}
+            title={"Типы начинки"}
             items={fillings}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.FILLING)}
@@ -333,7 +190,7 @@ const AdministrationTypes: React.FC = () => {
         <div className={styles.Types__column}>
           <AdministrationTypesSection
             clear={clear}
-            title={'Типы бисквита'}
+            title={"Типы бисквита"}
             items={biscuits}
             isDecor={false}
             onCreate={() => setModal(AdministrationTypesModalEnum.BISCUIT)}
@@ -346,7 +203,7 @@ const AdministrationTypes: React.FC = () => {
           <AdministrationTypesSection
             clear={clear}
             onCreate={() => setModal(AdministrationTypesModalEnum.DECOR)}
-            title={'Декор'}
+            title={"Декор"}
             items={decors}
             isDecor
             type={AdministrationTypesItemsEnum.DECOR}
@@ -367,24 +224,12 @@ const AdministrationTypes: React.FC = () => {
         decor={decor}
         setDecor={setDecor}
         types={types}
-        fillings={fillings}
-        biscuits={biscuits}
-        decors={decors}
-        createNewType={createNewType}
-        createNewFilling={createNewFilling}
-        createNewBiscuit={createNewBiscuit}
-        createNewDecor={createNewDecor}
-        removeBiscuit={removeBiscuit}
-        removeDecor={removeDecor}
-        removeFilling={removeFilling}
-        removeType={removeType}
-        updateBiscuit={updateBiscuit}
-        updateDecor={updateDecor}
-        updateFilling={updateFilling}
-        updateType={updateType}
+        clear={clear}
+        refreshPage={refreshPage}
       />
     </MainWrapper>
   );
 };
+
 
 export default AdministrationTypes;

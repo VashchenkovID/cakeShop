@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import { TextField } from '@consta/uikit/TextField';
-import { Button } from '@consta/uikit/Button';
-import styles from './AdministrationTypeModals.module.styl';
-import { DragNDropField } from '@consta/uikit/DragNDropField';
-import { Text } from '@consta/uikit/Text';
-import { Attachment } from '@consta/uikit/Attach';
-import {AdministrationTypesItemWithImg} from "src/pages/AdministrationTypes/AdministrationTypes";
+import React, { useState } from "react";
+import { TextField } from "@consta/uikit/TextField";
+import { Button } from "@consta/uikit/Button";
+import styles from "./AdministrationTypeModals.module.styl";
+import { DragNDropField } from "@consta/uikit/DragNDropField";
+import { Text } from "@consta/uikit/Text";
+import { Attachment } from "@consta/uikit/Attach";
+import { AdministrationTypesItemWithImg } from "src/pages/AdministrationTypes/AdministrationTypes";
 
 interface IComponentProps {
   biscuit: { name: string; img: any };
-  setBiscuit: React.Dispatch<React.SetStateAction<AdministrationTypesItemWithImg>>
+  setBiscuit: React.Dispatch<
+    React.SetStateAction<AdministrationTypesItemWithImg>
+  >;
   onSave(): Promise<void>;
   onClose(): void;
   title: string;
   isDelete?: boolean;
+  isLoading: boolean;
 }
 
 const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
@@ -23,6 +26,7 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
   onSave,
   title,
   isDelete,
+  isLoading,
 }) => {
   const [file, setFile] = useState<File[]>([]);
   const selectFile = (file: File) => {
@@ -35,16 +39,16 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
     <>
       {!isDelete ? (
         <div className={styles.Container}>
-          <Text size={'2xl'}>{title}</Text>
+          <Text size={"2xl"}>{title}</Text>
           <TextField
-            size={'s'}
-            form={'round'}
-            label={'Наименование'}
-            placeholder={'Введите наименование'}
+            size={"s"}
+            form={"round"}
+            label={"Наименование"}
+            placeholder={"Введите наименование"}
             value={biscuit.name}
             onChange={(e) =>
               setBiscuit((prevState) => {
-                return { ...prevState, name: e.value || '' };
+                return { ...prevState, name: e.value || "" };
               })
             }
           />
@@ -56,10 +60,10 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
           >
             {({ openFileDialog }) => (
               <div className={styles.Container__files}>
-                <Text size={'l'}>
+                <Text size={"l"}>
                   Выберите или перетащите фотографию десерта
                 </Text>
-                <Text size={'s'} view={'secondary'}>
+                <Text size={"s"} view={"secondary"}>
                   Поддерживаются файлы форматов jpg,png,jpeg
                 </Text>
                 {file.map((f) => (
@@ -71,7 +75,7 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
                   />
                 ))}
                 <Button
-                  size={'xs'}
+                  size={"xs"}
                   onClick={openFileDialog}
                   label="Выбрать файл"
                 />
@@ -79,10 +83,11 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
             )}
           </DragNDropField>
           <div className={styles.Container__actions}>
-            <Button size={'s'} label={'Отмена'} onClick={onClose} />
+            <Button size={"s"} label={"Отмена"} onClick={onClose} />
             <Button
-              size={'s'}
-              label={'Сохранить'}
+              size={"s"}
+              label={"Сохранить"}
+              loading={isLoading}
               onClick={() => {
                 onSave().then(() => onClose());
               }}
@@ -91,13 +96,14 @@ const AdministrationTypesModalsBiscuit: React.FC<IComponentProps> = ({
         </div>
       ) : (
         <div className={styles.Container}>
-          <Text size={'2xl'}>{title}</Text>
+          <Text size={"2xl"}>{title}</Text>
           <Text>Вы действительно хотите удалить {biscuit.name} ?</Text>
           <div className={styles.Container__actions}>
-            <Button size={'s'} label={'Отмена'} onClick={onClose} />
+            <Button size={"s"} label={"Отмена"} onClick={onClose} />
             <Button
-              size={'s'}
-              label={'Удалить'}
+              size={"s"}
+              label={"Удалить"}
+              loading={isLoading}
               onClick={() => {
                 onSave().then(() => onClose());
               }}

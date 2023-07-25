@@ -5,7 +5,7 @@ import styles from "src/pages/AdministrationTypes/AdministrationTypeModals/Admin
 import { Text } from "@consta/uikit/Text";
 import { DragNDropField } from "@consta/uikit/DragNDropField";
 import { Attachment } from "@consta/uikit/Attach";
-import {AdministrationTypesItemWithImg} from "src/pages/AdministrationTypes/AdministrationTypes";
+import { AdministrationTypesItemWithImg } from "src/pages/AdministrationTypes/AdministrationTypes";
 
 interface IComponentProps {
   filling: { name: string; img: any };
@@ -16,6 +16,7 @@ interface IComponentProps {
   onClose(): void;
   title: string;
   isDelete?: boolean;
+  isLoading: boolean;
 }
 
 const AdministrationTypesModalsFilling: React.FC<IComponentProps> = ({
@@ -25,6 +26,7 @@ const AdministrationTypesModalsFilling: React.FC<IComponentProps> = ({
   onClose,
   title,
   isDelete,
+  isLoading,
 }) => {
   const [file, setFile] = useState<File[]>([]);
   const selectFile = (file: File) => {
@@ -46,7 +48,7 @@ const AdministrationTypesModalsFilling: React.FC<IComponentProps> = ({
             value={filling.name}
             onChange={(e) =>
               setFilling((prevState) => {
-                return { ...prevState, name: e.value || '' };
+                return { ...prevState, name: e.value || "" };
               })
             }
           />
@@ -85,6 +87,7 @@ const AdministrationTypesModalsFilling: React.FC<IComponentProps> = ({
             <Button
               size={"s"}
               label={"Создать"}
+              loading={isLoading}
               onClick={() => {
                 onSave().then(() => onClose());
               }}
@@ -100,6 +103,7 @@ const AdministrationTypesModalsFilling: React.FC<IComponentProps> = ({
             <Button
               size={"s"}
               label={"Удалить"}
+              loading={isLoading}
               onClick={() => {
                 onSave().then(() => onClose());
               }}

@@ -3,7 +3,7 @@ import { TextField } from "@consta/uikit/TextField";
 import { Button } from "@consta/uikit/Button";
 import { Text } from "@consta/uikit/Text";
 import styles from "./AdministrationTypeModals.module.styl";
-import {AdministrationTypesDecorItem} from "src/pages/AdministrationTypes/AdministrationTypes";
+import { AdministrationTypesDecorItem } from "src/pages/AdministrationTypes/AdministrationTypes";
 
 interface IComponentProps {
   decor: {
@@ -18,6 +18,7 @@ interface IComponentProps {
   onClose(): void;
   title: string;
   isDelete?: boolean;
+  isLoading: boolean;
 }
 
 const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
@@ -27,6 +28,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
   onClose,
   title,
   isDelete,
+  isLoading,
 }) => {
   return (
     <>
@@ -41,7 +43,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             value={decor.name}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, name: value || '' };
+                return { ...prev, name: value || "" };
               })
             }
           />
@@ -66,7 +68,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             value={decor.countType}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, countType: value || ''};
+                return { ...prev, countType: value || "" };
               })
             }
           />
@@ -78,7 +80,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             value={String(decor.pricePerUnit)}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, pricePerUnit: value || '' };
+                return { ...prev, pricePerUnit: value || "" };
               })
             }
           />
@@ -90,13 +92,14 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
             value={String(decor.constPrice)}
             onChange={({ value }) =>
               setDecor((prev) => {
-                return { ...prev, constPrice: value || '' };
+                return { ...prev, constPrice: value || "" };
               })
             }
           />
           <div className={styles.Container__actions}>
             <Button size={"s"} label={"Отмена"} onClick={onClose} />
             <Button
+              loading={isLoading}
               size={"s"}
               label={"Сохранить"}
               onClick={() => {
@@ -112,6 +115,7 @@ const AdministrationTypesModalsDecor: React.FC<IComponentProps> = ({
           <div className={styles.Container__actions}>
             <Button size={"s"} label={"Отмена"} onClick={onClose} />
             <Button
+              loading={isLoading}
               size={"s"}
               label={"Удалить"}
               onClick={() => {
