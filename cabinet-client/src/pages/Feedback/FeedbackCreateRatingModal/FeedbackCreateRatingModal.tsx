@@ -115,13 +115,12 @@ const FeedbackCreateRatingModal: React.FC<IComponentProps> = ({
           label={"Отменить"}
           size={width <= 500 ? "xs" : "s"}
           onClick={onClose}
-          view={'secondary'}
         />
         <Button
           label={"Создать"}
           size={width <= 500 ? "xs" : "s"}
           onClick={onSave}
-          view={'secondary'}
+          disabled={modalState.rating === 0 || !device}
         />
       </div>
     </div>

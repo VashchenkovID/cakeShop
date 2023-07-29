@@ -21,14 +21,14 @@ export enum PublicRoutesEnum {
   GENERAL = "/general",
   SHOP = "/shop",
   INDIVIDUAL = "/individual",
-  VIEW_DESSERT = "/view/dessert",
+  VIEW_DESSERT = "/view",
   AUTH = "/auth",
   LOGIN = "/login",
   RATINGS = "/ratings",
   FEEDBACK = "/feedback",
   VIEW_ORDER = "/order",
   CREATE_RATING = "/ratings/create",
-  CREATE_ORDER = "/create",
+  CREATE_ORDER = "create",
 }
 export enum PrivateRoutesEnum {
   MY_ORDERS = "/orders",
