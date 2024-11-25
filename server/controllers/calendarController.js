@@ -8,8 +8,6 @@ const {
 const {
   Basket,
   BasketDevice,
-  IndividualOrder,
-  IndividualOrderItem,
 } = require("../models/models");
 const { Op } = require("sequelize");
 
@@ -36,13 +34,6 @@ class CalendarController {
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
-      const individualOrders = await IndividualOrder.findAll({
-        where: {
-          date_completed: { [Op.between]: [fromDate, toDate] },
-          status: "COMPLETED",
-        },
-        include: [{ model: IndividualOrderItem, as: "items" }],
-      });
 
       const calendarWithOrders = calendar.map((date) => {
         if (
@@ -57,20 +48,6 @@ class CalendarController {
               new Date(basket.date_completed).toLocaleDateString() ===
               new Date(date).toLocaleDateString()
           );
-          if (
-            individualOrders.find(
-              (order) =>
-                new Date(order.date_completed).toLocaleDateString() ===
-                new Date(date).toLocaleDateString()
-            )
-          ) {
-            const findedOrder = individualOrders.find(
-              (order) =>
-                new Date(order.date_completed).toLocaleDateString() ===
-                new Date(date).toLocaleDateString()
-            );
-            return { date: date, orders: [findedBasket, findedOrder] };
-          }
           return { date: date, orders: [findedBasket] };
         } else return { date: date, orders: [] };
       });

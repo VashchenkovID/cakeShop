@@ -4,8 +4,6 @@ const sub = require("date-fns/sub");
 const {
   Basket,
   BasketDevice,
-  IndividualOrder,
-  IndividualOrderItem,
   Device,
   DeviceInfo,
   OrderDecor,
@@ -37,13 +35,7 @@ class AnalyticsController {
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
-      const individualOrders = await IndividualOrder.findAll({
-        where: {
-          date_completed: { [Op.between]: [fromDate, toDate] },
-          status: "COMPLETED",
-        },
-        include: [{ model: IndividualOrderItem, as: "items" }],
-      });
+
 
       const basketsBack = await Basket.findAll({
         where: {
@@ -51,22 +43,9 @@ class AnalyticsController {
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
-      const individualOrdersBack = await IndividualOrder.findAll({
-        where: {
-          date_completed: { [Op.between]: [fromDateBack, toDateBack] },
-        },
-        include: [{ model: IndividualOrderItem, as: "items" }],
-      });
       const allOrder = [
         ...baskets
           .filter((item) => item.status === "COMPLETED")
-          .map((itm) =>
-            itm.items.map((i) => {
-              return { ...i, deviceId: itm.deviceId };
-            })
-          ),
-        ...individualOrders
-          .filter((itm) => itm.status === "COMPLETED")
           .map((itm) =>
             itm.items.map((i) => {
               return { ...i, deviceId: itm.deviceId };
@@ -91,14 +70,7 @@ class AnalyticsController {
             itm.items?.map((i) => {
               return { ...i, deviceId: itm.deviceId };
             })
-          ),
-        ...individualOrdersBack
-          .filter((itm) => itm.status === "COMPLETED")
-          .map((itm) =>
-            itm.items?.map((i) => {
-              return { ...i, deviceId: itm.deviceId };
-            })
-          ),
+          )
       ]
         .flat()
         .map((itm) => {
@@ -185,21 +157,13 @@ class AnalyticsController {
         },
         include: [{ model: BasketDevice, as: "items" }],
       });
-      const individualOrders = await IndividualOrder.findAll({
-        where: {
-          date_completed: { [Op.between]: [fromDate, toDate] },
-        },
-        include: [{ model: IndividualOrderItem, as: "items" }],
-      });
+
 
       const orderDecors = await OrderDecor.findAll({
         include: [{ model: OrderDecorItem, as: "items" }],
       });
 
       const deviceIds = [
-        ...new Set(
-          individualOrders.map((bt) => bt.items.map((i) => i.deviceId)).flat()
-        ),
         ...new Set(baskets.map((bt) => bt.items.map((i) => i.deviceId)).flat()),
       ].filter((i) => !isNaN(i));
 
@@ -280,72 +244,6 @@ class AnalyticsController {
                   .reduce((acc, el) => acc + el, 0),
               date_completed: item.date_completed,
               type: "custom",
-            };
-          }),
-        ...individualOrders
-          .filter((itm) => itm.status === "COMPLETED")
-          .map((basket) => {
-            return {
-              ...basket.dataValues,
-              type: "unauthorized",
-              items: basket.dataValues.items.map((itm) => {
-                return {
-                  ...itm.dataValues,
-                };
-              }),
-              decors: orderDecors.filter(
-                (dec) => basket.id === dec.IndividualOrderId
-              ),
-            };
-          })
-          .map((item) => {
-            return {
-              id: item.id,
-              name: item.name,
-              allPrice:
-                item.items.reduce((accum, elem) => {
-                  return accum + Number(elem.price) * Number(elem.count);
-                }, 0) +
-                item.decors
-                  .map((dec) => {
-                    return dec.dataValues.items.reduce((accum, elem) => {
-                      return (
-                        accum +
-                        Number(elem.dataValues.count) *
-                          Number(elem.dataValues.pricePerUnit)
-                      );
-                    }, 0);
-                  })
-                  .reduce((acc, el) => acc + el, 0),
-
-              constPrice:
-                item.items
-                  .map((it) => {
-                    return {
-                      ...it,
-                      device: devices.find((d) => d.id === it.deviceId)
-                        ?.constPrice,
-                    };
-                  })
-                  .reduce((accum, element) => {
-                    return (
-                      accum +
-                      Number(element.device) *
-                        Number(element.count) *
-                        Number(element.countWeightType)
-                    );
-                  }, 0) +
-                item.decors
-                  .map((decor) =>
-                    decor.items.reduce(
-                      (acc, el) =>
-                        acc + Number(el.count) * Number(el.constPrice),
-                      0
-                    )
-                  )
-                  .reduce((acc, el) => acc + el, 0),
-              date_completed: item.date_completed,
-              type: "unauthorized",
             };
           }),
       ];

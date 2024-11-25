@@ -5,8 +5,6 @@ const {
   OrderDecor,
   OrderDecorItem,
   Decor,
-  IndividualOrder,
-  IndividualOrderItem,
 } = require("../models/models");
 const TokenService = require("../services/token-service");
 const { startOfMonth, endOfMonth } = require("date-fns");

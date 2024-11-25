@@ -14,8 +14,6 @@ const corsOptions = {
   origin: [
     process.env.CLIENT_ADMIN_URL,
     process.env.CLIENT_CLIENT_URL,
-    "http://84.38.180.242:5173",
-    "http://84.38.180.242:3002",
     "http://kassandras-cake.ru",
   ],
 };

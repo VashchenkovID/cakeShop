@@ -1,138 +1,178 @@
 const sequilize = require("../db");
-const { DataTypes } = require("sequelize");
-
+const {DataTypes} = require("sequelize");
+/**
+ * Модель пользователя
+ */
 const User = sequilize.define("User", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  email: { type: DataTypes.STRING(1500), unique: true },
-  password: { type: DataTypes.STRING(1500) },
-  role: { type: DataTypes.STRING(1500), defaultValue: "USER" },
-  fullName: { type: DataTypes.STRING(1500), allowNull: true },
-  phone: { type: DataTypes.STRING(1500), allowNull: true },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    email: {type: DataTypes.STRING(1500), unique: true},
+    password: {type: DataTypes.STRING(1500)},
+    role: {type: DataTypes.STRING(1500), defaultValue: "USER"},
+    fullName: {type: DataTypes.STRING(1500), allowNull: true},
+    phone: {type: DataTypes.STRING(1500), allowNull: true},
 });
-
+/**
+ * Модель для занесения уникальных пользователей
+ */
 const UniqUser = sequilize.define("UniqUser", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  address: { type: DataTypes.STRING(1000) },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    address: {type: DataTypes.STRING(1000)},
 });
-
+/**
+ * Токен авторизации
+ */
 const Token = sequilize.define("Token", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  refreshToken: { type: DataTypes.STRING(3000), required: true },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    refreshToken: {type: DataTypes.STRING(3000), required: true},
 });
-
+/**
+ * Модель корзины
+ */
 const Basket = sequilize.define("Basket", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING },
-  status: { type: DataTypes.STRING },
-  date_completed: { type: DataTypes.DATE },
-  customer: { type: DataTypes.STRING, allowNull: false },
-  customer_phone: { type: DataTypes.STRING, allowNull: false },
-  customer_email: { type: DataTypes.STRING },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING},
+    status: {type: DataTypes.STRING},
+    date_completed: {type: DataTypes.DATE},
+    customer: {type: DataTypes.STRING, allowNull: false},
+    customer_phone: {type: DataTypes.STRING, allowNull: false},
+    customer_email: {type: DataTypes.STRING},
 });
 
-const IndividualOrder = sequilize.define("IndividualOrder", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING },
-  status: { type: DataTypes.STRING },
-  date_completed: { type: DataTypes.DATE },
-  customer: { type: DataTypes.STRING, allowNull: false },
-  customer_phone: { type: DataTypes.STRING, allowNull: false },
-  customer_email: { type: DataTypes.STRING },
-});
 
-const IndividualOrderItem = sequilize.define("IndividualOrder_item", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-  count: { type: DataTypes.INTEGER, allowNull: false },
-  price: { type: DataTypes.INTEGER, allowNull: false },
-  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
-});
-
+/**
+ * Модель товара в корзине
+ */
 const BasketDevice = sequilize.define("Basket_device", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-  count: { type: DataTypes.INTEGER, allowNull: false },
-  price: { type: DataTypes.INTEGER, allowNull: false },
-  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    count: {type: DataTypes.INTEGER, allowNull: false},
+    price: {type: DataTypes.INTEGER, allowNull: false},
+    countWeightType: {type: DataTypes.INTEGER, allowNull: false},
 });
-
+/**
+ * Модель товара
+ */
 const Device = sequilize.define("device", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, unique: true, allowNull: false },
-  price: { type: DataTypes.INTEGER, allowNull: false },
-  discount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-  rating: { type: DataTypes.INTEGER, defaultValue: 0 },
-  img: { type: DataTypes.STRING, allowNull: true },
-  description: { type: DataTypes.STRING(1500), allowNull: true },
-  weightType: { type: DataTypes.STRING, allowNull: false },
-  countWeightType: { type: DataTypes.INTEGER, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    price: {type: DataTypes.INTEGER, allowNull: false},
+    discount: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
+    rating: {type: DataTypes.INTEGER, defaultValue: 0},
+    img: {type: DataTypes.STRING, allowNull: true},
+    description: {type: DataTypes.STRING(1500), allowNull: true},
+    weightType: {type: DataTypes.STRING, allowNull: false},
+    countWeightType: {type: DataTypes.INTEGER, allowNull: false},
 });
-
+/**
+ * Список характеристик изделия
+ */
+const Characteristics = sequilize.define('characteristic', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+})
+/**
+ * Характеристика изделия
+ */
+const CharacteristicsItem = sequilize.define('characteristicsItem', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    value: {type: DataTypes.STRING, unique: false, allowNull: false},
+})
+/**
+ * Тип изделия
+ */
 const Type = sequilize.define("Type", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, unique: true, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
 });
-
+/**
+ * Тип начинки
+ */
 const Filling = sequilize.define("Filling", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, unique: true, allowNull: false },
-  img: { type: DataTypes.STRING, allowNull: true },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    img: {type: DataTypes.STRING, allowNull: true},
 });
-
+/**
+ * Тип бисквита
+ */
 const Biscuit = sequilize.define("Biscuit", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, unique: true, allowNull: false },
-  img: { type: DataTypes.STRING, allowNull: true },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    img: {type: DataTypes.STRING, allowNull: true},
 });
 
+/**
+ * Модель информации о товаре
+ */
 const DeviceInfo = sequilize.define("Device_info", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING },
-  weight: { type: DataTypes.DECIMAL },
-  weightType: { type: DataTypes.STRING },
-  pricePerUnit: { type: DataTypes.DECIMAL },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING},
+    weight: {type: DataTypes.DECIMAL},
+    weightType: {type: DataTypes.STRING},
+    pricePerUnit: {type: DataTypes.DECIMAL},
 });
-
+/**
+ * Модель доп товаров
+ */
 const Decor = sequilize.define("Decor", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false, unique: true },
-  count: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 1 },
-  countType: { type: DataTypes.STRING, allowNull: false },
-  pricePerUnit: { type: DataTypes.DECIMAL, allowNull: false },
-  constPrice: { type: DataTypes.DECIMAL, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false, unique: true},
+    count: {type: DataTypes.DECIMAL, allowNull: false, defaultValue: 1},
+    countType: {type: DataTypes.STRING, allowNull: false},
+    pricePerUnit: {type: DataTypes.DECIMAL, allowNull: false},
+    constPrice: {type: DataTypes.DECIMAL, allowNull: false},
 });
 
+/**
+ * Модель доп товаров в заказе
+ */
 const OrderDecor = sequilize.define("Order_decor", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
 });
-
+/**
+ * Модель доп товаров в заказе
+ */
 const OrderDecorItem = sequilize.define("Order_decor_item", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-  count: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 1 },
-  countType: { type: DataTypes.STRING, allowNull: false },
-  pricePerUnit: { type: DataTypes.DECIMAL, allowNull: false },
-  constPrice: { type: DataTypes.DECIMAL, allowNull: false },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    count: {type: DataTypes.DECIMAL, allowNull: false, defaultValue: 1},
+    countType: {type: DataTypes.STRING, allowNull: false},
+    pricePerUnit: {type: DataTypes.DECIMAL, allowNull: false},
+    constPrice: {type: DataTypes.DECIMAL, allowNull: false},
 });
-
+/**
+ * Рейтинг товара
+ */
 const Rating = sequilize.define("Rating", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  ratingComment: { type: DataTypes.STRING },
-  rating: { type: DataTypes.STRING, defaultValue: "0" },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    ratingComment: {type: DataTypes.STRING},
+    rating: {type: DataTypes.STRING, defaultValue: "0"},
 });
-
+/**
+ * Модель для туту листа
+ */
 const TODOList = sequilize.define("TODOList", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  description: { type: DataTypes.STRING(1500) },
-  isReady: { type: DataTypes.BOOLEAN },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    description: {type: DataTypes.STRING(1500)},
+    isReady: {type: DataTypes.BOOLEAN},
 });
-
+/**
+ * Модель журнала запросов
+ */
 const Audit = sequilize.define("AUDIT", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  description: { type: DataTypes.STRING(1500) },
-  user: { type: DataTypes.STRING(1500) },
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    description: {type: DataTypes.STRING(1500)},
+    user: {type: DataTypes.STRING(1500)},
 });
+/**
+ * Модель СЕО тэгов
+ */
+const SEO = sequilize.define('SEO', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    type: {type: DataTypes.STRING(1500)},
+    description: {type: DataTypes.STRING(1500)},
+})
 
 User.hasMany(Basket);
 Basket.belongsTo(User);
@@ -143,11 +183,9 @@ Token.hasOne(User);
 User.hasMany(Rating);
 Rating.belongsTo(User);
 
-Basket.hasMany(BasketDevice, { as: "items" });
+Basket.hasMany(BasketDevice, {as: "items"});
 BasketDevice.belongsTo(Basket);
 
-IndividualOrder.hasMany(IndividualOrderItem, { as: "items" });
-IndividualOrderItem.belongsTo(IndividualOrder);
 
 Type.hasMany(Device);
 Device.belongsTo(Type);
@@ -164,41 +202,47 @@ Rating.belongsTo(Device);
 Device.hasMany(BasketDevice);
 BasketDevice.belongsTo(Device);
 
-Device.hasMany(IndividualOrderItem);
-IndividualOrderItem.belongsTo(Device);
 
 Decor.hasMany(OrderDecorItem);
 OrderDecorItem.belongsTo(Decor);
 
-Device.hasMany(DeviceInfo, { as: "info" });
+Device.hasMany(DeviceInfo, {as: "info"});
 DeviceInfo.belongsTo(Device);
 
-Basket.hasMany(OrderDecor, { as: "decors" });
+Device.hasMany(Characteristics, {as: 'options'})
+Characteristics.belongsTo(Device)
+
+Device.hasMany(SEO, {as: 'seo'})
+SEO.belongsTo(Device)
+
+Characteristics.hasMany(CharacteristicsItem, {as: 'items'})
+CharacteristicsItem.belongsTo(Characteristics)
+
+Basket.hasMany(OrderDecor, {as: "decors"});
 OrderDecor.belongsTo(Basket);
 
-IndividualOrder.hasMany(OrderDecor, { as: "decors" });
-OrderDecor.belongsTo(IndividualOrder);
 
-OrderDecor.hasMany(OrderDecorItem, { as: "items" });
+OrderDecor.hasMany(OrderDecorItem, {as: "items"});
 OrderDecorItem.belongsTo(OrderDecor);
 
 module.exports = {
-  User,
-  Token,
-  Basket,
-  BasketDevice,
-  Device,
-  DeviceInfo,
-  Type,
-  Rating,
-  Filling,
-  IndividualOrder,
-  IndividualOrderItem,
-  Decor,
-  OrderDecor,
-  OrderDecorItem,
-  Biscuit,
-  TODOList,
-  Audit,
-  UniqUser
+    User,
+    Token,
+    Basket,
+    BasketDevice,
+    Device,
+    DeviceInfo,
+    Type,
+    Rating,
+    Filling,
+    Decor,
+    OrderDecor,
+    OrderDecorItem,
+    Biscuit,
+    TODOList,
+    Audit,
+    UniqUser,
+    Characteristics,
+    CharacteristicsItem,
+    SEO
 };
