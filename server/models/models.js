@@ -58,7 +58,6 @@ const Device = sequilize.define("device", {
     price: {type: DataTypes.INTEGER, allowNull: false},
     discount: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
     rating: {type: DataTypes.INTEGER, defaultValue: 0},
-    img: {type: DataTypes.STRING, allowNull: true},
     description: {type: DataTypes.STRING(1500), allowNull: true},
     weightType: {type: DataTypes.STRING, allowNull: false},
     countWeightType: {type: DataTypes.INTEGER, allowNull: false},
@@ -100,7 +99,13 @@ const Biscuit = sequilize.define("Biscuit", {
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
     img: {type: DataTypes.STRING, allowNull: true},
 });
-
+/**
+ * Изображения
+ */
+const Image = sequilize.define("Image", {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    fileName: {type: DataTypes.STRING, allowNull: false},
+});
 /**
  * Модель информации о товаре
  */
@@ -199,6 +204,9 @@ Device.belongsTo(Biscuit);
 Device.hasMany(Rating);
 Rating.belongsTo(Device);
 
+Device.hasMany(Image, {as: 'images'});
+Image.belongsTo(Device);
+
 Device.hasMany(BasketDevice);
 BasketDevice.belongsTo(Device);
 
@@ -244,5 +252,6 @@ module.exports = {
     UniqUser,
     Characteristics,
     CharacteristicsItem,
-    SEO
+    SEO,
+    Image
 };

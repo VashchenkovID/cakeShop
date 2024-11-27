@@ -1,0 +1,60 @@
+$spacing-space-x: 4px;
+$spacing-space-x2: 8px;
+$spacing-space-x3: 12px;
+$spacing-space-x4: 16px;
+$spacing-space-x5: 20px;
+$spacing-space-x6: 24px;
+$spacing-space-x7: 32px;
+$spacing-space-x8: 40px;
+$spacing-space-x9: 48px;
+$spacing-space-x10: 64px;
+$spacing-space-x11: 80px;
+$spacing-space-x12: 90px;
+$spacing-space-x13: 112px;
+$spacing-space-x14: 124px;
+$spacing-space-x15: 132px; //1920
+
+//Значения для мобилки 375
+$spacing-space-mobile-x: 4px;
+$spacing-space-mobile-x2: 8px;
+$spacing-space-mobile-x3: 12px;
+$spacing-space-mobile-x4: 16px;
+$spacing-space-mobile-x5: 20px;
+$spacing-space-mobile-x6: 24px;
+$spacing-space-mobile-x7: 32px;
+$spacing-space-mobile-x8: 40px;
+$spacing-space-mobile-x9: 46px;
+$spacing-space-mobile-x10: 64px;
+$spacing-space-mobile-x11: 80px;
+$spacing-space-mobile-x13: 112px;
+$spacing-space-mobile-x15: 130px; //1920
+
+$text-size-mobile: 8px;
+$text-size-xs: 12px;
+$text-size-s: 14px;
+$text-size-m: 16px;
+$text-size-ml: 18px;
+$text-size-l: 20px;
+$text-size-xl: 22px;
+$text-size-2xl: 26px;
+$text-size-3xl: 36px;
+$text-size-4xl: 36px;
+
+$transition-duration: 300ms;
+
+// Widths
+$layout-width-xs: 375px;
+$layout-width-sm: 536px;
+$layout-width-md: 537px;
+$layout-width-lg: 1366px;
+$layout-width-xl: 1920px;
+
+$grid-breakpoints: (
+        xs: 0,
+        x: 375px,
+        sm: 536px,
+  // no design, using shrinked md
+        md: 537px,
+        lg: 1366px,
+        xl: 1920px,
+);

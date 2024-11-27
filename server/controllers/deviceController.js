@@ -1,4 +1,13 @@
-const {Device, DeviceInfo, Type, Rating, Characteristics, CharacteristicsItem} = require("../models/models");
+const {
+    Device,
+    DeviceInfo,
+    Type,
+    Rating,
+    Characteristics,
+    CharacteristicsItem,
+    SEO,
+    Image
+} = require("../models/models");
 const uuid = require("uuid");
 const path = require("path");
 const ApiError = require("../Error/ApiError");
@@ -22,10 +31,8 @@ class DeviceController {
                 options,
                 seo
             } = req.body;
-            const img = req.files?.img || null;
-            let fileName;
-            fileName = uuid.v4() + ".jpg";
-            img.mv(path.resolve(__dirname, "..", "static", fileName));
+            const images = req.files?.img || [];
+
             const device = await Device.create({
                 name,
                 price: Number(price),
@@ -33,11 +40,24 @@ class DeviceController {
                 BiscuitId: biscuitId,
                 FillingId: fillingId,
                 description: `${description}`,
-                img: fileName,
                 weightType: weightType,
                 countWeightType: countWeightType,
                 discount: discount,
             });
+            // Грузим картинки
+            if (images.length > 0) {
+                images.forEach(img => {
+                    let fileName;
+                    if (img) {
+                        fileName = uuid.v4() + ".jpg";
+                        img.mv(path.resolve(__dirname, "..", "static", fileName));
+                        Image.create({
+                            deviceId: device.id,
+                            name: fileName
+                        })
+                    }
+                })
+            }
             // Смотрим есть ли рецепт и создаем
             if (info && info.length > 0) {
                 let newInfo = JSON.parse(info);
@@ -71,6 +91,17 @@ class DeviceController {
 
                 })
             }
+            // Смотрим есть ли сео разметка и создаем
+            if (seo && seo.length > 0) {
+                let newSeo = JSON.parse(seo);
+                newSeo?.forEach((option) => {
+                    SEO.create({
+                        name: option.name,
+                        deviceId: device.id,
+                    })
+
+                })
+            }
             return res.json({id: device.id});
         } catch (e) {
             next(ApiError.badRequest(e.message));
@@ -90,17 +121,25 @@ class DeviceController {
                 weightType,
                 countWeightType,
                 discount,
+                options,
+                seo
             } = req.body;
             let {id} = req.params;
-            const img = req.files?.img || null;
-            let fileName;
-            if (img) {
-                fileName = uuid.v4() + ".jpg";
-                img.mv(path.resolve(__dirname, "..", "static", fileName));
-            }
-            let oldImg;
-            if (!img) {
-                oldImg = await Device.findOne({where: {id: id}});
+            const images = req.files?.img || null;
+
+            // Грузим картинки
+            if (images.length > 0) {
+                images.forEach(img => {
+                    let fileName;
+                    if (img) {
+                        fileName = uuid.v4() + ".jpg";
+                        img.mv(path.resolve(__dirname, "..", "static", fileName));
+                        Image.create({
+                            deviceId: id,
+                            name: fileName
+                        })
+                    }
+                })
             }
             const device = await Device.upsert({
                 id,
@@ -113,8 +152,8 @@ class DeviceController {
                 weightType: weightType,
                 countWeightType: countWeightType,
                 discount: discount,
-                img: fileName || oldImg?.dataValues?.img,
             });
+            // Проверяем рецепт
             if (info) {
                 let newInfo = JSON.parse(info);
                 if (newInfo.length === 0) {
@@ -152,12 +191,52 @@ class DeviceController {
                     });
                 }
             }
+            // Проверяем характеристики
+            if (options) {
+                let newOptions = JSON.parse(options);
+                if (newOptions.length > 0) {
+                    newOptions?.forEach((option) => {
+                        Characteristics.upsert({
+                            id: option.id,
+                            name: option.name,
+                            deviceId: id,
+                        })
+                        if (option.items?.length > 0) {
+                            option.items.forEach(item => {
+                                CharacteristicsItem.upsert({
+                                    id: item.id,
+                                    characteristicsId: option.id,
+                                    value: item.value
+                                })
+                            })
+                        }
 
+                    })
+                }
+            }
+            // Проверяем разметку
+            if (seo) {
+                let newSeo = JSON.parse(seo);
+                if (newSeo.length > 0) {
+                    newSeo?.forEach((option) => {
+                        SEO.upsert({
+                            id: option.id,
+                            name: option.name,
+                            deviceId: id,
+                        })
+                    })
+                }
+            }
+
+            const finalEditedObject = await Device.findOne({
+                where: {id},
+                include: [{model: DeviceInfo, as: "info"}, {model: SEO, as: "seo"}],
+            })
+            let characteristics = await Characteristics.findAll()
+
+            characteristics = characteristics.filter((c) => c.deviceId === finalEditedObject.dataValues.id);
             return res.json(
-                Device.findOne({
-                    where: {id},
-                    include: [{model: DeviceInfo, as: "info"}],
-                })
+                {...finalEditedObject, characteristics}
             );
         } catch (e) {
             next(ApiError.badRequest(e.message));
@@ -267,9 +346,25 @@ class DeviceController {
                         }
                     });
                 }
+                let characteristics = await Characteristics.findAll();
+                characteristics = characteristics.filter((c) => c.deviceId === id);
+
+                for (const ch of characteristics) {
+                    const charactId = ch?.id;
+                    if (charactId) {
+                        const items = await CharacteristicsItem.findAll({where: {id:charactId}});
+                        for (const item of items) {
+                            if (item.id) {
+                                await  CharacteristicsItem.destroy({where: {id: item.id}})
+                            }
+                        }
+                        await Characteristics.destroy({where:{id:ch.id}})
+                    }
+                }
 
                 await Device.destroy({where: {id}});
                 await DeviceInfo.destroy({where: {deviceId: id}});
+                await SEO.destroy({where: {deviceId: id}});
                 return res.json({message: "Удаление успешно!"});
             }
         } catch (e) {

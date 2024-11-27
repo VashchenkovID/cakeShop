@@ -1,0 +1,123 @@
+@use "sass:math";
+@use "sass:list";
+@use "sass:map";
+@import "./const.variables";
+@import "./functions";
+
+@mixin media-breakpoint-mobile {
+  @media (max-width: 536 - 0.02px) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-deckstop {
+  @media (min-width: 537px - 0.02px) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-deckstop-small {
+  @media (min-width: 768px - 0.02px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin media-hide-in-mobile {
+  @media (max-width: 536px - 0.02px) {
+    display: none;
+  }
+}
+
+@mixin media-hide-in-deckstop {
+  @media (min-width: 537px - 0.02px) {
+    display: none;
+  }
+}
+
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  // sass-lint:disable-block border-zero
+  $min:  map.get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+@mixin fluidImportant($prop, $xs, $md: $xs, $lg: $md, $xl: $lg) {
+  #{$prop}: px2vw($xs, $layout-width-xs) !important;
+  @include media-breakpoint-up(md) {
+    #{$prop}: clamp(
+            0.01rem,
+              // sass-lint:disable-block border-zero
+            #{px2vw($xl,  map.get($grid-breakpoints, xl))},
+            $xl
+    ) !important;
+  }
+}
+
+
+
+@function calc-clamp(
+  $min-size,
+  $max-size,
+   // sass-lint:disable-block border-zero
+  $min-breakpoint:  map.get($grid-breakpoints, x),
+   // sass-lint:disable-block border-zero
+  $max-breakpoint:  map.get($grid-breakpoints, xl),
+  $unit: vw
+) {
+  // проверяю только одно значение
+  // т.к. при не совпадении едениц все одно будет ошибка
+  $min-size-unit: math.unit($min-size);
+  @if ($min-size-unit == "rem") {
+    $min-size: rem-to-px($min-size);
+    $max-size: rem-to-px($max-size);
+  }
+
+  $slope: math.div($max-size - $min-size, $max-breakpoint - $min-breakpoint);
+  $slope-to-unit: $slope * 100;
+  $intercept-rem: px-to-rem($min-size - $slope * $min-breakpoint);
+  $min-size-rem: px-to-rem($min-size);
+  $max-size-rem: px-to-rem($max-size);
+  @return clamp(
+          #{$min-size-rem},
+          #{$slope-to-unit}#{$unit} + #{$intercept-rem},
+          #{$max-size-rem}
+  );
+}
+
+
+@mixin fluid($prop, $xs, $md: $xs, $lg: $md, $xl: $lg) {
+  @if (strip-units($xs) == 0) {
+    $xs: 0.1px;
+  }
+  @if (strip-units($md) == 0) {
+    $md: 0.1px;
+  }
+  @if (strip-units($lg) == 0) {
+    $lg: 0.1px;
+  }
+  @if (strip-units($xl) == 0) {
+    $xl: 0.1px;
+  }
+  // sass-lint:disable-block border-zero
+  #{$prop}: px2vw($xs,  map.get($grid-breakpoints, x));
+
+  $min-value: 0.01rem;
+
+  @include media-breakpoint-up(sm) {
+    #{$prop}: clamp(
+            $min-value,
+              // sass-lint:disable-block border-zero
+            #{px2vw($xl, map.get($grid-breakpoints, xl))},
+            $xl
+    );
+  }
+}

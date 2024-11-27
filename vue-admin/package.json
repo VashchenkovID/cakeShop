@@ -1,0 +1,30 @@
+{
+  "name": "vue-admin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "@primevue/auto-import-resolver": "^4.2.4",
+    "@primevue/themes": "^4.2.4",
+    "js-cookie": "^3.0.5",
+    "pinia": "^2.2.6",
+    "primevue": "^4.2.4",
+    "sass-embedded": "^1.81.0",
+    "scss": "^0.2.4",
+    "unplugin-vue-components": "^0.27.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.1",
+    "vue-tsc": "^2.1.10"
+  }
+}

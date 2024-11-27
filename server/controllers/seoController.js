@@ -1,5 +1,6 @@
-import {SEO} from "../models/models";
-import ApiError from "../Error/ApiError";
+const {badRequest} = require("../Error/ApiError");
+const {SEO} = require("../models/models");
+
 
 class SeoController {
     /**
@@ -13,12 +14,13 @@ class SeoController {
                 return res.json({message: "OK"});
             }
         } catch (e) {
-            next(ApiError.badRequest({
+            next(badRequest({
                 message: 'Ошибка при создании тэга',
                 detail: e
             }));
         }
     }
+
     /**
      * Редактирование тэга
      */
@@ -39,6 +41,7 @@ class SeoController {
             }));
         }
     }
+
     /**
      * Удаление тэга
      */
