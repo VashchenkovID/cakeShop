@@ -1,6 +1,6 @@
 const ApiError = require("../Error/ApiError");
 const bcrypt = require("bcrypt");
-const { User, Basket } = require("../models/models");
+const { User, Basket, Token } = require("../models/models");
 const jwt = require("jsonwebtoken");
 const TokenService = require("../services/token-service");
 const userService = require("../services/user-service");
@@ -20,12 +20,12 @@ class UserController {
     const candidate = await User.findOne({ where: { email } });
     if (candidate) {
       return next(
-        ApiError.badRequest("Пользователь с таким email уже существует")
+        ApiError.badRequest("Пользователь с таким email уже существует"),
       );
     }
     const hashPassword = await bcrypt.hash(password, 5);
     const user = await User.create({
-      email:email,
+      email: email,
       role: "USER",
       password: hashPassword,
       fullName: fullName,
@@ -42,7 +42,7 @@ class UserController {
 
     const dataToken = await TokenService.saveToken(
       user.id,
-      tokens.refreshToken
+      tokens.refreshToken,
     );
     await User.upsert(
       {
@@ -54,7 +54,7 @@ class UserController {
         phone: user.phone,
         TokenId: dataToken.id,
       },
-      { where: { UserId: user.id } }
+      { where: { UserId: user.id } },
     );
     return res.json({
       ...tokens,
@@ -86,7 +86,7 @@ class UserController {
       });
       const dataToken = await TokenService.saveToken(
         user.id,
-        tokens.accessToken
+        tokens.accessToken,
       );
       await User.upsert(
         {
@@ -98,7 +98,7 @@ class UserController {
           phone: user.phone,
           TokenId: dataToken.id,
         },
-        { where: { UserId: user.id } }
+        { where: { UserId: user.id } },
       );
       return res.json({
         ...tokens,
@@ -127,6 +127,33 @@ class UserController {
       const refreshToken = req.headers.authorization.split(" ")[1]; // Bearer asfasnfkajsfnjk
       const userData = await userService.refresh(refreshToken);
       return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async checkLogin(req, res, next) {
+    try {
+      const cookie = req.headers["authtoken"];
+      if (String(cookie).includes("undefined")) {
+        return res.json({
+          isAuth: false,
+          user: null,
+        });
+      } else {
+        let token = cookie.split("token: ")[1];
+        const currentToken = await TokenService.validateAccessToken(token);
+        if (currentToken) {
+          return res.json({
+            isAuth: true,
+            user: currentToken,
+          });
+        }
+        return res.json({
+          isAuth: false,
+          user: null,
+        });
+      }
     } catch (e) {
       next(e);
     }

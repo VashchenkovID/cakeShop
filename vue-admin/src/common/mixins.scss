@@ -36,7 +36,7 @@
 
 @function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
   // sass-lint:disable-block border-zero
-  $min:  map.get($breakpoints, $name);
+  $min: map.get($breakpoints, $name);
   @return if($min != 0, $min, null);
 }
 
@@ -50,6 +50,7 @@
     @content;
   }
 }
+
 @mixin fluidImportant($prop, $xs, $md: $xs, $lg: $md, $xl: $lg) {
   #{$prop}: px2vw($xs, $layout-width-xs) !important;
   @include media-breakpoint-up(md) {
@@ -61,7 +62,6 @@
     ) !important;
   }
 }
-
 
 
 @function calc-clamp(
@@ -108,7 +108,7 @@
     $xl: 0.1px;
   }
   // sass-lint:disable-block border-zero
-  #{$prop}: px2vw($xs,  map.get($grid-breakpoints, x));
+  #{$prop}: px2vw($xs, map.get($grid-breakpoints, x));
 
   $min-value: 0.01rem;
 

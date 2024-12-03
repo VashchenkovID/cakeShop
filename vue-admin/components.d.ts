@@ -7,12 +7,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
+    Header: typeof import('./src/components/common/Header/Header.vue')['default']
+    InputMask: typeof import('primevue/inputmask')['default']
     InputText: typeof import('primevue/inputtext')['default']
     MyButton: typeof import('./src/components/ui/MyButton.vue')['default']
     MyInput: typeof import('./src/components/ui/MyInput.vue')['default']
+    MyInputMask: typeof import('./src/components/ui/MyInputMask.vue')['default']
+    MyText: typeof import('./src/components/ui/MyText.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sidebar: typeof import('./src/components/common/Sidebar/Sidebar.vue')['default']
   }
 }

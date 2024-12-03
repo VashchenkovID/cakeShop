@@ -1,7 +1,13 @@
 <template>
   <FloatLabel variant="on">
-    <InputText v-model="model" v-bind="props" class="MyInput" />
-    <label for="on_label"
+    <InputMask
+      id="on_label_mask"
+      v-bind="props"
+      :mask="props.mask"
+      class="MyInput"
+      v-model="model"
+    />
+    <label v-if="props.label" for="on_label_mask"
       ><MyText rool-el="span" size="s" view="primary"
         >{{ props.label }}
       </MyText></label
@@ -10,10 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { ITextFieldProps } from "./interfaces.ts";
 import MyText from "./MyText.vue";
-
-const props = defineProps<ITextFieldProps>();
+import { InputMaskProps } from "primevue";
+interface IInputMaskProps extends InputMaskProps {
+  label?: string;
+}
+const props = defineProps<IInputMaskProps>();
 const model = defineModel<string | undefined>();
 </script>
 
@@ -28,7 +36,6 @@ $labelColor: $blockColor;
   border-color: $primaryColor !important;
   color: $whiteColor !important;
   width: 100% !important;
-  @include fluidImportant(font-size, 14px);
 }
 .p-inputtext {
   width: 100% !important;
