@@ -40,11 +40,21 @@ export default class AuthService {
     });
   }
 
-  static async logout(): Promise<void> {
-    return $authHost.post("/user/logout");
+  static async logout(token?: string): Promise<void> {
+    return $authHost.post("/user/logout", {
+      headers: {
+        AuthToken: `token: ${token || undefined}`,
+      },
+    });
   }
 
-  static async checkLogin(): Promise<AxiosResponse<CheckLoginResModel>> {
-    return $authHost.get("/user/checkLogin");
+  static async checkLogin(
+    token?: string,
+  ): Promise<AxiosResponse<CheckLoginResModel>> {
+    return $authHost.get("/user/checkLogin", {
+      headers: {
+        AuthToken: `token: ${token || undefined}`,
+      },
+    });
   }
 }

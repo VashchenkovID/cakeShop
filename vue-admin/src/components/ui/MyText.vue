@@ -10,7 +10,7 @@ interface MyTextProps {
   className?: string;
   size?: "xs" | "s" | "m" | "l" | "xl" | "x2l" | "x3l" | "x4l";
   weight?: "bold" | "semiBold" | "regular";
-  view?: "primary" | "secondary" | "ghost";
+  view?: "primary" | "secondary" | "ghost" | "dark";
 }
 
 const {
@@ -86,5 +86,8 @@ const {
 
 .ghost {
   color: $whiteColor;
+}
+.dark {
+  color: $darkTextColor;
 }
 </style>

@@ -1,39 +1,24 @@
 <template>
-  <section class="DirectoriesDetail">
-    <MyText size="x3l" view="ghost" weight="bold">{{
-      generateNameByParams()
-    }}</MyText>
-  </section>
+  <component :is="component" />
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
-import MyText from "../../components/ui/MyText.vue";
+import DirectoryDetailType from "./DirectoryDetailType/DirectoryDetailType.vue";
 
 const { params } = useRoute();
 
-const generateNameByParams = () => {
+const component = computed(() => {
+  console.log(params.id);
   switch (params.id) {
     case "type":
-      return "Тип изделия";
-    case "filling":
-      return "Начинка";
-    case "biscuit":
-      return "Бисквит";
+      return DirectoryDetailType;
     default:
-      return "Неизвестный тип справочника";
+      return "";
   }
-};
+});
+console.log(component);
 </script>
 
-<style scoped lang="scss">
-@import "../../assets/global";
-
-.DirectoriesDetail {
-  @include fluid(padding, 24px);
-  display: flex;
-  flex-direction: column;
-  @include fluid(gap, 24px);
-  align-items: flex-start;
-}
-</style>
+<style scoped></style>

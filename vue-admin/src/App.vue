@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AuthService from "./api/requests/userAPI.ts";
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
+import "primeicons/primeicons.css";
 import Cookies from "js-cookie";
 import { useRoute } from "vue-router";
 import Header from "./components/common/Header/Header.vue";
@@ -13,10 +14,6 @@ const initialGetUser = async () => {
     if (res.data.isAuth && res.data.user?.fullName) {
       Cookies.set("username", res.data.user?.fullName);
       return;
-    }
-    if (!res.data.isAuth) {
-      Cookies.remove("username");
-      Cookies.remove("token");
     }
   } catch (e) {}
 };

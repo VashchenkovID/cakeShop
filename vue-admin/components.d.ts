@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']
+    Dialog: typeof import('primevue/dialog')['default']
+    Drawer: typeof import('primevue/drawer')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
     Header: typeof import('./src/components/common/Header/Header.vue')['default']
     InputMask: typeof import('primevue/inputmask')['default']
@@ -16,6 +18,7 @@ declare module 'vue' {
     MyButton: typeof import('./src/components/ui/MyButton.vue')['default']
     MyInput: typeof import('./src/components/ui/MyInput.vue')['default']
     MyInputMask: typeof import('./src/components/ui/MyInputMask.vue')['default']
+    MyModal: typeof import('./src/components/ui/MyModal.vue')['default']
     MyText: typeof import('./src/components/ui/MyText.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
